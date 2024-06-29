@@ -1,0 +1,44 @@
+import TicketInfo from "../../types/TicketInfo";
+import { saveTicketToCache } from "../../utils/ticketCache";
+import getTicketIDFromURL from "../../utils/tdx/getTicketIDFromURL";
+
+/**
+ * Scrapes the ticket information from the page and returns it as a TicketInfo object.
+ * Requires the page to be a ticket details page.
+ * @returns The ticket information.
+ */
+export default function scrapeTicketInfo() {
+    const id = getTicketIDFromURL();
+    if (!id)
+        throw new Error("Could not get ticket ID from URL.");
+
+    const title = document.getElementById("thTicket_spnTitle")?.innerText ?? "";
+    const description = document.getElementById("ttDescription")?.innerText ?? "";
+    const responsibility = document.getElementById("upResponsibility")?.innerText ?? "";
+    const requester = (document.querySelector("div.media-heading") as HTMLElement)?.innerText ?? "";
+    const type = document.getElementById("lblTicketType")?.innerText ?? "";
+    const status = document.getElementById("thTicket_lblStatus")?.innerText ?? "";
+    const completedBy = document.getElementById("lblCompletedBy")?.innerText ?? "";
+    const respondedBy = document.getElementById("lblRespondedBy")?.innerText ?? "";
+    const modifiedBy = document.getElementById("lblModifiedBy")?.innerText ?? "";
+    const createdBy = document.getElementById("lblCreatedBy")?.innerText ?? "";
+
+    const ticketInfo: TicketInfo = {
+        id,
+        type,
+        status,
+        title,
+        description,
+        responsibility,
+        requester,
+        completedBy: completedBy.replace("by ", ""),
+        respondedBy: respondedBy.replace("by ", ""),
+        modifiedBy: modifiedBy.replace("by ", ""),
+        createdBy: createdBy.replace("by ", ""),
+    };
+
+    console.log("Ticket Info: ", ticketInfo);
+
+    saveTicketToCache(ticketInfo);
+    return ticketInfo;
+}
