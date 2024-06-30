@@ -1,10 +1,9 @@
 import TicketInfo from "../../types/TicketInfo";
-import { saveTicketToCache } from "../../utils/ticketCache";
 import getTicketIDFromURL from "../../utils/tdx/getTicketIDFromURL";
 
 /**
  * Scrapes the ticket information from the page and returns it as a TicketInfo object.
- * Requires the page to be a ticket details page.
+ * Requires the page to be a ticket ticketDetails page.
  * @returns The ticket information.
  */
 export default function scrapeTicketInfo() {
@@ -23,6 +22,15 @@ export default function scrapeTicketInfo() {
     const modifiedBy = document.getElementById("lblModifiedBy")?.innerText ?? "";
     const createdBy = document.getElementById("lblCreatedBy")?.innerText ?? "";
 
+    const tagDiv = document.getElementById("itTags_spnTagDisplay");
+    const tags: string[] = [];
+    if (tagDiv) {
+        for (const tag of tagDiv.children) {
+            const _tag = tag as HTMLElement;
+            tags.push(_tag.innerText);
+        }
+    }
+
     const ticketInfo: TicketInfo = {
         id,
         type,
@@ -35,10 +43,9 @@ export default function scrapeTicketInfo() {
         respondedBy: respondedBy.replace("by ", ""),
         modifiedBy: modifiedBy.replace("by ", ""),
         createdBy: createdBy.replace("by ", ""),
+        tags
     };
 
     console.log("Ticket Info: ", ticketInfo);
-
-    saveTicketToCache(ticketInfo);
     return ticketInfo;
 }

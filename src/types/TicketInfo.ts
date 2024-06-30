@@ -10,4 +10,5 @@ export default interface TicketInfo {
     respondedBy: string;
     modifiedBy: string;
     createdBy: string;
+    tags: string[];
 }

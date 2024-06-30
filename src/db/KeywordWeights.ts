@@ -48,8 +48,7 @@ const typeToKeywordWeights: { [key in TicketType]: KeywordWeights } = {
         "headset": 1,
         "camera": 1,
         "display": 1,
-        "monitor ": 1,
-        " monitor": 1,
+        "monitor": 1,
         "no sound": 1,
         "sound does not work": 1,
 
@@ -63,7 +62,7 @@ const typeToKeywordWeights: { [key in TicketType]: KeywordWeights } = {
         "photoshop": 1,
         "microsoft project": 1,
         "ms project": 1,
-        "canva ": 1,
+        "canva": 1,
         "solidworks": 1,
         "bitlocker": 1,
         "abr": 1,

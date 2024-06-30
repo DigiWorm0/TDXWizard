@@ -1,5 +1,7 @@
-type AutoAction = "closeWindow" |
-    "markTicketSpam" |
-    "setTicketType";
+type AutoAction =
+    "closeWindow" |
+    "editTicket" |
+    "editAsset" |
+    "backToDetails";
 
 export default AutoAction;

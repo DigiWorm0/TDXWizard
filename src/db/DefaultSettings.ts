@@ -4,9 +4,10 @@ const DefaultSettings: Settings = {
     showStatsButton: true,
     showTicketTypeButtons: true,
     showTicketAssignButtons: true,
+    showSurplusButtons: true,
 
     autoHideTicketTypes: true,
-    autoCloseTicketOnSave: true,
+    autoCloseTicketOnSave: false,
     ticketTypeThreshold: 0.5
 };
 
