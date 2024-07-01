@@ -6,8 +6,6 @@
  */
 export default function selectDropdownItem(dropdownID: string, optionName?: string, document: Document = window.document) {
 
-    // TODO: Fix me
-
     // Check if the option name is undefined
     if (!optionName)
         return;

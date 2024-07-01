@@ -11,6 +11,8 @@
     "preview": "vite preview"
   },
   "devDependencies": {
+    "@types/bootstrap": "^5.2.10",
+    "@types/jquery": "^3.5.30",
     "typescript": "^5.4.5",
     "vite": "^5.2.12",
     "vite-plugin-monkey": "^4.0.0"

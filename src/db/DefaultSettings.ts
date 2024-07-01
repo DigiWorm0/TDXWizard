@@ -8,7 +8,9 @@ const DefaultSettings: Settings = {
 
     autoHideTicketTypes: true,
     autoCloseTicketOnSave: false,
-    ticketTypeThreshold: 0.5
+    ticketTypeThreshold: 0.5,
+
+    confirmActions: true
 };
 
 export default DefaultSettings;

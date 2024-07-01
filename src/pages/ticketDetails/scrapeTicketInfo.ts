@@ -6,8 +6,8 @@ import getTicketIDFromURL from "../../utils/tdx/getTicketIDFromURL";
  * Requires the page to be a ticket ticketDetails page.
  * @returns The ticket information.
  */
-export default function scrapeTicketInfo() {
-    const id = getTicketIDFromURL();
+export default function scrapeTicketInfo(document: Document = window.document) {
+    const id = getTicketIDFromURL(document);
     if (!id)
         throw new Error("Could not get ticket ID from URL.");
 
@@ -21,6 +21,7 @@ export default function scrapeTicketInfo() {
     const respondedBy = document.getElementById("lblRespondedBy")?.innerText ?? "";
     const modifiedBy = document.getElementById("lblModifiedBy")?.innerText ?? "";
     const createdBy = document.getElementById("lblCreatedBy")?.innerText ?? "";
+    const isPickedUp = document.getElementById("divAttribute14087")?.innerText.includes("Yes");
 
     const tagDiv = document.getElementById("itTags_spnTagDisplay");
     const tags: string[] = [];
@@ -43,7 +44,8 @@ export default function scrapeTicketInfo() {
         respondedBy: respondedBy.replace("by ", ""),
         modifiedBy: modifiedBy.replace("by ", ""),
         createdBy: createdBy.replace("by ", ""),
-        tags
+        tags,
+        isPickedUp
     };
 
     console.log("Ticket Info: ", ticketInfo);

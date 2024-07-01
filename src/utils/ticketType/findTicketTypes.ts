@@ -1,7 +1,7 @@
 import TicketInfo from "../../types/TicketInfo";
 import typeToKeywordWeights from "../../db/KeywordWeights";
 import TicketType from "../../types/TicketType";
-import DefaultSettings from "../../db/DefaultSettings";
+import getSettings from "../settings/getSettings";
 
 export default function findTicketTypes(ticketInfo: TicketInfo) {
     let { title, description, responsibility } = ticketInfo;
@@ -80,10 +80,13 @@ export default function findTicketTypes(ticketInfo: TicketInfo) {
     // Sort the types by weight
     let sortedTypes = Object.keys(typeWeights).sort((a, b) => typeWeights[b] - typeWeights[a]);
 
+    // Get Threshold
+    const { ticketTypeThreshold } = getSettings();
+
     // Filter out types with low weights
     const topWeight = typeWeights[sortedTypes[0]];
     sortedTypes = sortedTypes.filter(type => typeWeights[type] > 0);
-    sortedTypes = sortedTypes.filter(type => typeWeights[type] >= topWeight - DefaultSettings.ticketTypeThreshold);
+    sortedTypes = sortedTypes.filter(type => typeWeights[type] >= topWeight - ticketTypeThreshold);
 
     return sortedTypes;
 }

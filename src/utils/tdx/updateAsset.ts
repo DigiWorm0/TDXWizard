@@ -3,6 +3,7 @@ import AssetInfo from "../../types/AssetInfo";
 import selectDropdownItem from "../ui/selectDropdownItem";
 import selectSearchItem from "../ui/selectSearchItem";
 import waitFor from "../waitFor";
+import getSettings from "../settings/getSettings";
 
 /**
  * Update an asset in TDX. Note: Not all fields are supported
@@ -31,13 +32,18 @@ export default async function updateAsset(asset: Partial<AssetInfo>) {
 
     // Save Changes
     const saveButton = assetPage.document.getElementById("btnSubmit");
-    //saveButton?.click();
-    //await new Promise(resolve => assetPage.onload = resolve);
-    await waitFor(5000);
+    if (!saveButton)
+        throw new Error("Save button not found");
+    saveButton.click();
+    await waitFor(1000);
 
     // Close the asset page
     assetPage.close();
 
-    // Refresh the current page
-    window.location.reload();
+    // Refresh/close the current page
+    const settings = getSettings();
+    if (settings.autoCloseTicketOnSave)
+        window.close();
+    else
+        window.location.reload();
 }

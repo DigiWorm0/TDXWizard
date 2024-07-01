@@ -1,7 +1,6 @@
 import PageScript from "../PageScript";
 import scrapeTicketInfo from "./scrapeTicketInfo";
 import findTicketTypes from "../../utils/ticketType/findTicketTypes";
-import DefaultSettings from "../../db/DefaultSettings";
 import TicketType from "../../types/TicketType";
 import showStats from "../../utils/stats/showStats";
 import ticketTypeNames from "../../db/TicketTypeNames";
@@ -9,6 +8,9 @@ import addNavButton from "./addNavButton";
 import TicketInfo from "../../types/TicketInfo";
 import addActionButton from "./addActionButton";
 import editTicket from "../../utils/tdx/editTicket";
+import updateTicket from "../../utils/tdx/updateTicket";
+import confirmAction from "../../utils/confirmAction";
+import getSettings from "../../utils/settings/getSettings";
 
 const URL_PREFIX = "/TDNext/Apps/43/Tickets/TicketDet"
 
@@ -32,13 +34,15 @@ export default class TicketDetailsPage implements PageScript {
     }
 
     static addTicketTypeButtons(ticketInfo: TicketInfo) {
+
         // Check Settings
-        if (!DefaultSettings.showTicketTypeButtons)
+        const settings = getSettings();
+        if (!settings.showTicketTypeButtons)
             return;
 
         // Check if the ticket is a generic type
         const isGenericType = ticketInfo.type.startsWith("General / ");
-        if (DefaultSettings.autoHideTicketTypes && !isGenericType)
+        if (settings.autoHideTicketTypes && !isGenericType)
             return;
 
         // Get the possible ticket types
@@ -49,7 +53,10 @@ export default class TicketDetailsPage implements PageScript {
             const _ticketType = ticketType as TicketType;
             const buttonName = ticketTypeNames[_ticketType] || _ticketType;
             const button = addNavButton(
-                () => editTicket({ type: _ticketType }).catch(console.error),
+                () => {
+                    if (confirmAction(`Set ticket type to ${ticketType}?`))
+                        editTicket({ type: _ticketType }).catch(console.error)
+                },
                 buttonName,
                 "tag",
                 `Set Type to ${ticketType}`
@@ -65,7 +72,10 @@ export default class TicketDetailsPage implements PageScript {
 
     static addSpamButton(ticketInfo: TicketInfo) {
         const spamButton = addNavButton(
-            () => editTicket({ status: "Cancelled" }).catch(console.error),
+            () => {
+                if (confirmAction("Mark ticket as spam?"))
+                    editTicket({ status: "Cancelled" }).catch(console.error)
+            },
             undefined,
             "cancel",
             "Mark Spam"
@@ -79,7 +89,8 @@ export default class TicketDetailsPage implements PageScript {
 
     static addSurplusButton(ticketInfo: TicketInfo) {
         // Check Settings
-        if (!DefaultSettings.showSurplusButtons)
+        const settings = getSettings();
+        if (!settings.showSurplusButtons)
             return;
 
         // Check if the ticket is already a surplus ticket
@@ -90,14 +101,18 @@ export default class TicketDetailsPage implements PageScript {
             return;
 
         addActionButton(
-            () => editTicket({ type: TicketType.Surplus, tags: ["Surplus"] }).catch(console.error),
+            () => {
+                if (confirmAction("Convert ticket to surplus?"))
+                    editTicket({ type: TicketType.Surplus, tags: ["Surplus"] }).catch(console.error)
+            },
             "Convert to Surplus"
         );
     }
 
     static addSurplusPickupButton(ticketInfo: TicketInfo) {
         // Check Settings
-        if (!DefaultSettings.showSurplusButtons)
+        const settings = getSettings();
+        if (!settings.showSurplusButtons)
             return;
 
         // Check if the ticket is a surplus ticket
@@ -109,7 +124,14 @@ export default class TicketDetailsPage implements PageScript {
 
         // Add Surplus Pickup Button
         addActionButton(
-            () => editTicket({ type: "Reimage" }).catch(console.error),
+            () => {
+                if (confirmAction("Mark surplus ticket as picked up?"))
+                    updateTicket({
+                        comments: "Device is in PC-Repair",
+                        isPrivate: true,
+                        isPickedUp: false
+                    }).catch(console.error)
+            },
             "Pickup Surplus"
         );
     }
@@ -118,7 +140,8 @@ export default class TicketDetailsPage implements PageScript {
         // TODO: Move stats button
 
         // Add Stats Button
-        if (DefaultSettings.showStatsButton) {
+        const settings = getSettings();
+        if (settings.showStatsButton) {
             const statsButton = addNavButton(
                 showStats,
                 undefined,
@@ -131,7 +154,8 @@ export default class TicketDetailsPage implements PageScript {
 
     static addAutoAssignButtons(ticketInfo: TicketInfo) {
         // Check Settings
-        if (!DefaultSettings.showTicketAssignButtons)
+        const settings = getSettings();
+        if (!settings.showTicketAssignButtons)
             return;
 
         // Check Ticket Status
@@ -157,7 +181,10 @@ export default class TicketDetailsPage implements PageScript {
         // Add Assign Button
         const autoAssignName = ticketInfo.completedBy || ticketInfo.respondedBy || ticketInfo.modifiedBy || ticketInfo.createdBy;
         addNavButton(
-            () => editTicket({ responsibility: autoAssignName }).catch(console.error),
+            () => {
+                if (confirmAction(`Assign ticket to ${autoAssignName}?`))
+                    editTicket({ responsibility: autoAssignName }).catch(console.error)
+            },
             autoAssignName,
             "user",
             `Assign to ${autoAssignName}`

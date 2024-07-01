@@ -11,4 +11,5 @@ export default interface TicketInfo {
     modifiedBy: string;
     createdBy: string;
     tags: string[];
+    isPickedUp?: boolean;
 }

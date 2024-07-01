@@ -73,6 +73,9 @@ const typeToKeywordWeights: { [key in TicketType]: KeywordWeights } = {
         "microsoft word": 1,
         "myuw": 1,
 
+        "virus": 1,
+        "malicious": 1,
+
         "set up": 0.5,
         "setup": 0.5,
 
@@ -160,14 +163,17 @@ const typeToKeywordWeights: { [key in TicketType]: KeywordWeights } = {
         "wi-fi": 0.5,
     },
     [TicketType.Printers]: {
+        "print": 1,
+        "printed": 1,
         "printer": 1,
         "printing": 1,
         "papercut": 2,
         "paper cut": 2,
+        "scan": 1,
+        "scans": 1,
         "scanned": 1,
         "scanner": 1,
-        "copy machine": 1,
-        "scans folder": 1
+        "copy machine": 1
     },
     [TicketType.Surplus]: {
         "surplus": 1.5
@@ -179,7 +185,9 @@ const typeToKeywordWeights: { [key in TicketType]: KeywordWeights } = {
         "defender for cloud apps suspicious session detected": 10,
         "highseverity alert user restricted from sending email": 10
     },
-    [TicketType.Server]: {},
+    [TicketType.Server]: {
+        "server": 1
+    },
     [TicketType.Canvas]: {
         "webassign": 1,
         "kaltura": 1,

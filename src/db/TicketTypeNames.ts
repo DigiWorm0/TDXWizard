@@ -13,7 +13,7 @@ const ticketTypeNames: { [key in TicketType]: string } = {
     [TicketType.Printers]: "Printers",
     [TicketType.VoIP]: "VoIP",
     [TicketType.Canvas]: "Canvas",
-    [TicketType.Account]: "Account",
+    [TicketType.Account]: "Account Assistance",
     [TicketType.EStout]: "eStout",
     [TicketType.Security]: "Security",
     [TicketType.Inventory]: "Inventory",

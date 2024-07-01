@@ -25,6 +25,7 @@ export default function addNavButton(
     // Button
     const button = document.createElement("button");
     button.className = "btn btn-warning btn-sm";
+    button.style.margin = "1px 3px";
     button.onclick = (e) => {
         e.preventDefault();
         onClick();
@@ -52,6 +53,12 @@ export default function addNavButton(
     if (tooltipText) {
         button.title = tooltipText;
     }
+
+    // Spacer
+    const spacer = document.createElement("span");
+    spacer.innerText = " ";
+    navItem?.appendChild(spacer);
+    assetNavBar?.appendChild(spacer);
 
     return button;
 }

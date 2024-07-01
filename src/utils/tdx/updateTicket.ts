@@ -1,17 +1,16 @@
 import getTicketIDFromURL from "./getTicketIDFromURL";
-import TicketInfo from "../../types/TicketInfo";
 import selectDropdownItem from "../ui/selectDropdownItem";
-import selectSearchItem from "../ui/selectSearchItem";
-import selectMultiSearchItem from "../ui/selectMultiSearchItem";
-import selectTicketAssignment from "../ui/selectTicketAssignment";
 import waitFor from "../waitFor";
+import TicketUpdate from "../../types/TicketUpdate";
+import editCommentsField from "../ui/editCommentsField";
+import selectRadioItem from "../ui/selectRadioItem";
 import getSettings from "../settings/getSettings";
 
 /**
- * Edit a ticket in TDX. Note: Not all fields are supported
- * @param ticketInfo - The ticket to edit. Include the ID to specify a different ticket
+ * Updates a ticket in TDX. Note: Not all fields are supported
+ * @param ticketInfo - The ticket to update. Include the ID to specify a different ticket
  */
-export default async function editTicket(ticketInfo: Partial<TicketInfo>) {
+export default async function updateTicket(ticketInfo: TicketUpdate) {
 
     // Get the ticket ID from the URL if not provided.
     const _ticketID = ticketInfo.id || getTicketIDFromURL();
@@ -19,7 +18,7 @@ export default async function editTicket(ticketInfo: Partial<TicketInfo>) {
         throw new Error("Ticket ID not found.");
 
     // Open the ticket edit page as a popup
-    const ticketURL = `/TDNext/Apps/43/Tickets/Edit?TicketID=${_ticketID}`;
+    const ticketURL = `/TDNext/Apps/43/Tickets/Update?TicketID=${_ticketID}`;
     const ticketPage = window.open(ticketURL, "ticketPage", "width=800,height=600");
     if (!ticketPage)
         throw new Error("Could not open ticket page.");
@@ -28,19 +27,17 @@ export default async function editTicket(ticketInfo: Partial<TicketInfo>) {
     await new Promise(resolve => ticketPage.onload = resolve);
 
     // Select the ticket values
-    selectDropdownItem("attribute40", ticketInfo.status, ticketPage.document);
-    await selectSearchItem("attribute39", ticketInfo.type, ticketPage.document);
-    await selectMultiSearchItem("attribute1258", ticketInfo.tags, ticketPage.document);
-    await selectTicketAssignment(ticketInfo.responsibility, ticketPage.document);
+    selectDropdownItem("NewStatusId", ticketInfo.status, ticketPage.document);
+    editCommentsField(ticketInfo.comments, ticketInfo.isPrivate, ticketPage.document);
+    const isPickedUp = ticketInfo.isPickedUp !== undefined ? (ticketInfo.isPickedUp ? "Yes" : "No") : undefined;
+    selectRadioItem("attribute14087", isPickedUp, ticketPage.document);
 
     // Save Changes
-    const saveButton = ticketPage.document.getElementById("btnSubmit");
+    const saveButton = document.getElementById("btnSubmit");
     if (!saveButton)
         throw new Error("Save button not found");
-    //saveButton.click();
-
-    // Wait for the save to complete
-    await waitFor(1500);
+    saveButton.click();
+    await waitFor(1000);
 
     // Close the ticket page
     ticketPage.close();

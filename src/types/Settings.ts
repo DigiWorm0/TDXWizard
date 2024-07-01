@@ -7,4 +7,6 @@ export default interface Settings {
     autoHideTicketTypes: boolean;
     autoCloseTicketOnSave: boolean;
     ticketTypeThreshold: number;
+
+    confirmActions: boolean;
 }
