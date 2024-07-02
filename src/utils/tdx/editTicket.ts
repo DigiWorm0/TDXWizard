@@ -33,14 +33,18 @@ export default async function editTicket(ticketInfo: Partial<TicketInfo>) {
     await selectMultiSearchItem("attribute1258", ticketInfo.tags, ticketPage.document);
     await selectTicketAssignment(ticketInfo.responsibility, ticketPage.document);
 
+    // Alert on save
+    ticketPage.onload = () => alert("Ticket saved!");
+
     // Save Changes
+    await waitFor(500);
     const saveButton = ticketPage.document.getElementById("btnSubmit");
     if (!saveButton)
         throw new Error("Save button not found");
-    //saveButton.click();
+    saveButton.click();
 
     // Wait for the save to complete
-    await waitFor(1500);
+    await new Promise(resolve => ticketPage.addEventListener("unload", resolve))
 
     // Close the ticket page
     ticketPage.close();

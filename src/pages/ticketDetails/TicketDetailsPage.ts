@@ -129,7 +129,7 @@ export default class TicketDetailsPage implements PageScript {
                     updateTicket({
                         comments: "Device is in PC-Repair",
                         isPrivate: true,
-                        isPickedUp: false
+                        isPickedUp: true
                     }).catch(console.error)
             },
             "Pickup Surplus"

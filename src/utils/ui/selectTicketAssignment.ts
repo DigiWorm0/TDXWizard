@@ -24,7 +24,7 @@ export default async function selectTicketAssignment(name?: string, document: Do
     searchButton.click();
 
     // Wait for the search to complete
-    await waitFor(1500);
+    await waitFor(2500);
 
     // Notify the user
     const notifyCheckbox = document.getElementsByName("Item.NotifyResponsible")[0] as HTMLInputElement;

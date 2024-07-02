@@ -1,6 +1,5 @@
-import editTextArea from "./editTextArea";
 
-export default function editCommentsField(text?: string, isPrivate?: boolean, document: Document = window.document) {
+export default function editCommentsField(isPrivate?: boolean, document: Document = window.document) {
 
     // Handle the private checkbox
     if (isPrivate !== undefined) {
@@ -23,6 +22,4 @@ export default function editCommentsField(text?: string, isPrivate?: boolean, do
             clearButton.click();
         }
     }
-
-    editTextArea("Comments", text, document);
 }

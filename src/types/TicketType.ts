@@ -6,7 +6,7 @@ enum TicketType {
     Software = "Software Assistance",
     Hardware = "Maintenance/Repair",
     VoIP = "VoIP",
-    Account = "Account",
+    Account = "Account Assistance",
     ClassroomTech = "Classroom Technology",
     ComputerLabs = "Computer Labs",
     EStout = "eStout",

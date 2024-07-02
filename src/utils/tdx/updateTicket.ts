@@ -2,9 +2,10 @@ import getTicketIDFromURL from "./getTicketIDFromURL";
 import selectDropdownItem from "../ui/selectDropdownItem";
 import waitFor from "../waitFor";
 import TicketUpdate from "../../types/TicketUpdate";
-import editCommentsField from "../ui/editCommentsField";
 import selectRadioItem from "../ui/selectRadioItem";
 import getSettings from "../settings/getSettings";
+import editTextArea from "../ui/editTextArea";
+import selectCheckbox from "../ui/selectCheckbox";
 
 /**
  * Updates a ticket in TDX. Note: Not all fields are supported
@@ -25,19 +26,29 @@ export default async function updateTicket(ticketInfo: TicketUpdate) {
 
     // Wait for the ticket page to load
     await new Promise(resolve => ticketPage.onload = resolve);
+    await waitFor(500);
 
     // Select the ticket values
     selectDropdownItem("NewStatusId", ticketInfo.status, ticketPage.document);
-    editCommentsField(ticketInfo.comments, ticketInfo.isPrivate, ticketPage.document);
+    selectCheckbox("CommentsIsPrivate", ticketInfo.isPrivate, ticketPage.document);
+    editTextArea("Comments", ticketInfo.comments, ticketPage.document);
     const isPickedUp = ticketInfo.isPickedUp !== undefined ? (ticketInfo.isPickedUp ? "Yes" : "No") : undefined;
     selectRadioItem("attribute14087", isPickedUp, ticketPage.document);
 
+    // Clear Notified Users
+    const clearButton = ticketPage.document.querySelector<HTMLButtonElement>('button[title="Remove All"]');
+    if (!clearButton)
+        throw new Error("Clear button not found.");
+    clearButton.click();
+
     // Save Changes
-    const saveButton = document.getElementById("btnSubmit");
+    const saveButton = ticketPage.document.getElementById("btnSubmit");
     if (!saveButton)
         throw new Error("Save button not found");
     saveButton.click();
-    await waitFor(1000);
+
+    // Wait for the save to complete
+    await new Promise(resolve => ticketPage.addEventListener("unload", resolve))
 
     // Close the ticket page
     ticketPage.close();

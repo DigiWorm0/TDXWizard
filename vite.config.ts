@@ -3,6 +3,10 @@ import monkey from 'vite-plugin-monkey';
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  server: {
+    open: false,
+    hmr: false
+  },
   plugins: [
     monkey({
       entry: 'src/main.ts',
@@ -10,7 +14,8 @@ export default defineConfig({
         icon: 'https://www.google.com/s2/favicons?sz=64&domain=uwstout.edu',
         namespace: 'digiworm0.github.io',
         match: ['https://uwstout.teamdynamix.com/TDNext/*'],
-        name: 'TDX Buddy'
+        name: 'TDX Buddy',
+        "run-at": "document-start"
       },
     }),
   ],
