@@ -1,5 +1,7 @@
 import addSettingsSwitch from "./addSettingsSwitch";
 import createModal from "../../utils/ui/createModal";
+import { GM_info } from "$";
+import {i} from "vite/dist/node/types.d-aGj9QkWt";
 
 export default class SettingsModal {
     _parentModal: HTMLDivElement;
@@ -16,6 +18,13 @@ export default class SettingsModal {
         addSettingsSwitch(modalBody, "Show Surplus Buttons", "showSurplusButtons");
         addSettingsSwitch(modalBody, "Show Ticket Assign Buttons", "showTicketAssignButtons");
         addSettingsSwitch(modalBody, "Show Ticket Type Buttons", "showTicketTypeButtons");
+
+        // Add Version Tag
+        const versionTag = document.createElement("div");
+        versionTag.style.textAlign = "center";
+        versionTag.style.marginTop = "20px";
+        versionTag.innerText = `Version: ${GM_info.script.version}`;
+        modalBody.appendChild(versionTag);
     }
 
     open() {

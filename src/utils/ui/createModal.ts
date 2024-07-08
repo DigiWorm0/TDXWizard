@@ -50,6 +50,7 @@ export default function createModal(title: string) {
 
     return {
         parentModal,
-        modalBody
+        modalBody,
+        modalHeader
     }
 }
