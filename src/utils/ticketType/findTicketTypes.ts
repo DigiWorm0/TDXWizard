@@ -51,22 +51,26 @@ export default function findTicketTypes(ticketInfo: TicketInfo) {
     }
 
     // Add types based on responsibility
+    if (responsibility.includes("Network"))
+        addWeightToType(TicketType.Network, 2);
     if (responsibility.includes("Website"))
-        addWeightToType("Enterprise Apps", 2);
+        addWeightToType(TicketType.Enterprise, 2);
     if (responsibility.includes("ImageNow"))
-        addWeightToType("Enterprise Apps", 1);
+        addWeightToType(TicketType.Enterprise, 1);
     if (responsibility.includes("VoIP"))
-        addWeightToType("VoIP", 2);
+        addWeightToType(TicketType.VoIP, 2);
     if (responsibility.includes("Server"))
-        addWeightToType("Server", 1);
+        addWeightToType(TicketType.Server, 2);
     if (responsibility.includes("Lab and Software"))
-        addWeightToType("Computer Labs", 1);
+        addWeightToType(TicketType.ComputerLabs, 1);
     if (responsibility.includes("Classroom Technologies"))
-        addWeightToType("Classroom Technology", 2);
+        addWeightToType(TicketType.ClassroomTech, 2);
     if (responsibility.includes("Vanguard"))
-        addWeightToType("Maintenance/Repair", 2);
+        addWeightToType(TicketType.Hardware, 2);
     if (responsibility.includes("QA"))
-        addWeightToType("Maintenance/Repair", 2);
+        addWeightToType(TicketType.Hardware, 2);
+    if (responsibility.includes("PeopleSoft"))
+        addWeightToType(TicketType.Enterprise, 2);
 
     // Password Reset
     const hasPassword = title.includes("password") || description.includes("password");

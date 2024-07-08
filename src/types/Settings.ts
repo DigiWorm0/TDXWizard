@@ -9,4 +9,5 @@ export default interface Settings {
     ticketTypeThreshold: number;
 
     confirmActions: boolean;
+    unlinkEmails: boolean;
 }

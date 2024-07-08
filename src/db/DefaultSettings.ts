@@ -10,7 +10,8 @@ const DefaultSettings: Settings = {
     autoCloseTicketOnSave: false,
     ticketTypeThreshold: 0.5,
 
-    confirmActions: true
+    confirmActions: true,
+    unlinkEmails: true
 };
 
 export default DefaultSettings;

@@ -25,7 +25,7 @@ export default function addNavButton(
     // Button
     const button = document.createElement("button");
     button.className = "btn btn-warning btn-sm";
-    button.style.margin = "1px 3px";
+    button.style.margin = "0px 3px";
     button.onclick = (e) => {
         e.preventDefault();
         onClick();

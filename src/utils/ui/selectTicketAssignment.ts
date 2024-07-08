@@ -16,6 +16,11 @@ export default async function selectTicketAssignment(name?: string, document: Do
     // Log
     console.log("Selecting ticket assignment: " + name);
 
+    // Get the form
+    const field = document.getElementById("attribute495") as HTMLInputElement;
+    if (!field)
+        throw new Error("Assignment field not found");
+
     // Set the auto assignment
     setAutoAssignment(name);
 
@@ -25,6 +30,7 @@ export default async function selectTicketAssignment(name?: string, document: Do
 
     // Wait for the search to complete
     await waitFor(2500);
+    //await new Promise(resolve => field.addEventListener("change", resolve));
 
     // Notify the user
     const notifyCheckbox = document.getElementsByName("Item.NotifyResponsible")[0] as HTMLInputElement;

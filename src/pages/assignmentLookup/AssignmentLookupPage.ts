@@ -28,6 +28,9 @@ export default class AssignmentLookupPage implements PageScript {
     static async assignTicket(name: string) {
         console.log("Assigning ticket to: " + name);
 
+        // Wait for the page to load
+        await waitFor(100);
+
         // Filter by all users
         const allUsers = document.getElementById("ctl00_cphSearchRows_rbEmployeesBoth") as HTMLInputElement;
         allUsers.click();

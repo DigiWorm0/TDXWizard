@@ -21,5 +21,6 @@ const ticketTypeNames: { [key in TicketType]: string } = {
     [TicketType.Reimage]: "Reimage",
     [TicketType.Server]: "Server",
     [TicketType.FobRequest]: "Fob Req",
+    [TicketType.Deploy]: "Deploy",
 };
 export default ticketTypeNames;

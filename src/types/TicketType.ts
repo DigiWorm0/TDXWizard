@@ -19,6 +19,7 @@ enum TicketType {
     Server = "Server",
     Canvas = "Canvas",
     O365 = "O365",
+    Deploy = "Deploy",
 }
 
 export default TicketType;

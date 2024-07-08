@@ -2,7 +2,6 @@ import PageScript from "../PageScript";
 import scrapeTicketInfo from "./scrapeTicketInfo";
 import findTicketTypes from "../../utils/ticketType/findTicketTypes";
 import TicketType from "../../types/TicketType";
-import showStats from "../../utils/stats/showStats";
 import ticketTypeNames from "../../db/TicketTypeNames";
 import addNavButton from "./addNavButton";
 import TicketInfo from "../../types/TicketInfo";
@@ -11,6 +10,7 @@ import editTicket from "../../utils/tdx/editTicket";
 import updateTicket from "../../utils/tdx/updateTicket";
 import confirmAction from "../../utils/confirmAction";
 import getSettings from "../../utils/settings/getSettings";
+import createDropdown, {DropdownOption} from "../../utils/ui/createDropdown";
 
 const URL_PREFIX = "/TDNext/Apps/43/Tickets/TicketDet"
 
@@ -30,7 +30,6 @@ export default class TicketDetailsPage implements PageScript {
         TicketDetailsPage.addSurplusPickupButton(ticketInfo);
         TicketDetailsPage.addTicketTypeButtons(ticketInfo);
         TicketDetailsPage.addAutoAssignButtons(ticketInfo);
-        //TicketDetailsPage.addStatsButton();
     }
 
     static addTicketTypeButtons(ticketInfo: TicketInfo) {
@@ -48,43 +47,48 @@ export default class TicketDetailsPage implements PageScript {
         // Get the possible ticket types
         let ticketTypes = findTicketTypes(ticketInfo);
 
+        // Get Navbar
+        const navBar = document.getElementById("divTabHeader")?.children[0];
+        if (!navBar)
+            throw new Error("Nav Bar not found");
+
+        // Create Nav Container
+        const navContainer = document.createElement("li");
+        navBar.appendChild(navContainer);
+
+        // Create Button Group
+        const buttonGroup = document.createElement("div");
+        buttonGroup.className = "btn-group";
+        navContainer.appendChild(buttonGroup);
+
         // Add buttons for each ticket type
         for (const ticketType of ticketTypes) {
             const _ticketType = ticketType as TicketType;
+
+            // Create Button
             const buttonName = ticketTypeNames[_ticketType] || _ticketType;
             const button = addNavButton(
                 () => {
                     if (confirmAction(`Set ticket type to ${ticketType}?`))
-                        editTicket({ type: _ticketType }).catch(console.error)
+                        editTicket({ type: _ticketType }).catch(console.error);
                 },
                 buttonName,
                 "tag",
                 `Set Type to ${ticketType}`
             );
 
+            // Update Style
+            button.style.margin = "0 0";
             if (ticketInfo.type.includes(ticketType))
                 button.className += " disabled";
+
+            // Add Button to Group
+            buttonGroup.appendChild(button);
         }
 
-        // Add Spam Button
-        TicketDetailsPage.addSpamButton(ticketInfo);
-    }
-
-    static addSpamButton(ticketInfo: TicketInfo) {
-        const spamButton = addNavButton(
-            () => {
-                if (confirmAction("Mark ticket as spam?"))
-                    editTicket({ status: "Cancelled" }).catch(console.error)
-            },
-            undefined,
-            "cancel",
-            "Mark Spam"
-        );
-        spamButton.className = "btn btn-danger btn-sm";
-
-        // Disable the spam button if the ticket is already cancelled
-        if (ticketInfo.status === "Cancelled")
-            spamButton.className += " disabled";
+        // Add Ticket Type Dropdown
+        const dropdown = TicketDetailsPage.addTicketTypeDropdown();
+        buttonGroup.appendChild(dropdown);
     }
 
     static addSurplusButton(ticketInfo: TicketInfo) {
@@ -136,20 +140,48 @@ export default class TicketDetailsPage implements PageScript {
         );
     }
 
-    static addStatsButton() {
-        // TODO: Move stats button
+    static addTicketTypeDropdown() {
 
-        // Add Stats Button
-        const settings = getSettings();
-        if (settings.showStatsButton) {
-            const statsButton = addNavButton(
-                showStats,
-                undefined,
-                "chart-pie",
-                "View Stats"
-            );
-            statsButton.className = "btn btn-info btn-sm";
-        }
+        const options: DropdownOption[] = [
+            {name: "Spam", value: "spam"},
+            ...Object.values(TicketType).map((type) => ({
+                name: ticketTypeNames[type] || type,
+                value: type
+            }))
+        ];
+
+        const { container, button } = createDropdown(
+            "",
+            options,
+            (value) => {
+                // Spam
+                if (value === "spam") {
+                    if (confirmAction("Mark ticket as spam?"))
+                        editTicket({ status: "Cancelled" }).catch(console.error);
+                }
+                // Ticket Type
+                else
+                {
+                    const ticketType = value as TicketType;
+                    if (confirmAction(`Set ticket type to ${ticketType}?`))
+                        editTicket({ type: ticketType }).catch(console.error);
+                }
+            }
+        );
+
+        // Change Button Class
+        button.title = "Set Ticket Type";
+        button.style.margin = "0 0";
+        button.style.paddingLeft = "10px";
+        button.style.paddingRight = "8px";
+        button.classList.remove("btn-primary");
+        button.classList.add("btn-warning");
+
+        // Add container to the nav bar
+        const ticketNavBar = document.getElementById("divTabHeader")?.children[0];
+        ticketNavBar?.appendChild(container);
+
+        return container;
     }
 
     static addAutoAssignButtons(ticketInfo: TicketInfo) {

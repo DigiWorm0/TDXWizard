@@ -12,6 +12,7 @@ export default class SettingsModal {
         // Add Settings
         addSettingsSwitch(modalBody, "Auto Close Ticket on Save", "autoCloseTicketOnSave");
         addSettingsSwitch(modalBody, "User Confirm Actions", "confirmActions");
+        addSettingsSwitch(modalBody, "Unlinkify Emails/Phones", "unlinkEmails");
         addSettingsSwitch(modalBody, "Show Surplus Buttons", "showSurplusButtons");
         addSettingsSwitch(modalBody, "Show Ticket Assign Buttons", "showTicketAssignButtons");
         addSettingsSwitch(modalBody, "Show Ticket Type Buttons", "showTicketTypeButtons");

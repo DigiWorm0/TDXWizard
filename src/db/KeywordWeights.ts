@@ -18,6 +18,7 @@ const typeToKeywordWeights: { [key in TicketType]: KeywordWeights } = {
         "reimage": 1,
         "reimaging": 1,
         "re imaging": 1,
+        "reimaged": 1,
         "imaging": 1
     },
     [TicketType.Enterprise]: {
@@ -30,7 +31,12 @@ const typeToKeywordWeights: { [key in TicketType]: KeywordWeights } = {
         "bplogix": 0.5,
         "bp logics": 0.5,
         "bplogics": 0.5,
-        "perceptive content": 1
+        "perceptive content": 1,
+        "peoplesoft": 1,
+        "people soft": 1,
+        "accessstout": 1,
+        "access stout": 1,
+        "oracle": 1
     },
     [TicketType.FobRequest]: {
         "fob": 1
@@ -44,6 +50,7 @@ const typeToKeywordWeights: { [key in TicketType]: KeywordWeights } = {
 
         "authentication code": 1,
         "bypass code": 1,
+        "bypass security code": 1,
         "access code": 1,
 
         "2fa": 1,
@@ -65,11 +72,13 @@ const typeToKeywordWeights: { [key in TicketType]: KeywordWeights } = {
         "camera": 1,
         "display": 1,
         "monitor": 1,
+        "monitors": 1,
         "no sound": 1,
         "sound does not work": 1,
 
         "software renewal": 1,
         "activation": 1,
+        "activate": 1,
 
         "vpn": 1,
         "cisco": 1,
@@ -92,6 +101,11 @@ const typeToKeywordWeights: { [key in TicketType]: KeywordWeights } = {
         "new york times": 1,
         "access stout": 1,
         "zoom": 1,
+        "revit": 1,
+        "windows": 1,
+        "webwork": 1,
+        "acad": 1,
+        "software center": 1,
 
         "virus": 1,
         "malicious": 1,
@@ -135,6 +149,7 @@ const typeToKeywordWeights: { [key in TicketType]: KeywordWeights } = {
         "trouble accessing my email": 1,
         "trouble logging in": 1,
         "issues logging in": 1,
+        "trouble signing into": 1,
 
         "account": 0.5,
         "activation": 0.5,
@@ -143,6 +158,7 @@ const typeToKeywordWeights: { [key in TicketType]: KeywordWeights } = {
         "forgotten": 0.5,
         "password": 0.5,
         "pass word": 0.5,
+        "passcode": 0.5,
 
         "logon": 0.5,
         "log on": 0.5,
@@ -159,6 +175,8 @@ const typeToKeywordWeights: { [key in TicketType]: KeywordWeights } = {
         "locked computer": 1,
         "locked out": 1,
 
+        "security training": 1,
+
         "username": 0.5,
         "user name": 0.5,
 
@@ -174,14 +192,22 @@ const typeToKeywordWeights: { [key in TicketType]: KeywordWeights } = {
     [TicketType.EStout]: {
         "estout": 1,
         "exchange": 1,
+
+        "return": 1,
+        "returning": 1,
+
         "laptop transfer": 1,
         "laptop pickup": 1,
-        "laptop return": 1,
         "computer return": 1,
         "after graduation": 1,
         "turn my laptop in": 1,
-        "return my laptop": 1,
         "mail in my laptop": 1,
+        "graduation": 1,
+        "graduate": 1,
+
+        "lost": 0.5,
+        "missing": 0.5,
+        "hours": 0.5
     },
     [TicketType.CTS]: {
         "new device setup": 1,
@@ -190,7 +216,8 @@ const typeToKeywordWeights: { [key in TicketType]: KeywordWeights } = {
         "new employee checklist": 2,
         "loaner": 1,
         "name change": 1.5,
-        "departure": 1
+        "departure": 1,
+        "consultant": 1
     },
     [TicketType.Inventory]: {
         "inventory": 1,
@@ -198,7 +225,8 @@ const typeToKeywordWeights: { [key in TicketType]: KeywordWeights } = {
     },
     [TicketType.Hardware]: {
         "coaxial cable": 1.5,
-        "coax cable": 1.5
+        "coax cable": 1.5,
+        "blacking out": 1,
     },
     [TicketType.Network]: {
         "ethernet": 1,
@@ -217,7 +245,8 @@ const typeToKeywordWeights: { [key in TicketType]: KeywordWeights } = {
         "scans": 1,
         "scanned": 1,
         "scanner": 1,
-        "copy machine": 1
+        "copy machine": 1,
+        "university of wisconsin purchase order": 5
     },
     [TicketType.Surplus]: {
         "surplus": 1.5
@@ -231,6 +260,9 @@ const typeToKeywordWeights: { [key in TicketType]: KeywordWeights } = {
 
         "spam": 1,
         "phishing": 1,
+        "scam": 1,
+        "scam email": 1,
+        "security": 1
     },
     [TicketType.Server]: {
         "server": 1
@@ -241,6 +273,7 @@ const typeToKeywordWeights: { [key in TicketType]: KeywordWeights } = {
         "katura": 1,
         "redshelf": 1,
         "red shelf": 1,
+        "mymedia": 1,
         "canvas": 0.5,
         "blueprint course": 1
     },
@@ -257,9 +290,11 @@ const typeToKeywordWeights: { [key in TicketType]: KeywordWeights } = {
         "microsoft access": 0.5,
         "microsoft project": 0.5,
         "microsoft visio": 0.5,
+        "microsoft publisher": 0.5,
         "outlook": 0.5,
         "get outlook for ios": -0.5, // Negative weight to reduce false positives
-    }
+    },
+    [TicketType.Deploy]: {}
 };
 
 export default typeToKeywordWeights;

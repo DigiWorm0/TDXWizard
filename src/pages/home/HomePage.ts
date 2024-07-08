@@ -39,7 +39,7 @@ export default class HomePage implements PageScript {
 
         // Add Icon
         const icon = document.createElement("span");
-        icon.className = "fa fa-hammer";
+        icon.className = "fa fa-toolbox";
         button.appendChild(icon);
     }
 }
