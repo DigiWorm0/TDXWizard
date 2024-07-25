@@ -1,5 +1,5 @@
 import TDXClient from "../../tdx-api/TDXClient";
-import getSettings from "../../hooks/settings/getSettings";
+import getSettings from "../getSettings";
 
 /**
  * A TDX client for the UW-Stout's TDX instance

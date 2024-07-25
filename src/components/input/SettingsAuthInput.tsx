@@ -1,21 +1,21 @@
 import getAPIKeyFromSSO from "../../utils/tdx/getAuthKeyFromSSO";
-import setSetting from "../../hooks/settings/setSettings";
 import React from "react";
-import getSettings from "../../hooks/settings/getSettings";
+import useSettings from "../../hooks/useSettings";
 
 export default function SettingsAuthInput() {
     const [isHovered, setIsHovered] = React.useState(false);
-    const [key, setKey] = React.useState(getSettings().authKey);
+    const [settings, setSettings] = useSettings();
 
-    const onClick = () => {
-        getAPIKeyFromSSO().then(key => {
-            setKey(key);
-        }).catch(console.error);
+    const setAuthKey = (authKey: string) => {
+        setSettings({
+            ...settings,
+            authKey
+        });
     }
 
-    React.useEffect(() => {
-        setSetting("authKey", key);
-    }, [key]);
+    const onClick = () => {
+        getAPIKeyFromSSO().then(setAuthKey).catch(console.error);
+    }
 
     return (
         <>
@@ -33,9 +33,10 @@ export default function SettingsAuthInput() {
             </button>
             <input
                 type={isHovered ? "text" : "password"}
-                placeholder={"Auth Key"}
-                value={key}
-                onChange={(e) => setKey(e.target.value)}
+                title={"TDX API Auth Token (don't share this with anyone!)"}
+                placeholder={"Click the 'Login with SSO' button to get your API Key"}
+                value={settings.authKey}
+                onChange={e => setAuthKey(e.target.value)}
                 style={{
                     width: "100%",
                     margin: "1px 3px",

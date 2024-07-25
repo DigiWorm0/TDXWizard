@@ -1,6 +1,6 @@
 import typeToKeywordWeights from "../../db/KeywordWeights";
 import TicketType from "../../types/TicketType";
-import getSettings from "../../hooks/settings/getSettings";
+import getSettings from "../getSettings";
 import Ticket from "../../tdx-api/types/Ticket";
 
 export default function findTicketTypes(ticketInfo: Ticket) {

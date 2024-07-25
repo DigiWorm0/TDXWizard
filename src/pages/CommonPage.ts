@@ -1,5 +1,5 @@
 import PageScript from "./PageScript";
-import getSettings from "../hooks/settings/getSettings";
+import getSettings from "../utils/getSettings";
 
 const URL_PREFIX = "/TDNext"
 

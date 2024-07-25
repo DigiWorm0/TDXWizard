@@ -4,9 +4,11 @@ import getAssetIDFromURL from "../../utils/tdx/getAssetIDFromURL";
 import AppID from "../../types/AppID";
 import TicketType from "../../types/TicketType";
 import {GM_notification, GM_setClipboard} from "$";
-import getSettings from "../../hooks/settings/getSettings";
+import useSettings from "../../hooks/useSettings";
 
 export default function SurplusTicketButton() {
+    const [settings] = useSettings();
+
     const onClick = async () => {
         if (confirmAction("Make a surplus ticket for this asset?")) {
             const client = new UWStoutTDXClient();
@@ -64,7 +66,7 @@ export default function SurplusTicketButton() {
             );
 
             // Refresh/Close Page
-            if (getSettings().autoCloseTicketOnSave)
+            if (settings.autoCloseTicketOnSave)
                 window.close();
             else
                 window.location.reload();

@@ -39,6 +39,10 @@ export default function ModalBase(props: ModalBaseProps) {
                 role={"dialog"}
                 ref={modalRef}
                 data-backdrop={false}
+                onClick={(e) => {
+                    if (e.target === modalRef.current)
+                        props.onClose();
+                }}
             >
                 {props.children}
             </div>

@@ -1,6 +1,6 @@
 import TicketType from "../types/TicketType";
 
-const ticketTypeNames: { [key in TicketType]: string } = {
+const ticketTypeNames: Record<TicketType, string> = {
     [TicketType.Surplus]: "Surplus",
     [TicketType.Enterprise]: "Enterprise",
     [TicketType.CTS]: "CTS",

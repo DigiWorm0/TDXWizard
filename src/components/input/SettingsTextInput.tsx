@@ -1,7 +1,5 @@
 import Settings from "../../types/Settings";
-import getSettings from "../../hooks/settings/getSettings";
-import setSetting from "../../hooks/settings/setSettings";
-import React from "react";
+import useSettings from "../../hooks/useSettings";
 
 export interface SettingsTextInputProps {
     label: string;
@@ -9,18 +7,21 @@ export interface SettingsTextInputProps {
 }
 
 export default function SettingsTextInput(props: SettingsTextInputProps) {
-    const [value, setValue] = React.useState(getSettings()[props.setting] as string);
+    const [settings, setSettings] = useSettings();
 
-    React.useEffect(() => {
-        setSetting(props.setting, value);
-    }, [value, props.setting]);
+    const setValue = (value: string) => {
+        setSettings({
+            ...settings,
+            [props.setting]: value
+        });
+    }
 
     return (
         <div className="flex flex-col">
             <input
                 type="text"
                 placeholder={props.label}
-                value={value}
+                value={settings[props.setting] as string}
                 onChange={(e) => setValue(e.target.value)}
                 style={{width: "100%", marginTop: 5}}
             />

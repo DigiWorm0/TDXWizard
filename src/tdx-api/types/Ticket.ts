@@ -48,7 +48,7 @@ export default interface Ticket {
     PlacedOnHoldDate?: DateTime;
     GoesOffHoldDate?: DateTime;
     CreatedDate: DateTime;
-    CreatedUid: number;
+    CreatedUid: Guid;
     CreatedFullName: string;
     CreatedEmail: string;
     ModifiedDate: DateTime;

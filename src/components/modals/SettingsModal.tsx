@@ -54,7 +54,7 @@ export default function SettingsModal(props: SettingsModalProps) {
                                         style={{
                                             fontWeight: "normal",
                                             fontSize: 20,
-                                            marginLeft: 10,
+                                            marginLeft: 5,
                                         }}
                                     >
                                     v{GM_info.script.version}
@@ -75,6 +75,7 @@ export default function SettingsModal(props: SettingsModalProps) {
                             <SettingsSwitchInput label={"Unlink Emails / Phones"} setting={"unlinkEmails"}/>
                             <SettingsSwitchInput label={"Auto-Close On Save"} setting={"autoCloseTicketOnSave"}/>
                             <SettingsSwitchInput label={"Confirm Actions"} setting={"confirmActions"}/>
+                            <SettingsSwitchInput label={"Auto Print on Print View"} setting={"autoPrint"}/>
                             <SettingsSwitchInput label={"Show Surplus Buttons"} setting={"showSurplusButtons"}/>
                             <SettingsSwitchInput label={"Show Assign Buttons"} setting={"showTicketAssignButtons"}/>
                             <SettingsSwitchInput label={"Show Type Buttons"} setting={"showTicketTypeButtons"}/>

@@ -35,6 +35,11 @@ export default class TicketsEndpoint extends TDXEndpoint {
         );
     }
 
+    async updateTicket(appID: number, id: number, update: Partial<Ticket>, notifyNewResponsible: boolean = false) {
+        const ticket = await this.getTicket(appID, id);
+        return this.editTicket(appID, id, {...ticket, ...update}, notifyNewResponsible);
+    }
+
     getTicketContacts(appID: number, id: number) {
         return this.client.jsonRequest<User[]>(`${appID}/tickets/${id}/contacts`);
     }

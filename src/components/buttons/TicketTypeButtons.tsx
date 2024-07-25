@@ -5,38 +5,30 @@ import UWStoutTDXClient from "../../utils/tdx/UWStoutTDXClient";
 import getTicketIDFromURL from "../../utils/tdx/getTicketIDFromURL";
 import findTicketTypes from "../../utils/ticketType/findTicketTypes";
 import StatusClass from "../../tdx-api/types/StatusClass";
-import getSettings from "../../hooks/settings/getSettings";
+import useSettings from "../../hooks/useSettings";
+import useTicket from "../../hooks/useTicket";
+import AppID from "../../types/AppID";
 
 export default function TicketTypeButtons() {
-    const [types, setTypes] = React.useState<TicketType[] | undefined>(undefined);
+    const ticket = useTicket();
+    const [settings] = useSettings();
 
-    React.useEffect(() => {
+    const types = React.useMemo(() => {
+        // Check if ticket is loaded
+        if (!ticket)
+            return null;
 
-        // API Client
-        const client = new UWStoutTDXClient();
+        // Check if type is set
+        if (ticket.TypeCategoryName !== "General")
+            return null;
+        if (ticket.StatusClass === StatusClass.Cancelled)
+            return null;
 
-        // Get Ticket ID
-        const ticketID = getTicketIDFromURL();
-        if (!ticketID)
-            throw new Error("Ticket ID not found");
-
-        // Get Ticket Info
-        client.tickets.getTicket(43, ticketID).then((ticketInfo) => {
-
-            // Check if type is set
-            if (ticketInfo.TypeCategoryName !== "General")
-                return;
-            if (ticketInfo.StatusClass === StatusClass.Cancelled)
-                return;
-
-            // Get the possible ticket types
-            const types = findTicketTypes(ticketInfo);
-            setTypes(types);
-        }).catch(console.error);
-    }, []);
+        // Get the possible ticket types
+        return findTicketTypes(ticket);
+    }, [ticket]);
 
     const setType = async (type: TicketType) => {
-        console.log("Setting Type: " + type);
 
         // API Client
         const client = new UWStoutTDXClient();
@@ -46,19 +38,12 @@ export default function TicketTypeButtons() {
         if (!ticketID)
             throw new Error("Ticket ID not found");
 
-        // Get Ticket Info
-        const ticketInfo = await client.tickets.getTicket(43, ticketID);
-        console.log(ticketInfo);
-
-        // Edit Ticket
-        const res = await client.tickets.editTicket(43, ticketID, {
-            ...ticketInfo,
-            TypeID: type
-        });
+        // Update Ticket
+        const res = await client.tickets.updateTicket(AppID.Tickets, ticketID, {TypeID: type});
         console.log(res);
 
         // Reload/Close the page
-        if (getSettings().autoCloseTicketOnSave)
+        if (settings.autoCloseTicketOnSave)
             window.close();
         else
             window.location.reload();
@@ -87,7 +72,7 @@ export default function TicketTypeButtons() {
         console.log(res);
 
         // Reload/Close the page
-        if (getSettings().autoCloseTicketOnSave)
+        if (settings.autoCloseTicketOnSave)
             window.close();
         else
             window.location.reload();
@@ -111,7 +96,7 @@ export default function TicketTypeButtons() {
                     </span>
                 </button>
             ))}
-            {types !== undefined && (
+            {types && (
                 <li className={"btn-group"}>
                     <button
                         className={"btn btn-warning btn-sm dropdown-toggle"}

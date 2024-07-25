@@ -1,6 +1,6 @@
-import Settings from "../../types/Settings";
-import { GM_getValue } from "$";
-import DefaultSettings from "../../db/DefaultSettings";
+import Settings from "../types/Settings";
+import {GM_getValue} from "$";
+import DefaultSettings from "../db/DefaultSettings";
 
 let _settingsCache: Settings | null = null;
 

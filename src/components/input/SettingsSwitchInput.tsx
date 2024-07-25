@@ -1,7 +1,5 @@
 import Settings from "../../types/Settings";
-import getSettings from "../../hooks/settings/getSettings";
-import setSetting from "../../hooks/settings/setSettings";
-import React from "react";
+import useSettings from "../../hooks/useSettings";
 
 export interface SettingsSwitchInputProps {
     label: string;
@@ -9,19 +7,22 @@ export interface SettingsSwitchInputProps {
 }
 
 export default function SettingsSwitchInput(props: SettingsSwitchInputProps) {
-    const [value, setValue] = React.useState(getSettings()[props.setting] as boolean);
+    const [settings, setSettings] = useSettings();
 
-    React.useEffect(() => {
-        setSetting(props.setting, value);
-    }, [value, props.setting]);
+    const setSetting = (value: boolean) => {
+        setSettings({
+            ...settings,
+            [props.setting]: value
+        });
+    }
 
     return (
         <div className="flex justify-between items-center">
             <label style={{marginBottom: 0}}>
                 <input
                     type="checkbox"
-                    checked={value}
-                    onChange={() => setValue(!value)}
+                    checked={settings[props.setting] as boolean}
+                    onChange={e => setSetting(e.target.checked)}
                 />
                 {props.label}
             </label>

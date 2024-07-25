@@ -11,5 +11,7 @@ export default interface Settings {
     confirmActions: boolean;
     unlinkEmails: boolean;
 
+    autoPrint: boolean;
+
     authKey: string;
 }

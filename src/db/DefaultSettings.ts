@@ -11,7 +11,11 @@ const DefaultSettings: Settings = {
     ticketTypeThreshold: 0.5,
 
     confirmActions: true,
-    unlinkEmails: true
+    unlinkEmails: true,
+
+    autoPrint: true,
+
+    authKey: ""
 };
 
 export default DefaultSettings;
