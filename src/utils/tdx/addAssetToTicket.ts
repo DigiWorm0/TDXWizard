@@ -38,9 +38,11 @@ export default async function addAssetToTicket(ticketID: string, assetName?: str
     searchInput.value = assetName;
     searchInput.dispatchEvent(new Event("input"));
     searchInput.dispatchEvent(new Event("change"));
+    searchInput.dispatchEvent(new Event("keyup"));
+    searchInput.dispatchEvent(new Event("keypress"));
 
     // Wait for the search to load
-    await waitFor(2000);
+    await waitFor(3000);
 
     // Select the first item
     const keyboardEvent = new KeyboardEvent("keydown", {

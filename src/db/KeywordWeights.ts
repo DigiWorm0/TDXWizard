@@ -36,7 +36,8 @@ const typeToKeywordWeights: { [key in TicketType]: KeywordWeights } = {
         "people soft": 1,
         "accessstout": 1,
         "access stout": 1,
-        "oracle": 1
+        "oracle": 1,
+        "form": 1
     },
     [TicketType.FobRequest]: {
         "fob": 1
@@ -84,6 +85,7 @@ const typeToKeywordWeights: { [key in TicketType]: KeywordWeights } = {
         "cisco": 1,
         "docusign": 1,
         "adobe": 1,
+        "creative cloud": 1,
         "photoshop": 1,
         "microsoft project": 1,
         "ms project": 1,
@@ -106,6 +108,10 @@ const typeToKeywordWeights: { [key in TicketType]: KeywordWeights } = {
         "webwork": 1,
         "acad": 1,
         "software center": 1,
+        "google": 1,
+        "driver": 1,
+        "drivers": 1,
+        "not booting": 1,
 
         "virus": 1,
         "malicious": 1,
@@ -129,6 +135,7 @@ const typeToKeywordWeights: { [key in TicketType]: KeywordWeights } = {
         "voicemails": 1,
         "calling queue": 1,
         "call queue": 1,
+        "cq": 1,
         "block calls": 1,
         "phones": 0.5,
         "phone": 0.5,
@@ -151,7 +158,10 @@ const typeToKeywordWeights: { [key in TicketType]: KeywordWeights } = {
         "issues logging in": 1,
         "trouble signing into": 1,
 
+        "required security steps": 1,
+
         "account": 0.5,
+        "activating": 0.5,
         "activation": 0.5,
         "activate": 0.5,
         "forgot": 0.5,
@@ -221,17 +231,23 @@ const typeToKeywordWeights: { [key in TicketType]: KeywordWeights } = {
     },
     [TicketType.Inventory]: {
         "inventory": 1,
-        "reassign": 1
+        "reassign": 1,
+        "location change": 1
     },
     [TicketType.Hardware]: {
         "coaxial cable": 1.5,
         "coax cable": 1.5,
         "blacking out": 1,
+        "not charging": 1,
+        "parts ordered crm": 1
     },
     [TicketType.Network]: {
         "ethernet": 1,
         "wifi": 0.5,
         "wi fi": 0.5,
+        "ip address": 1,
+        "ip addr": 1,
+        "port check": 1
     },
     [TicketType.Printers]: {
         "mfd": 1,
@@ -265,7 +281,8 @@ const typeToKeywordWeights: { [key in TicketType]: KeywordWeights } = {
         "security": 1
     },
     [TicketType.Server]: {
-        "server": 1
+        "server": 1,
+        "bounced": 1
     },
     [TicketType.Canvas]: {
         "webassign": 1,

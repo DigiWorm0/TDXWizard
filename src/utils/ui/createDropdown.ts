@@ -1,6 +1,7 @@
 export interface DropdownOption {
-    name: string;
-    value: string;
+    type?: "divider";
+    name?: string;
+    value?: string;
 }
 
 /**
@@ -43,16 +44,25 @@ export default function createDropdown(title: string, options: DropdownOption[],
     // Options
     for (const option of options)
     {
+        // Dividers
+        if (option.type === "divider")
+        {
+            const divider = document.createElement("li");
+            divider.className = "divider";
+            menu.appendChild(divider);
+            continue;
+        }
+
         const itemContainer = document.createElement("li");
         menu.appendChild(itemContainer);
 
         const item = document.createElement("a");
         item.className = "dropdown-item";
         item.href = "#";
-        item.innerText = option.name;
+        item.innerText = option.name ?? option.value ?? "";
         item.onclick = () =>
         {
-            onClick(option.value);
+            onClick(option.value ?? "");
             return false;
         }
         itemContainer.appendChild(item);

@@ -10,4 +10,6 @@ export default interface Settings {
 
     confirmActions: boolean;
     unlinkEmails: boolean;
+
+    authKey: string;
 }

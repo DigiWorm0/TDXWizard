@@ -3,7 +3,7 @@ import selectDropdownItem from "../ui/selectDropdownItem";
 import waitFor from "../waitFor";
 import TicketUpdate from "../../types/TicketUpdate";
 import selectRadioItem from "../ui/selectRadioItem";
-import getSettings from "../settings/getSettings";
+import getSettings from "../../hooks/settings/getSettings";
 import editTextArea from "../ui/editTextArea";
 import selectCheckbox from "../ui/selectCheckbox";
 

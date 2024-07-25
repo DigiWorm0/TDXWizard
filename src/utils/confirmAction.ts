@@ -1,4 +1,4 @@
-import getSettings from "./settings/getSettings";
+import getSettings from "../hooks/settings/getSettings";
 
 /**
  * Prompts for confirmation before proceeding. Automatically returns true if disabled in settings.

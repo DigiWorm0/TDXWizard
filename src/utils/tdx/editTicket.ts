@@ -5,7 +5,7 @@ import selectSearchItem from "../ui/selectSearchItem";
 import selectMultiSearchItem from "../ui/selectMultiSearchItem";
 import selectTicketAssignment from "../ui/selectTicketAssignment";
 import waitFor from "../waitFor";
-import getSettings from "../settings/getSettings";
+import getSettings from "../../hooks/settings/getSettings";
 
 /**
  * Edit a ticket in TDX. Note: Not all fields are supported

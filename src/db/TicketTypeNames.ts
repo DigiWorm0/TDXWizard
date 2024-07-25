@@ -2,7 +2,7 @@ import TicketType from "../types/TicketType";
 
 const ticketTypeNames: { [key in TicketType]: string } = {
     [TicketType.Surplus]: "Surplus",
-    [TicketType.Enterprise]: "ImageNow/Web",
+    [TicketType.Enterprise]: "Enterprise",
     [TicketType.CTS]: "CTS",
     [TicketType.Software]: "Software",
     [TicketType.O365]: "Office",

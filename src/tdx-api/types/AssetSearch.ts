@@ -1,0 +1,47 @@
+import Guid from "./Guid";
+import CustomAttribute from "./CustomAttribute";
+import DateTime from "./DateTime";
+
+export default interface AssetSearch {
+    SerialLike?: string;
+    SearchText?: string;
+    SavedSearchID?: number;
+    StatusIDs?: number[];
+    ExternalIDs?: string[];
+    IsInService?: boolean;
+    StatusIDsPast?: number[];
+    SupplierIDs?: number[];
+    ManufacturerIDs?: number[];
+    LocationIDs?: number[];
+    RoomID: number;
+    ParentIDs?: number[];
+    ContractIDs?: number[];
+    ExcludeContractIDs?: number[];
+    TicketIDs?: number[];
+    ExcludeTicketIDs?: number[];
+    MaintenanceScheduleIDs?: number[];
+    UsingDepartmentIDs?: number[];
+    RequestingDepartmentIDs?: number[];
+    OwningDepartmentIDs?: number[];
+    OwningDepartmentIDsPast?: number[];
+    UsingCustomerIDs?: Guid[];
+    RequestingCustomerIDs?: Guid[];
+    OwningCustomerIDs?: Guid[];
+    OwningCustomerIDsPast?: Guid[];
+    CustomAttributes?: CustomAttribute[];
+    PurchaseCostForm: number;
+    PurchaseCostTo: number;
+    ContractProviderID: number;
+    AcquisitionDateFrom: DateTime;
+    AcquisitionDateTo: DateTime;
+    ExpectedReplacementDateFrom: DateTime;
+    ExpectedReplacementDateTo: DateTime;
+    ContractEndDateFrom: DateTime;
+    ContractEndDateTo: DateTime;
+    CreatedDateFrom: DateTime;
+    CreatedDateTo: DateTime;
+    ModifiedDateFrom: DateTime;
+    ModifiedDateTo: DateTime;
+    OnlyParentAssets: boolean;
+    MaxResults?: number;
+}

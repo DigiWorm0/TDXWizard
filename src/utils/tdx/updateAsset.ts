@@ -3,7 +3,7 @@ import AssetInfo from "../../types/AssetInfo";
 import selectDropdownItem from "../ui/selectDropdownItem";
 import selectSearchItem from "../ui/selectSearchItem";
 import waitFor from "../waitFor";
-import getSettings from "../settings/getSettings";
+import getSettings from "../../hooks/settings/getSettings";
 
 /**
  * Update an asset in TDX. Note: Not all fields are supported

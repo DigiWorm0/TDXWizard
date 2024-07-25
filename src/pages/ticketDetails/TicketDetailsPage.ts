@@ -1,16 +1,15 @@
 import PageScript from "../PageScript";
-import scrapeTicketInfo from "./scrapeTicketInfo";
 import findTicketTypes from "../../utils/ticketType/findTicketTypes";
 import TicketType from "../../types/TicketType";
 import ticketTypeNames from "../../db/TicketTypeNames";
 import addNavButton from "./addNavButton";
-import TicketInfo from "../../types/TicketInfo";
-import addActionButton from "./addActionButton";
 import editTicket from "../../utils/tdx/editTicket";
-import updateTicket from "../../utils/tdx/updateTicket";
 import confirmAction from "../../utils/confirmAction";
-import getSettings from "../../utils/settings/getSettings";
+import getSettings from "../../hooks/settings/getSettings";
 import createDropdown, {DropdownOption} from "../../utils/ui/createDropdown";
+import getTicketIDFromURL from "../../utils/tdx/getTicketIDFromURL";
+import UWStoutTDXClient from "../../utils/UWStoutTDXClient";
+import Ticket from "../../tdx-api/types/Ticket";
 
 const URL_PREFIX = "/TDNext/Apps/43/Tickets/TicketDet"
 
@@ -21,18 +20,20 @@ export default class TicketDetailsPage implements PageScript {
     }
 
     run() {
-        // Scrape the ticket info
-        const ticketInfo = scrapeTicketInfo();
-        console.log(ticketInfo);
+        // Get Ticket Info
+        const client = new UWStoutTDXClient();
+        const ticketID = getTicketIDFromURL();
+        if (!ticketID)
+            throw new Error("Ticket ID not found");
+        client.tickets.getTicket(43, ticketID).then((ticketInfo) => {
+            console.log(ticketInfo);
 
-        // Add Buttons
-        TicketDetailsPage.addSurplusButton(ticketInfo);
-        TicketDetailsPage.addSurplusPickupButton(ticketInfo);
-        TicketDetailsPage.addTicketTypeButtons(ticketInfo);
-        TicketDetailsPage.addAutoAssignButtons(ticketInfo);
+            TicketDetailsPage.addTicketTypeButtons(ticketInfo);
+            TicketDetailsPage.addAutoAssignButtons(ticketInfo);
+        }).catch(console.error);
     }
 
-    static addTicketTypeButtons(ticketInfo: TicketInfo) {
+    static addTicketTypeButtons(ticketInfo: Ticket) {
 
         // Check Settings
         const settings = getSettings();
@@ -40,7 +41,7 @@ export default class TicketDetailsPage implements PageScript {
             return;
 
         // Check if the ticket is a generic type
-        const isGenericType = ticketInfo.type.startsWith("General / ");
+        const isGenericType = ticketInfo.TypeCategoryName === "General";
         if (settings.autoHideTicketTypes && !isGenericType)
             return;
 
@@ -70,7 +71,7 @@ export default class TicketDetailsPage implements PageScript {
             const button = addNavButton(
                 () => {
                     if (confirmAction(`Set ticket type to ${ticketType}?`))
-                        editTicket({ type: _ticketType }).catch(console.error);
+                        editTicket({type: _ticketType}).catch(console.error);
                 },
                 buttonName,
                 "tag",
@@ -79,7 +80,7 @@ export default class TicketDetailsPage implements PageScript {
 
             // Update Style
             button.style.margin = "0 0";
-            if (ticketInfo.type.includes(ticketType))
+            if (ticketInfo.TypeName.includes(ticketType))
                 button.className += " disabled";
 
             // Add Button to Group
@@ -91,80 +92,34 @@ export default class TicketDetailsPage implements PageScript {
         buttonGroup.appendChild(dropdown);
     }
 
-    static addSurplusButton(ticketInfo: TicketInfo) {
-        // Check Settings
-        const settings = getSettings();
-        if (!settings.showSurplusButtons)
-            return;
-
-        // Check if the ticket is already a surplus ticket
-        const isSurplusType = ticketInfo.type.includes(TicketType.Surplus);
-        const isSurplusTag = ticketInfo.tags.includes("Surplus");
-        const isSurplus = isSurplusType && isSurplusTag;
-        if (isSurplus)
-            return;
-
-        addActionButton(
-            () => {
-                if (confirmAction("Convert ticket to surplus?"))
-                    editTicket({ type: TicketType.Surplus, tags: ["Surplus"] }).catch(console.error)
-            },
-            "Convert to Surplus"
-        );
-    }
-
-    static addSurplusPickupButton(ticketInfo: TicketInfo) {
-        // Check Settings
-        const settings = getSettings();
-        if (!settings.showSurplusButtons)
-            return;
-
-        // Check if the ticket is a surplus ticket
-        const isSurplusType = ticketInfo.type.includes(TicketType.Surplus);
-        const isSurplusTag = ticketInfo.tags.includes("Surplus");
-        const isSurplus = isSurplusType && isSurplusTag;
-        if (!isSurplus)
-            return;
-
-        // Add Surplus Pickup Button
-        addActionButton(
-            () => {
-                if (confirmAction("Mark surplus ticket as picked up?"))
-                    updateTicket({
-                        comments: "Device is in PC-Repair",
-                        isPrivate: true,
-                        isPickedUp: true
-                    }).catch(console.error)
-            },
-            "Pickup Surplus"
-        );
-    }
-
     static addTicketTypeDropdown() {
 
         const options: DropdownOption[] = [
             {name: "Spam", value: "spam"},
-            ...Object.values(TicketType).map((type) => ({
-                name: ticketTypeNames[type] || type,
-                value: type
-            }))
+            {type: "divider"},
+            ...Object
+                .values(TicketType)
+                .map((type) => ({
+                    name: ticketTypeNames[type] || type,
+                    value: type
+                }))
+                .sort((a, b) => a.name.localeCompare(b.name))
         ];
 
-        const { container, button } = createDropdown(
+        const {container, button} = createDropdown(
             "",
             options,
             (value) => {
                 // Spam
                 if (value === "spam") {
                     if (confirmAction("Mark ticket as spam?"))
-                        editTicket({ status: "Cancelled" }).catch(console.error);
+                        editTicket({status: "Cancelled"}).catch(console.error);
                 }
                 // Ticket Type
-                else
-                {
+                else {
                     const ticketType = value as TicketType;
                     if (confirmAction(`Set ticket type to ${ticketType}?`))
-                        editTicket({ type: ticketType }).catch(console.error);
+                        editTicket({type: ticketType}).catch(console.error);
                 }
             }
         );
@@ -184,38 +139,28 @@ export default class TicketDetailsPage implements PageScript {
         return container;
     }
 
-    static addAutoAssignButtons(ticketInfo: TicketInfo) {
+    static addAutoAssignButtons(ticketInfo: Ticket) {
         // Check Settings
         const settings = getSettings();
         if (!settings.showTicketAssignButtons)
             return;
 
         // Check Ticket Status
-        if (ticketInfo.status !== "Resolved" &&
-            ticketInfo.status !== "Closed")
+        if (ticketInfo.StatusName !== "Resolved" &&
+            ticketInfo.StatusName !== "Closed")
             return;
 
         // Check Ticket Info
-        const isAssigned = ticketInfo.responsibility !== "Unassigned" &&
-            ticketInfo.responsibility !== "PC Repair" &&
-            ticketInfo.responsibility !== "TechHelpDesk" &&
-            ticketInfo.responsibility !== "VoIP" &&
-            ticketInfo.responsibility !== "SLS Tech" &&
-            ticketInfo.responsibility !== "Classroom Technologies" &&
-            ticketInfo.responsibility !== "ImageNow and Forms" &&
-            ticketInfo.responsibility !== "Client Tech Services" &&
-            ticketInfo.responsibility !== "Network" &&
-            ticketInfo.responsibility !== "Server" &&
-            ticketInfo.responsibility !== "Lab and Software";
+        const isAssigned = ticketInfo.ResponsibleUid !== null;
         if (isAssigned)
             return;
 
         // Add Assign Button
-        const autoAssignName = ticketInfo.completedBy || ticketInfo.respondedBy || ticketInfo.modifiedBy || ticketInfo.createdBy;
+        const autoAssignName = ticketInfo.CompletedFullName || ticketInfo.RespondedFullName || ticketInfo.ModifiedFullName || ticketInfo.CreatedFullName;
         addNavButton(
             () => {
                 if (confirmAction(`Assign ticket to ${autoAssignName}?`))
-                    editTicket({ responsibility: autoAssignName }).catch(console.error)
+                    editTicket({responsibility: autoAssignName}).catch(console.error)
             },
             autoAssignName,
             "user",

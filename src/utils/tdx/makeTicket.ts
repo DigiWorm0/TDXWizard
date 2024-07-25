@@ -28,7 +28,7 @@ export default async function makeTicket(ticketInfo: TicketCreate) {
 
     // Select the ticket values
     await selectSearchItem("attribute495", ticketInfo.requester, ticketPage.document);              // Requester
-    selectCheckbox("Item.NotifyRequestor", ticketInfo.notifyRequester, ticketPage.document);  // Notify Requester
+    selectCheckbox("Item.NotifyRequestor", ticketInfo.notifyRequester, ticketPage.document);        // Notify Requester
     editTextField("attribute37", ticketInfo.title, ticketPage.document);                            // Title
     editTextArea("Description", ticketInfo.description, ticketPage.document);                       // Description
     await selectSearchItem("attribute39", ticketInfo.type, ticketPage.document);                    // Type
@@ -61,6 +61,13 @@ export default async function makeTicket(ticketInfo: TicketCreate) {
 
     // Add asset to ticket
     await addAssetToTicket(newTicketInfo.id, ticketInfo.assetName);
+
+    // Print the ticket
+    // TODO: Make setting for this
+    //await printTicket(newTicketInfo.id);
+
+    // Refresh the page
+    ticketPage.location.reload();
 
     return newTicketInfo;
 }

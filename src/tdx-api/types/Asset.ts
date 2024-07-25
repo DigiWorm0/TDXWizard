@@ -1,0 +1,58 @@
+import DateTime from "./DateTime";
+import Guid from "./Guid";
+import CustomAttribute from "./CustomAttribute";
+import Attachment from "./Attachment";
+
+export default interface Asset {
+    ID: string;
+    AppID: string;
+    AppName: string;
+    FormID: number;
+    FormName: string;
+    ProductModelID: number;
+    ProductModelName: string;
+    ManufacturerID: number;
+    ManufacturerName: string;
+    SupplierID: number;
+    SupplierName: string;
+    StatusID: number;
+    StatusName: string;
+    LocationID: number;
+    LocationName: string;
+    LocationRoomID: number;
+    LocationRoomName: string;
+    Tag?: string;
+    SerialNumber?: string;
+    Name?: string;
+    PurchaseCost: number;
+    AcquisitionDate: DateTime;
+    ExpectedReplacementDate: DateTime;
+    RequestingCustomerID: number;
+    RequestingCustomerName: string;
+    RequestingDepartmentID: number;
+    RequestingDepartmentName: string;
+    OwningCustomerID: number;
+    OwningCustomerName: string;
+    OwningDepartmentID: number;
+    OwningDepartmentName: string;
+    ParentID: number;
+    ParentSerialNumber: string;
+    ParentName: string;
+    ParentTag: string;
+    MaintenanceScheduleID: number;
+    MaintenanceScheduleName: string;
+    ConfigurationItemID: number;
+    CreatedDate: DateTime;
+    CreatedUid: Guid;
+    CreatedFullName: string;
+    ModifiedDate: DateTime;
+    ModifiedUid: Guid;
+    ModifiedFullName: string;
+    ExternalID?: string;
+    ExternalSourceID: number;
+    ExternalSourceName: string;
+    Attributes?: CustomAttribute[];
+    Attachments?: Attachment[];
+    Uri: string;
+
+}

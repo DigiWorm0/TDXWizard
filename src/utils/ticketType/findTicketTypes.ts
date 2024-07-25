@@ -1,25 +1,25 @@
-import TicketInfo from "../../types/TicketInfo";
 import typeToKeywordWeights from "../../db/KeywordWeights";
 import TicketType from "../../types/TicketType";
-import getSettings from "../settings/getSettings";
+import getSettings from "../../hooks/settings/getSettings";
+import Ticket from "../../tdx-api/types/Ticket";
 
-export default function findTicketTypes(ticketInfo: TicketInfo) {
-    let { title, description, responsibility } = ticketInfo;
+export default function findTicketTypes(ticketInfo: Ticket) {
+    let {Title, Description, ResponsibleGroupName} = ticketInfo;
 
     // Convert to lowercase
-    title = title.toLowerCase();
-    description = description.toLowerCase();
+    Title = Title.toLowerCase();
+    Description = Description.toLowerCase();
 
     // Remove special characters
-    title = title.replace(/[^a-zA-Z0-9 ]/g, " ");
-    description = description.replace(/[^a-zA-Z0-9 ]/g, " ");
+    Title = Title.replace(/[^a-zA-Z0-9 ]/g, " ");
+    Description = Description.replace(/[^a-zA-Z0-9 ]/g, " ");
 
-    // Add spaces to the beginning and end of the title and description
-    title = " " + title + " ";
-    description = " " + description + " ";
+    // Add spaces to the beginning and end of the Title and Description
+    Title = " " + Title + " ";
+    Description = " " + Description + " ";
 
     // Remove extra spaces
-    title = title.replace(/\s+/g, " ");
+    Title = Title.replace(/\s+/g, " ");
 
     // Add a type
     const typeWeights: { [type: string]: number } = {};
@@ -38,46 +38,46 @@ export default function findTicketTypes(ticketInfo: TicketInfo) {
 
             // Get the number of matches
             const regexp = new RegExp(` ${keyword} `, "g");
-            const titleMatches = title.match(regexp);
-            const descriptionMatches = description.match(regexp);
+            const TitleMatches = Title.match(regexp);
+            const DescriptionMatches = Description.match(regexp);
 
             // Increase the weight
             const weight = keywords[keyword];
-            if (titleMatches)
+            if (TitleMatches)
                 addWeightToType(type, weight);
-            if (descriptionMatches)
+            if (DescriptionMatches)
                 addWeightToType(type, weight);
         }
     }
 
     // Add types based on responsibility
-    if (responsibility.includes("Network"))
+    if (ResponsibleGroupName.includes("Network"))
         addWeightToType(TicketType.Network, 2);
-    if (responsibility.includes("Website"))
+    if (ResponsibleGroupName.includes("Website"))
         addWeightToType(TicketType.Enterprise, 2);
-    if (responsibility.includes("ImageNow"))
+    if (ResponsibleGroupName.includes("ImageNow"))
         addWeightToType(TicketType.Enterprise, 1);
-    if (responsibility.includes("VoIP"))
+    if (ResponsibleGroupName.includes("VoIP"))
         addWeightToType(TicketType.VoIP, 2);
-    if (responsibility.includes("Server"))
+    if (ResponsibleGroupName.includes("Server"))
         addWeightToType(TicketType.Server, 2);
-    if (responsibility.includes("Lab and Software"))
+    if (ResponsibleGroupName.includes("Lab and Software"))
         addWeightToType(TicketType.ComputerLabs, 1);
-    if (responsibility.includes("Classroom Technologies"))
+    if (ResponsibleGroupName.includes("Classroom Technologies"))
         addWeightToType(TicketType.ClassroomTech, 2);
-    if (responsibility.includes("Vanguard"))
+    if (ResponsibleGroupName.includes("Vanguard"))
         addWeightToType(TicketType.Hardware, 2);
-    if (responsibility.includes("QA"))
+    if (ResponsibleGroupName.includes("QA"))
         addWeightToType(TicketType.Hardware, 2);
-    if (responsibility.includes("PeopleSoft"))
+    if (ResponsibleGroupName.includes("PeopleSoft"))
         addWeightToType(TicketType.Enterprise, 2);
 
     // Password Reset
-    const hasPassword = title.includes("password") || description.includes("password");
-    const hasRecover = title.includes("recover") || description.includes("recover");
-    const hasReset = title.includes("reset") || description.includes("reset");
-    const hasForgot = title.includes("forgot") || description.includes("forgot");
-    const hasChange = title.includes("change") || description.includes("change");
+    const hasPassword = Title.includes("password") || Description.includes("password");
+    const hasRecover = Title.includes("recover") || Description.includes("recover");
+    const hasReset = Title.includes("reset") || Description.includes("reset");
+    const hasForgot = Title.includes("forgot") || Description.includes("forgot");
+    const hasChange = Title.includes("change") || Description.includes("change");
     if (hasPassword && (hasReset || hasChange || hasForgot || hasRecover))
         addWeightToType("Account Assistance", 1.5);
 
@@ -85,7 +85,7 @@ export default function findTicketTypes(ticketInfo: TicketInfo) {
     let sortedTypes = Object.keys(typeWeights).sort((a, b) => typeWeights[b] - typeWeights[a]);
 
     // Get Threshold
-    const { ticketTypeThreshold } = getSettings();
+    const {ticketTypeThreshold} = getSettings();
 
     // Filter out types with low weights
     const topWeight = typeWeights[sortedTypes[0]];
