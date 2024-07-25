@@ -17,16 +17,12 @@ export default function SettingsSwitchInput(props: SettingsSwitchInputProps) {
 
     return (
         <div className="flex justify-between items-center">
-            <input
-                type="checkbox"
-                checked={value}
-                onChange={() => setValue(!value)}
-            />
-
-            <label
-                className="ml-2"
-                htmlFor={props.label}
-            >
+            <label style={{marginBottom: 0}}>
+                <input
+                    type="checkbox"
+                    checked={value}
+                    onChange={() => setValue(!value)}
+                />
                 {props.label}
             </label>
         </div>

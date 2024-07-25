@@ -22,16 +22,17 @@ export default function findTicketTypes(ticketInfo: Ticket) {
     Title = Title.replace(/\s+/g, " ");
 
     // Add a type
-    const typeWeights: { [type: string]: number } = {};
-    const addWeightToType = (type: string, weight: number) => {
+    const typeWeights: Record<string, number> = {};
+    const addWeightToType = (type: TicketType, weight: number) => {
         if (!typeWeights[type])
             typeWeights[type] = 0;
         typeWeights[type] += weight;
     }
 
     // Iterate Each Type
-    for (const type in typeToKeywordWeights) {
-        const keywords = typeToKeywordWeights[type as TicketType];
+    for (const _type in typeToKeywordWeights) {
+        const type = parseInt(_type) as TicketType;
+        const keywords = typeToKeywordWeights[type];
 
         // Iterate Each Keyword
         for (const keyword in keywords) {
@@ -79,7 +80,7 @@ export default function findTicketTypes(ticketInfo: Ticket) {
     const hasForgot = Title.includes("forgot") || Description.includes("forgot");
     const hasChange = Title.includes("change") || Description.includes("change");
     if (hasPassword && (hasReset || hasChange || hasForgot || hasRecover))
-        addWeightToType("Account Assistance", 1.5);
+        addWeightToType(TicketType.Account, 1.5);
 
     // Sort the types by weight
     let sortedTypes = Object.keys(typeWeights).sort((a, b) => typeWeights[b] - typeWeights[a]);
@@ -92,5 +93,5 @@ export default function findTicketTypes(ticketInfo: Ticket) {
     sortedTypes = sortedTypes.filter(type => typeWeights[type] > 0);
     sortedTypes = sortedTypes.filter(type => typeWeights[type] >= topWeight - ticketTypeThreshold);
 
-    return sortedTypes;
+    return sortedTypes.map(type => parseInt(type) as TicketType);
 }

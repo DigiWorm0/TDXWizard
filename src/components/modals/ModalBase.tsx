@@ -38,7 +38,6 @@ export default function ModalBase(props: ModalBaseProps) {
                 tabIndex={-1}
                 role={"dialog"}
                 ref={modalRef}
-                style={{display: props.isOpen ? "block" : "none"}}
                 data-backdrop={false}
             >
                 {props.children}

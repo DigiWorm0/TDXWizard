@@ -73,12 +73,15 @@ export default function SettingsModal(props: SettingsModalProps) {
                             </div>
                             <hr style={{marginTop: 6, marginBottom: 10}}/>
                             <SettingsSwitchInput label={"Unlink Emails / Phones"} setting={"unlinkEmails"}/>
-                            <SettingsSwitchInput label={"Auto-Close Ticket On Save"} setting={"autoCloseTicketOnSave"}/>
-                            <SettingsSwitchInput label={"Auto-Hide Ticket Types"} setting={"autoHideTicketTypes"}/>
+                            <SettingsSwitchInput label={"Auto-Close On Save"} setting={"autoCloseTicketOnSave"}/>
                             <SettingsSwitchInput label={"Confirm Actions"} setting={"confirmActions"}/>
                             <SettingsSwitchInput label={"Show Surplus Buttons"} setting={"showSurplusButtons"}/>
                             <SettingsSwitchInput label={"Show Assign Buttons"} setting={"showTicketAssignButtons"}/>
                             <SettingsSwitchInput label={"Show Type Buttons"} setting={"showTicketTypeButtons"}/>
+                            <SettingsSwitchInput
+                                label={"Hide Type Buttons If Already Set"}
+                                setting={"autoHideTicketTypes"}
+                            />
                             <SettingsAuthInput/>
 
                             <p style={{margin: 0, padding: 0, fontSize: 12}}>

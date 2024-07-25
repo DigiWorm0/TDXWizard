@@ -1,5 +1,5 @@
 import confirmAction from "../../utils/confirmAction";
-import UWStoutTDXClient from "../../utils/UWStoutTDXClient";
+import UWStoutTDXClient from "../../utils/tdx/UWStoutTDXClient";
 import getAssetIDFromURL from "../../utils/tdx/getAssetIDFromURL";
 import AppID from "../../types/AppID";
 import TicketType from "../../types/TicketType";

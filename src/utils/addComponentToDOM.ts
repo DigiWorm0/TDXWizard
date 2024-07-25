@@ -6,7 +6,7 @@ import {ReactNode} from "react";
  * @param element - The element to add the component to
  * @param component - The React component function to add
  */
-export default function addComponentToDOM(element: HTMLElement, component: ReactNode) {
+export default function addComponentToDOM(element: Element, component: ReactNode) {
     // Create a container element to render the component into
     const container = document.createElement("div");
     container.style.display = "inline-block";

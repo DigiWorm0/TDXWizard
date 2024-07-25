@@ -1,14 +1,12 @@
 import PageScript from "./pages/PageScript";
-import HomePage from "./pages/home/HomePage";
-import CommonPage from "./pages/common/CommonPage";
-import TicketDetailsPage from "./pages/ticketDetails/TicketDetailsPage";
-import AssetDetailsPage from "./pages/assetDetails/AssetDetailsPage";
-import AssignmentLookupPage from "./pages/assignmentLookup/AssignmentLookupPage";
+import HomePage from "./pages/HomePage";
+import CommonPage from "./pages/CommonPage";
+import TicketDetailsPage from "./pages/TicketDetailsPage";
+import AssetDetailsPage from "./pages/AssetDetailsPage";
 
 // All Pages
 const allPages: PageScript[] = [
     new TicketDetailsPage(),
-    new AssignmentLookupPage(),
     new AssetDetailsPage(),
     new HomePage(),
     new CommonPage()

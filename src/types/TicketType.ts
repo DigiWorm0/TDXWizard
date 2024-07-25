@@ -13,7 +13,7 @@ enum TicketType {
     CTS = 995,
     Inventory = 3001,
     Network = 1002,
-    Printers = 1008,
+    Printers = 1007,
     Surplus = 998,
     Security = 1008,
     Server = 1003,

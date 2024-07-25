@@ -1,6 +1,6 @@
-import PageScript from "../PageScript";
-import addComponentToDOM from "../../utils/ui/addComponentToDOM";
-import AssetNavBar from "../../components/pages/AssetNavBar";
+import PageScript from "./PageScript";
+import addComponentToDOM from "../utils/addComponentToDOM";
+import AssetNavBar from "../components/pages/AssetNavBar";
 
 const URL_PREFIX = "/TDNext/Apps/44/Assets/AssetDet";
 
