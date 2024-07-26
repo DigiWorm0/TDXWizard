@@ -76,6 +76,7 @@ export default function SettingsModal(props: SettingsModalProps) {
                             <SettingsSwitchInput label={"Auto-Close On Save"} setting={"autoCloseTicketOnSave"}/>
                             <SettingsSwitchInput label={"Confirm Actions"} setting={"confirmActions"}/>
                             <SettingsSwitchInput label={"Auto Print on Print View"} setting={"autoPrint"}/>
+                            <SettingsSwitchInput label={"Use New Feed"} setting={"useNewFeed"}/>
                             <SettingsSwitchInput label={"Show Surplus Buttons"} setting={"showSurplusButtons"}/>
                             <SettingsSwitchInput label={"Show Assign Buttons"} setting={"showTicketAssignButtons"}/>
                             <SettingsSwitchInput label={"Show Type Buttons"} setting={"showTicketTypeButtons"}/>

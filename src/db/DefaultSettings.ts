@@ -14,6 +14,7 @@ const DefaultSettings: Settings = {
     unlinkEmails: true,
 
     autoPrint: true,
+    useNewFeed: false,
 
     authKey: ""
 };

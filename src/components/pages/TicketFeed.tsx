@@ -1,6 +1,10 @@
 import useTicketFeed from "../../hooks/useTicketFeed";
 import React from "react";
 import DateTime from "../../tdx-api/types/DateTime";
+import getEpochFromDate from "../../utils/datetime/getEpochFromDate";
+import TicketFeedCommunication from "../feed/TicketFeedCommunication";
+import TicketFeedEvent from "../feed/TicketFeedEvent";
+import useTicket from "../../hooks/useTicket";
 
 interface TicketFeedItem {
     ID: number;
@@ -10,43 +14,12 @@ interface TicketFeedItem {
     Body?: string;
     IsCommunication?: boolean;
     IsPrivate?: boolean;
-}
-
-function getEpochFromDate(date: DateTime): number {
-    return (new Date(date)).getTime();
-}
-
-function dateToString(date: DateTime): string {
-    const d = new Date(date);
-    return d.toLocaleDateString() + " " + d.toLocaleTimeString();
-}
-
-function dateAgo(date: DateTime): string {
-    const d = new Date(date);
-    const now = new Date();
-    const diff = now.getTime() - d.getTime();
-
-    const seconds = Math.floor(diff / 1000);
-    const minutes = Math.floor(seconds / 60);
-    const hours = Math.floor(minutes / 60);
-    const days = Math.floor(hours / 24);
-    const months = Math.floor(days / 30);
-
-    if (months > 0)
-        return months + " months ago";
-    if (days > 0)
-        return days + " days ago";
-    if (hours > 0)
-        return hours + " hours ago";
-    if (minutes > 0)
-        return minutes + " minutes ago";
-    if (seconds > 0)
-        return seconds + " seconds ago";
-    return "just now";
+    NotifiedList: string;
 }
 
 export default function TicketFeed() {
     const feed = useTicketFeed();
+    const ticket = useTicket();
 
     const sortedFeed = React.useMemo(() => {
         let newItems: TicketFeedItem[] = [];
@@ -59,7 +32,11 @@ export default function TicketFeed() {
 
             // Add the replies to the new array
             item?.Replies?.forEach(reply => {
-                newItems.push({...reply, IsCommunication: true});
+                newItems.push({
+                    ...reply,
+                    IsCommunication: true,
+                    NotifiedList: item.NotifiedList
+                });
             });
         });
 
@@ -151,97 +128,27 @@ export default function TicketFeed() {
         return newItems;
     }, [feed]);
 
-    console.log(sortedFeed);
-
     return sortedFeed?.map(item => (
         <div key={item.ID}>
+
             {!item.IsCommunication && (
-                <div
-                    style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        justifyContent: "center",
-                        color: "#aaa",
-                        padding: 5
-                    }}
-                >
-                    <h5 style={{fontWeight: "bold", margin: "0px 5px", whiteSpace: "nowrap"}}>
-                        <span className={"fa fa-solid fa-nopad fa-wrench"} style={{marginRight: 7}}/>
-                        <span>
-                            {item.CreatedFullName}:
-                        </span>
-                    </h5>
-                    <p
-                        style={{margin: 0}}
-                        dangerouslySetInnerHTML={{__html: item.Body ?? ""}}
-                    />
-                </div>
+                <TicketFeedEvent
+                    name={item.CreatedFullName}
+                    date={item.CreatedDate}
+                    body={item.Body ?? ""}
+                />
             )}
+
             {item.IsCommunication && (
-                <div
-                    style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        flexGrow: 1,
-                        padding: "10px",
-                    }}
-                >
-                    <div>
-                        <div
-                            style={{
-                                width: 60,
-                                height: 60,
-                                borderRadius: 10,
-                                backgroundColor: "#218de8",
-                                color: "#fff",
-                                fontWeight: "bold",
-                                display: "flex",
-                                justifyContent: "center",
-                                alignItems: "center",
-                                fontSize: 30,
-                                marginRight: 10
-                            }}
-                            onClick={() => console.log(item)}
-                        >
-                            <span>
-                                {item.CreatedFullName[0]}
-                            </span>
-                        </div>
-                    </div>
-                    <div
-                        style={{
-                            display: "flex",
-                            justifyContent: "center",
-                            flexDirection: "column",
-                        }}
-                    >
-                        <h5
-                            style={{
-                                fontWeight: "bold",
-                                color: "#218de8",
-                                margin: 0
-                            }}
-                        >
-                            {item.CreatedFullName}
-                            {item.IsPrivate && (
-                                <span style={{color: "#888", marginLeft: 4, fontSize: 12}}>
-                                    (private)
-                                </span>
-                            )}
-                            <span style={{color: "#aaa", fontWeight: "normal", marginLeft: 4, fontSize: 12}}>
-                                {dateToString(item.CreatedDate)}
-                                {" · "}
-                                {dateAgo(item.CreatedDate)}
-                            </span>
-                        </h5>
-                        <p
-                            style={{
-                                margin: "5px 0px"
-                            }}
-                            dangerouslySetInnerHTML={{__html: item.Body ?? ""}}
-                        />
-                    </div>
-                </div>
+                <TicketFeedCommunication
+                    uid={item.CreatedUid}
+                    name={item.CreatedFullName}
+                    date={item.CreatedDate}
+                    isPrivate={item.IsPrivate ?? false}
+                    isRequester={item.CreatedUid === ticket?.RequestorUid}
+                    body={item.Body ?? ""}
+                    notifiedList={item.NotifiedList}
+                />
             )}
 
             <hr style={{margin: 5}}/>

@@ -13,5 +13,7 @@ export default interface Settings {
 
     autoPrint: boolean;
 
+    useNewFeed: boolean;
+
     authKey: string;
 }

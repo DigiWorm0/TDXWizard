@@ -25,6 +25,10 @@ export default function TicketAssignmentButtons() {
         if (ticket.ResponsibleUid)
             return [];
 
+        // Check if ticket is resolved/closed
+        if (ticket.StatusName !== "Resolved" && ticket.StatusName !== "Closed" && ticket.StatusName !== "Canceled")
+            return [];
+
         // Get the possible ticket assignments
         let newAssignments: TicketAssignment[] = [
             {uid: ticket.CompletedUid, name: ticket.CompletedFullName},
