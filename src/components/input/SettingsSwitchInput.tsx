@@ -17,7 +17,11 @@ export default function SettingsSwitchInput(props: SettingsSwitchInputProps) {
     }
 
     return (
-        <div className="flex justify-between items-center">
+        <div
+            style={{
+                height: 25
+            }}
+        >
             <label style={{marginBottom: 0}}>
                 <input
                     type="checkbox"

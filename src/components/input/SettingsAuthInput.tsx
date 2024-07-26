@@ -23,6 +23,9 @@ export default function SettingsAuthInput() {
                 className={"btn btn-primary"}
                 type={"button"}
                 onClick={onClick}
+                style={{
+                    marginTop: 10
+                }}
             >
                 <span
                     className={"fa fa-door-open fa-solid fa-nopad"}

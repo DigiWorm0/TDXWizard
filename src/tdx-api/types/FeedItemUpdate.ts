@@ -1,0 +1,41 @@
+import Guid from "./Guid";
+import DateTime from "./DateTime";
+import FeedItemType from "./FeedItemType";
+import FeedUpdateType from "./FeedUpdateType";
+import FeedItemUpdateReply from "./FeedItemUpdateReply";
+
+export default interface FeedItemUpdate {
+    ID: number;
+    CreatedUid: Guid;
+    CreatedRefID: number;
+    CreatedFullName: string;
+    CreatedFirstName?: string;
+    CreatedLastName?: string;
+    CreatedByPicPath?: string;
+    CreatedDate: DateTime;
+    LastUpdatedDate: DateTime;
+    ProjectID: number;
+    ProjectName?: string;
+    PlanID: number;
+    PlanName?: string;
+    ItemType: FeedItemType;
+    ItemID: number;
+    ItemTitle?: string;
+    ReferenceID?: Guid;
+    Body?: string;
+    IsRichHtml: boolean;
+    UpdateType: FeedUpdateType;
+    NotifiedList: string;
+    IsPrivate: boolean;
+    IsParent: boolean;
+    Replies?: FeedItemUpdateReply[];
+    RepliesCount: number;
+    //Likes?: ;
+    ILike: boolean;
+    LikesCount: number;
+    IsCommunication: boolean;
+    //Participants?: ;
+    BreadcrumbsHtml?: string;
+    HasAttachment: boolean;
+    Uri: string;
+}

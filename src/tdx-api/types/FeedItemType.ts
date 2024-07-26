@@ -1,0 +1,28 @@
+enum FeedItemType {
+    None = 0,
+    Project = 1,
+    ProjectRequest = 1,
+    Task = 2,
+    Issue = 3,
+    Link = 4,
+    Contact = 6,
+    Announcement = 7,
+    Ticket = 9,
+    File = 15,
+    UserStatus = 24,
+    TicketTask = 25,
+    MaintenanceActivity = 25,
+    KnowledgeBaseArticle = 26,
+    Asset = 27,
+    Plan = 43,
+    Workspace = 45,
+    Service = 47,
+    CalendarEvent = 57,
+    Expense = 62,
+    ConfigurationItem = 63,
+    Risk = 72,
+    PortfolioIssue = 83,
+    PortfolioRisk = 84,
+}
+
+export default FeedItemType;
