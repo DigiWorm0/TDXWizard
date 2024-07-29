@@ -18,7 +18,7 @@ export default class AssetEndpoint extends TDXEndpoint {
         return this.client.rawRequest(`${appID}/assets/${assetID}/tickets/${ticketID}`, undefined, "DELETE");
     }
 
-    searchAssets(appID: number, options: AssetSearch) {
+    searchAssets(appID: number, options: Partial<AssetSearch>) {
         return this.client.jsonRequest<Asset[]>(`${appID}/assets/search`, options, "POST");
     }
 

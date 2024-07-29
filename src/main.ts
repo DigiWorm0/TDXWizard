@@ -4,6 +4,7 @@ import CommonPage from "./pages/CommonPage";
 import TicketDetailsPage from "./pages/TicketDetailsPage";
 import AssetDetailsPage from "./pages/AssetDetailsPage";
 import PrintPage from "./pages/PrintPage";
+import InventoryPage from "./pages/InventoryPage";
 
 // All Pages
 const allPages: PageScript[] = [
@@ -11,7 +12,8 @@ const allPages: PageScript[] = [
     new AssetDetailsPage(),
     new HomePage(),
     new PrintPage(),
-    new CommonPage()
+    new CommonPage(),
+    new InventoryPage()
 ];
 
 // Run the first page that can run

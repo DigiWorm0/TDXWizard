@@ -8,6 +8,7 @@ import AssetEndpoint from "./endpoints/AssetEndpoint";
 import TicketsTypesEndpoint from "./endpoints/TicketTypesEndpoint";
 import FeedEndpoint from "./endpoints/FeedEndpoint";
 import PeopleEndpoint from "./endpoints/PeopleEndpoint";
+import HTTPResponseError from "../utils/HTTPResponseError";
 
 export default class TDXClient {
     // The base URL of the TDX API
@@ -74,7 +75,7 @@ export default class TDXClient {
 
         // Check if the request was successful
         if (!response.ok)
-            throw new Error(`Request failed with status ${response.status}`);
+            throw new HTTPResponseError(response);
 
         // Return the response
         return response;

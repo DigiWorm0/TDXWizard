@@ -6,7 +6,7 @@ import User from "../types/User";
  */
 export default class AuthEndpoint extends TDXEndpoint {
     getUser() {
-        return this.client.jsonRequest<User>("auth/user");
+        return this.client.jsonRequest<User>("auth/getuser");
     }
 
     loginSSO() {
