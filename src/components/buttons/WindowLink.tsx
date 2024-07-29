@@ -1,26 +1,24 @@
 import React from "react";
 
-export interface AssetLinkProps {
-    id: string;
+export interface WindowLinkProps {
+    href: string;
     children: React.ReactNode;
 }
 
-export default function AssetLink(props: AssetLinkProps) {
-    const url = `${window.location.origin}/TDNext/Apps/44/Assets/AssetDet?AssetID=${props.id}`;
-
+export default function WindowLink(props: WindowLinkProps) {
     const onClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
         e.preventDefault();
 
         window.open(
-            url,
-            props.id,
+            props.href,
+            "_blank",
             "width=800,height=600"
         );
     }
 
     return (
         <a
-            href={url}
+            href={props.href}
             onClick={onClick}
         >
             {props.children}

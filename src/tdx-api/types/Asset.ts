@@ -31,7 +31,7 @@ export default interface Asset {
     RequestingCustomerName: string;
     RequestingDepartmentID: number;
     RequestingDepartmentName: string;
-    OwningCustomerID: number;
+    OwningCustomerID: Guid;
     OwningCustomerName: string;
     OwningDepartmentID: number;
     OwningDepartmentName: string;

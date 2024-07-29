@@ -3,8 +3,10 @@ import React from "react";
 import Asset from "../../tdx-api/types/Asset";
 import UWStoutTDXClient from "../../utils/tdx/UWStoutTDXClient";
 import AppID from "../../types/AppID";
-import AssetLink from "../buttons/AssetLink";
+import AssetLink from "../buttons/TDX/AssetLink";
 import autoRetryHTTPRequest from "../../utils/autoRetryHTTPRequest";
+import UserLink from "../buttons/TDX/UserLink";
+import DepartmentLink from "../buttons/TDX/DepartmentLink";
 
 export interface BulkInventoryModalProps {
     onClose: () => void;
@@ -105,6 +107,7 @@ export default function BulkInventoryModal(props: BulkInventoryModalProps) {
         <NewWindow
             title={"Bulk Inventory"}
             onUnload={props.onClose}
+            features={{width: 900, height: 600}}
         >
             <div style={{padding: 15}}>
                 <table className={"table table-striped table-bordered"} style={{marginBottom: 0}}>
@@ -117,7 +120,13 @@ export default function BulkInventoryModal(props: BulkInventoryModalProps) {
                             Serial #
                         </th>
                         <th>
+                            Model
+                        </th>
+                        <th>
                             Owner
+                        </th>
+                        <th>
+                            Status
                         </th>
                     </tr>
                     </thead>
@@ -128,9 +137,21 @@ export default function BulkInventoryModal(props: BulkInventoryModalProps) {
                             <td><AssetLink id={asset.ID}>{asset.Tag}</AssetLink></td>
                             <td><AssetLink id={asset.ID}>{asset.SerialNumber}</AssetLink></td>
                             <td>
+                                {asset.ManufacturerName} {asset.ProductModelName}
+                            </td>
+                            <td>
                                 {asset.OwningCustomerName !== "None" ?
-                                    asset.OwningCustomerName :
-                                    asset.OwningDepartmentName}
+                                    <UserLink id={asset.OwningCustomerID}>
+                                        {asset.OwningCustomerName}
+                                    </UserLink>
+                                    :
+                                    <DepartmentLink id={asset.OwningDepartmentID}>
+                                        {asset.OwningDepartmentName}
+                                    </DepartmentLink>
+                                }
+                            </td>
+                            <td>
+                                {asset.StatusName}
                             </td>
                             <td className={"text-center"}>
                                 <button
@@ -156,7 +177,7 @@ export default function BulkInventoryModal(props: BulkInventoryModalProps) {
                     ))}
                     {assets.length === 0 && !isLoading && (
                         <tr>
-                            <td colSpan={4} className={"text-center"}>
+                            <td colSpan={6} className={"text-center"}>
                                 <span
                                     className={"text-muted"}
                                     style={{fontStyle: "italic"}}
@@ -169,7 +190,7 @@ export default function BulkInventoryModal(props: BulkInventoryModalProps) {
                     )}
                     {isLoading && (
                         <tr>
-                            <td colSpan={4} className={"text-center"}>
+                            <td colSpan={6} className={"text-center"}>
                                 <div className={"progress"} style={{marginBottom: 0}}>
                                     <div
                                         className={"progress-bar progress-bar-striped progress-bar-animated active w-100"}
