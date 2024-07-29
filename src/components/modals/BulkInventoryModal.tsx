@@ -36,16 +36,19 @@ export default function BulkInventoryModal(props: BulkInventoryModalProps) {
         e.preventDefault();
 
         // Update state
-        setError(null);
         setIsLoading(true);
 
         // Get the search query
         const inputValue = e.currentTarget.value.trim();
-        e.currentTarget.value = "";
-        console.log(inputValue);
+        let searchQueries = inputValue.split("\n");
 
-        const searchQueries = inputValue.split("\n");
-        console.log(searchQueries);
+        // Remove Whitespace
+        searchQueries = searchQueries
+            .map(query => query.trim())
+            .filter(query => query.length > 0);
+
+        // Clear Input
+        e.currentTarget.value = "";
 
         // Iterate over each search query
         for (const searchQuery of searchQueries) {
@@ -67,7 +70,7 @@ export default function BulkInventoryModal(props: BulkInventoryModalProps) {
         const client = new UWStoutTDXClient();
 
         const searchResults = await autoRetryHTTPRequest(
-            () => client.assets.searchAssets(AppID.Inventory, {SerialLike: searchQuery}),
+            () => client.assets.searchAssets(AppID.Inventory, {SerialLike: searchQuery, MaxResults: 1}),
             30000,
             3,
             (retries) => handleError(new Error(`Rate limit exceeded. Retrying in 30s... (${retries}/3)`))
@@ -75,7 +78,7 @@ export default function BulkInventoryModal(props: BulkInventoryModalProps) {
 
         // Check Results
         if (searchResults.length === 0)
-            throw new Error(`Can't find ${searchQuery}`);
+            throw new Error("Asset not found");
         const asset = searchResults[0];
 
         // Set the asset
@@ -98,7 +101,7 @@ export default function BulkInventoryModal(props: BulkInventoryModalProps) {
         const url = `${window.location.origin}/TDNext/Apps/44/Assets/AssetUpdateMultiple?AssetIDs=${assetIDs}`;
         window.open(
             url,
-            "Bulk Inventory Update",
+            "_blank",
             "width=800,height=600"
         );
     }
@@ -157,6 +160,7 @@ export default function BulkInventoryModal(props: BulkInventoryModalProps) {
                                 <button
                                     className={"btn btn-danger btn-sm"}
                                     onClick={() => removeAsset(asset)}
+                                    title={"Remove Asset"}
                                 >
                                     {/* FontAwesome breaks inside Shadow DOM */}
                                     <svg
@@ -222,9 +226,16 @@ export default function BulkInventoryModal(props: BulkInventoryModalProps) {
                     Update All Assets
                 </button>
 
-
                 {error && (
                     <div className={"alert alert-danger"} style={{marginTop: 5}}>
+
+                        <button
+                            className={"close"}
+                            onClick={() => setError(null)}
+                        >
+                            <span>&times;</span>
+                        </button>
+
                         {error.split("\n").map((line, i) => (
                             <div key={i}>
                                 {line}

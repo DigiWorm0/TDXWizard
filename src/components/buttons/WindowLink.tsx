@@ -1,8 +1,6 @@
 import React from "react";
 
-export interface WindowLinkProps {
-    href: string;
-    children: React.ReactNode;
+export interface WindowLinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
 }
 
 export default function WindowLink(props: WindowLinkProps) {
@@ -18,7 +16,7 @@ export default function WindowLink(props: WindowLinkProps) {
 
     return (
         <a
-            href={props.href}
+            {...props}
             onClick={onClick}
         >
             {props.children}
