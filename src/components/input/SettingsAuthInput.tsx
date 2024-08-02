@@ -19,12 +19,8 @@ export default function SettingsAuthInput() {
         });
     }
 
-    const loginWithSSO = () => {
-        getAPIKeyFromSSO().then(setAuthKey).catch(console.error);
-    }
-
-    const getUserInfo = () => {
-        const client = new UWStoutTDXClient(settings.authKey);
+    const checkUserInfo = (authKey: string) => {
+        const client = new UWStoutTDXClient(authKey);
         setUser(undefined);
         setError(null);
         setIsLoading(true);
@@ -40,9 +36,12 @@ export default function SettingsAuthInput() {
             .finally(() => setIsLoading(false));
     }
 
-    React.useEffect(() => {
-        setUser(undefined);
-    }, [settings.authKey]);
+    const loginWithSSO = () => {
+        getAPIKeyFromSSO().then((authKey) => {
+            setAuthKey(authKey);
+            checkUserInfo(authKey);
+        }).catch(console.error);
+    }
 
     return (
         <>
@@ -76,7 +75,7 @@ export default function SettingsAuthInput() {
                 <button
                     className={"btn btn-default"}
                     type={"button"}
-                    onClick={getUserInfo}
+                    onClick={() => checkUserInfo(settings.authKey)}
                     disabled={!settings.authKey || isLoading}
                     style={{
                         cursor: isLoading ? "wait" : "pointer"
@@ -86,7 +85,7 @@ export default function SettingsAuthInput() {
                         className={"fa fa-user fa-solid fa-nopad"}
                     />
                     <span className={"hidden-xs padding-left-xs"}>
-                        Get User Info
+                        Check User Info
                     </span>
                 </button>
             </div>
@@ -95,7 +94,10 @@ export default function SettingsAuthInput() {
                 title={"TDX API Auth Token (don't share this with anyone!)"}
                 placeholder={"Click the 'Login with SSO' button to get your API Key"}
                 value={settings.authKey}
-                onChange={e => setAuthKey(e.target.value)}
+                onChange={e => {
+                    setAuthKey(e.target.value)
+                    setUser(undefined);
+                }}
                 style={{
                     width: "100%",
                     margin: "1px 3px",

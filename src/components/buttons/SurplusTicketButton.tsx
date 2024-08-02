@@ -2,9 +2,9 @@ import confirmAction from "../../utils/confirmAction";
 import UWStoutTDXClient from "../../utils/tdx/UWStoutTDXClient";
 import getAssetIDFromURL from "../../utils/tdx/getAssetIDFromURL";
 import AppID from "../../types/AppID";
-import TicketType from "../../types/TicketType";
 import {GM_notification, GM_setClipboard} from "$";
 import useSettings from "../../hooks/useSettings";
+import TicketTypes from "../../db/TicketTypes";
 
 export default function SurplusTicketButton() {
     const [settings] = useSettings();
@@ -23,7 +23,7 @@ export default function SurplusTicketButton() {
             const newTicket = await client.tickets.createTicket(
                 AppID.Tickets,
                 {
-                    TypeID: TicketType.Surplus,
+                    TypeID: TicketTypes["Surplus"],
                     Title: "Device Surplus Requested",
                     Description: `Surplussed device ${assetInfo.Tag} (In PC-Repair) - ` +
                         "Device has been secure-erased, BIOS password removed, inventory updated, and Windows 11 installed. Sending to surplus...",

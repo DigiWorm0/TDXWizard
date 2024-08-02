@@ -1,4 +1,4 @@
-import TicketType from "../types/TicketType";
+import TicketTypes from "./TicketTypes";
 
 interface KeywordWeights {
     [key: string]: number;
@@ -12,8 +12,8 @@ interface KeywordWeights {
  * Special characters are removed from the title and description before matching.
  * Keywords must match the whole word.
  */
-const typeToKeywordWeights: { [key in TicketType]: KeywordWeights } = {
-    [TicketType.Reimage]: {
+const typeToKeywordWeights: Record<keyof typeof TicketTypes, KeywordWeights> = {
+    "Reimage": {
         "re image": 1,
         "reimage": 1,
         "reimaging": 1,
@@ -21,7 +21,7 @@ const typeToKeywordWeights: { [key in TicketType]: KeywordWeights } = {
         "reimaged": 1,
         "imaging": 1
     },
-    [TicketType.Enterprise]: {
+    "Enterprise": {
         "image now": 1,
         "imagenow": 1,
         "imagnow": 1,
@@ -39,10 +39,10 @@ const typeToKeywordWeights: { [key in TicketType]: KeywordWeights } = {
         "oracle": 1,
         "form": 1
     },
-    [TicketType.FobRequest]: {
+    "Fob Req": {
         "fob": 1
     },
-    [TicketType.MFA]: {
+    "MFA": {
         "authentication app": 1,
         "microsoft auth": 1,
         "authenticator": 2.5,
@@ -68,7 +68,7 @@ const typeToKeywordWeights: { [key in TicketType]: KeywordWeights } = {
         "more information required": 1,
         "phone": 0.5
     },
-    [TicketType.Software]: {
+    "Software": {
         "headset": 1,
         "camera": 1,
         "display": 1,
@@ -131,7 +131,7 @@ const typeToKeywordWeights: { [key in TicketType]: KeywordWeights } = {
         "safari": 0.5,
         "browser": 0.5
     },
-    [TicketType.VoIP]: {
+    "VoIP": {
         "voicemails": 1,
         "calling queue": 1,
         "call queue": 1,
@@ -142,7 +142,7 @@ const typeToKeywordWeights: { [key in TicketType]: KeywordWeights } = {
         "desk phone": 1,
         "extension": 1
     },
-    [TicketType.Account]: {
+    "Account Assistance": {
         "trying to log in": 1,
         "unable to sign in": 1,
         "unable to login": 1,
@@ -192,14 +192,14 @@ const typeToKeywordWeights: { [key in TicketType]: KeywordWeights } = {
 
         "aadsts": 2 // Azure AD STS Error Code Prefix
     },
-    [TicketType.ClassroomTech]: {
+    "Classroom": {
         "projector": 0.5,
         "projectors": 0.5,
         "projecter": 0.5,
         "projecters": 0.5,
     },
-    [TicketType.ComputerLabs]: {},
-    [TicketType.EStout]: {
+    "Labs": {},
+    "eStout": {
         "estout": 1,
         "exchange": 1,
 
@@ -219,7 +219,7 @@ const typeToKeywordWeights: { [key in TicketType]: KeywordWeights } = {
         "missing": 0.5,
         "hours": 0.5
     },
-    [TicketType.CTS]: {
+    "CTS": {
         "new device setup": 1,
         "employee separation notice": 2,
         "employee departure notice": 2,
@@ -229,19 +229,19 @@ const typeToKeywordWeights: { [key in TicketType]: KeywordWeights } = {
         "departure": 1,
         "consultant": 1
     },
-    [TicketType.Inventory]: {
+    "Inventory": {
         "inventory": 1,
         "reassign": 1,
         "location change": 1
     },
-    [TicketType.Hardware]: {
+    "Hardware": {
         "coaxial cable": 1.5,
         "coax cable": 1.5,
         "blacking out": 1,
         "not charging": 1,
         "parts ordered crm": 1
     },
-    [TicketType.Network]: {
+    "Network": {
         "ethernet": 1,
         "wifi": 0.5,
         "wi fi": 0.5,
@@ -249,7 +249,7 @@ const typeToKeywordWeights: { [key in TicketType]: KeywordWeights } = {
         "ip addr": 1,
         "port check": 1
     },
-    [TicketType.Printers]: {
+    "Printers": {
         "mfd": 1,
         "print": 1,
         "printed": 1,
@@ -264,10 +264,10 @@ const typeToKeywordWeights: { [key in TicketType]: KeywordWeights } = {
         "copy machine": 1,
         "university of wisconsin purchase order": 5
     },
-    [TicketType.Surplus]: {
+    "Surplus": {
         "surplus": 1.5
     },
-    [TicketType.Security]: {
+    "Security": {
         "high severity alert a potentially malicious url click was detected": 10,
         "microsoft 365 defender has merged the incidents detected in your environment": 10,
         "microsoft 365 defender has detected a security threat": 10,
@@ -280,11 +280,11 @@ const typeToKeywordWeights: { [key in TicketType]: KeywordWeights } = {
         "scam email": 1,
         "security": 1
     },
-    [TicketType.Server]: {
+    "Server": {
         "server": 1,
         "bounced": 1
     },
-    [TicketType.Canvas]: {
+    "Canvas": {
         "webassign": 1,
         "kaltura": 1,
         "katura": 1,
@@ -294,7 +294,7 @@ const typeToKeywordWeights: { [key in TicketType]: KeywordWeights } = {
         "canvas": 0.5,
         "blueprint course": 1
     },
-    [TicketType.O365]: {
+    "Office": {
         "onedrive": 0.5,
         "email": 0.5,
         "emails": 0.5,
@@ -311,7 +311,7 @@ const typeToKeywordWeights: { [key in TicketType]: KeywordWeights } = {
         "outlook": 0.5,
         "get outlook for ios": -0.5, // Negative weight to reduce false positives
     },
-    [TicketType.Deploy]: {}
+    "Deploy": {}
 };
 
 export default typeToKeywordWeights;

@@ -3,6 +3,7 @@ import useUser from "../../hooks/useUser";
 
 export interface TicketFeedProfileImageProps {
     name: string;
+    size: number;
     uid?: string;
     href?: string;
     color: string;
@@ -29,18 +30,17 @@ export default function TicketFeedProfileImage(props: TicketFeedProfileImageProp
         >
             <div
                 style={{
-                    width: 60,
-                    height: 60,
-                    borderRadius: 10,
-                    backgroundColor: isUser ? "white" : props.color,
+                    width: props.size,
+                    height: props.size,
+                    borderRadius: props.size / 6,
+                    backgroundColor: isUser ? "transparent" : props.color,
                     color: isUser ? props.color : "#fff",
-                    border: `3px solid ${props.color}`,
+                    border: `${props.size / 15}px solid ${props.color}`,
                     fontWeight: "bold",
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
-                    fontSize: 30,
-                    marginRight: 10
+                    fontSize: props.size / 2
                 }}
             >
                 <span>

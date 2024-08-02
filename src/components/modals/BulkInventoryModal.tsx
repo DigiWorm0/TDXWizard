@@ -47,6 +47,13 @@ export default function BulkInventoryModal(props: BulkInventoryModalProps) {
             .map(query => query.trim())
             .filter(query => query.length > 0);
 
+        // Remove S prefix
+        searchQueries = searchQueries.map(query => {
+            if (query.startsWith("S"))
+                return query.slice(1);
+            return query;
+        });
+
         // Clear Input
         e.currentTarget.value = "";
 
@@ -207,6 +214,7 @@ export default function BulkInventoryModal(props: BulkInventoryModalProps) {
                 </table>
 
                 <textarea
+                    autoFocus
                     className={"form-control"}
                     placeholder={"Scan or type an asset tag or serial number"}
                     onKeyDown={handleInput}

@@ -1,9 +1,9 @@
 import typeToKeywordWeights from "../../db/KeywordWeights";
-import TicketType from "../../types/TicketType";
 import getSettings from "../getSettings";
 import Ticket from "../../tdx-api/types/Ticket";
+import TicketTypes from "../../db/TicketTypes";
 
-export default function findTicketTypes(ticketInfo: Ticket) {
+export default function findTicketTypes(ticketInfo: Ticket): string[] {
     let {Title, Description, ResponsibleGroupName} = ticketInfo;
 
     // Convert to lowercase
@@ -23,7 +23,7 @@ export default function findTicketTypes(ticketInfo: Ticket) {
 
     // Add a type
     const typeWeights: Record<string, number> = {};
-    const addWeightToType = (type: TicketType, weight: number) => {
+    const addWeightToType = (type: keyof typeof TicketTypes, weight: number) => {
         if (!typeWeights[type])
             typeWeights[type] = 0;
         typeWeights[type] += weight;
@@ -31,7 +31,7 @@ export default function findTicketTypes(ticketInfo: Ticket) {
 
     // Iterate Each Type
     for (const _type in typeToKeywordWeights) {
-        const type = parseInt(_type) as TicketType;
+        const type = _type as keyof typeof typeToKeywordWeights;
         const keywords = typeToKeywordWeights[type];
 
         // Iterate Each Keyword
@@ -53,25 +53,25 @@ export default function findTicketTypes(ticketInfo: Ticket) {
 
     // Add types based on responsibility
     if (ResponsibleGroupName.includes("Network"))
-        addWeightToType(TicketType.Network, 2);
+        addWeightToType("Network", 2);
     if (ResponsibleGroupName.includes("Website"))
-        addWeightToType(TicketType.Enterprise, 2);
+        addWeightToType("Enterprise", 2);
     if (ResponsibleGroupName.includes("ImageNow"))
-        addWeightToType(TicketType.Enterprise, 1);
+        addWeightToType("Enterprise", 1);
     if (ResponsibleGroupName.includes("VoIP"))
-        addWeightToType(TicketType.VoIP, 2);
+        addWeightToType("VoIP", 2);
     if (ResponsibleGroupName.includes("Server"))
-        addWeightToType(TicketType.Server, 2);
+        addWeightToType("Server", 2);
     if (ResponsibleGroupName.includes("Lab and Software"))
-        addWeightToType(TicketType.ComputerLabs, 1);
+        addWeightToType("Labs", 1);
     if (ResponsibleGroupName.includes("Classroom Technologies"))
-        addWeightToType(TicketType.ClassroomTech, 2);
+        addWeightToType("Classroom", 2);
     if (ResponsibleGroupName.includes("Vanguard"))
-        addWeightToType(TicketType.Hardware, 2);
+        addWeightToType("Hardware", 2);
     if (ResponsibleGroupName.includes("QA"))
-        addWeightToType(TicketType.Hardware, 2);
+        addWeightToType("Hardware", 2);
     if (ResponsibleGroupName.includes("PeopleSoft"))
-        addWeightToType(TicketType.Enterprise, 2);
+        addWeightToType("Enterprise", 2);
 
     // Password Reset
     const hasPassword = Title.includes("password") || Description.includes("password");
@@ -80,7 +80,7 @@ export default function findTicketTypes(ticketInfo: Ticket) {
     const hasForgot = Title.includes("forgot") || Description.includes("forgot");
     const hasChange = Title.includes("change") || Description.includes("change");
     if (hasPassword && (hasReset || hasChange || hasForgot || hasRecover))
-        addWeightToType(TicketType.Account, 1.5);
+        addWeightToType("Account Assistance", 1.5);
 
     // Sort the types by weight
     let sortedTypes = Object.keys(typeWeights).sort((a, b) => typeWeights[b] - typeWeights[a]);
@@ -93,5 +93,5 @@ export default function findTicketTypes(ticketInfo: Ticket) {
     sortedTypes = sortedTypes.filter(type => typeWeights[type] > 0);
     sortedTypes = sortedTypes.filter(type => typeWeights[type] >= topWeight - ticketTypeThreshold);
 
-    return sortedTypes.map(type => parseInt(type) as TicketType);
+    return sortedTypes;
 }

@@ -1,9 +1,9 @@
 {
-  "name": "tdx-buddy",
+  "name": "tdx-wizard",
   "description": "Automate common TDX functions",
   "author": "Digi",
   "private": true,
-  "version": "0.1.4",
+  "version": "0.1.5",
   "type": "module",
   "scripts": {
     "dev": "vite",

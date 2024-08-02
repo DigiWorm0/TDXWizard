@@ -9,6 +9,7 @@ export interface AddComponentOptions {
  * Adds a React component to the DOM
  * @param element - The element to add the component to
  * @param component - The React component function to add
+ * @param options - Options for adding the component
  */
 export default function addComponentToDOM(element: Element, component: ReactNode, options?: AddComponentOptions) {
     // Create a container element to render the component into
@@ -19,4 +20,6 @@ export default function addComponentToDOM(element: Element, component: ReactNode
     // Render the component
     const root = createRoot(container);
     root.render(component);
+
+    return container;
 }

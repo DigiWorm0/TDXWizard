@@ -1,5 +1,3 @@
-import TicketType from "../../types/TicketType";
-import ticketTypeNames from "../../db/TicketTypeNames";
 import React from "react";
 import UWStoutTDXClient from "../../utils/tdx/UWStoutTDXClient";
 import getTicketIDFromURL from "../../utils/tdx/getTicketIDFromURL";
@@ -8,6 +6,7 @@ import StatusClass from "../../tdx-api/types/StatusClass";
 import useSettings from "../../hooks/useSettings";
 import useTicket from "../../hooks/useTicket";
 import AppID from "../../types/AppID";
+import TicketTypes, {TicketType} from "../../db/TicketTypes";
 
 export default function TicketTypeButtons() {
     const ticket = useTicket();
@@ -38,8 +37,13 @@ export default function TicketTypeButtons() {
         if (!ticketID)
             throw new Error("Ticket ID not found");
 
+        // Get Type ID
+        const ticketTypeID = TicketTypes[type as TicketType];
+        if (!ticketTypeID)
+            throw new Error("Ticket Type not found");
+
         // Update Ticket
-        const res = await client.tickets.updateTicket(AppID.Tickets, ticketID, {TypeID: type});
+        const res = await client.tickets.updateTicket(AppID.Tickets, ticketID, {TypeID: ticketTypeID});
         console.log(res);
 
         // Reload/Close the page
@@ -88,11 +92,11 @@ export default function TicketTypeButtons() {
                     key={type}
                     type={"button"}
                     className={"btn btn-warning btn-sm"}
-                    onClick={() => setType(type)}
+                    onClick={() => setType(type as TicketType)}
                 >
                     <span className={"fa fa-solid fa-nopad fa-tag"}/>
                     <span className={"hidden-xs padding-left-xs"}>
-                        {ticketTypeNames[type]}
+                        {type}
                     </span>
                 </button>
             ))}
@@ -116,16 +120,16 @@ export default function TicketTypeButtons() {
                             </a>
                         </li>
                         <li className={"divider"}/>
-                        {Object.keys(ticketTypeNames)
-                            .sort((a, b) => ticketTypeNames[parseInt(a) as TicketType].localeCompare(ticketTypeNames[parseInt(b) as TicketType]))
-                            .map(type => (
-                                <li key={type}>
+                        {Object.keys(TicketTypes)
+                            .sort((a, b) => a.localeCompare(b))
+                            .map(typeName => (
+                                <li key={typeName}>
                                     <a
                                         className={"dropdown-item"}
                                         href={"#"}
-                                        onClick={() => setType(parseInt(type))}
+                                        onClick={() => setType(typeName as TicketType)}
                                     >
-                                        {ticketTypeNames[parseInt(type) as TicketType]}
+                                        {typeName}
                                     </a>
                                 </li>
                             ))}
