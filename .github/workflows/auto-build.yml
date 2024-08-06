@@ -18,8 +18,8 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18
-          cache: 'npm'
+          node-version: latest
+          cache: 'yarn'
 
       - name: Install dependencies
         uses: borales/actions-yarn@v4
