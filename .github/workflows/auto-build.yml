@@ -21,7 +21,7 @@ jobs:
           node-version: 18
           cache: 'yarn'
 
-      - name: Install dependencies
+      - name: Install Dependencies
         uses: borales/actions-yarn@v4
         with:
           cmd: install
@@ -31,8 +31,8 @@ jobs:
         with:
           cmd: build
 
-      - name: Upload artifact
+      - name: Upload Build
         uses: actions/upload-artifact@v3
         with:
-          name: dist
-          path: dist/*.user.js
+          name: TDXWizard.js
+          path: dist/tdx-wizard.user.js
