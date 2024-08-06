@@ -17,6 +17,7 @@ export default defineConfig({
                     'https://uwstout.teamdynamix.com/TDNext/*',
                     'https://selfservicehd.uwstout.edu/helpdesk/*',
                 ],
+                downloadURL: 'https://digiworm0.github.io/TDXWizard/tdx-wizard.user.js',
                 name: 'TDX Wizard',
                 "run-at": "document-end"
             },
