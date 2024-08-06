@@ -65,14 +65,19 @@ export default class CommonPage implements PageScript {
     }
 
     static addSelectSelfButton() {
+        // Check Settings
+        const settings = getSettings();
+        if (!settings.selectSelfButton)
+            return;
+
+        // Element IDs
         const elementIDs = [
             "attribute495", // Requester
             "attribute1279", // Responsible
             "NewResponsibleId" // New Responsible
         ];
-
         elementIDs.forEach(elementID => {
-            
+
             // Get the button group
             const buttonGroupA = document.querySelector(`#${elementID}-grp .input-group .input-group-btn`);
             const buttonGroupB = document.querySelector(`#s2id_${elementID}`)?.parentElement?.querySelector(".input-group-btn");

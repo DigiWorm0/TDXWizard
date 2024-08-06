@@ -5,6 +5,8 @@ import {GM_info} from "$";
 import SettingsAuthInput from "../input/SettingsAuthInput";
 import useSettings from "../../hooks/useSettings";
 import SettingsTextInput from "../input/SettingsTextInput";
+import ResetCustomTemplatesButton from "../buttons/ResetCustomTemplatesButton";
+import ResetSettingsButton from "../buttons/ResetSettingsButton";
 
 export interface SettingsModalProps {
     isOpen: boolean;
@@ -75,7 +77,15 @@ export default function SettingsModal(props: SettingsModalProps) {
                                 </button>
                             </div>
                             <hr style={{marginTop: 6, marginBottom: 10}}/>
+
+                            {/* ---- START SETTINGS ---- */}
+                            
+                            <div className={"btn-group"}>
+                                <ResetSettingsButton/>
+                                <ResetCustomTemplatesButton/>
+                            </div>
                             <SettingsSwitchInput label={"Unlink Emails / Phones"} setting={"unlinkEmails"}/>
+                            <SettingsSwitchInput label={"Add Self-Selection Button"} setting={"selectSelfButton"}/>
                             <SettingsSwitchInput
                                 label={"Auto-Close Tickets On Save"}
                                 setting={"autoCloseTicketOnSave"}
@@ -131,6 +141,8 @@ export default function SettingsModal(props: SettingsModalProps) {
                             </div>
 
                             <SettingsAuthInput/>
+
+                            {/* ---- END SETTINGS ---- */}
 
                             <p style={{margin: 0, padding: 0, fontSize: 12}}>
                                 TDX Wizard made with ❤️ by{" "}

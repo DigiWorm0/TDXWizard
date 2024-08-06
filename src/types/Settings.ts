@@ -1,3 +1,5 @@
+import CustomTemplate from "./CustomTemplate";
+
 export default interface Settings {
     showStatsButton: boolean;
     showTicketTypeButtons: boolean;
@@ -14,6 +16,7 @@ export default interface Settings {
 
     confirmActions: boolean;
     unlinkEmails: boolean;
+    selectSelfButton: boolean;
 
     autoPrint: boolean;
     closePrintViewAfterPrint: boolean;
@@ -25,4 +28,5 @@ export default interface Settings {
     customProfileColor: string;
 
     authKey: string;
+    customTemplates: CustomTemplate[];
 }

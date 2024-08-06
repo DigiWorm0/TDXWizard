@@ -1,4 +1,5 @@
 import Settings from "../types/Settings";
+import DefaultCustomTemplates from "./DefaultCustomTemplates";
 
 const DefaultSettings: Settings = {
     showStatsButton: true,
@@ -14,6 +15,7 @@ const DefaultSettings: Settings = {
 
     confirmActions: true,
     unlinkEmails: true,
+    selectSelfButton: true,
 
     autoPrint: true,
     closePrintViewAfterPrint: true,
@@ -24,7 +26,8 @@ const DefaultSettings: Settings = {
     useCustomProfileColor: false,
     customProfileColor: "#000000",
 
-    authKey: ""
+    authKey: "",
+    customTemplates: DefaultCustomTemplates
 };
 
 export default DefaultSettings;
