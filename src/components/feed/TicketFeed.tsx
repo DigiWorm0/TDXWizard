@@ -108,14 +108,20 @@ export default function TicketFeed() {
             }
         });
 
+        // Replace \n with <br>
+        newItems = newItems.map(item => ({
+            ...item,
+            Body: item.Body.replace(/\n/g, "<br>")
+        }));
+
         // Remove extra <br> tags
         newItems.forEach(item => {
             if (!item.IsCommunication) {
                 item.Body = item.Body.replace(/<br ?\/?><br ?\/?>/g, "<br>");
             } else {
-                item.Body = item.Body.replace(/^\s*?<br\/?>/g, "");
-                item.Body = item.Body.replace(/<br\/?>\s*?$/g, "");
-                item.Body = item.Body.replace(/<hr\/?>/g, "");
+                item.Body = item.Body.replace(/^\s*?<br ?\/?>/g, "");
+                item.Body = item.Body.replace(/<br ?\/?>\s*?$/g, "");
+                item.Body = item.Body.replace(/<hr ?\/?>/g, "");
             }
         });
 
@@ -139,7 +145,7 @@ export default function TicketFeed() {
                     continue;
 
                 // Merge the two items (newer on top)
-                newItems[i].Body = newItems[i + 1].Body + newItems[i].Body;
+                newItems[i].Body += newItems[i + 1].Body;
                 newItems.splice(i + 1, 1);
                 i--;
             }

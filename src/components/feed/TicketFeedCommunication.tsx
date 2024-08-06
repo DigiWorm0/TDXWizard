@@ -1,12 +1,11 @@
 import DateTime from "../../tdx-api/types/DateTime";
-import dateToString from "../../utils/datetime/dateToString";
-import getDateAgo from "../../utils/datetime/getDateAgo";
 import TicketFeedProfileImage from "./TicketFeedProfileImage";
 import React from "react";
 import Guid from "../../tdx-api/types/Guid";
 import removeHTMLTags, {replaceHTMLEntities} from "../../utils/removeHTMLTags";
 import useUserColor from "../../hooks/useUserColor";
 import useJumpToFeedID from "../../hooks/useJumpToFeed";
+import UpdatedTimestamp from "../utils/UpdatedTimestamp";
 
 export interface TicketFeedCommunicationProps {
     id: number,
@@ -169,10 +168,10 @@ export default function TicketFeedCommunication(props: TicketFeedCommunicationPr
                             </span>
                         )}
                         <span style={{color: "#aaa", fontWeight: "normal", marginLeft: 4, fontSize: 12}}>
-                        {dateToString(props.date)}
-                            {" · "}
-                            {getDateAgo(props.date)}
-                    </span>
+                            <UpdatedTimestamp
+                                date={props.date}
+                            />
+                        </span>
                     </h5>
                     <p
                         style={{

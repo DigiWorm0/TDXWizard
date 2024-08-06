@@ -4,6 +4,7 @@ import SidebarImage from "../../content/SidebarBG.png";
 import {GM_info} from "$";
 import SettingsAuthInput from "../input/SettingsAuthInput";
 import useSettings from "../../hooks/useSettings";
+import SettingsTextInput from "../input/SettingsTextInput";
 
 export interface SettingsModalProps {
     isOpen: boolean;
@@ -27,7 +28,7 @@ export default function SettingsModal(props: SettingsModalProps) {
                             <img
                                 alt={"Sidebar"}
                                 src={SidebarImage}
-                                width={170}
+                                width={190}
                                 style={{
                                     borderTopLeftRadius: 5,
                                     borderBottomLeftRadius: 5,
@@ -118,6 +119,17 @@ export default function SettingsModal(props: SettingsModalProps) {
                                     setting={"autoHideTicketTypes"}
                                 />
                             </div>
+
+                            <SettingsSwitchInput label={"Custom Profile Color"} setting={"useCustomProfileColor"}/>
+
+                            <div style={{marginLeft: 20}}>
+                                <SettingsTextInput
+                                    label={"Custom Profile Color"}
+                                    setting={"customProfileColor"}
+                                    disabled={!settings.useCustomProfileColor}
+                                />
+                            </div>
+
                             <SettingsAuthInput/>
 
                             <p style={{margin: 0, padding: 0, fontSize: 12}}>

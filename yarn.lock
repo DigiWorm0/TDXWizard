@@ -241,6 +241,13 @@
     "@types/prop-types" "*"
     csstype "^3.0.2"
 
+"@types/select2@3.5.10":
+  version "3.5.10"
+  resolved "https://registry.yarnpkg.com/@types/select2/-/select2-3.5.10.tgz#da8369bc2fb4905d0339e2060bb6421dd538cb67"
+  integrity sha512-WU08P6AsfKJRJfxBl/KMgkC/JUWhLoh7iO3e1ecb8VQ+o2F26uo+dX5s9opiGWm4qKObuumDzzKuOcoW/phefA==
+  dependencies:
+    "@types/jquery" "*"
+
 "@types/sizzle@*":
   version "2.3.8"
   resolved "https://registry.yarnpkg.com/@types/sizzle/-/sizzle-2.3.8.tgz#518609aefb797da19bf222feb199e8f653ff7627"
