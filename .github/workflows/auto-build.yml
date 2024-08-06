@@ -34,4 +34,5 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
-          path: dist
+          name: dist
+          path: dist/*.user.js
