@@ -23,7 +23,7 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: latest
           cache: 'yarn'
 
       - name: Install Dependencies
@@ -36,8 +36,13 @@ jobs:
         with:
           cmd: build
 
-      - name: Upload Build
-        uses: actions/upload-artifact@v3
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
         with:
           name: TDXWizard.js
           path: dist/tdx-wizard.user.js
+
+      - name: Deploy Artifact
+        uses: actions/deploy-pages@v4
+        with:
+          artifact_name: TDXWizard.js
