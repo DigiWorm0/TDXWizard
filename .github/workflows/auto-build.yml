@@ -36,3 +36,8 @@ jobs:
         with:
           name: TDXWizard.js
           path: dist/tdx-wizard.user.js
+
+      - name: Deploy
+        uses: actions/deploy-pages@v3
+        with:
+          artifact_name: TDXWizard.js
