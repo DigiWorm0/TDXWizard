@@ -27,22 +27,19 @@ jobs:
           cache: 'yarn'
 
       - name: Install Dependencies
-        uses: borales/actions-yarn@v4
+        uses: borales/actions-yarn@v5
         with:
           cmd: install
 
       - name: Build
-        uses: borales/actions-yarn@v4
+        uses: borales/actions-yarn@v5
         with:
           cmd: build
 
       - name: Upload Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-pages-artifact@v3
         with:
-          name: TDXWizard.js
-          path: dist/tdx-wizard.user.js
+          path: dist
 
       - name: Deploy Artifact
         uses: actions/deploy-pages@v4
-        with:
-          artifact_name: TDXWizard.js
