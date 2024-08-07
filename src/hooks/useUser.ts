@@ -5,7 +5,7 @@ import {useAtomValue} from "jotai";
 import DefaultGUID from "../types/DefaultGUID";
 import atomWithCache from "../utils/atomWithCache";
 
-export const userAtomFamily = atomFamily((uid: Guid) => {
+export const userAtomFamily = atomFamily((uid?: Guid) => {
     const userAtom = atomWithCache(`user-${uid}`, async () => {
         if (!uid)
             return null;
@@ -21,7 +21,7 @@ export const userAtomFamily = atomFamily((uid: Guid) => {
             return null;
         }
     }, {
-        cacheTime: 1000 * 60 * 5 // 5 minutes
+        cacheTime: 1000 * 60 * 30 // 30 minutes
     });
 
     // Unwrap the atom
@@ -35,6 +35,6 @@ export const userAtomFamily = atomFamily((uid: Guid) => {
  * Returns null if the user does not exist.
  * @param uid
  */
-export default function useUser(uid: Guid) {
+export default function useUser(uid?: Guid) {
     return useAtomValue(userAtomFamily(uid));
 }

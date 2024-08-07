@@ -209,6 +209,11 @@
   dependencies:
     "@types/jquery" "*"
 
+"@types/ckeditor@2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@types/ckeditor/-/ckeditor-2.0.0.tgz#66f5797972805e7b7b983ee7f0711593a43bc43f"
+  integrity sha512-IywFKu0xCpPilgYps2G8dd7dsLMo8dHiOMqYRbQ4B6HRJ0JGi61IclOB4UW2vZNmjnvobOxUiv0nf6PwoMUO7A==
+
 "@types/estree@1.0.5":
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/@types/estree/-/estree-1.0.5.tgz#a6ce3e556e00fd9895dd872dd172ad0d4bd687f4"
@@ -220,6 +225,11 @@
   integrity sha512-nbWKkkyb919DOUxjmRVk8vwtDb0/k8FKncmUKFi+NY+QXqWltooxTrswvz4LspQwxvLdvzBN1TImr6cw3aQx2A==
   dependencies:
     "@types/sizzle" "*"
+
+"@types/mustache@^4.2.5":
+  version "4.2.5"
+  resolved "https://registry.yarnpkg.com/@types/mustache/-/mustache-4.2.5.tgz#9129f0d6857f976e00e171bbb3460e4b702f84ef"
+  integrity sha512-PLwiVvTBg59tGFL/8VpcGvqOu3L4OuveNvPi0EYbWchRdEVP++yRUXJPFl+CApKEq13017/4Nf7aQ5lTtHUNsA==
 
 "@types/prop-types@*":
   version "15.7.12"
