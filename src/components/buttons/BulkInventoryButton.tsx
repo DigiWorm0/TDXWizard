@@ -1,8 +1,13 @@
 import React from "react";
 import BulkInventoryModal from "../modals/BulkInventoryModal";
+import useSettings from "../../hooks/useSettings";
 
 export default function BulkInventoryButton() {
+    const [settings] = useSettings();
     const [isModalVisible, setIsModalVisible] = React.useState(false);
+
+    if (!settings.bulkInventoryButton)
+        return null;
     return (
         <>
             <a

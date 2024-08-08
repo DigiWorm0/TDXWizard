@@ -2,10 +2,12 @@ import useTicket from "../../hooks/useTicket";
 import useUser from "../../hooks/useUser";
 import React from "react";
 import {GM_setValue} from "$";
+import useSettings from "../../hooks/useSettings";
 
 const LEGACY_AD_URL = "https://selfservicehd.uwstout.edu/helpdesk/default.aspx?ctl=acctstatus.ascx";
 
 export default function LegacySearchButton() {
+    const [settings] = useSettings();
     const ticket = useTicket();
     const requestor = useUser(ticket?.RequestorUid ?? "");
 
@@ -17,6 +19,8 @@ export default function LegacySearchButton() {
         window.open(LEGACY_AD_URL, "_blank", "width=992,height=800");
     }
 
+    if (!settings.legacyLookupButton)
+        return;
     return (
         <a
             href={LEGACY_AD_URL}

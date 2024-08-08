@@ -14,12 +14,15 @@ export default function TicketFeedProfileImage(props: TicketFeedProfileImageProp
     const isUser = user?.SecurityRoleName === "Client";
 
     const openLink = (e: React.MouseEvent<HTMLAnchorElement>) => {
+        e.preventDefault();
+        if (!props.href)
+            return;
+
         window.open(
             props.href,
             "Profile",
             "width=992,height=700"
         );
-        e.preventDefault();
     }
 
     return (

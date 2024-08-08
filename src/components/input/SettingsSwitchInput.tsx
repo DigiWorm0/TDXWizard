@@ -5,6 +5,7 @@ export interface SettingsSwitchInputProps {
     label: string;
     setting: keyof Settings;
     disabled?: boolean;
+    title?: string;
 }
 
 export default function SettingsSwitchInput(props: SettingsSwitchInputProps) {
@@ -21,7 +22,10 @@ export default function SettingsSwitchInput(props: SettingsSwitchInputProps) {
         <div
             style={{height: 25}}
         >
-            <label style={{marginBottom: 0}}>
+            <label
+                style={{marginBottom: 0}}
+                title={props.title}
+            >
                 <input
                     type="checkbox"
                     checked={settings[props.setting] as boolean}

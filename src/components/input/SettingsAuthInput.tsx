@@ -45,7 +45,6 @@ export default function SettingsAuthInput() {
 
     return (
         <>
-            <div style={{height: 10}}/>
             {error && (
                 <div className={"alert alert-danger"} role={"alert"} style={{margin: 5, padding: 5}}>
                     <strong>Error:</strong> {error}
@@ -56,6 +55,23 @@ export default function SettingsAuthInput() {
                     <strong>Success:</strong> Logged in as {user.UserName}
                 </div>
             )}
+            <input
+                type={isHovered ? "text" : "password"}
+                title={"TDX API Auth Token (don't share this with anyone!)"}
+                placeholder={"Click the 'Login with SSO' button to get your API Key"}
+                value={settings.authKey}
+                onChange={e => {
+                    setAuthKey(e.target.value)
+                    setUser(undefined);
+                }}
+                style={{
+                    width: "100%",
+                    margin: "1px 3px",
+                    height: 25
+                }}
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+            />
             <div className={"btn-group"}>
                 <button
                     className={"btn btn-primary"}
@@ -89,23 +105,6 @@ export default function SettingsAuthInput() {
                     </span>
                 </button>
             </div>
-            <input
-                type={isHovered ? "text" : "password"}
-                title={"TDX API Auth Token (don't share this with anyone!)"}
-                placeholder={"Click the 'Login with SSO' button to get your API Key"}
-                value={settings.authKey}
-                onChange={e => {
-                    setAuthKey(e.target.value)
-                    setUser(undefined);
-                }}
-                style={{
-                    width: "100%",
-                    margin: "1px 3px",
-                    height: 25
-                }}
-                onMouseEnter={() => setIsHovered(true)}
-                onMouseLeave={() => setIsHovered(false)}
-            />
         </>
     )
 }

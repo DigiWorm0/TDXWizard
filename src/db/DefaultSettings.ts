@@ -27,7 +27,11 @@ const DefaultSettings: Settings = {
     customProfileColor: "#000000",
 
     authKey: "",
-    customTemplates: DefaultCustomTemplates
+    customTemplates: DefaultCustomTemplates,
+    enableCustomTemplates: true,
+    legacyLookupButton: true,
+    bulkInventoryButton: true,
+    reverseFeedOrder: false,
 };
 
 export default DefaultSettings;

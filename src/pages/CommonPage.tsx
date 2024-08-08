@@ -74,7 +74,9 @@ export default class CommonPage implements PageScript {
         const elementIDs = [
             "attribute495", // Requester
             "attribute1279", // Responsible
-            "NewResponsibleId" // New Responsible
+            "NewResponsibleId", // New Responsible
+            "attribute514", // Asset Owner
+            "NewOwnerUid", // New Asset Owner
         ];
         elementIDs.forEach(elementID => {
 

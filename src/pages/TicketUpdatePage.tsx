@@ -1,6 +1,7 @@
 import PageScript from "./PageScript";
 import addComponentToDOM from "../utils/addComponentToDOM";
 import CustomTemplateMenu from "../components/pages/CustomTemplateMenu";
+import getSettings from "../utils/getSettings";
 
 const URL_PREFIX = "/TDNext/Apps/43/Tickets/Update"
 
@@ -11,6 +12,16 @@ export default class TicketUpdatePage implements PageScript {
     }
 
     run() {
+        TicketUpdatePage.addCustomTemplateMenu();
+    }
+
+    static addCustomTemplateMenu() {
+
+        // Check Settings
+        const settings = getSettings();
+        if (!settings.enableCustomTemplates)
+            return;
+
         // Navbar
         const templateDropdown = document.querySelector("#divComments .dropdown-menu.multi-level");
         if (!templateDropdown)

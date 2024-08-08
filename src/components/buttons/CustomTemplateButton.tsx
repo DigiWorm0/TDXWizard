@@ -16,7 +16,7 @@ export default function CustomTemplateButton(props: CustomTemplateButtonProps) {
 
     const {template} = props;
 
-    const onTemplateClick = (e: React.MouseEvent<HTMLAnchorElement>, templateID: number) => {
+    const onTemplateClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
         e.preventDefault();
         e.stopPropagation();
 
@@ -33,7 +33,7 @@ export default function CustomTemplateButton(props: CustomTemplateButtonProps) {
             // Remove the template from the settings
             setSettings({
                 ...settings,
-                customTemplates: settings.customTemplates.filter(template => template.id !== templateID)
+                customTemplates: settings.customTemplates.filter(t => t.id !== template.id)
             });
 
             return;
@@ -74,8 +74,8 @@ export default function CustomTemplateButton(props: CustomTemplateButtonProps) {
         <li>
             <a
                 className={"js-template"}
-                href={"javascript:;"}
-                onClick={(e) => onTemplateClick(e, template.id)}
+                href={"#"}
+                onClick={onTemplateClick}
                 title={"Shift + Click to delete"}
             >
                 {template.name}

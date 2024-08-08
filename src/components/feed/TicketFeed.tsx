@@ -130,6 +130,8 @@ export default function TicketFeed() {
 
         // Sort the feed by Date
         newItems.sort((a, b) => getEpochFromDate(b.CreatedDate) - getEpochFromDate(a.CreatedDate));
+        if (settings.reverseFeedOrder)
+            newItems = newItems.reverse();
 
         // Merge Non-Communication of the same user that are adjacent
         for (let i = 0; i < newItems.length - 1; i++) {
