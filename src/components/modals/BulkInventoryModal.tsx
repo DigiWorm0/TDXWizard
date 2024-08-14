@@ -5,6 +5,9 @@ import UWStoutTDXClient from "../../utils/tdx/UWStoutTDXClient";
 import AppID from "../../types/AppID";
 import autoRetryHTTPRequest from "../../utils/autoRetryHTTPRequest";
 import BulkInventoryAssetRow from "./BulkInventoryAssetRow";
+import updateAssets from "../../utils/assets/updateAssets";
+import createTicketWithAssets from "../../utils/assets/createTicketWithAssets";
+import createAssetsCSV from "../../utils/assets/createAssetsCSV";
 
 export interface BulkInventoryModalProps {
     onClose: () => void;
@@ -89,8 +92,10 @@ export default function BulkInventoryModal(props: BulkInventoryModalProps) {
         // Set the asset
         setAssets(existingAssets => {
             // Check if the asset is already in the list
-            if (existingAssets.find(a => a.ID === asset.ID))
+            if (existingAssets.find(a => a.ID === asset.ID)) {
+                handleError(new Error(`Duplicate asset already in list: ${asset.Tag} (${searchQuery})`));
                 return existingAssets;
+            }
 
             // Add the asset to the list
             return [...existingAssets, asset];
@@ -101,16 +106,6 @@ export default function BulkInventoryModal(props: BulkInventoryModalProps) {
         setAssets(assets.filter(a => a.ID !== asset.ID));
     }
 
-    const updateAllAssets = () => {
-        const assetIDs = assets.map(asset => asset.ID).join(",");
-        const url = `${window.location.origin}/TDNext/Apps/44/Assets/AssetUpdateMultiple?AssetIDs=${assetIDs}`;
-        window.open(
-            url,
-            "_blank",
-            "width=800,height=600"
-        );
-    }
-
     return (
         <NewWindow
             title={"Bulk Inventory"}
@@ -118,6 +113,9 @@ export default function BulkInventoryModal(props: BulkInventoryModalProps) {
             features={{width: 900, height: 600}}
         >
             <div style={{padding: 15}}>
+                <h1 style={{marginBottom: 5}}>
+                    Assets ({assets.length})
+                </h1>
                 <table className={"table table-striped table-bordered"} style={{marginBottom: 0}}>
                     <thead>
                     <tr>
@@ -157,7 +155,6 @@ export default function BulkInventoryModal(props: BulkInventoryModalProps) {
                                 >
                                     Scan an asset tag to add it to the list
                                 </span>
-
                             </td>
                         </tr>
                     )}
@@ -191,11 +188,29 @@ export default function BulkInventoryModal(props: BulkInventoryModalProps) {
 
                 <button
                     className={"btn btn-primary"}
-                    onClick={updateAllAssets}
+                    onClick={() => updateAssets(assets)}
                     style={{marginTop: 5, marginLeft: 0}}
                     disabled={assets.length === 0}
                 >
                     Update All Assets
+                </button>
+
+                <button
+                    className={"btn btn-primary"}
+                    onClick={() => createTicketWithAssets(assets)}
+                    style={{marginTop: 5, marginLeft: 5}}
+                    disabled={assets.length === 0}
+                >
+                    Create Ticket
+                </button>
+
+                <button
+                    className={"btn btn-primary"}
+                    onClick={() => createAssetsCSV(assets)}
+                    style={{marginTop: 5, marginLeft: 5}}
+                    disabled={assets.length === 0}
+                >
+                    Download CSV
                 </button>
 
                 {error && (

@@ -3,7 +3,7 @@
   "description": "Automate common TDX functions",
   "author": "Digi",
   "private": true,
-  "version": "0.1.7",
+  "version": "0.1.8",
   "type": "module",
   "scripts": {
     "dev": "vite",

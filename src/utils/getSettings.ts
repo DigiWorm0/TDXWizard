@@ -1,5 +1,5 @@
 import Settings from "../types/Settings";
-import {GM_getValue} from "$";
+import {GM_getValue, GM_setValue} from "$";
 import DefaultSettings from "../db/DefaultSettings";
 
 let _settingsCache: Settings | null = null;
@@ -21,4 +21,13 @@ export default function getSettings(): Settings {
     }
 
     return _settingsCache;
+}
+
+/**
+ * Sets the settings in local storage.
+ * @param settings - The settings object to set.
+ */
+export function setSettings(settings: Settings) {
+    _settingsCache = settings;
+    GM_setValue("settings", JSON.stringify(settings));
 }

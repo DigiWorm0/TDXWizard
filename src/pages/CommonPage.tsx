@@ -3,6 +3,7 @@ import getSettings from "../utils/getSettings";
 import addComponentToDOM from "../utils/addComponentToDOM";
 import PersonPanel from "../components/pages/PersonPanel";
 import SelectSelfButton from "../components/buttons/SelectSelfButton";
+import autoUpdateAuthKey from "../utils/autoUpdateAuthKey";
 
 const URL_PREFIX = "/TDNext"
 
@@ -16,8 +17,12 @@ export default class CommonPage implements PageScript {
         CommonPage.replaceAllEmailLinks();
         CommonPage.addUserLookup();
         CommonPage.addSelectSelfButton();
+        CommonPage.runAutoUpdateAuthKey();
     }
 
+    /**
+     * Adds a user lookup to the user panel
+     */
     static addUserLookup() {
         const userPanel = document.querySelector(".panel-person-card");
         if (!userPanel)
@@ -29,6 +34,13 @@ export default class CommonPage implements PageScript {
 
         const userLinks = addComponentToDOM(userPanelBody, <PersonPanel/>);
         userLinks.className = "gutter-top-xs ellipsis";
+    }
+
+    /**
+     * Automatically updates the auth key if it is invalid
+     */
+    static runAutoUpdateAuthKey() {
+        autoUpdateAuthKey().catch(console.error);
     }
 
     /**

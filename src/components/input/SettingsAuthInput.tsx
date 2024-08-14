@@ -1,4 +1,4 @@
-import getAPIKeyFromSSO from "../../utils/tdx/getAuthKeyFromSSO";
+import getAuthKeyFromSSO from "../../utils/tdx/getAuthKeyFromSSO";
 import React from "react";
 import useSettings from "../../hooks/useSettings";
 import UWStoutTDXClient from "../../utils/tdx/UWStoutTDXClient";
@@ -37,7 +37,7 @@ export default function SettingsAuthInput() {
     }
 
     const loginWithSSO = () => {
-        getAPIKeyFromSSO().then((authKey) => {
+        getAuthKeyFromSSO().then((authKey) => {
             setAuthKey(authKey);
             checkUserInfo(authKey);
         }).catch(console.error);

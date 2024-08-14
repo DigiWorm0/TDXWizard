@@ -151,16 +151,16 @@ export default function SettingsModal(props: SettingsModalProps) {
                             />
 
                             <SettingsSwitchInput
-                                label={"Auto Print on Print View"}
-                                setting={"autoPrint"}
-                                title={"Effectively replaces the 'Print View' with a normal 'Print' button"}
+                                label={"Show Print Button"}
+                                setting={"showTicketPrintButton"}
+                                title={"Replaces the 'Print View' with a normal 'Print' button"}
                             />
                             <div style={{marginLeft: 20}}>
                                 <SettingsSwitchInput
-                                    label={"Close Print View After Print"}
-                                    setting={"closePrintViewAfterPrint"}
-                                    disabled={!settings.autoPrint}
-                                    title={"Some browsers may close the print view prematurely. Disable this if you experience that issue"}
+                                    label={"Hide Print View Button"}
+                                    setting={"hideTicketPrintViewButton"}
+                                    disabled={!settings.showTicketPrintButton}
+                                    title={"Hides the default 'Print View' button on the ticket page"}
                                 />
                             </div>
 
@@ -219,9 +219,15 @@ export default function SettingsModal(props: SettingsModalProps) {
 
                             <SettingsHeader title={"Authentication"}/>
                             <SettingsAuthInput/>
+                            <SettingsSwitchInput
+                                label={"Auto Update Auth Key"}
+                                setting={"autoUpdateAuthKey"}
+                                title={"Refreshes the authentication key automatically when it expires"}
+                            />
 
                             {/* ---- END SETTINGS ---- */}
 
+                            <hr style={{marginBottom: 0, marginTop: 10}}/>
                             <p style={{margin: 0, padding: 0, fontSize: 12}}>
                                 TDX Wizard made with ❤️ by{" "}
                                 <a target={"_blank"} href={"https://digiworm0.github.io/"}>Digi</a>

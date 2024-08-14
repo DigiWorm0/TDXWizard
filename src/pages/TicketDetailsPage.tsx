@@ -12,13 +12,18 @@ export default class TicketDetailsPage implements PageScript {
     }
 
     run() {
-        // Navbar
+        TicketDetailsPage.addNavButtons();
+        TicketDetailsPage.replaceFeed();
+    }
+
+    static addNavButtons() {
         const ticketNavBar = document.getElementById("divTabHeader");
         if (!ticketNavBar)
             throw new Error("Nav Bar not found");
         addComponentToDOM(ticketNavBar.children[0], <TicketNavBar/>);
+    }
 
-        // Feed Button
+    static replaceFeed() {
         const feedRow = document.querySelector("#divFeed .pull-right");
         if (!feedRow)
             throw new Error("Feed Row not found");

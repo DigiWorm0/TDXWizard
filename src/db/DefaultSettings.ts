@@ -17,8 +17,8 @@ const DefaultSettings: Settings = {
     unlinkEmails: true,
     selectSelfButton: true,
 
-    autoPrint: true,
-    closePrintViewAfterPrint: true,
+    showTicketPrintButton: true,
+    hideTicketPrintViewButton: true,
 
     useNewFeed: false,
     mergeAdjacentSystemMessages: true,
@@ -27,6 +27,8 @@ const DefaultSettings: Settings = {
     customProfileColor: "#000000",
 
     authKey: "",
+    autoUpdateAuthKey: true,
+    
     customTemplates: DefaultCustomTemplates,
     enableCustomTemplates: true,
     legacyLookupButton: true,

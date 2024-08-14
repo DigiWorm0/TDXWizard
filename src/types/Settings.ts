@@ -1,6 +1,7 @@
 import CustomTemplate from "./CustomTemplate";
 
 export default interface Settings {
+    autoUpdateAuthKey: boolean;
     showStatsButton: boolean;
     showTicketTypeButtons: boolean;
     showTicketAssignButtons: boolean;
@@ -13,8 +14,8 @@ export default interface Settings {
     confirmActions: boolean;
     unlinkEmails: boolean;
     selectSelfButton: boolean;
-    autoPrint: boolean;
-    closePrintViewAfterPrint: boolean;
+    showTicketPrintButton: boolean;
+    hideTicketPrintViewButton: boolean;
     useNewFeed: boolean;
     reverseFeedOrder: boolean;
     mergeAdjacentSystemMessages: boolean;
