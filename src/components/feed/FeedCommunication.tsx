@@ -1,11 +1,12 @@
 import DateTime from "../../tdx-api/types/DateTime";
-import TicketFeedProfileImage from "./TicketFeedProfileImage";
+import FeedProfileImage from "./FeedProfileImage";
 import React from "react";
 import Guid from "../../tdx-api/types/Guid";
 import removeHTMLTags, {replaceHTMLEntities} from "../../utils/removeHTMLTags";
 import useUserColor from "../../hooks/useUserColor";
 import useJumpToFeedID from "../../hooks/useJumpToFeed";
 import UpdatedTimestamp from "../utils/UpdatedTimestamp";
+import {Interweave} from "interweave";
 
 export interface TicketFeedCommunicationProps {
     id: number,
@@ -23,7 +24,7 @@ export interface TicketFeedCommunicationProps {
     replyToBody?: string,
 }
 
-export default function TicketFeedCommunication(props: TicketFeedCommunicationProps) {
+export default function FeedCommunication(props: TicketFeedCommunicationProps) {
     const containerRef = React.useRef<HTMLDivElement>(null);
     const [targetFeedID, jumpToFeedID] = useJumpToFeedID();
     const userColor = useUserColor(props.uid);
@@ -77,7 +78,7 @@ export default function TicketFeedCommunication(props: TicketFeedCommunicationPr
                         className={"fa fa-arrow-turn-down"}
                         style={{color: "#aaa", transform: "scaleX(-1) translateY(2px)"}}
                     />
-                    <TicketFeedProfileImage
+                    <FeedProfileImage
                         name={props.replyToName ?? ""}
                         color={replyUserColor}
                         size={16}
@@ -120,7 +121,7 @@ export default function TicketFeedCommunication(props: TicketFeedCommunicationPr
                     transition: "background-color 0.5s"
                 }}
             >
-                <TicketFeedProfileImage
+                <FeedProfileImage
                     size={60}
                     uid={props.uid}
                     name={props.name}
@@ -173,12 +174,9 @@ export default function TicketFeedCommunication(props: TicketFeedCommunicationPr
                             />
                         </span>
                     </h5>
-                    <p
-                        style={{
-                            margin: "5px 0px"
-                        }}
-                        dangerouslySetInnerHTML={{__html: props.body}}
-                    />
+                    <p style={{margin: "5px 0px"}}>
+                        <Interweave content={props.body}/>
+                    </p>
                     {props.notifiedList && (
                         <p
                             style={{

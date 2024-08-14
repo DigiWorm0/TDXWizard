@@ -13,7 +13,7 @@ export interface TicketFeedEventProps {
     body: string
 }
 
-export default function TicketFeedEvent(props: TicketFeedEventProps) {
+export default function FeedEvent(props: TicketFeedEventProps) {
     const userColor = useUserColor(props.uid);
     const profileURL = `/TDNext/Apps/People/PersonDet.aspx?U=${props.uid}`;
 

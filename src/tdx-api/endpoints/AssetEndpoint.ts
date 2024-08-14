@@ -1,6 +1,7 @@
 import TDXEndpoint from "../TDXEndpoint";
 import Asset from "../types/Asset";
 import AssetSearch from "../types/AssetSearch";
+import FeedItemUpdate from "../types/FeedItemUpdate";
 
 /**
  * A class for interacting with the TDX Asset API
@@ -20,6 +21,10 @@ export default class AssetEndpoint extends TDXEndpoint {
 
     searchAssets(appID: number, options: Partial<AssetSearch>) {
         return this.client.jsonRequest<Asset[]>(`${appID}/assets/search`, options, "POST");
+    }
+
+    getAssetFeed(appID: number, assetID: number) {
+        return this.client.jsonRequest<FeedItemUpdate[]>(`${appID}/assets/${assetID}/feed`);
     }
 
     // getAssetFeed(appID: number, assetID: number) {

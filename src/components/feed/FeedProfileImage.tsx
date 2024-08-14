@@ -9,7 +9,7 @@ export interface TicketFeedProfileImageProps {
     color: string;
 }
 
-export default function TicketFeedProfileImage(props: TicketFeedProfileImageProps) {
+export default function FeedProfileImage(props: TicketFeedProfileImageProps) {
     const user = useUser(props.uid ?? "");
     const isUser = user?.SecurityRoleName === "Client";
 

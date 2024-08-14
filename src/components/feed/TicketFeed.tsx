@@ -2,8 +2,8 @@ import useTicketFeed from "../../hooks/useTicketFeed";
 import React from "react";
 import DateTime from "../../tdx-api/types/DateTime";
 import getEpochFromDate from "../../utils/datetime/getEpochFromDate";
-import TicketFeedCommunication from "./TicketFeedCommunication";
-import TicketFeedEvent from "./TicketFeedEvent";
+import FeedCommunication from "./FeedCommunication";
+import FeedEvent from "./FeedEvent";
 import useTicket from "../../hooks/useTicket";
 import {replaceHTMLEntities} from "../../utils/removeHTMLTags";
 import DefaultGUID from "../../types/DefaultGUID";
@@ -76,6 +76,8 @@ export default function TicketFeed() {
             new RegExp(/Reassigned this incident from .*? to .*?\.<br ?\/?>/g),
             new RegExp(/Reassigned this service request from .*? to .*?\.<br ?\/?>/g),
             new RegExp(/\[Merged from ticket \d+]<br ?\/?><br ?\/?>/g),
+            new RegExp(/Added the ".*?" asset to this incident\.<br ?\/?>/g),
+            new RegExp(/Added the ".*?" asset to this service request\.<br ?\/?>/g),
         ];
         systemMessageRegex.forEach(regex => {
             for (let i = 0; i < newItems.length; i++) {
@@ -166,7 +168,7 @@ export default function TicketFeed() {
                     <div key={item.ID} className={"w-100"}>
 
                         {!item.IsCommunication && (
-                            <TicketFeedEvent
+                            <FeedEvent
                                 uid={item.CreatedUid}
                                 name={item.CreatedFullName}
                                 date={item.CreatedDate}
@@ -175,7 +177,7 @@ export default function TicketFeed() {
                         )}
 
                         {item.IsCommunication && (
-                            <TicketFeedCommunication
+                            <FeedCommunication
                                 id={item.ID}
                                 uid={item.CreatedUid}
                                 name={item.CreatedFullName}
