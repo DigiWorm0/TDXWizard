@@ -12,6 +12,7 @@ export default function BulkInventoryButton() {
         <>
             <a
                 className={`btn btn-link ${isModalVisible ? "disabled" : ""}`}
+                title={"Tool for editing large amounts of assets at once"}
                 href={"#"}
                 onClick={e => {
                     e.preventDefault();

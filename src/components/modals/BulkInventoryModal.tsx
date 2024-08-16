@@ -2,12 +2,12 @@ import NewWindow from "react-new-window";
 import React from "react";
 import Asset from "../../tdx-api/types/Asset";
 import UWStoutTDXClient from "../../utils/tdx/UWStoutTDXClient";
-import AppID from "../../types/AppID";
 import autoRetryHTTPRequest from "../../utils/autoRetryHTTPRequest";
 import BulkInventoryAssetRow from "./BulkInventoryAssetRow";
 import updateAssets from "../../utils/assets/updateAssets";
 import createTicketWithAssets from "../../utils/assets/createTicketWithAssets";
 import createAssetsCSV from "../../utils/assets/createAssetsCSV";
+import getAppIDFromURL from "../../utils/tdx/getAppIDFromURL";
 
 export interface BulkInventoryModalProps {
     onClose: () => void;
@@ -76,9 +76,13 @@ export default function BulkInventoryModal(props: BulkInventoryModalProps) {
 
         // Send API request
         const client = new UWStoutTDXClient();
+        const appID = getAppIDFromURL();
+
+        if (!appID)
+            throw new Error("App ID not found");
 
         const searchResults = await autoRetryHTTPRequest(
-            () => client.assets.searchAssets(AppID.Inventory, {SerialLike: searchQuery, MaxResults: 1}),
+            () => client.assets.searchAssets(appID, {SerialLike: searchQuery, MaxResults: 1}),
             30000,
             3,
             (retries) => handleError(new Error(`Rate limit exceeded. Retrying in 30s... (${retries}/3)`))

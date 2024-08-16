@@ -30,21 +30,50 @@ export default function TicketPrintButton() {
             iframe.contentWindow?.print();
     }
 
+    const onPrintView = () => {
+        const windowWidth = 800;
+        const windowHeight = 600;
+        const windowTop = window.screenY + (window.outerHeight - windowHeight) / 2;
+        const windowLeft = window.screenX + (window.outerWidth - windowWidth) / 2;
+
+        window.open(
+            printURL,
+            "_blank",
+            `width=${windowWidth},height=${windowHeight},top=${windowTop},left=${windowLeft}`
+        );
+    }
+
     if (!settings.showTicketPrintButton)
         return null;
     return (
         <>
-            <button
-                type={"button"}
-                className={"btn btn-primary btn-sm"}
-                onClick={() => onPrint()}
-                style={{marginLeft: "5px"}}
-            >
-                <span className={"fa fa-solid fa-nopad fa-print"}/>
-                <span className={"hidden-xs padding-left-xs"}>
-                    Print
-                </span>
-            </button>
+            <div className={"btn-group"} style={{marginLeft: "5px"}}>
+
+                {/* Print Button */}
+                <button
+                    type={"button"}
+                    className={"btn btn-primary btn-sm"}
+                    onClick={() => onPrint()}
+                    style={{marginRight: 0}}
+                >
+                    <span className={"fa fa-solid fa-nopad fa-print"}/>
+                    <span className={"hidden-xs padding-left-xs"}>
+                        Print
+                    </span>
+                </button>
+
+                {/* Print View Button */}
+                <button
+                    type={"button"}
+                    className={"btn btn-primary btn-sm"}
+                    onClick={() => onPrintView()}
+                    style={{paddingLeft: 10, paddingRight: 10}}
+                >
+                    <span className={"fa fa-solid fa-nopad fa-up-right-from-square"}/>
+                </button>
+            </div>
+
+            {/* Hidden Print View */}
             <iframe
                 ref={printArea}
                 src={printURL}

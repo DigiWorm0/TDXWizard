@@ -71,13 +71,12 @@ export default function TicketFeed() {
         const systemMessageRegex = [
             new RegExp(/Changed .* from <b>.*?<\/b> to <b>.*?<\/b>\.<br ?\/?>/g),
             new RegExp(/Changed .* from ".*?" to ".*?"\.<br ?\/?>/g),
-            new RegExp(/Took primary responsibility for this incident from .*?\.<br ?\/?>/g),
-            new RegExp(/Took primary responsibility for this service request from .*?\.<br ?\/?>/g),
+            new RegExp(/Took primary responsibility for this (?:incident|service request) from .*?\.<br ?\/?>/g),
             new RegExp(/Reassigned this incident from .*? to .*?\.<br ?\/?>/g),
             new RegExp(/Reassigned this service request from .*? to .*?\.<br ?\/?>/g),
             new RegExp(/\[Merged from ticket \d+]<br ?\/?><br ?\/?>/g),
-            new RegExp(/Added the ".*?" asset to this incident\.<br ?\/?>/g),
-            new RegExp(/Added the ".*?" asset to this service request\.<br ?\/?>/g),
+            new RegExp(/Added the ".*?" asset to this (?:incident|service request)\.<br ?\/?>/g),
+            new RegExp(/Removed the ".*?" asset from this (?:incident|service request)\.<br ?\/?>/g),
         ];
         systemMessageRegex.forEach(regex => {
             for (let i = 0; i < newItems.length; i++) {
@@ -90,12 +89,15 @@ export default function TicketFeed() {
                 // Check against the regex
                 regex.lastIndex = 0;
                 const matches = regex.exec(item.Body);
-                if (matches === null)
+                if (!matches)
                     continue;
 
                 // Replace each match with a new item
                 for (let o = 0; o < matches?.length; o++) {
                     const m = matches[o];
+                    if (!m)
+                        continue;
+
                     newItems.push({
                         ...item,
                         ID: Math.random(),
@@ -202,6 +204,12 @@ export default function TicketFeed() {
                     </div>
                 )
             })}
+
+            {sortedFeed?.length === 0 && (
+                <div className={"text-center"}>
+                    <span className={"text-muted"}>No feed items to display</span>
+                </div>
+            )}
         </div>
     )
 }

@@ -232,7 +232,8 @@ const typeToKeywordWeights: Record<keyof typeof TicketTypes, KeywordWeights> = {
     "Inventory": {
         "inventory": 1,
         "reassign": 1,
-        "location change": 1
+        "location change": 1,
+        "automated report delivery": 1.5
     },
     "Hardware": {
         "coaxial cable": 1.5,
