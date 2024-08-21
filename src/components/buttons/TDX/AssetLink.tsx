@@ -1,5 +1,6 @@
 import React from "react";
 import WindowLink from "../WindowLink";
+import getAppIDFromURL from "../../../utils/tdx/getAppIDFromURL";
 
 export interface AssetLinkProps {
     id: string;
@@ -7,9 +8,10 @@ export interface AssetLinkProps {
 }
 
 export default function AssetLink(props: AssetLinkProps) {
+    const appID = getAppIDFromURL();
     return (
         <WindowLink
-            href={`${window.location.origin}/TDNext/Apps/44/Assets/AssetDet?AssetID=${props.id}`}
+            href={`${window.location.origin}/TDNext/Apps/${appID}/Assets/AssetDet?AssetID=${props.id}`}
         >
             {props.children}
         </WindowLink>

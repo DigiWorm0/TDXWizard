@@ -4,8 +4,8 @@ import CustomAttribute from "./CustomAttribute";
 import Attachment from "./Attachment";
 
 export default interface Asset {
-    ID: string;
-    AppID: string;
+    ID: number;
+    AppID: number;
     AppName: string;
     FormID: number;
     FormName: string;
