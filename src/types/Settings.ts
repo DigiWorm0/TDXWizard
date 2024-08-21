@@ -4,6 +4,7 @@ export default interface Settings {
     autoUpdateAuthKey: boolean;
     showStatsButton: boolean;
     showTicketTypeButtons: boolean;
+    showTicketAssetButtons: boolean;
     showTicketAssignButtons: boolean;
     hideAssignButtonsIfOpen: boolean;
     hideAssignButtonsIfAssigned: boolean;

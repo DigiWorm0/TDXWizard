@@ -9,7 +9,7 @@ import useTicketFeed from "../../hooks/useTicketFeed";
 
 const REGEX_LIST = [
     /\b[Cc]-?\d{4,5}\b/g, // C-Number
-    /\b20\d\d\d\d\d\d\d\b/g // Asset Number
+    /\b20\d{7}\b/g // Asset Tag
 ];
 
 export default function TicketAssetButtons() {
@@ -22,6 +22,8 @@ export default function TicketAssetButtons() {
 
     const ticketAssetNames = React.useMemo(() => {
         if (!ticket)
+            return null;
+        if (!settings.showTicketAssetButtons)
             return null;
 
         // Asset Search
@@ -40,7 +42,7 @@ export default function TicketAssetButtons() {
         feed?.forEach(feedItem => searchAssets(feedItem.Body || ""));
 
         // Fix C- Prefix
-        assetNames = assetNames.map(asset => asset.replace(/[Cc]-?/, "C-"));
+        assetNames = assetNames.map(assetName => assetName.replace(/[Cc]-?/, "C-"));
 
         // Remove duplicates
         assetNames = [...new Set(assetNames)];

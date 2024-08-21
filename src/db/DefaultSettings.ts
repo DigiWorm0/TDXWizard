@@ -4,6 +4,7 @@ import DefaultCustomTemplates from "./DefaultCustomTemplates";
 const DefaultSettings: Settings = {
     showStatsButton: true,
     showTicketTypeButtons: true,
+    showTicketAssetButtons: true,
     showTicketAssignButtons: true,
     hideAssignButtonsIfAssigned: true,
     hideAssignButtonsIfOpen: true,
