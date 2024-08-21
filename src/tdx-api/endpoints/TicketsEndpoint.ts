@@ -3,6 +3,7 @@ import Ticket from "../types/Ticket";
 import User from "../types/User";
 import TicketCreateOptions from "../types/TicketCreateOptions";
 import FeedItemUpdate from "../types/FeedItemUpdate";
+import ConfigurationItem from "../types/ConfigurationItem";
 
 /**
  * A class for interacting with the TDX Tickets API
@@ -47,6 +48,10 @@ export default class TicketsEndpoint extends TDXEndpoint {
 
     getTicketFeed(appID: number, id: number) {
         return this.client.jsonRequest<FeedItemUpdate[]>(`${appID}/tickets/${id}/feed`);
+    }
+
+    getTicketAssets(appID: number, id: number) {
+        return this.client.jsonRequest<ConfigurationItem[]>(`${appID}/tickets/${id}/assets`);
     }
 
     // getTicketAssets(appID: number, id: number) {
