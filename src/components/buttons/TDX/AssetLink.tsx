@@ -3,7 +3,7 @@ import WindowLink from "../WindowLink";
 import getAppIDFromURL from "../../../utils/tdx/getAppIDFromURL";
 
 export interface AssetLinkProps {
-    id: string;
+    id: number;
     children: React.ReactNode;
 }
 
