@@ -29,12 +29,13 @@ const DefaultSettings: Settings = {
 
     authKey: "",
     autoUpdateAuthKey: true,
-    
+
     customTemplates: DefaultCustomTemplates,
     enableCustomTemplates: true,
     legacyLookupButton: true,
     bulkInventoryButton: true,
     reverseFeedOrder: false,
+    technicianInitials: "ME",
 };
 
 export default DefaultSettings;

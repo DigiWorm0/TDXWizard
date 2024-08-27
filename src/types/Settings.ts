@@ -27,4 +27,5 @@ export default interface Settings {
     enableCustomTemplates: boolean;
     legacyLookupButton: boolean;
     bulkInventoryButton: boolean;
+    technicianInitials: string;
 }
