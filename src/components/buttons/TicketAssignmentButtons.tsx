@@ -87,8 +87,7 @@ export default function TicketAssignmentButtons() {
                 throw new Error("Ticket ID not found");
 
             // Update Ticket
-            const res = await client.tickets.updateTicket(AppID.Tickets, ticketID, {ResponsibleUid: assignment.UID});
-            console.log(res);
+            await client.tickets.updateTicket(AppID.Tickets, ticketID, {ResponsibleUid: assignment.UID});
 
             // Reload/Close the page
             if (settings.autoCloseTicketOnSave)

@@ -11,6 +11,7 @@ export default interface Settings {
     showSurplusButtons: boolean;
     autoHideTicketTypes: boolean;
     autoCloseTicketOnSave: boolean;
+    addWorkflowButton: boolean;
     ticketTypeThreshold: number;
     confirmActions: boolean;
     unlinkEmails: boolean;
@@ -27,4 +28,5 @@ export default interface Settings {
     enableCustomTemplates: boolean;
     legacyLookupButton: boolean;
     bulkInventoryButton: boolean;
+    technicianInitials: string;
 }

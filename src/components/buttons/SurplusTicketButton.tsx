@@ -1,23 +1,24 @@
 import confirmAction from "../../utils/confirmAction";
 import UWStoutTDXClient from "../../utils/tdx/UWStoutTDXClient";
-import getAssetIDFromURL from "../../utils/tdx/getAssetIDFromURL";
 import AppID from "../../types/AppID";
-import {GM_notification, GM_setClipboard} from "$";
+import {GM_setClipboard} from "$";
 import useSettings from "../../hooks/useSettings";
 import TicketTypes from "../../db/TicketTypes";
+import useMyUser from "../../hooks/useMyUser";
+import useAsset from "../../hooks/useAsset";
 
 export default function SurplusTicketButton() {
     const [settings] = useSettings();
+    const myUser = useMyUser();
+    const asset = useAsset();
 
     const onClick = async () => {
         if (confirmAction("Make a surplus ticket for this asset?")) {
             const client = new UWStoutTDXClient();
 
             // Get Asset Info
-            const assetID = getAssetIDFromURL();
-            if (!assetID)
-                throw new Error("AssetID not found");
-            const assetInfo = await client.assets.getAsset(44, assetID);
+            if (!asset)
+                throw new Error("Asset not found");
 
             // Create Ticket
             const newTicket = await client.tickets.createTicket(
@@ -25,12 +26,12 @@ export default function SurplusTicketButton() {
                 {
                     TypeID: TicketTypes["Surplus"],
                     Title: "Device Surplus Requested",
-                    Description: `Surplussed device ${assetInfo.Tag} (In PC-Repair) - ` +
-                        "Device has been secure-erased, BIOS password removed, inventory updated, and Windows 11 installed. Sending to surplus...",
-                    AccountID: 2090, // Infrustructure Services
-                    StatusID: 196, // Resolved
+                    Description: `Surplussing ${asset.Tag} (In PC-Repair)`,
+                    AccountID: 2474, // NONE
+                    StatusID: 195, // In Process
                     PriorityID: 64, // Medium
-                    RequestorUid: "59a770dc-058c-ed11-ac20-0050f2f4deeb", // Margaret Kralewski
+                    RequestorUid: myUser?.UID,
+                    ResponsibleGroupID: 320, // PC Repair
                     SourceID: 193, // Tech Created
                 },
                 {
@@ -40,23 +41,17 @@ export default function SurplusTicketButton() {
                     AllowRequestorCreation: false
                 }
             );
-            console.log(newTicket);
 
             // Add Asset to Ticket
-            const assetRes = await client.assets.addAssetToTicket(
+            await client.assets.addAssetToTicket(
                 AppID.Inventory,
-                assetID,
+                asset.ID,
                 newTicket.ID
             );
-            console.log(assetRes);
 
             // Copy Surplus Excel to Clipboard
-            const surplusRow = `${assetInfo.Tag}\tAK\t${newTicket.ID}\tAK`;
+            const surplusRow = `${asset.Tag}\t${settings.technicianInitials}\t${newTicket.ID}\t${settings.technicianInitials}`;
             GM_setClipboard(surplusRow, "text");
-            GM_notification(
-                "The excel row has been copied to your clipboard. Don't forget to paste it into the Surplus Excel!",
-                "Surplus Processed Successfully"
-            );
 
             // Navigate to Ticket
             window.open(
@@ -73,6 +68,8 @@ export default function SurplusTicketButton() {
         }
     }
 
+    if (asset?.StatusID !== 27 || !settings.showSurplusButtons)
+        return null;
     return (
         <button
             type={"button"}

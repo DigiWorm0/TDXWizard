@@ -72,11 +72,15 @@ export default function TicketFeed() {
             new RegExp(/Changed .* from <b>.*?<\/b> to <b>.*?<\/b>\.<br ?\/?>/g),
             new RegExp(/Changed .* from ".*?" to ".*?"\.<br ?\/?>/g),
             new RegExp(/Took primary responsibility for this (?:incident|service request) from .*?\.<br ?\/?>/g),
-            new RegExp(/Reassigned this incident from .*? to .*?\.<br ?\/?>/g),
-            new RegExp(/Reassigned this service request from .*? to .*?\.<br ?\/?>/g),
+            new RegExp(/Reassigned this (?:incident|service request) from .*? to .*?\.<br ?\/?>/g),
             new RegExp(/\[Merged from ticket \d+]<br ?\/?><br ?\/?>/g),
             new RegExp(/Added the ".*?" asset to this (?:incident|service request)\.<br ?\/?>/g),
             new RegExp(/Removed the ".*?" asset from this (?:incident|service request)\.<br ?\/?>/g),
+            new RegExp(/Added .* as a contact for this (?:incident|service request)\.<br ?\/?>/g),
+            new RegExp(/Automatically completed as a result of the (?:incident|service request) being closed.<br ?\/?>/g),
+            new RegExp(/Assigned the ".*?" workflow to this (?:incident|service request)\.<br ?\/?>/g),
+            new RegExp(/Added the .*? template to this (?:incident|service request)\.<br ?\/?>/g),
+            new RegExp(/Edited this task\.<br ?\/?>/g),
         ];
         systemMessageRegex.forEach(regex => {
             for (let i = 0; i < newItems.length; i++) {

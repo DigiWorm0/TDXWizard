@@ -8,6 +8,7 @@ import ResetCustomTemplatesButton from "../buttons/ResetCustomTemplatesButton";
 import ResetSettingsButton from "../buttons/ResetSettingsButton";
 import SettingsColorPickerInput from "../input/SettingsColorPickerInput";
 import SettingsHeader from "../style/SettingsHeader";
+import SettingsTextInput from "../input/SettingsTextInput";
 
 export interface SettingsModalProps {
     isOpen: boolean;
@@ -88,6 +89,11 @@ export default function SettingsModal(props: SettingsModalProps) {
 
                             <SettingsHeader title={"Common"}/>
 
+                            <SettingsTextInput
+                                label={"Technician Initials"}
+                                setting={"technicianInitials"}
+                                showLabel
+                            />
                             <SettingsSwitchInput
                                 label={"Remove Email Anchors/Links"}
                                 setting={"unlinkEmails"}
@@ -163,6 +169,12 @@ export default function SettingsModal(props: SettingsModalProps) {
                                     title={"Hides the default 'Print View' button on the ticket page"}
                                 />
                             </div>
+
+                            <SettingsSwitchInput
+                                label={"Show Workflow Button"}
+                                setting={"addWorkflowButton"}
+                                title={"Enabled the 'Add Workflow' button on the ticket page"}
+                            />
 
                             <SettingsSwitchInput
                                 label={"Suggest Ticket Assignments"}

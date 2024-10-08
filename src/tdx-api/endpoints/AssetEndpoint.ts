@@ -11,6 +11,10 @@ export default class AssetEndpoint extends TDXEndpoint {
         return this.client.jsonRequest<Asset>(`${appID}/assets/${assetID}`);
     }
 
+    editAsset(appID: number, assetID: number, asset: Partial<Asset>) {
+        return this.client.jsonRequest<Asset>(`${appID}/assets/${assetID}`, asset, "POST");
+    }
+
     addAssetToTicket(appID: number, assetID: number, ticketID: number) {
         return this.client.rawRequest(`${appID}/assets/${assetID}/tickets/${ticketID}`, undefined, "POST");
     }
