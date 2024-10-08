@@ -3,6 +3,7 @@ import getTicketIDFromURL from "../../utils/tdx/getTicketIDFromURL";
 import useSettings from "../../hooks/useSettings";
 import getAppIDFromURL from "../../utils/tdx/getAppIDFromURL";
 import useTicketWorkflow from "../../hooks/useTicketWorkflow";
+import confirmAction from "../../utils/confirmAction";
 
 // Auto-Assign Workflow ID
 const WORKFLOW_ID = 1043705;
@@ -11,9 +12,10 @@ export default function AddWorkflowButton() {
     const [settings] = useSettings();
     const workflow = useTicketWorkflow();
 
-    console.log(workflow)
-
     const assignWorkflow = async () => {
+        if (!confirmAction("Are you sure you want to assign the workflow?"))
+            return;
+
         console.log("Assigning Workflow");
 
         // API Client
@@ -39,7 +41,7 @@ export default function AddWorkflowButton() {
         else
             window.location.reload();
     }
-    
+
     if (workflow || !settings.addWorkflowButton)
         return null;
     return (
