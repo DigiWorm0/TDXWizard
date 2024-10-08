@@ -10,6 +10,8 @@ const DefaultSettings: Settings = {
     hideAssignButtonsIfOpen: true,
     showSurplusButtons: true,
 
+    addWorkflowButton: true,
+
     autoHideTicketTypes: true,
     autoCloseTicketOnSave: false,
     ticketTypeThreshold: 0.5,

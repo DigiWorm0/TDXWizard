@@ -171,6 +171,12 @@ export default function SettingsModal(props: SettingsModalProps) {
                             </div>
 
                             <SettingsSwitchInput
+                                label={"Show Workflow Button"}
+                                setting={"addWorkflowButton"}
+                                title={"Enabled the 'Add Workflow' button on the ticket page"}
+                            />
+
+                            <SettingsSwitchInput
                                 label={"Suggest Ticket Assignments"}
                                 setting={"showTicketAssignButtons"}
                                 title={"Suggests assignments for tickets based on the feed"}

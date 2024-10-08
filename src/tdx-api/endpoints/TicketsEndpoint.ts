@@ -4,6 +4,7 @@ import User from "../types/User";
 import TicketCreateOptions from "../types/TicketCreateOptions";
 import FeedItemUpdate from "../types/FeedItemUpdate";
 import ConfigurationItem from "../types/ConfigurationItem";
+import TicketWorkflow from "../types/TicketWorkflow";
 
 /**
  * A class for interacting with the TDX Tickets API
@@ -52,6 +53,18 @@ export default class TicketsEndpoint extends TDXEndpoint {
 
     getTicketAssets(appID: number, id: number) {
         return this.client.jsonRequest<ConfigurationItem[]>(`${appID}/tickets/${id}/assets`);
+    }
+
+    getTicketWorkflow(appID: number, id: number) {
+        return this.client.jsonRequest<TicketWorkflow>(`${appID}/tickets/${id}/workflow`);
+    }
+
+    reassignWorkflow(appID: number, id: number, workflowID: number, allowRemoveExisting: boolean = false) {
+        return this.client.jsonRequest<Ticket>(
+            `${appID}/tickets/${id}/workflow?newWorkflowId=${workflowID}&allowRemoveExisting=${allowRemoveExisting}`,
+            undefined,
+            "PUT"
+        );
     }
 
     // getTicketAssets(appID: number, id: number) {

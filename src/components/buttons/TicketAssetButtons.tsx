@@ -18,8 +18,6 @@ export default function TicketAssetButtons() {
     const feed = useTicketFeed();
     const [settings] = useSettings();
 
-    console.log(ticketAssets);
-
     const ticketAssetNames = React.useMemo(() => {
         if (!ticket)
             return null;
@@ -80,8 +78,7 @@ export default function TicketAssetButtons() {
                 window.close();
             else
                 window.location.reload();
-        }
-        catch (err: any) {
+        } catch (err: any) {
             console.error(err);
             alert(err?.message || "An error occurred");
         }

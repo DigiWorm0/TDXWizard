@@ -11,6 +11,7 @@ export default interface Settings {
     showSurplusButtons: boolean;
     autoHideTicketTypes: boolean;
     autoCloseTicketOnSave: boolean;
+    addWorkflowButton: boolean;
     ticketTypeThreshold: number;
     confirmActions: boolean;
     unlinkEmails: boolean;
