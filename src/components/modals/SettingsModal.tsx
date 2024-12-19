@@ -178,7 +178,7 @@ export default function SettingsModal(props: SettingsModalProps) {
 
                             <SettingsSwitchInput
                                 label={"Show eStout Picked Up Button"}
-                                setting={"eStoutPickupButton"}
+                                setting={"eStoutResolveButton"}
                                 title={"Enables the eStout 'Picked Up' button on the ticket page"}
                             />
 
