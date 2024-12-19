@@ -2,21 +2,17 @@ import UWStoutTDXClient from "../../utils/tdx/UWStoutTDXClient";
 import getTicketIDFromURL from "../../utils/tdx/getTicketIDFromURL";
 import useSettings from "../../hooks/useSettings";
 import getAppIDFromURL from "../../utils/tdx/getAppIDFromURL";
-import useTicketWorkflow from "../../hooks/useTicketWorkflow";
 import confirmAction from "../../utils/confirmAction";
+import useTicket from "../../hooks/useTicket";
+import TicketStatus from "../../types/TicketStatus";
 
-// Auto-Assign Workflow ID
-const WORKFLOW_ID = 1043705;
-
-export default function AddWorkflowButton() {
+export default function ResolveButton() {
     const [settings] = useSettings();
-    const workflow = useTicketWorkflow();
+    const ticket = useTicket();
 
-    const assignWorkflow = async () => {
-        if (!confirmAction("Are you sure you want to assign the workflow?"))
+    const resolveTicket = async () => {
+        if (!confirmAction("Are you sure you want to resolve this ticket?"))
             return;
-
-        console.log("Assigning Workflow");
 
         // API Client
         const client = new UWStoutTDXClient();
@@ -31,9 +27,10 @@ export default function AddWorkflowButton() {
         if (!appID)
             throw new Error("App ID not found");
 
-        // Edit Ticket
-        const res = await client.tickets.reassignWorkflow(appID, ticketID, WORKFLOW_ID);
-        console.log(res);
+        // Update to "Resolved"
+        await client.tickets.updateTicket(appID, ticketID, {
+            StatusID: TicketStatus.Resolved
+        });
 
         // Reload/Close the page
         if (settings.autoCloseTicketOnSave)
@@ -42,18 +39,28 @@ export default function AddWorkflowButton() {
             window.location.reload();
     }
 
-    if (workflow || !settings.addWorkflowButton)
+    // Already Resolved
+    const isResolved = ticket?.StatusID === TicketStatus.Resolved;
+    const isClosed = ticket?.StatusID === TicketStatus.Closed;
+    const isCancelled = ticket?.StatusID === TicketStatus.Cancelled;
+    if (isResolved || isClosed || isCancelled)
+        return null;
+
+    // Disabled
+    if (!settings.resolveButton)
         return null;
     return (
         <button
-            className={"btn btn-warning btn-sm dropdown-toggle"}
+            className={"btn btn-danger btn-sm dropdown-toggle"}
+            style={{margin: "0px 3px"}}
             type={"button"}
             data-toggle={"dropdown"}
-            onClick={() => assignWorkflow()}
+            onClick={() => resolveTicket()}
+            title={"Marks the ticket as resolved"}
         >
-            <span className={"fa-solid fa-nopad fa-lg fa-plus"}/>
+            <span className={"fa-solid fa-nopad fa-lg fa-check"}/>
             <span className={"hidden-xs padding-left-xs"}>
-                Add Workflow
+                Resolve
             </span>
         </button>
     )

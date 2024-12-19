@@ -5,6 +5,7 @@ import TicketCreateOptions from "../types/TicketCreateOptions";
 import FeedItemUpdate from "../types/FeedItemUpdate";
 import ConfigurationItem from "../types/ConfigurationItem";
 import TicketWorkflow from "../types/TicketWorkflow";
+import TicketFeedEntry from "../types/TicketFeedEntry";
 
 /**
  * A class for interacting with the TDX Tickets API
@@ -64,6 +65,14 @@ export default class TicketsEndpoint extends TDXEndpoint {
             `${appID}/tickets/${id}/workflow?newWorkflowId=${workflowID}&allowRemoveExisting=${allowRemoveExisting}`,
             undefined,
             "PUT"
+        );
+    }
+
+    addTicketFeed(appID: number, id: number, feedItem: TicketFeedEntry) {
+        return this.client.jsonRequest<FeedItemUpdate>(
+            `${appID}/tickets/${id}/feed`,
+            feedItem,
+            "POST"
         );
     }
 

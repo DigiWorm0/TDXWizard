@@ -3,7 +3,8 @@ import TicketAssignmentButtons from "../buttons/TicketAssignmentButtons";
 import TicketPrintButton from "../buttons/TicketPrintButton";
 import TicketAssetButtons from "../buttons/TicketAssetButtons";
 import ConvertSurplusTicketButton from "../buttons/ConvertSurplusTicketButton";
-import AddWorkflowButton from "../buttons/AddWorkflowButton";
+import EStoutPickupButton from "../buttons/EStoutPickupButton";
+import ResolveButton from "../buttons/ResolveButton";
 
 export default function TicketNavBar() {
     return (
@@ -13,7 +14,8 @@ export default function TicketNavBar() {
             <TicketAssetButtons/>
             <TicketAssignmentButtons/>
             <ConvertSurplusTicketButton/>
-            <AddWorkflowButton/>
+            <EStoutPickupButton/>
+            <ResolveButton/>
         </>
     )
 }
