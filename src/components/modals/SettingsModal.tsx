@@ -151,9 +151,9 @@ export default function SettingsModal(props: SettingsModalProps) {
                             </div>
 
                             <SettingsSwitchInput
-                                label={"Auto-Close Tickets On Action"}
+                                label={"Automatically Exit Tickets On Action"}
                                 setting={"autoCloseTicketOnSave"}
-                                title={"Automatically closes the ticket after completing an action. Useful for bulk actions"}
+                                title={"Automatically exits the ticket window after completing an action. Useful for bulk actions"}
                             />
 
                             <SettingsSwitchInput
@@ -171,9 +171,15 @@ export default function SettingsModal(props: SettingsModalProps) {
                             </div>
 
                             <SettingsSwitchInput
-                                label={"Show Workflow Button"}
-                                setting={"addWorkflowButton"}
-                                title={"Enabled the 'Add Workflow' button on the ticket page"}
+                                label={"Show eStout Pickup Button"}
+                                setting={"eStoutPickupButton"}
+                                title={"Enabled the 'eStout Pickup' button on the ticket page"}
+                            />
+
+                            <SettingsSwitchInput
+                                label={"Show Resolve Button"}
+                                setting={"resolveButton"}
+                                title={"Enabled the 'Resolve' button on the ticket page"}
                             />
 
                             <SettingsSwitchInput

@@ -110,6 +110,36 @@ export default function BulkInventoryModal(props: BulkInventoryModalProps) {
         setAssets(assets.filter(a => a.ID !== asset.ID));
     }
 
+    const refreshAssets = async () => {
+
+        // Check if loading
+        if (isLoading)
+            return;
+
+        // Update state
+        setIsLoading(true);
+        setAssets([]);
+
+        // Send API request
+        const client = new UWStoutTDXClient();
+        const appID = getAppIDFromURL();
+
+        if (!appID)
+            throw new Error("App ID not found");
+
+        // Iterate over each asset
+        const newAssets: Asset[] = [];
+        for (const asset of assets) {
+            const newAsset = await client.assets.getAsset(appID, asset.ID);
+            newAssets.push(newAsset);
+            setAssets([...newAssets]);
+        }
+
+        // Update state
+        setIsLoading(false);
+        setAssets(newAssets);
+    }
+
     return (
         <NewWindow
             title={"Bulk Inventory"}
@@ -215,6 +245,15 @@ export default function BulkInventoryModal(props: BulkInventoryModalProps) {
                     disabled={assets.length === 0}
                 >
                     Download CSV
+                </button>
+
+                <button
+                    className={"btn btn-primary"}
+                    onClick={() => refreshAssets()}
+                    style={{marginTop: 5, marginLeft: 5}}
+                    disabled={assets.length === 0 || isLoading}
+                >
+                    Reload Assets
                 </button>
 
                 {error && (
