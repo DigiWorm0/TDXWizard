@@ -171,15 +171,21 @@ export default function SettingsModal(props: SettingsModalProps) {
                             </div>
 
                             <SettingsSwitchInput
-                                label={"Show eStout Pickup Button"}
+                                label={"Show eStout Ready for Pickup Button"}
                                 setting={"eStoutPickupButton"}
-                                title={"Enabled the 'eStout Pickup' button on the ticket page"}
+                                title={"Enables the eStout 'Ready for Pickup' button on the ticket page"}
+                            />
+
+                            <SettingsSwitchInput
+                                label={"Show eStout Picked Up Button"}
+                                setting={"eStoutResolveButton"}
+                                title={"Enables the eStout 'Picked Up' button on the ticket page"}
                             />
 
                             <SettingsSwitchInput
                                 label={"Show Resolve Button"}
                                 setting={"resolveButton"}
-                                title={"Enabled the 'Resolve' button on the ticket page"}
+                                title={"Enables a universal 'Resolve' button on all ticket pages"}
                             />
 
                             <SettingsSwitchInput

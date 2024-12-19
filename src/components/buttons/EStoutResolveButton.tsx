@@ -56,7 +56,9 @@ export default function EStoutResolveButton() {
         return null;
 
     // Doesn't have the workflow
-    const hasWorkflow = ticketWorkflow?.ID === RESPOND_WORKFLOW_ID;
+    console.log(ticketWorkflow);
+    const hasWorkflow = ticketWorkflow?.WorkflowConfigurationID === RESPOND_WORKFLOW_ID;
+    console.log(hasWorkflow);
     if (!hasWorkflow)
         return null;
 

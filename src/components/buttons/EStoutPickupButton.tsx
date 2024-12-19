@@ -63,7 +63,7 @@ export default function EStoutPickupButton() {
         return null;
 
     // Workflow/Status Already Set
-    const isWorkflowAssigned = workflow?.ID === RESPOND_WORKFLOW_ID;
+    const isWorkflowAssigned = workflow?.WorkflowConfigurationID === RESPOND_WORKFLOW_ID;
     const isWaitingForClient = ticket?.StatusID === TicketStatus.WaitingForClientVendor;
     if (isWorkflowAssigned && isWaitingForClient)
         return null;

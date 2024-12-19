@@ -6,7 +6,7 @@ export default interface TicketWorkflow {
     Name: string;
     Description: string;
     TicketId: number;
-    WorkflowConfiguratonID: number;
+    WorkflowConfigurationID: number;
     BeginStepID: Guid;
     CurrentStepIDs: Guid[];
     //Steps
