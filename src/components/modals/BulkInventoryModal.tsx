@@ -112,6 +112,10 @@ export default function BulkInventoryModal(props: BulkInventoryModalProps) {
 
     const refreshAssets = async () => {
 
+        // Check if loading
+        if (isLoading)
+            return;
+
         // Update state
         setIsLoading(true);
         setAssets([]);
@@ -247,7 +251,7 @@ export default function BulkInventoryModal(props: BulkInventoryModalProps) {
                     className={"btn btn-primary"}
                     onClick={() => refreshAssets()}
                     style={{marginTop: 5, marginLeft: 5}}
-                    disabled={assets.length === 0}
+                    disabled={assets.length === 0 || isLoading}
                 >
                     Reload Assets
                 </button>
