@@ -10,8 +10,6 @@ const DefaultSettings: Settings = {
     hideAssignButtonsIfOpen: true,
     showSurplusButtons: true,
 
-    addWorkflowButton: true,
-
     autoHideTicketTypes: true,
     autoCloseTicketOnSave: false,
     ticketTypeThreshold: 0.5,
@@ -38,6 +36,10 @@ const DefaultSettings: Settings = {
     bulkInventoryButton: true,
     reverseFeedOrder: false,
     technicianInitials: "ME",
+
+    eStoutPickupButton: true,
+    eStoutResolveButton: true,
+    resolveButton: false,
 };
 
 export default DefaultSettings;
