@@ -9,6 +9,8 @@ import ResetSettingsButton from "../buttons/ResetSettingsButton";
 import SettingsColorPickerInput from "../input/SettingsColorPickerInput";
 import SettingsHeader from "../style/SettingsHeader";
 import SettingsTextInput from "../input/SettingsTextInput";
+import ExportSettingsButton from "../buttons/ExportSettingsButton";
+import ImportSettingsButton from "../buttons/ImportSettingsButton";
 
 export interface SettingsModalProps {
     isOpen: boolean;
@@ -85,6 +87,10 @@ export default function SettingsModal(props: SettingsModalProps) {
                             <div className={"btn-group"}>
                                 <ResetSettingsButton/>
                                 <ResetCustomTemplatesButton/>
+                            </div>
+                            <div className={"btn-group"}>
+                                <ExportSettingsButton/>
+                                <ImportSettingsButton/>
                             </div>
 
                             <SettingsHeader title={"Common"}/>

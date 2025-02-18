@@ -81,6 +81,7 @@ export default function TicketFeed() {
             new RegExp(/Assigned the ".*?" workflow to this (?:incident|service request)\.<br ?\/?>/g),
             new RegExp(/Added the .*? template to this (?:incident|service request)\.<br ?\/?>/g),
             new RegExp(/Edited this task\.<br ?\/?>/g),
+            new RegExp(/Restarted the ".*?" workflow for this (?:incident|service request)\.<br ?\/?>/g),
         ];
         systemMessageRegex.forEach(regex => {
             for (let i = 0; i < newItems.length; i++) {
