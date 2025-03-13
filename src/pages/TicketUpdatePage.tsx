@@ -3,12 +3,12 @@ import addComponentToDOM from "../utils/addComponentToDOM";
 import CustomTemplateMenu from "../components/pages/CustomTemplateMenu";
 import getSettings from "../utils/getSettings";
 
-const URL_PREFIX = "/TDNext/Apps/43/Tickets/Update"
+const URL_PREFIX_REGEX = /\/TDNext\/Apps\/\d*\/Tickets\/Update/g;
 
 export default class TicketUpdatePage implements PageScript {
 
     canRun() {
-        return window.location.pathname.startsWith(URL_PREFIX);
+        return URL_PREFIX_REGEX.test(window.location.pathname);
     }
 
     run() {

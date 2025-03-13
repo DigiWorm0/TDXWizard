@@ -3,6 +3,7 @@ import {unwrap} from "jotai/utils";
 import UWStoutTDXClient from "../utils/tdx/UWStoutTDXClient";
 import AppID from "../types/AppID";
 import getTicketIDFromURL from "../utils/tdx/getTicketIDFromURL";
+import getAppIDFromURL from "../utils/tdx/getAppIDFromURL";
 
 export const ticketFeedAtom = atom(async () => {
     // API Client
@@ -13,8 +14,11 @@ export const ticketFeedAtom = atom(async () => {
     if (!ticketID)
         return null;
 
+    // Get the app ID
+    const appID = getAppIDFromURL() ?? AppID.Tickets;
+
     // Get the ticket feed
-    const feed = await client.tickets.getTicketFeed(AppID.Tickets, ticketID);
+    const feed = await client.tickets.getTicketFeed(appID, ticketID);
 
     // Grab the replies
     for (let i = 0; i < feed.length; i++) {

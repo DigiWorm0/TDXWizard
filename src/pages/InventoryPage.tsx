@@ -5,6 +5,7 @@ import InventoryNavBar from "../components/pages/InventoryNavBar";
 const URL_PREFIX_REGEX = /\/TDNext\/Apps\/\d+\/Assets\/Default/;
 
 export default class InventoryPage implements PageScript {
+    
     canRun(): boolean {
         return URL_PREFIX_REGEX.test(window.location.pathname);
     }

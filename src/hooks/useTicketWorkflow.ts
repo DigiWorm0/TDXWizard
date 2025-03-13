@@ -3,13 +3,20 @@ import {unwrap} from "jotai/utils";
 import UWStoutTDXClient from "../utils/tdx/UWStoutTDXClient";
 import AppID from "../types/AppID";
 import getTicketIDFromURL from "../utils/tdx/getTicketIDFromURL";
+import getAppIDFromURL from "../utils/tdx/getAppIDFromURL";
 
 export const ticketWorkflowAtom = atom(() => {
     const client = new UWStoutTDXClient();
+
+    // Get the ticket ID
     const ticketID = getTicketIDFromURL();
     if (!ticketID)
         return null;
-    return client.tickets.getTicketWorkflow(AppID.Tickets, ticketID).catch(() => null);
+
+    // Get the app ID
+    const appID = getAppIDFromURL() ?? AppID.Tickets;
+
+    return client.tickets.getTicketWorkflow(appID, ticketID).catch(() => null);
 });
 
 export const syncTicketWorkflowAtom = unwrap(ticketWorkflowAtom, t => t);
