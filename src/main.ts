@@ -3,7 +3,6 @@ import HomePage from "./pages/HomePage";
 import CommonPage from "./pages/CommonPage";
 import TicketDetailsPage from "./pages/TicketDetailsPage";
 import AssetDetailsPage from "./pages/AssetDetailsPage";
-import PrintPage from "./pages/PrintPage";
 import InventoryPage from "./pages/InventoryPage";
 import LegacySearchPage from "./pages/LegacySearchPage";
 import TicketUpdatePage from "./pages/TicketUpdatePage";
@@ -13,7 +12,6 @@ const allPages: PageScript[] = [
     new TicketDetailsPage(),
     new AssetDetailsPage(),
     new HomePage(),
-    new PrintPage(),
     new CommonPage(),
     new InventoryPage(),
     new LegacySearchPage(),

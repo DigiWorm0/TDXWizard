@@ -2,11 +2,11 @@ import PageScript from "./PageScript";
 import addComponentToDOM from "../utils/addComponentToDOM";
 import AssetNavBar from "../components/pages/AssetNavBar";
 
-const URL_PREFIX = "/TDNext/Apps/44/Assets/AssetDet";
+const URL_PREFIX_REGEX = /\/TDNext\/Apps\/\d+\/Assets\/AssetDet/g;
 
 export default class AssetDetailsPage implements PageScript {
     canRun(): boolean {
-        return window.location.pathname.startsWith(URL_PREFIX);
+        return URL_PREFIX_REGEX.test(window.location.pathname);
     }
 
     run(): void {
