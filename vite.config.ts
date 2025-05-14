@@ -19,7 +19,7 @@ export default defineConfig({
                 ],
                 downloadURL: 'https://digiworm0.github.io/TDXWizard/tdx-wizard.user.js',
                 name: 'TDX Wizard',
-                "run-at": "document-end"
+                "run-at": "document-start"
             },
         }),
     ],

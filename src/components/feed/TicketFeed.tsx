@@ -83,6 +83,7 @@ export default function TicketFeed() {
             new RegExp(/Added the .*? template to this (?:incident|service request)\.<br ?\/?>/g),
             new RegExp(/Edited this task\.<br ?\/?>/g),
             new RegExp(/Restarted the ".*?" workflow for this (?:incident|service request)\.<br ?\/?>/g),
+            new RegExp(/Took primary responsibility for this (?:incident|service request)\.<br ?\/?>/g),
             new RegExp(/Added the attachment .*?\.<br ?\/?>/g)
         ];
         systemMessageRegex.forEach(regex => {
