@@ -40,6 +40,8 @@ const DefaultSettings: Settings = {
     eStoutPickupButton: true,
     eStoutResolveButton: true,
     resolveButton: false,
+
+    removeCopyURLButton: true,
 };
 
 export default DefaultSettings;

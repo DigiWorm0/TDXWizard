@@ -177,6 +177,12 @@ export default function SettingsModal(props: SettingsModalProps) {
                             </div>
 
                             <SettingsSwitchInput
+                                label={"Hide Copy URL Button"}
+                                setting={"removeCopyURLButton"}
+                                title={"Hides the 'Copy URL' button adjacent to the ticket ID"}
+                            />
+
+                            <SettingsSwitchInput
                                 label={"Show eStout Ready for Pickup Button"}
                                 setting={"eStoutPickupButton"}
                                 title={"Enables the eStout 'Ready for Pickup' button on the ticket page"}
