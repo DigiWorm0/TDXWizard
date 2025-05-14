@@ -142,6 +142,12 @@ export default function SettingsModal(props: SettingsModalProps) {
                                     title={"Places older messages on top and newer messages on bottom"}
                                 />
                                 <SettingsSwitchInput
+                                    label={"Linkify Attachments"}
+                                    setting={"linkifyAttachments"}
+                                    disabled={!settings.useNewFeed}
+                                    title={"Converts attachment text into clickable links"}
+                                />
+                                <SettingsSwitchInput
                                     label={"Custom Profile Color"}
                                     setting={"useCustomProfileColor"}
                                     disabled={!settings.useNewFeed}
@@ -175,6 +181,12 @@ export default function SettingsModal(props: SettingsModalProps) {
                                     title={"Hides the default 'Print View' button on the ticket page"}
                                 />
                             </div>
+
+                            <SettingsSwitchInput
+                                label={"Hide Copy URL Button"}
+                                setting={"removeCopyURLButton"}
+                                title={"Hides the 'Copy URL' button adjacent to the ticket ID"}
+                            />
 
                             <SettingsSwitchInput
                                 label={"Show eStout Ready for Pickup Button"}

@@ -7,6 +7,8 @@ import useUserColor from "../../hooks/useUserColor";
 import useJumpToFeedID from "../../hooks/useJumpToFeed";
 import UpdatedTimestamp from "../utils/UpdatedTimestamp";
 import {Interweave} from "interweave";
+import AttachmentsMatcher from "../../utils/AttachmentsMatcher";
+import Attachment from "../../tdx-api/types/Attachment";
 
 export interface TicketFeedCommunicationProps {
     id: number,
@@ -17,6 +19,7 @@ export interface TicketFeedCommunicationProps {
     body: string,
     label?: string,
     notifiedList: string,
+    ticketAttachments?: Attachment[],
 
     replyToID?: number,
     replyToUID?: Guid,
@@ -175,7 +178,12 @@ export default function FeedCommunication(props: TicketFeedCommunicationProps) {
                         </span>
                     </h5>
                     <p style={{margin: "5px 0px"}}>
-                        <Interweave content={props.body}/>
+                        <Interweave
+                            content={props.body}
+                            matchers={[
+                                new AttachmentsMatcher(props.ticketAttachments ?? [])
+                            ]}
+                        />
                     </p>
                     {props.notifiedList && (
                         <p

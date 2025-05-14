@@ -40,6 +40,10 @@ const DefaultSettings: Settings = {
     eStoutPickupButton: true,
     eStoutResolveButton: true,
     resolveButton: false,
+
+    removeCopyURLButton: true,
+
+    linkifyAttachments: true,
 };
 
 export default DefaultSettings;

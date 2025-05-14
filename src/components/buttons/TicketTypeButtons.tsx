@@ -5,8 +5,8 @@ import findTicketTypes from "../../utils/ticketType/findTicketTypes";
 import StatusClass from "../../tdx-api/types/StatusClass";
 import useSettings from "../../hooks/useSettings";
 import useTicket from "../../hooks/useTicket";
-import AppID from "../../types/AppID";
 import TicketTypes, {TicketType} from "../../db/TicketTypes";
+import getAppIDFromURL from "../../utils/tdx/getAppIDFromURL";
 
 export default function TicketTypeButtons() {
     const ticket = useTicket();
@@ -18,14 +18,14 @@ export default function TicketTypeButtons() {
             return null;
 
         // Check if type is set
-        if (ticket.TypeCategoryName !== "General")
+        if (ticket.TypeCategoryName !== "General" && settings.autoHideTicketTypes)
             return null;
         if (ticket.StatusClass === StatusClass.Cancelled)
             return null;
 
         // Get the possible ticket types
         return findTicketTypes(ticket);
-    }, [ticket]);
+    }, [ticket, settings]);
 
     const setType = async (type: TicketType) => {
 
@@ -37,13 +37,18 @@ export default function TicketTypeButtons() {
         if (!ticketID)
             throw new Error("Ticket ID not found");
 
+        // Get App ID
+        const appID = getAppIDFromURL();
+        if (!appID)
+            throw new Error("App ID not found");
+
         // Get Type ID
         const ticketTypeID = TicketTypes[type as TicketType];
         if (!ticketTypeID)
             throw new Error("Ticket Type not found");
 
         // Update Ticket
-        const res = await client.tickets.updateTicket(AppID.Tickets, ticketID, {TypeID: ticketTypeID});
+        const res = await client.tickets.updateTicket(appID, ticketID, {TypeID: ticketTypeID});
         console.log(res);
 
         // Reload/Close the page
@@ -64,8 +69,13 @@ export default function TicketTypeButtons() {
         if (!ticketID)
             throw new Error("Ticket ID not found");
 
+        // Get App ID
+        const appID = getAppIDFromURL();
+        if (!appID)
+            throw new Error("App ID not found");
+
         // Get Ticket Info
-        const ticketInfo = await client.tickets.getTicket(43, ticketID);
+        const ticketInfo = await client.tickets.getTicket(appID, ticketID);
         console.log(ticketInfo);
 
         // Edit Ticket

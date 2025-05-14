@@ -31,4 +31,6 @@ export default interface Settings {
     bulkInventoryButton: boolean;
     technicianInitials: string;
     resolveButton: boolean;
+    removeCopyURLButton: boolean;
+    linkifyAttachments: boolean;
 }
