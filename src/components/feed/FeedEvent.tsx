@@ -5,12 +5,16 @@ import Guid from "../../tdx-api/types/Guid";
 import React from "react";
 import useUserColor from "../../hooks/useUserColor";
 import DefaultGUID from "../../types/DefaultGUID";
+import {Interweave} from "interweave";
+import AttachmentsMatcher from "../../utils/AttachmentsMatcher";
+import Attachment from "../../tdx-api/types/Attachment";
 
 export interface TicketFeedEventProps {
     uid: Guid,
     name: string,
     date: DateTime,
-    body: string
+    body: string,
+    ticketAttachments?: Attachment[],
 }
 
 export default function FeedEvent(props: TicketFeedEventProps) {
@@ -59,9 +63,20 @@ export default function FeedEvent(props: TicketFeedEventProps) {
                 </a>
             </h5>
             <p
-                style={{margin: 0, color: "#888", paddingTop: 2}}
-                dangerouslySetInnerHTML={{__html: props.body}}
-            />
+                style={{
+                    margin: 0,
+                    color: "#888",
+                    paddingTop: 2
+                }}
+            >
+                <Interweave
+                    content={props.body}
+                    matchers={[
+                        new AttachmentsMatcher(props.ticketAttachments ?? [])
+                    ]}
+                />
+
+            </p>
         </div>
     )
 }

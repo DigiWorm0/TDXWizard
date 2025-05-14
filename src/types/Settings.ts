@@ -32,4 +32,5 @@ export default interface Settings {
     technicianInitials: string;
     resolveButton: boolean;
     removeCopyURLButton: boolean;
+    linkifyAttachments: boolean;
 }

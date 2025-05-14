@@ -142,6 +142,12 @@ export default function SettingsModal(props: SettingsModalProps) {
                                     title={"Places older messages on top and newer messages on bottom"}
                                 />
                                 <SettingsSwitchInput
+                                    label={"Linkify Attachments"}
+                                    setting={"linkifyAttachments"}
+                                    disabled={!settings.useNewFeed}
+                                    title={"Converts attachment text into clickable links"}
+                                />
+                                <SettingsSwitchInput
                                     label={"Custom Profile Color"}
                                     setting={"useCustomProfileColor"}
                                     disabled={!settings.useNewFeed}

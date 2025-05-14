@@ -42,6 +42,8 @@ const DefaultSettings: Settings = {
     resolveButton: false,
 
     removeCopyURLButton: true,
+
+    linkifyAttachments: true,
 };
 
 export default DefaultSettings;

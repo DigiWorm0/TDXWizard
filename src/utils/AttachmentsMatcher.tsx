@@ -1,0 +1,66 @@
+import {ChildrenNode, Matcher, MatchResponse} from "interweave";
+import Attachment from "../tdx-api/types/Attachment";
+
+interface AttachmentMatch {
+    attachment: Attachment;
+}
+
+const MIN_ATTACHMENT_LENGTH = 5;
+
+export default class AttachmentsMatcher extends Matcher<AttachmentMatch> {
+    attachments: Attachment[];
+
+    constructor(attachments: Attachment[]) {
+        super("attachments");
+        this.attachments = attachments;
+    }
+
+    match(string: string): MatchResponse<AttachmentMatch> | null {
+        // Iterate through the attachments
+        for (const attachment of this.attachments) {
+
+            // Check if the attachment name is long enough
+            // Avoids potentially matching on short names like "a", "b", etc.
+            if (attachment.Name.length < MIN_ATTACHMENT_LENGTH)
+                continue;
+
+            // Search for the attachment name in the string
+            const index = string.indexOf(attachment.Name);
+
+            if (index >= 0) {
+
+                // Return the attachment
+                return {
+                    index: index,
+                    length: attachment.Name.length,
+                    match: attachment.Name,
+                    valid: true,
+                    attachment
+                };
+            }
+        }
+
+        // No matches, abort
+        return null;
+    }
+
+    replaceWith(_: ChildrenNode, props: AttachmentMatch) {
+        const {attachment} = props;
+
+        return (
+            <a
+                href={`/TDNext/Apps/Shared/FileOpen?AttachmentID=${attachment.ID}&ItemID=${attachment.ItemID}&IsInline=0&ItemComponent=9`}
+                target={"_blank"}
+                rel={"noopener noreferrer"}
+                className={"attachment-link"}
+                key={attachment.ID}
+            >
+                {attachment.Name}
+            </a>
+        )
+    }
+
+    asTag(): string {
+        return "span";
+    }
+}

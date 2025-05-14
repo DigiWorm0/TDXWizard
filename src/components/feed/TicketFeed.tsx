@@ -183,6 +183,7 @@ export default function TicketFeed() {
                                 name={item.CreatedFullName}
                                 date={item.CreatedDate}
                                 body={item.Body ?? ""}
+                                ticketAttachments={ticket?.Attachments}
                             />
                         )}
 
@@ -200,6 +201,7 @@ export default function TicketFeed() {
                                 isRequester={item.CreatedUid === ticket?.RequestorUid}
                                 body={item.Body ?? ""}
                                 notifiedList={item.NotifiedList}
+                                ticketAttachments={ticket?.Attachments}
 
                                 replyToID={item.ReplyToID}
                                 replyToUID={replyTo?.CreatedUid}
