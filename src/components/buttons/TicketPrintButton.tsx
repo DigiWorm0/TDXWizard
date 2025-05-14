@@ -6,6 +6,16 @@ import useSettings from "../../hooks/useSettings";
 export default function TicketPrintButton() {
     const [settings] = useSettings();
     const printArea = React.useRef<HTMLIFrameElement>(null);
+    const [isLoaded, setIsLoaded] = React.useState(false);
+
+    React.useEffect(() => {
+        const onLoad = () => setIsLoaded(true);
+
+        printArea.current?.addEventListener("load", onLoad);
+        return () => {
+            printArea.current?.removeEventListener("load", onLoad);
+        }
+    }, [printArea])
 
     React.useEffect(() => {
         // Get the Print View Button
@@ -55,8 +65,16 @@ export default function TicketPrintButton() {
                     className={"btn btn-primary btn-sm"}
                     onClick={() => onPrint()}
                     style={{marginRight: 0}}
+                    disabled={!isLoaded}
                 >
-                    <span className={"fa fa-solid fa-nopad fa-print"}/>
+                    {/* Print Button Icon */}
+                    {isLoaded ?
+                        <span className={"fa fa-solid fa-nopad fa-print"}/>
+                        :
+                        <span className={"fa fa-solid fa-nopad fa-spinner fa-spin"}/>
+                    }
+
+                    {/* Print Button Text */}
                     <span className={"hidden-xs padding-left-xs"}>
                         Print
                     </span>
