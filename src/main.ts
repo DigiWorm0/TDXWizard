@@ -6,6 +6,7 @@ import AssetDetailsPage from "./pages/AssetDetailsPage";
 import InventoryPage from "./pages/InventoryPage";
 import LegacySearchPage from "./pages/LegacySearchPage";
 import TicketUpdatePage from "./pages/TicketUpdatePage";
+import TicketCreatePage from "./pages/TicketCreatePage";
 
 // All Pages
 const allPages: PageScript[] = [
@@ -15,7 +16,8 @@ const allPages: PageScript[] = [
     new CommonPage(),
     new InventoryPage(),
     new LegacySearchPage(),
-    new TicketUpdatePage()
+    new TicketUpdatePage(),
+    new TicketCreatePage()
 ];
 
 // Ensures the script runs after the page has loaded

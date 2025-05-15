@@ -33,4 +33,5 @@ export default interface Settings {
     resolveButton: boolean;
     removeCopyURLButton: boolean;
     linkifyAttachments: boolean;
+    suggestFormTypes: boolean;
 }
