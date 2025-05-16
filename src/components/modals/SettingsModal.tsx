@@ -241,6 +241,12 @@ export default function SettingsModal(props: SettingsModalProps) {
                             </div>
 
                             <SettingsSwitchInput
+                                label={"Suggest Form Types"}
+                                setting={"suggestFormTypes"}
+                                title={"When creating a new ticket, suggests a form type based on common forms"}
+                            />
+
+                            <SettingsSwitchInput
                                 label={"Suggest Ticket Assets"}
                                 setting={"showTicketAssetButtons"}
                                 title={"Suggests assets to link based on C-#s or tags found in the title & description"}

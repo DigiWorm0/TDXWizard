@@ -158,8 +158,6 @@ const typeToKeywordWeights: Record<keyof typeof TicketTypes, KeywordWeights> = {
         "issues logging in": 1,
         "trouble signing into": 1,
 
-        "required security steps": 1,
-
         "account": 0.5,
         "activating": 0.5,
         "activation": 0.5,
@@ -179,13 +177,8 @@ const typeToKeywordWeights: Record<keyof typeof TicketTypes, KeywordWeights> = {
         "signon": 0.5,
         "sign on": 0.5,
 
-        "deleted account": 1,
-        "delete account": 1,
-
         "locked computer": 1,
         "locked out": 1,
-
-        "security training": 1,
 
         "username": 0.5,
         "user name": 0.5,
@@ -312,7 +305,15 @@ const typeToKeywordWeights: Record<keyof typeof TicketTypes, KeywordWeights> = {
         "outlook": 0.5,
         "get outlook for ios": -0.5, // Negative weight to reduce false positives
     },
-    "Deploy": {}
+    "Deploy": {},
+    "Alumni Support": {
+        "alumni": 2,
+        "deactivated": 1,
+        "required security steps": 1,
+        "deleted account": 1,
+        "delete account": 1,
+        "security training": 1,
+    }
 };
 
 export default typeToKeywordWeights;

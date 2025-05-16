@@ -4,8 +4,8 @@ import useSettings from "../../hooks/useSettings";
 import getAppIDFromURL from "../../utils/tdx/getAppIDFromURL";
 import confirmAction from "../../utils/confirmAction";
 import useTicket from "../../hooks/useTicket";
-import TicketStatus from "../../types/TicketStatus";
 import useTicketWorkflow from "../../hooks/useTicketWorkflow";
+import useTicketStatusID from "../../hooks/useTicketStatusID";
 
 // Workflow ID
 const RESPOND_WORKFLOW_ID = 1177755;
@@ -14,6 +14,9 @@ export default function EStoutResolveButton() {
     const [settings] = useSettings();
     const ticket = useTicket();
     const ticketWorkflow = useTicketWorkflow();
+    const resolvedID = useTicketStatusID("Resolved");
+    const closedID = useTicketStatusID("Closed");
+    const cancelledID = useTicketStatusID("Cancelled");
 
     const resolveTicket = async () => {
         if (!confirmAction("Are you sure you want to mark this eStout device as picked up?"))
@@ -34,7 +37,7 @@ export default function EStoutResolveButton() {
 
         // Add a feed entry
         await client.tickets.addTicketFeed(appID, ticketID, {
-            NewStatusID: TicketStatus.Resolved,
+            NewStatusID: resolvedID ?? 0,
             IsCommunication: true,
             IsPrivate: true,
             IsRichHtml: false,
@@ -49,16 +52,14 @@ export default function EStoutResolveButton() {
     }
 
     // Already Resolved
-    const isResolved = ticket?.StatusID === TicketStatus.Resolved;
-    const isClosed = ticket?.StatusID === TicketStatus.Closed;
-    const isCancelled = ticket?.StatusID === TicketStatus.Cancelled;
+    const isResolved = ticket?.StatusID === resolvedID;
+    const isClosed = ticket?.StatusID === closedID;
+    const isCancelled = ticket?.StatusID === cancelledID;
     if (isResolved || isClosed || isCancelled)
         return null;
 
     // Doesn't have the workflow
-    console.log(ticketWorkflow);
     const hasWorkflow = ticketWorkflow?.WorkflowConfigurationID === RESPOND_WORKFLOW_ID;
-    console.log(hasWorkflow);
     if (!hasWorkflow)
         return null;
 
