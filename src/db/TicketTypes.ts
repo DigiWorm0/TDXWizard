@@ -20,6 +20,7 @@ const TicketTypes = {
     "Server": 1003,
     "Fob Req": 2959,
     "Deploy": 1001,
+    "Alumni Support": 3415
 };
 export default TicketTypes;
 

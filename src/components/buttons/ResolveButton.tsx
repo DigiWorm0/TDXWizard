@@ -4,11 +4,14 @@ import useSettings from "../../hooks/useSettings";
 import getAppIDFromURL from "../../utils/tdx/getAppIDFromURL";
 import confirmAction from "../../utils/confirmAction";
 import useTicket from "../../hooks/useTicket";
-import TicketStatus from "../../types/TicketStatus";
+import useTicketStatusID from "../../hooks/useTicketStatusID";
 
 export default function ResolveButton() {
     const [settings] = useSettings();
     const ticket = useTicket();
+    const resolvedID = useTicketStatusID("Resolved");
+    const closedID = useTicketStatusID("Closed");
+    const cancelledID = useTicketStatusID("Cancelled");
 
     const resolveTicket = async () => {
         if (!confirmAction("Are you sure you want to resolve this ticket?"))
@@ -29,7 +32,7 @@ export default function ResolveButton() {
 
         // Update to "Resolved"
         await client.tickets.updateTicket(appID, ticketID, {
-            StatusID: TicketStatus.Resolved
+            StatusID: resolvedID ?? 0,
         });
 
         // Reload/Close the page
@@ -40,9 +43,9 @@ export default function ResolveButton() {
     }
 
     // Already Resolved
-    const isResolved = ticket?.StatusID === TicketStatus.Resolved;
-    const isClosed = ticket?.StatusID === TicketStatus.Closed;
-    const isCancelled = ticket?.StatusID === TicketStatus.Cancelled;
+    const isResolved = ticket?.StatusID === resolvedID;
+    const isClosed = ticket?.StatusID === closedID;
+    const isCancelled = ticket?.StatusID === cancelledID;
     if (isResolved || isClosed || isCancelled)
         return null;
 

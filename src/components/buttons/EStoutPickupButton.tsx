@@ -5,8 +5,8 @@ import getAppIDFromURL from "../../utils/tdx/getAppIDFromURL";
 import useTicketWorkflow from "../../hooks/useTicketWorkflow";
 import confirmAction from "../../utils/confirmAction";
 import useTicket from "../../hooks/useTicket";
-import TicketStatus from "../../types/TicketStatus";
 import useTicketAssets from "../../hooks/useTicketAssets";
+import useTicketStatusID from "../../hooks/useTicketStatusID";
 
 // Auto-Assign Workflow ID
 const RESPOND_WORKFLOW_ID = 1177755;
@@ -17,6 +17,7 @@ export default function EStoutPickupButton() {
     const workflow = useTicketWorkflow();
     const ticket = useTicket();
     const ticketAssets = useTicketAssets();
+    const waitingClientVendorID = useTicketStatusID("Waiting on Client/Vendor");
 
     const assignWorkflow = async () => {
         if (!confirmAction("Are you sure you want to notify this student that their eStout device is ready for pickup?"))
@@ -39,7 +40,7 @@ export default function EStoutPickupButton() {
 
         // Update to "Waiting for Client/Vendor"
         await client.tickets.updateTicket(appID, ticketID, {
-            StatusID: TicketStatus.WaitingForClientVendor
+            StatusID: waitingClientVendorID ?? 0,
         });
 
         // Add Workflow
@@ -64,7 +65,7 @@ export default function EStoutPickupButton() {
 
     // Workflow/Status Already Set
     const isWorkflowAssigned = workflow?.WorkflowConfigurationID === RESPOND_WORKFLOW_ID;
-    const isWaitingForClient = ticket?.StatusID === TicketStatus.WaitingForClientVendor;
+    const isWaitingForClient = ticket?.StatusID === waitingClientVendorID;
     if (isWorkflowAssigned && isWaitingForClient)
         return null;
 
