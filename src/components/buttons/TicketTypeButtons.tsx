@@ -95,7 +95,7 @@ export default function TicketTypeButtons() {
     return (
         <div
             className={"btn-group"}
-            style={{margin: "0px 3px"}}
+            style={{margin: "0px 3px", gap: 0}}
         >
             {types?.map(type => (
                 <button
@@ -111,7 +111,7 @@ export default function TicketTypeButtons() {
                 </button>
             ))}
             {types && (
-                <li className={"btn-group"}>
+                <li className={"btn-group"} style={{gap: 0}}>
                     <button
                         className={"btn btn-warning btn-sm dropdown-toggle"}
                         type={"button"}

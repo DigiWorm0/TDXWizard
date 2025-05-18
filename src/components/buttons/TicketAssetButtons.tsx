@@ -12,6 +12,8 @@ const REGEX_LIST = [
     /\b20\d{7}\b/g // Asset Tag
 ];
 
+const MAX_ASSET_COUNT = 3;
+
 export default function TicketAssetButtons() {
     const ticket = useTicket();
     const ticketAssets = useTicketAssets();
@@ -48,6 +50,10 @@ export default function TicketAssetButtons() {
         // Remove existing assets
         if (ticketAssets)
             assetNames = assetNames.filter(asset => !ticketAssets.find(ticketAsset => ticketAsset.Name?.includes(asset)));
+
+        // Max assets
+        if (assetNames.length > MAX_ASSET_COUNT)
+            assetNames = assetNames.slice(0, MAX_ASSET_COUNT);
 
         return assetNames;
     }, [ticket, ticketAssets]);

@@ -4,11 +4,11 @@ import SidebarImage from "../../content/SidebarBG.png";
 import {GM_info} from "$";
 import SettingsAuthInput from "../input/SettingsAuthInput";
 import useSettings from "../../hooks/useSettings";
-import ResetCustomTemplatesButton from "../buttons/ResetCustomTemplatesButton";
-import ResetSettingsButton from "../buttons/ResetSettingsButton";
 import SettingsColorPickerInput from "../input/SettingsColorPickerInput";
 import SettingsHeader from "../style/SettingsHeader";
 import SettingsTextInput from "../input/SettingsTextInput";
+import ResetSettingsButton from "../buttons/ResetSettingsButton";
+import ResetCustomTemplatesButton from "../buttons/ResetCustomTemplatesButton";
 import ExportSettingsButton from "../buttons/ExportSettingsButton";
 import ImportSettingsButton from "../buttons/ImportSettingsButton";
 
@@ -21,7 +21,13 @@ export default function SettingsModal(props: SettingsModalProps) {
     const [settings] = useSettings();
     return (
         <ModalBase isOpen={props.isOpen} onClose={props.onClose}>
-            <div className={"modal-dialog"} role={"document"}>
+            <div
+                className={"modal-dialog"}
+                role={"document"}
+                style={{
+                    maxWidth: 600
+                }}
+            >
                 <div className={"modal-content"}>
                     <div
                         style={{
@@ -36,8 +42,8 @@ export default function SettingsModal(props: SettingsModalProps) {
                                 src={SidebarImage}
                                 width={220}
                                 style={{
-                                    borderTopLeftRadius: 5,
-                                    borderBottomLeftRadius: 5,
+                                    borderTopLeftRadius: "1.125rem",
+                                    borderBottomLeftRadius: "1.125rem",
                                     height: "100%",
                                     objectFit: "cover",
                                     marginRight: 5,
@@ -57,7 +63,14 @@ export default function SettingsModal(props: SettingsModalProps) {
                                     justifyContent: "space-between",
                                 }}
                             >
-                                <h1 style={{fontWeight: "bold"}}>
+                                <span
+                                    style={{
+                                        fontFamily: "\"DM Sans\",sans-serif",
+                                        fontWeight: "bold",
+                                        fontSize: 30,
+                                        marginTop: 16
+                                    }}
+                                >
                                     TDX Wizard
                                     <span
                                         style={{
@@ -68,30 +81,22 @@ export default function SettingsModal(props: SettingsModalProps) {
                                     >
                                     v{GM_info.script.version}
                                 </span>
-                                </h1>
+                                </span>
                                 <button
                                     type={"button"}
-                                    className={"close"}
+                                    className={"close tdx-close-x"}
                                     data-dismiss={"modal"}
                                     aria-label={"Close"}
                                     onClick={props.onClose}
-                                    style={{marginRight: 10}}
+                                    style={{
+                                        margin: 10
+                                    }}
                                 >
-                                    <span aria-hidden={"true"}>&times;</span>
                                 </button>
                             </div>
                             <hr style={{marginTop: 6, marginBottom: 0}}/>
 
                             {/* ---- START SETTINGS ---- */}
-
-                            <div className={"btn-group"}>
-                                <ResetSettingsButton/>
-                                <ResetCustomTemplatesButton/>
-                            </div>
-                            <div className={"btn-group"}>
-                                <ExportSettingsButton/>
-                                <ImportSettingsButton/>
-                            </div>
 
                             <SettingsHeader title={"Common"}/>
 
@@ -104,6 +109,11 @@ export default function SettingsModal(props: SettingsModalProps) {
                                 label={"Remove Email Anchors/Links"}
                                 setting={"unlinkEmails"}
                                 title={"Removes all email links for easier username highlight/copy/paste"}
+                            />
+                            <SettingsSwitchInput
+                                label={"Open Links in a New Window"}
+                                setting={"openLinksInNewWindow"}
+                                title={"Reverts the tab dashboard with new windows (requires a refresh)"}
                             />
                             <SettingsSwitchInput
                                 label={"Add Self-Assignment Button"}
@@ -278,6 +288,16 @@ export default function SettingsModal(props: SettingsModalProps) {
                                 setting={"autoUpdateAuthKey"}
                                 title={"Refreshes the authentication key automatically when it expires"}
                             />
+
+                            <SettingsHeader title={"Danger Zone"}/>
+                            <div className={"btn-group mt-1"}>
+                                <ResetSettingsButton/>
+                                <ResetCustomTemplatesButton/>
+                            </div>
+                            <div className={"btn-group mt-1"}>
+                                <ExportSettingsButton/>
+                                <ImportSettingsButton/>
+                            </div>
 
                             {/* ---- END SETTINGS ---- */}
 

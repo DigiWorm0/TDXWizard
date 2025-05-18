@@ -57,7 +57,7 @@ export default function TicketPrintButton() {
         return null;
     return (
         <>
-            <div className={"btn-group"} style={{marginLeft: "5px"}}>
+            <div className={"btn-group"} style={{marginLeft: "5px", gap: 0}}>
 
                 {/* Print Button */}
                 <button

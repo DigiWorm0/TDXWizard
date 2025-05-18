@@ -1,0 +1,11 @@
+.wizard_dense .tdx-dashboard__row {
+    gap: 6px !important;
+}
+
+.wizard_dense .tdx-workmgmt-container__header {
+    padding: 4px !important;
+}
+
+.wizard_dense #dropdown_dashboardId {
+    font-size: 24px !important;
+}

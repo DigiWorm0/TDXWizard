@@ -27,11 +27,11 @@ export default function ImportSettingsButton() {
 
     return (
         <button
-            className={"btn btn-default"}
+            className={"btn btn-primary btn-sm"}
             type={"button"}
             onClick={importSettings}
         >
-            <span className={"fa fa-solid fa-nopad fa-upload"}/>
+            <span className={"fa fa-solid fa-nopad fa-upload me-1"}/>
             <span className={"hidden-xs padding-left-xs"}>
                     Import Settings
                 </span>

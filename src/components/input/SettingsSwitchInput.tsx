@@ -28,6 +28,7 @@ export default function SettingsSwitchInput(props: SettingsSwitchInputProps) {
             >
                 <input
                     type="checkbox"
+                    className={"me-1"}
                     checked={settings[props.setting] as boolean}
                     onChange={e => setSetting(e.target.checked)}
                     disabled={props.disabled}

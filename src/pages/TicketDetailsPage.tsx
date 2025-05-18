@@ -22,7 +22,8 @@ export default class TicketDetailsPage implements PageScript {
         const ticketNavBar = document.getElementById("divTabHeader");
         if (!ticketNavBar)
             throw new Error("Nav Bar not found");
-        addComponentToDOM(ticketNavBar.children[0], <TicketNavBar/>);
+        const navButtons = addComponentToDOM(ticketNavBar.children[0], <TicketNavBar/>);
+        navButtons.style.display = "inherit";
     }
 
     static replaceFeed() {

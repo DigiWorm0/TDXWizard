@@ -34,4 +34,5 @@ export default interface Settings {
     removeCopyURLButton: boolean;
     linkifyAttachments: boolean;
     suggestFormTypes: boolean;
+    openLinksInNewWindow: boolean;
 }

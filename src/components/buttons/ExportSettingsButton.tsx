@@ -25,14 +25,14 @@ export default function ExportSettingsButton() {
 
     return (
         <button
-            className={"btn btn-default"}
+            className={"btn btn-primary btn-sm"}
             type={"button"}
             onClick={exportSettings}
             style={{
                 marginRight: 0
             }}
         >
-            <span className={"fa fa-solid fa-nopad fa-download"}/>
+            <span className={"fa fa-solid fa-nopad fa-download me-1"}/>
             <span className={"hidden-xs padding-left-xs"}>
                     Export Settings
                 </span>

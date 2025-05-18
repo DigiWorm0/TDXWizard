@@ -19,12 +19,12 @@ export default function ResetSettingsButton() {
 
     return (
         <button
-            className={"btn btn-default"}
+            className={"btn btn-primary btn-sm"}
             title={"Reset All Settings"}
             onClick={onClick}
             style={{marginRight: 0}}
         >
-            <i className={"fa-solid fa-fw fa-nopad fa-undo"}/>
+            <i className={"fa-solid fa-fw fa-nopad fa-undo me-1"}/>
             <span>
                 Reset Settings
             </span>

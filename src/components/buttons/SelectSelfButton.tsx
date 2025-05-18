@@ -6,9 +6,10 @@ export interface SelectSelfButtonProps {
 }
 
 export default function SelectSelfButton(props: SelectSelfButtonProps) {
+    const [isHovered, setIsHovered] = React.useState(false);
     const user = useMyUser();
 
-    const onClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const onClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
         // Prevent the button from submitting the form
         e.preventDefault();
         if (!user)
@@ -19,29 +20,29 @@ export default function SelectSelfButton(props: SelectSelfButtonProps) {
         if (!target)
             return;
 
+        const comboBox = target.data("kendoComboBox");
+
         // Set the new value and trigger the change event
-        target.select2("data", {
-            caption: user.FullName,
-            value: user.UID
-        }, true);
+        comboBox?.value(user.FullName);
+        // comboBox?.value({
+        //     caption: user.FullName,
+        //     value: user.UID
+        // });
     }
 
     return (
-        <>
-            <button
-                className={"btn btn-default"}
-                title={"Select Yourself"}
-                disabled={!user}
-                onClick={onClick}
-            >
-                <i className={"fa-solid fa-fw fa-nopad fa-user gray"}/>
-                <span className={"sr-only"}>
-                {props.formID}
-            </span>
-            </button>
-
-            {/* Span prevent the button from being the last element for CSS */}
-            <span/>
-        </>
+        <a
+            role={"button"}
+            type={"button"}
+            title={"Select Yourself"}
+            onClick={onClick}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+            style={{
+                color: isHovered ? "#34295b" : "#817ba3",
+            }}
+        >
+            <i className={"fa-solid fa-fw fa-nopad fa-user"}/>
+        </a>
     )
 }

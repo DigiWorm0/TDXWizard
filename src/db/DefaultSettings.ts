@@ -46,6 +46,8 @@ const DefaultSettings: Settings = {
     linkifyAttachments: true,
 
     suggestFormTypes: true,
+
+    openLinksInNewWindow: true
 };
 
 export default DefaultSettings;

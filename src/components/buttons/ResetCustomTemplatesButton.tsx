@@ -20,12 +20,12 @@ export default function ResetCustomTemplatesButton() {
 
     return (
         <button
-            className={"btn btn-default"}
+            className={"btn btn-primary btn-sm"}
             title={"Reset Custom Templates"}
             onClick={onClick}
             style={{marginRight: 0}}
         >
-            <i className={"fa-solid fa-fw fa-nopad fa-undo"}/>
+            <i className={"fa-solid fa-fw fa-nopad fa-undo me-1"}/>
             <span>
                 Reset Templates
             </span>
