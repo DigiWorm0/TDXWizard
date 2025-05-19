@@ -31,16 +31,16 @@ export default class CommonPage implements PageScript {
         if (!settings.openLinksInNewWindow)
             return;
 
-        // Replace the default implementation of window.openWinHref
-        window.openWinReturn = (
-            url: string,
-            width = 992,
-            height = 800,
-            name: string = "New Window"
-        ) => {
+        // Replace the default implementation of window.openWinReturn
+        const openWinReturn = (url: string, width = 992, height = 800, name = "New Window") => {
             window.open(url, name, `width=${width},height=${height}`);
             return false;
-        }
+        };
+
+        // Repeatedly set in case overwritten by TDX during page load
+        setInterval(() => {
+            window.openWinReturn = openWinReturn;
+        }, 200);
     }
 
     /**
