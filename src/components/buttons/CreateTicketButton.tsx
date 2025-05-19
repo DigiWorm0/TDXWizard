@@ -5,8 +5,8 @@ export default function CreateTicketButton() {
     const [settings] = useSettings();
 
     const onClick = () => {
-        const href = `/TDNext/Apps/${AppID.Tickets}/Tickets/New`;
-        window.openWinReturn(href);
+        // Run the function in the global scope
+        window.eval(`window.openWinReturn("/TDNext/Apps/${AppID.Tickets}/Tickets/New");`);
     }
 
     if (!settings.dashboardAddTicketButton)
