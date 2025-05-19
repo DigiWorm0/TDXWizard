@@ -48,10 +48,11 @@ export default function SettingsColorPickerInput(props: SettingsColorPickerInput
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
+                    color: "#fff"
                 }}
                 onClick={onClick}
             >
-                <span className={"fa fa-palette fa-sm white"} style={{margin: 0}}/>
+                <span className={"fa fa-palette fa-sm"} style={{margin: 0}}/>
             </div>
             <SettingsTextInput
                 label={props.label}

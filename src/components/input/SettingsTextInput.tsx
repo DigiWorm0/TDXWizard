@@ -28,7 +28,7 @@ export default function SettingsTextInput(props: SettingsTextInputProps) {
             }}
         >
             {props.showLabel &&
-                <label style={{marginBottom: 0, marginLeft: 15, marginRight: 5, flexShrink: 0}}>
+                <label style={{marginBottom: 0, marginRight: 5, flexShrink: 0}}>
                     {props.label}
                 </label>
             }
@@ -39,7 +39,7 @@ export default function SettingsTextInput(props: SettingsTextInputProps) {
                 onChange={(e) => setValue(e.target.value)}
                 style={{width: "100%", height: 25}}
                 disabled={props.disabled}
-                className={props.disabled ? "text-muted" : ""}
+                className={`${props.disabled ? "text-muted" : ""} form-control form-control-sm`}
             />
         </div>
     )

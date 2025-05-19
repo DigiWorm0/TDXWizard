@@ -15,7 +15,7 @@ export default function FormTypeButton(props: FormTypeButtonProps) {
 
     return (
         <button
-            className={"btn btn-success btn-sm"}
+            className={"btn btn-secondary btn-sm"}
             type={"button"}
             onClick={() => onClick()}
             title={`Change the form type to ${props.name}`}

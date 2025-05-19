@@ -50,7 +50,7 @@ export default function ConvertFeedButton() {
         return (
             <button
                 type={"button"}
-                className={"btn btn-default btn-sm"}
+                className={"btn btn-primary btn-sm"}
                 onClick={revertToOldFeed}
             >
                 <span className={"fa fa-solid fa-fw fa-backward"}/>
@@ -63,7 +63,7 @@ export default function ConvertFeedButton() {
         return (
             <button
                 type={"button"}
-                className={"btn btn-success btn-sm"}
+                className={"btn btn-primary btn-sm"}
                 onClick={convertToNewFeed}
             >
                 <span className={"fa fa-solid fa-fw fa-magic"}/>

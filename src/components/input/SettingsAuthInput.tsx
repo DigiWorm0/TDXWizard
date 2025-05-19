@@ -46,18 +46,27 @@ export default function SettingsAuthInput() {
     return (
         <>
             {error && (
-                <div className={"alert alert-danger"} role={"alert"} style={{margin: 5, padding: 5}}>
+                <div
+                    className={"alert alert-danger"}
+                    role={"alert"}
+                    style={{margin: 5, padding: 5, fontSize: 14}}
+                >
                     <strong>Error:</strong> {error}
                 </div>
             )}
             {user && (
-                <div className={"alert alert-success"} role={"alert"} style={{margin: 5, padding: 5}}>
+                <div
+                    className={"alert alert-success"}
+                    role={"alert"}
+                    style={{margin: 5, padding: 5, fontSize: 14}}
+                >
                     <strong>Success:</strong> Logged in as {user.UserName}
                 </div>
             )}
             <input
                 type={isHovered ? "text" : "password"}
                 title={"TDX API Auth Token (don't share this with anyone!)"}
+                className={"form-control form-control-sm ms-0"}
                 placeholder={"Click the 'Login with SSO' button to get your API Key"}
                 value={settings.authKey}
                 onChange={e => {
@@ -72,34 +81,34 @@ export default function SettingsAuthInput() {
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
             />
-            <div className={"btn-group"}>
+            <div className={"btn-group w-100"}>
                 <button
-                    className={"btn btn-primary"}
+                    className={"btn btn-primary btn-sm"}
                     type={"button"}
                     onClick={loginWithSSO}
                     style={{
                         marginRight: 0
                     }}
+                    title={"Generates an authentication key using a single-sign-on (SSO) popup"}
                 >
                     <span
-                        className={"fa fa-door-open fa-solid fa-nopad"}
+                        className={"fa fa-door-open fa-solid fa-nopad me-1"}
                     />
                     <span className={"hidden-xs padding-left-xs"}>
                         Login with SSO
                     </span>
                 </button>
                 <button
-                    className={"btn btn-default"}
+                    className={"btn btn-secondary btn-sm"}
                     type={"button"}
                     onClick={() => checkUserInfo(settings.authKey)}
                     disabled={!settings.authKey || isLoading}
                     style={{
                         cursor: isLoading ? "wait" : "pointer"
                     }}
+                    title={"Checks if the current authentication key is valid"}
                 >
-                    <span
-                        className={"fa fa-user fa-solid fa-nopad"}
-                    />
+                    <span className={`fa ${isLoading ? "fa-spinner fa-spin" : "fa-user"} fa-solid fa-nopad me-1`}/>
                     <span className={"hidden-xs padding-left-xs"}>
                         Check User Info
                     </span>

@@ -47,7 +47,7 @@ export default function AddTemplateButton() {
                 onClick={onAddTemplate}
                 title={"This will make a template using the current ticket comments."}
             >
-                <span className={"fa fa-plus"}/>
+                <span className={"fa fa-plus"} style={{marginRight: 4}}/>
                 Add Template
             </a>
         </li>

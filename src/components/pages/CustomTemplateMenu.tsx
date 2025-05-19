@@ -45,7 +45,13 @@ export default function CustomTemplateMenu() {
                         template={template}
                     />
                 )}
-                <div className={"divider"}/>
+                <hr
+                    style={{
+                        marginTop: 8,
+                        marginBottom: 8
+                    }}
+                    className="dropdown-divider"
+                />
                 <AddTemplateButton/>
             </ul>
         </>

@@ -7,10 +7,10 @@ import BulkInventoryAssetRow from "./BulkInventoryAssetRow";
 import updateAssets from "../../utils/assets/updateAssets";
 import createTicketWithAssets from "../../utils/assets/createTicketWithAssets";
 import createAssetsCSV from "../../utils/assets/createAssetsCSV";
-import getAppIDFromURL from "../../utils/tdx/getAppIDFromURL";
 
 export interface BulkInventoryModalProps {
     onClose: () => void;
+    appID?: number;
 }
 
 export default function BulkInventoryModal(props: BulkInventoryModalProps) {
@@ -76,7 +76,8 @@ export default function BulkInventoryModal(props: BulkInventoryModalProps) {
 
         // Send API request
         const client = new UWStoutTDXClient();
-        const appID = getAppIDFromURL();
+        const {appID} = props;
+        // const appID = getAppIDFromURL();
 
         if (!appID)
             throw new Error("App ID not found");
@@ -122,7 +123,8 @@ export default function BulkInventoryModal(props: BulkInventoryModalProps) {
 
         // Send API request
         const client = new UWStoutTDXClient();
-        const appID = getAppIDFromURL();
+        const {appID} = props;
+        // const appID = getAppIDFromURL();
 
         if (!appID)
             throw new Error("App ID not found");
@@ -145,12 +147,18 @@ export default function BulkInventoryModal(props: BulkInventoryModalProps) {
             title={"Bulk Inventory"}
             onUnload={props.onClose}
             features={{width: 900, height: 600}}
+            onOpen={(e) => {
+                e.window.document.body.classList.add("wizard_window");
+            }}
         >
             <div style={{padding: 15}}>
                 <h1 style={{marginBottom: 5}}>
                     Assets ({assets.length})
                 </h1>
-                <table className={"table table-striped table-bordered"} style={{marginBottom: 0}}>
+                <table
+                    className={"table table-striped table-bordered table-hover"}
+                    style={{marginBottom: 0}}
+                >
                     <thead>
                     <tr>
                         <th>
@@ -177,6 +185,7 @@ export default function BulkInventoryModal(props: BulkInventoryModalProps) {
                             key={asset.ID}
                             asset={asset}
                             removeAsset={removeAsset}
+                            appID={props.appID}
                         />
                     ))}
 
@@ -220,57 +229,59 @@ export default function BulkInventoryModal(props: BulkInventoryModalProps) {
                     }}
                 />
 
-                <button
-                    className={"btn btn-primary"}
+                <div
+                    className={"tdx-btn tdx-btn--secondary"}
                     onClick={() => updateAssets(assets)}
                     style={{marginTop: 5, marginLeft: 0}}
-                    disabled={assets.length === 0}
+                    // disabled={assets.length === 0}
                 >
                     Update All Assets
-                </button>
+                </div>
 
-                <button
-                    className={"btn btn-primary"}
+                <div
+                    className={"tdx-btn tdx-btn--secondary"}
                     onClick={() => createTicketWithAssets(assets)}
                     style={{marginTop: 5, marginLeft: 5}}
-                    disabled={assets.length === 0}
+                    // disabled={assets.length === 0}
                 >
                     Create Ticket
-                </button>
+                </div>
 
-                <button
-                    className={"btn btn-primary"}
+                <div
+                    className={"tdx-btn tdx-btn--secondary"}
                     onClick={() => createAssetsCSV(assets)}
                     style={{marginTop: 5, marginLeft: 5}}
-                    disabled={assets.length === 0}
+                    // disabled={assets.length === 0}
                 >
                     Download CSV
-                </button>
+                </div>
 
-                <button
-                    className={"btn btn-primary"}
+                <div
+                    className={"tdx-btn tdx-btn--secondary"}
                     onClick={() => refreshAssets()}
                     style={{marginTop: 5, marginLeft: 5}}
-                    disabled={assets.length === 0 || isLoading}
+                    // disabled={assets.length === 0 || isLoading}
                 >
                     Reload Assets
-                </button>
+                </div>
 
                 {error && (
-                    <div className={"alert alert-danger"} style={{marginTop: 5}}>
-
-                        <button
-                            className={"close"}
-                            onClick={() => setError(null)}
-                        >
-                            <span>&times;</span>
-                        </button>
+                    <div
+                        className={"alert alert-danger alert-dismissible fade show"}
+                        style={{marginTop: 5}}
+                    >
 
                         {error.split("\n").map((line, i) => (
-                            <div key={i}>
-                                {line}
-                            </div>
+                            <span key={i}>
+                                {line}<br/>
+                            </span>
                         ))}
+
+                        <button
+                            type="button"
+                            className="btn-close"
+                            onClick={() => setError(null)}
+                        />
                     </div>
                 )}
             </div>

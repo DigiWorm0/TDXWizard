@@ -4,11 +4,10 @@ import SidebarImage from "../../content/SidebarBG.png";
 import {GM_info} from "$";
 import SettingsAuthInput from "../input/SettingsAuthInput";
 import useSettings from "../../hooks/useSettings";
-import ResetCustomTemplatesButton from "../buttons/ResetCustomTemplatesButton";
-import ResetSettingsButton from "../buttons/ResetSettingsButton";
 import SettingsColorPickerInput from "../input/SettingsColorPickerInput";
 import SettingsHeader from "../style/SettingsHeader";
 import SettingsTextInput from "../input/SettingsTextInput";
+import ResetSettingsButton from "../buttons/ResetSettingsButton";
 import ExportSettingsButton from "../buttons/ExportSettingsButton";
 import ImportSettingsButton from "../buttons/ImportSettingsButton";
 
@@ -21,7 +20,13 @@ export default function SettingsModal(props: SettingsModalProps) {
     const [settings] = useSettings();
     return (
         <ModalBase isOpen={props.isOpen} onClose={props.onClose}>
-            <div className={"modal-dialog"} role={"document"}>
+            <div
+                className={"modal-dialog"}
+                role={"document"}
+                style={{
+                    maxWidth: 620
+                }}
+            >
                 <div className={"modal-content"}>
                     <div
                         style={{
@@ -34,10 +39,10 @@ export default function SettingsModal(props: SettingsModalProps) {
                             <img
                                 alt={"Sidebar"}
                                 src={SidebarImage}
-                                width={220}
+                                width={230}
                                 style={{
-                                    borderTopLeftRadius: 5,
-                                    borderBottomLeftRadius: 5,
+                                    borderTopLeftRadius: "1.125rem",
+                                    borderBottomLeftRadius: "1.125rem",
                                     height: "100%",
                                     objectFit: "cover",
                                     marginRight: 5,
@@ -57,7 +62,14 @@ export default function SettingsModal(props: SettingsModalProps) {
                                     justifyContent: "space-between",
                                 }}
                             >
-                                <h1 style={{fontWeight: "bold"}}>
+                                <span
+                                    style={{
+                                        fontFamily: "\"DM Sans\",sans-serif",
+                                        fontWeight: "bold",
+                                        fontSize: 30,
+                                        marginTop: 16
+                                    }}
+                                >
                                     TDX Wizard
                                     <span
                                         style={{
@@ -68,30 +80,22 @@ export default function SettingsModal(props: SettingsModalProps) {
                                     >
                                     v{GM_info.script.version}
                                 </span>
-                                </h1>
+                                </span>
                                 <button
                                     type={"button"}
-                                    className={"close"}
+                                    className={"close tdx-close-x"}
                                     data-dismiss={"modal"}
                                     aria-label={"Close"}
                                     onClick={props.onClose}
-                                    style={{marginRight: 10}}
+                                    style={{
+                                        margin: 10
+                                    }}
                                 >
-                                    <span aria-hidden={"true"}>&times;</span>
                                 </button>
                             </div>
                             <hr style={{marginTop: 6, marginBottom: 0}}/>
 
                             {/* ---- START SETTINGS ---- */}
-
-                            <div className={"btn-group"}>
-                                <ResetSettingsButton/>
-                                <ResetCustomTemplatesButton/>
-                            </div>
-                            <div className={"btn-group"}>
-                                <ExportSettingsButton/>
-                                <ImportSettingsButton/>
-                            </div>
 
                             <SettingsHeader title={"Common"}/>
 
@@ -104,6 +108,11 @@ export default function SettingsModal(props: SettingsModalProps) {
                                 label={"Remove Email Anchors/Links"}
                                 setting={"unlinkEmails"}
                                 title={"Removes all email links for easier username highlight/copy/paste"}
+                            />
+                            <SettingsSwitchInput
+                                label={"Open Links in a New Window"}
+                                setting={"openLinksInNewWindow"}
+                                title={"Reverts the tab dashboard with new windows (requires a refresh)"}
                             />
                             <SettingsSwitchInput
                                 label={"Add Self-Assignment Button"}
@@ -166,6 +175,12 @@ export default function SettingsModal(props: SettingsModalProps) {
                                 label={"Automatically Exit Tickets On Action"}
                                 setting={"autoCloseTicketOnSave"}
                                 title={"Automatically exits the ticket window after completing an action. Useful for bulk actions"}
+                            />
+
+                            <SettingsSwitchInput
+                                label={"Add Ticket Button to Dashboard"}
+                                setting={"dashboardAddTicketButton"}
+                                title={"Adds a \"Create Service Request\" button to the dashboard"}
                             />
 
                             <SettingsSwitchInput
@@ -271,6 +286,18 @@ export default function SettingsModal(props: SettingsModalProps) {
                                 title={"Adds a tool to the inventory desktop to update assets in bulk"}
                             />
 
+                            <SettingsHeader title={"Style"}/>
+                            <SettingsSwitchInput
+                                label={"Dense Layout"}
+                                setting={"denseStyle"}
+                                title={"Reduces padding and margins to fit more information on the screen"}
+                            />
+                            <SettingsSwitchInput
+                                label={"Striped Table Rows"}
+                                setting={"stripedTableRows"}
+                                title={"Alternates the background color of table rows for better readability"}
+                            />
+
                             <SettingsHeader title={"Authentication"}/>
                             <SettingsAuthInput/>
                             <SettingsSwitchInput
@@ -278,6 +305,13 @@ export default function SettingsModal(props: SettingsModalProps) {
                                 setting={"autoUpdateAuthKey"}
                                 title={"Refreshes the authentication key automatically when it expires"}
                             />
+
+                            <SettingsHeader title={"Danger Zone"}/>
+                            <div className={"btn-group mt-1 w-100"}>
+                                <ExportSettingsButton/>
+                                <ImportSettingsButton/>
+                                <ResetSettingsButton/>
+                            </div>
 
                             {/* ---- END SETTINGS ---- */}
 

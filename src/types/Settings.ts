@@ -34,4 +34,10 @@ export default interface Settings {
     removeCopyURLButton: boolean;
     linkifyAttachments: boolean;
     suggestFormTypes: boolean;
+    openLinksInNewWindow: boolean;
+
+    denseStyle: boolean;
+    stripedTableRows: boolean;
+
+    dashboardAddTicketButton: boolean;
 }

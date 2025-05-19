@@ -15,16 +15,13 @@ export default class TicketCreatePage implements PageScript {
     }
 
     static addTypeSuggestions() {
-        // Find the ticket form
-        const ticketForm = document.getElementById("frmTicketCreate");
-        if (!ticketForm)
-            throw new Error("Ticket form not found");
 
-        const formTypeTitle = document.getElementById("lbl_s2id_autogen9");
-        if (!formTypeTitle)
-            throw new Error("Ticket status input not found");
+        const formField = document.getElementById("lbl_s2id_autogen2");
+        if (!formField)
+            throw new Error("Form field not found");
 
         // Create the form type buttons
-        addComponentToDOM(formTypeTitle.parentElement ?? ticketForm, <FormTypeButtons/>);
+        addComponentToDOM(formField.parentElement ?? formField, <FormTypeButtons/>);
+
     }
 }

@@ -14,7 +14,7 @@ export default defineConfig({
                 icon: 'https://www.google.com/s2/favicons?sz=64&domain=uwstout.edu',
                 namespace: 'digiworm0.github.io',
                 match: [
-                    'https://uwstout.teamdynamix.com/TDNext/*',
+                    'https://uwstout.teamdynamix.com/*',
                     'https://selfservicehd.uwstout.edu/helpdesk/*',
                 ],
                 downloadURL: 'https://digiworm0.github.io/TDXWizard/tdx-wizard.user.js',

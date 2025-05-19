@@ -9,13 +9,15 @@ export default function SettingsButton() {
         <>
             <button
                 type={"button"}
-                className={"btn btn-link btn-desktop"}
+                className={"tdx-user-icon tdx-user-icon--large tdx-user-icon--nomargin"}
                 title={"TDX Wizard"}
                 onClick={() => setIsOpen(true)}
                 style={{
                     transition: "all 0.2s",
                     transform: `rotate(${isHovered ? 15 : 0}deg) scale(${isHovered ? 1.3 : 1})`,
                     color: isHovered ? "rgb(84, 44, 194)" : "rgb(55, 29, 128)",
+                    border: "none",
+                    boxShadow: isHovered ? "0 0 5px rgba(84, 44, 194, 0.5)" : "none",
                 }}
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}

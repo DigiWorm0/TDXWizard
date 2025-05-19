@@ -1,0 +1,101 @@
+/*
+        DENSE STYLING
+ */
+.wizard_dense #navigationHeader {
+    min-height: 1rem;
+}
+
+.wizard_dense .tdx-navigation-bar {
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+.wizard_dense .tdx-dashboard__row {
+    gap: 6px !important;
+}
+
+.wizard_dense .tdx-workmgmt-container__header {
+    padding: 4px !important;
+}
+
+.wizard_dense #dropdown_dashboardId {
+    font-size: 18px !important;
+    line-height: unset !important;
+    padding-bottom: 0;
+}
+
+.wizard_dense .tdx-dropdown--headline::after {
+    transform: scale(1);
+}
+
+.wizard_dense .tdx-dashboard__widget-container {
+    padding: 0;
+}
+
+.wizard_dense .tdx-control-bar--widget-header {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.wizard_dense .k-grid {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.wizard_dense .tdworkmgmt td {
+    height: revert !important;
+    padding: .25rem !important;
+}
+
+.wizard_dense .tdx-dashboard .k-grid .k-table-td {
+    padding: 2px 6px !important;
+    height: 24px !important;
+}
+
+.wizard_dense #divDashboardContainer {
+    margin-top: 0 !important;
+    padding-top: 10px;
+}
+
+.wizard_dense .tdx-leftnav__link {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+.wizard_dense #homeTab, .wizard_dense #tabContainer {
+    height: 2.0rem !important;
+}
+
+.wizard_dense .tdx-navigation-tabs__tab {
+    border-radius: 0.5rem 0.5rem 0 0 !important;
+}
+
+
+/*
+        STRIPED ROWS
+ */
+.wizard_striped-table-rows .k-table-td {
+    background-color: revert;
+}
+
+.wizard_striped-table-rows .tdworkmgmt.table-striped > tbody > tr:nth-of-type(odd) {
+    background-color: #f9f9f9;
+}
+
+.wizard_striped-table-rows .tdworkmgmt.table-striped > tbody > tr:hover {
+    background-color: #f1f1f1;
+}
+
+/*
+        BETTER FEED
+ */
+.wizard_betterfeed h5 {
+    font-family: "DM Sans", sans-serif;
+}
+
+/*
+        BULK INVENTORY
+ */
+.wizard_window {
+    background-color: white !important;
+}

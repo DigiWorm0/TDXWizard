@@ -56,7 +56,8 @@ export default function FeedEvent(props: TicketFeedEventProps) {
                     onClick={openProfile}
                     style={{
                         color: userColor,
-                        textDecoration: "none"
+                        textDecoration: "none",
+                        fontWeight: "bold"
                     }}
                 >
                     {props.name}:

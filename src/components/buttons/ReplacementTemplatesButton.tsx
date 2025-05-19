@@ -18,7 +18,10 @@ export default function ReplacementTemplatesButton() {
                 className="dropdown-menu multi-level"
                 aria-labelledby="lnkShowTemplates"
             >
-                <li className={"dropdown-submenu"}>
+                <li
+                    className={"dropdown-submenu"}
+                    style={{cursor: "default"}}
+                >
                     <CustomTemplateMenu/>
                 </li>
             </ul>

@@ -4,20 +4,43 @@ import addComponentToDOM from "../utils/addComponentToDOM";
 import PersonPanel from "../components/pages/PersonPanel";
 import SelectSelfButton from "../components/buttons/SelectSelfButton";
 import autoUpdateAuthKey from "../utils/autoUpdateAuthKey";
-
-const URL_PREFIX = "/TDNext"
+import CustomStyles from "../components/style/CustomStyles";
 
 export default class CommonPage implements PageScript {
 
     canRun() {
-        return window.location.pathname.startsWith(URL_PREFIX);
+        return true;
     }
 
     run() {
+        CommonPage.addCustomStyles();
+        CommonPage.replaceWindowLinks();
         CommonPage.replaceAllEmailLinks();
         CommonPage.addUserLookup();
         CommonPage.addSelectSelfButton();
         CommonPage.runAutoUpdateAuthKey();
+    }
+
+    static addCustomStyles() {
+        addComponentToDOM(document.body, <CustomStyles/>);
+    }
+
+    static replaceWindowLinks() {
+        // Check Settings
+        const settings = getSettings();
+        if (!settings.openLinksInNewWindow)
+            return;
+
+        // Replace the default implementation of window.openWinHref
+        window.openWinReturn = (
+            url: string,
+            width = 992,
+            height = 800,
+            name: string = "New Window"
+        ) => {
+            window.open(url, name, `width=${width},height=${height}`);
+            return false;
+        }
     }
 
     /**
@@ -93,9 +116,7 @@ export default class CommonPage implements PageScript {
         elementIDs.forEach(elementID => {
 
             // Get the button group
-            const buttonGroupA = document.querySelector(`#${elementID}-grp .input-group .input-group-btn`);
-            const buttonGroupB = document.querySelector(`#s2id_${elementID}`)?.parentElement?.querySelector(".input-group-btn");
-            const buttonGroup = buttonGroupA || buttonGroupB;
+            const buttonGroup = document.querySelector(`#${elementID}_lookup`)?.parentElement;
             if (!buttonGroup)
                 return;
 

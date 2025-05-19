@@ -84,7 +84,8 @@ export default function TicketFeed() {
             new RegExp(/Edited this task\.<br ?\/?>/g),
             new RegExp(/Restarted the ".*?" workflow for this (?:incident|service request)\.<br ?\/?>/g),
             new RegExp(/Took primary responsibility for this (?:incident|service request)\.<br ?\/?>/g),
-            new RegExp(/Added the attachment .*?\.<br ?\/?>/g)
+            new RegExp(/Added the attachment .*?\.<br ?\/?>/g),
+            // new RegExp(/Merged incident \d+ \(.*?\): /g),
         ];
         systemMessageRegex.forEach(regex => {
             for (let i = 0; i < newItems.length; i++) {
@@ -170,7 +171,10 @@ export default function TicketFeed() {
     }, [feed]);
 
     return (
-        <div style={{paddingTop: 5}}>
+        <div
+            style={{paddingTop: 5}}
+            className={"wizard_betterfeed"}
+        >
             {sortedFeed?.map(item => {
                 const replyTo = sortedFeed.find(i => i.ID === item.ReplyToID);
 

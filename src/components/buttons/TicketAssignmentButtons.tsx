@@ -129,15 +129,16 @@ export default function TicketAssignmentButtons() {
     return (
         <div
             className={"btn-group"}
-            style={{margin: "0px 3px"}}
+            style={{gap: 0}}
         >
             {assignments?.map(assignment => (
                 <button
                     key={assignment.UID}
                     type={"button"}
-                    className={"btn btn-warning btn-sm"}
+                    className={"btn btn-secondary btn-sm"}
                     title={`Assign to ${assignment.FullName}`}
                     onClick={() => setAssignment(assignment)}
+                    style={{marginRight: 0}}
                 >
                     <span className={"fa fa-solid fa-nopad fa-user"}/>
                     <span className={"hidden-xs padding-left-xs"}>
@@ -148,7 +149,7 @@ export default function TicketAssignmentButtons() {
 
             <li className={"btn-group"}>
                 <button
-                    className={"btn btn-warning btn-sm dropdown-toggle"}
+                    className={"btn btn-secondary btn-sm dropdown-toggle"}
                     type={"button"}
                     data-toggle={"dropdown"}
                 >

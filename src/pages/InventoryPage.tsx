@@ -1,20 +1,44 @@
 import PageScript from "./PageScript";
-import addComponentToDOM from "../utils/addComponentToDOM";
 import InventoryNavBar from "../components/pages/InventoryNavBar";
+import addComponentToDOM from "../utils/addComponentToDOM";
 
-const URL_PREFIX_REGEX = /\/TDNext\/Apps\/\d+\/Assets\/Default/;
+const appIDRegex = /menu_\d+_TDAssets/;
 
 export default class InventoryPage implements PageScript {
-    
+
     canRun(): boolean {
-        return URL_PREFIX_REGEX.test(window.location.pathname);
+        return true;
     }
 
     run(): void {
-        const inventoryNavBar = document.querySelector("#divTabHeader .nav");
-        if (!inventoryNavBar)
-            throw new Error("Nav Bar not found");
-        addComponentToDOM(inventoryNavBar, <InventoryNavBar/>, {elementType: "li"});
+        setInterval(() => {
+            const inventoryNavBars = document.querySelectorAll(".tdx-action-menu");
+
+            inventoryNavBars.forEach((navBar) => {
+
+                // Get the app ID from the nav bar
+                const appIDMatches = navBar.id.match(appIDRegex);
+                if (!appIDMatches)
+                    return;
+                const appID = parseInt(appIDMatches[0].split("_")[1]);
+
+                // Check if the inventory button is already added
+                const inventoryButton = navBar.querySelector(".wizard_inventory");
+                if (inventoryButton)
+                    return;
+
+                // Create the inventory button
+                const newInventoryButton = addComponentToDOM(navBar, <InventoryNavBar appID={appID}/>);
+                if (!newInventoryButton)
+                    return;
+
+                // Move to before search
+                const search = navBar.querySelector(".tdx-action-menu-input");
+                if (!search)
+                    return;
+                navBar.insertBefore(newInventoryButton, search);
+            });
+        }, 1000);
     }
 
 }

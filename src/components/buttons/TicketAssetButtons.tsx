@@ -12,6 +12,8 @@ const REGEX_LIST = [
     /\b20\d{7}\b/g // Asset Tag
 ];
 
+const MAX_ASSET_COUNT = 3;
+
 export default function TicketAssetButtons() {
     const ticket = useTicket();
     const ticketAssets = useTicketAssets();
@@ -48,6 +50,10 @@ export default function TicketAssetButtons() {
         // Remove existing assets
         if (ticketAssets)
             assetNames = assetNames.filter(asset => !ticketAssets.find(ticketAsset => ticketAsset.Name?.includes(asset)));
+
+        // Max assets
+        if (assetNames.length > MAX_ASSET_COUNT)
+            assetNames = assetNames.slice(0, MAX_ASSET_COUNT);
 
         return assetNames;
     }, [ticket, ticketAssets]);
@@ -87,14 +93,17 @@ export default function TicketAssetButtons() {
     return (
         <div
             className={"btn-group"}
-            style={{margin: "0px 3px"}}
+            style={{
+                gap: 0
+            }}
         >
             {ticketAssetNames?.map(assetName => (
                 <button
                     key={assetName}
                     type={"button"}
-                    className={"btn btn-warning btn-sm"}
+                    className={"btn btn-secondary btn-sm"}
                     onClick={() => addAsset(assetName)}
+                    style={{marginRight: 0}}
                 >
                     <span className={"fa fa-solid fa-nopad fa-laptop"}/>
                     <span className={"hidden-xs padding-left-xs"}>

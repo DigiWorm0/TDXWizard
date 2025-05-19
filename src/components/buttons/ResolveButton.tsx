@@ -54,8 +54,7 @@ export default function ResolveButton() {
         return null;
     return (
         <button
-            className={"btn btn-danger btn-sm dropdown-toggle"}
-            style={{margin: "0px 3px"}}
+            className={"btn btn-secondary btn-sm dropdown-toggle"}
             type={"button"}
             data-toggle={"dropdown"}
             onClick={() => resolveTicket()}

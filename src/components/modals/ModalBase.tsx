@@ -28,8 +28,11 @@ export default function ModalBase(props: ModalBaseProps) {
         <>
             {/* Seperated backdrop to fix child CSS issues */}
             <div
-                className={`modal-backdrop fade ${props.isOpen ? "in" : ""}`}
-                style={{pointerEvents: "none"}}
+                className={`modal-backdrop fade ${props.isOpen ? "show" : ""}`}
+                style={{
+                    pointerEvents: "none",
+                    opacity: props.isOpen ? 0.5 : 0,
+                }}
             />
 
             {/* Modal */}

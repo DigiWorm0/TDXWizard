@@ -6,6 +6,7 @@ import Asset from "../../tdx-api/types/Asset";
 export interface BulkInventoryAssetRowProps {
     asset: Asset;
     removeAsset: (asset: Asset) => void;
+    appID?: number;
 }
 
 export default function BulkInventoryAssetRow(props: BulkInventoryAssetRowProps) {
@@ -13,8 +14,8 @@ export default function BulkInventoryAssetRow(props: BulkInventoryAssetRowProps)
 
     return (
         <tr key={asset.ID}>
-            <td><AssetLink id={asset.ID}>{asset.Tag}</AssetLink></td>
-            <td><AssetLink id={asset.ID}>{asset.SerialNumber}</AssetLink></td>
+            <td><AssetLink id={asset.ID} appID={props.appID}>{asset.Tag}</AssetLink></td>
+            <td><AssetLink id={asset.ID} appID={props.appID}>{asset.SerialNumber}</AssetLink></td>
             <td>
                 {asset.ManufacturerName} {asset.ProductModelName}
             </td>

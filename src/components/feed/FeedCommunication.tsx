@@ -150,7 +150,8 @@ export default function FeedCommunication(props: TicketFeedCommunicationProps) {
                             onClick={openProfile}
                             style={{
                                 textDecoration: "none",
-                                color: userColor
+                                color: userColor,
+                                fontWeight: "bold"
                             }}
                         >
                             {props.name}
