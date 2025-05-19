@@ -2,7 +2,11 @@ import React from "react";
 import BulkInventoryModal from "../modals/BulkInventoryModal";
 import useSettings from "../../hooks/useSettings";
 
-export default function BulkInventoryButton() {
+export interface BulkInventoryButtonProps {
+    appID?: number;
+}
+
+export default function BulkInventoryButton(props: BulkInventoryButtonProps) {
     const [settings] = useSettings();
     const [isModalVisible, setIsModalVisible] = React.useState(false);
 
@@ -10,23 +14,23 @@ export default function BulkInventoryButton() {
         return null;
     return (
         <>
-            <a
-                className={`btn btn-link ${isModalVisible ? "disabled" : ""}`}
+            <div
+                className={"tdx-btn tdx-btn--secondary"}
                 title={"Tool for editing large amounts of assets at once"}
-                href={"#"}
                 onClick={e => {
                     e.preventDefault();
                     setIsModalVisible(true);
                 }}
             >
-                <span className={"fa-solid fa-boxes"}/>
+                <span className={"fa-solid fa-boxes me-1"}/>
                 <span className={"hidden-xs"}>
                     Bulk Inventory
                 </span>
-            </a>
+            </div>
             {isModalVisible && (
                 <BulkInventoryModal
                     onClose={() => setIsModalVisible(false)}
+                    appID={props.appID}
                 />
             )}
         </>

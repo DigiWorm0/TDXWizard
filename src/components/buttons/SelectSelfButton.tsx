@@ -50,6 +50,7 @@ export default function SelectSelfButton(props: SelectSelfButtonProps) {
             onMouseLeave={() => setIsHovered(false)}
             style={{
                 color: isHovered ? "#34295b" : "#817ba3",
+                height: "1.875rem"
             }}
         >
             <i className={"fa-solid fa-fw fa-nopad fa-user"}/>

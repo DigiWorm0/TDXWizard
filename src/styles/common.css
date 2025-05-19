@@ -92,3 +92,10 @@
 .wizard_betterfeed h5 {
     font-family: "DM Sans", sans-serif;
 }
+
+/*
+        BULK INVENTORY
+ */
+.wizard_window {
+    background-color: white !important;
+}
