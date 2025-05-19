@@ -24,7 +24,9 @@ export default function TicketPrintButton() {
             throw new Error("Print View Button not found");
 
         // Hide the Print View Button
-        printViewButton.style.display = settings.hideTicketPrintViewButton ? "none" : "block";
+        const parentElement = printViewButton.parentElement;
+        if (parentElement)
+            parentElement.style.display = settings.hideTicketPrintViewButton ? "none" : "block";
     }, [settings.hideTicketPrintViewButton]);
 
     const printURL = React.useMemo(() => {
@@ -57,12 +59,15 @@ export default function TicketPrintButton() {
         return null;
     return (
         <>
-            <div className={"btn-group"} style={{marginLeft: "5px", gap: 0}}>
+            <div
+                className={"btn-group"}
+                style={{gap: 0}}
+            >
 
                 {/* Print Button */}
                 <button
                     type={"button"}
-                    className={"btn btn-primary btn-sm"}
+                    className={"btn btn-secondary btn-sm"}
                     onClick={() => onPrint()}
                     style={{marginRight: 0}}
                     disabled={!isLoaded}
@@ -83,7 +88,7 @@ export default function TicketPrintButton() {
                 {/* Print View Button */}
                 <button
                     type={"button"}
-                    className={"btn btn-primary btn-sm"}
+                    className={"btn btn-secondary btn-sm"}
                     onClick={() => onPrintView()}
                     style={{paddingLeft: 10, paddingRight: 10}}
                 >

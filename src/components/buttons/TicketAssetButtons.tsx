@@ -93,14 +93,17 @@ export default function TicketAssetButtons() {
     return (
         <div
             className={"btn-group"}
-            style={{margin: "0px 3px"}}
+            style={{
+                gap: 0
+            }}
         >
             {ticketAssetNames?.map(assetName => (
                 <button
                     key={assetName}
                     type={"button"}
-                    className={"btn btn-warning btn-sm"}
+                    className={"btn btn-secondary btn-sm"}
                     onClick={() => addAsset(assetName)}
+                    style={{marginRight: 0}}
                 >
                     <span className={"fa fa-solid fa-nopad fa-laptop"}/>
                     <span className={"hidden-xs padding-left-xs"}>

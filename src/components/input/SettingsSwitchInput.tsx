@@ -23,7 +23,10 @@ export default function SettingsSwitchInput(props: SettingsSwitchInputProps) {
             style={{height: 25}}
         >
             <label
-                style={{marginBottom: 0}}
+                style={{
+                    marginBottom: 0,
+                    fontSize: 14,
+                }}
                 title={props.title}
             >
                 <input

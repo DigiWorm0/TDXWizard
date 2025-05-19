@@ -27,14 +27,15 @@ export default function ImportSettingsButton() {
 
     return (
         <button
-            className={"btn btn-primary btn-sm"}
+            className={"btn btn-secondary btn-sm"}
             type={"button"}
             onClick={importSettings}
+            title={"Import all settings from a JSON file"}
         >
             <span className={"fa fa-solid fa-nopad fa-upload me-1"}/>
             <span className={"hidden-xs padding-left-xs"}>
-                    Import Settings
-                </span>
+                Import
+            </span>
         </button>
     )
 }

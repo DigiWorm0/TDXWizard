@@ -4,7 +4,7 @@ import addComponentToDOM from "../utils/addComponentToDOM";
 import PersonPanel from "../components/pages/PersonPanel";
 import SelectSelfButton from "../components/buttons/SelectSelfButton";
 import autoUpdateAuthKey from "../utils/autoUpdateAuthKey";
-import "../styles/common.css"
+import CustomStyles from "../components/style/CustomStyles";
 
 export default class CommonPage implements PageScript {
 
@@ -13,11 +13,16 @@ export default class CommonPage implements PageScript {
     }
 
     run() {
+        CommonPage.addCustomStyles();
         CommonPage.replaceWindowLinks();
         CommonPage.replaceAllEmailLinks();
         CommonPage.addUserLookup();
         CommonPage.addSelectSelfButton();
         CommonPage.runAutoUpdateAuthKey();
+    }
+
+    static addCustomStyles() {
+        addComponentToDOM(document.body, <CustomStyles/>);
     }
 
     static replaceWindowLinks() {
@@ -27,15 +32,13 @@ export default class CommonPage implements PageScript {
             return;
 
         // Replace the default implementation of window.openWinHref
-        window.openWinHref = (
-            event: any,
-            width = 900,
-            height = 600,
+        window.openWinReturn = (
+            url: string,
+            width = 992,
+            height = 800,
             name: string = "New Window"
         ) => {
-            window.open(event.target.href, name, `width=${width},height=${height}`);
-            event.preventDefault();
-            event.stopPropagation();
+            window.open(url, name, `width=${width},height=${height}`);
             return false;
         }
     }

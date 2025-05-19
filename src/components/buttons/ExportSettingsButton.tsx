@@ -31,11 +31,12 @@ export default function ExportSettingsButton() {
             style={{
                 marginRight: 0
             }}
+            title={"Export all settings to a JSON file"}
         >
             <span className={"fa fa-solid fa-nopad fa-download me-1"}/>
             <span className={"hidden-xs padding-left-xs"}>
-                    Export Settings
-                </span>
+                Export
+            </span>
         </button>
     )
 }

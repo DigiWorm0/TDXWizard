@@ -8,7 +8,6 @@ import SettingsColorPickerInput from "../input/SettingsColorPickerInput";
 import SettingsHeader from "../style/SettingsHeader";
 import SettingsTextInput from "../input/SettingsTextInput";
 import ResetSettingsButton from "../buttons/ResetSettingsButton";
-import ResetCustomTemplatesButton from "../buttons/ResetCustomTemplatesButton";
 import ExportSettingsButton from "../buttons/ExportSettingsButton";
 import ImportSettingsButton from "../buttons/ImportSettingsButton";
 
@@ -25,7 +24,7 @@ export default function SettingsModal(props: SettingsModalProps) {
                 className={"modal-dialog"}
                 role={"document"}
                 style={{
-                    maxWidth: 600
+                    maxWidth: 620
                 }}
             >
                 <div className={"modal-content"}>
@@ -40,7 +39,7 @@ export default function SettingsModal(props: SettingsModalProps) {
                             <img
                                 alt={"Sidebar"}
                                 src={SidebarImage}
-                                width={220}
+                                width={230}
                                 style={{
                                     borderTopLeftRadius: "1.125rem",
                                     borderBottomLeftRadius: "1.125rem",
@@ -179,6 +178,12 @@ export default function SettingsModal(props: SettingsModalProps) {
                             />
 
                             <SettingsSwitchInput
+                                label={"Add Ticket Button to Dashboard"}
+                                setting={"dashboardAddTicketButton"}
+                                title={"Adds a \"Create Service Request\" button to the dashboard"}
+                            />
+
+                            <SettingsSwitchInput
                                 label={"Show Print Button"}
                                 setting={"showTicketPrintButton"}
                                 title={"Replaces the 'Print View' with a normal 'Print' button"}
@@ -281,6 +286,18 @@ export default function SettingsModal(props: SettingsModalProps) {
                                 title={"Adds a tool to the inventory desktop to update assets in bulk"}
                             />
 
+                            <SettingsHeader title={"Style"}/>
+                            <SettingsSwitchInput
+                                label={"Dense Layout"}
+                                setting={"denseStyle"}
+                                title={"Reduces padding and margins to fit more information on the screen"}
+                            />
+                            <SettingsSwitchInput
+                                label={"Striped Table Rows"}
+                                setting={"stripedTableRows"}
+                                title={"Alternates the background color of table rows for better readability"}
+                            />
+
                             <SettingsHeader title={"Authentication"}/>
                             <SettingsAuthInput/>
                             <SettingsSwitchInput
@@ -290,13 +307,10 @@ export default function SettingsModal(props: SettingsModalProps) {
                             />
 
                             <SettingsHeader title={"Danger Zone"}/>
-                            <div className={"btn-group mt-1"}>
-                                <ResetSettingsButton/>
-                                <ResetCustomTemplatesButton/>
-                            </div>
-                            <div className={"btn-group mt-1"}>
+                            <div className={"btn-group mt-1 w-100"}>
                                 <ExportSettingsButton/>
                                 <ImportSettingsButton/>
+                                <ResetSettingsButton/>
                             </div>
 
                             {/* ---- END SETTINGS ---- */}

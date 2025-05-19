@@ -35,4 +35,9 @@ export default interface Settings {
     linkifyAttachments: boolean;
     suggestFormTypes: boolean;
     openLinksInNewWindow: boolean;
+
+    denseStyle: boolean;
+    stripedTableRows: boolean;
+
+    dashboardAddTicketButton: boolean;
 }

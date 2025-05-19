@@ -81,7 +81,7 @@ export default function SettingsAuthInput() {
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
             />
-            <div className={"btn-group"}>
+            <div className={"btn-group w-100"}>
                 <button
                     className={"btn btn-primary btn-sm"}
                     type={"button"}
@@ -89,6 +89,7 @@ export default function SettingsAuthInput() {
                     style={{
                         marginRight: 0
                     }}
+                    title={"Generates an authentication key using a single-sign-on (SSO) popup"}
                 >
                     <span
                         className={"fa fa-door-open fa-solid fa-nopad me-1"}
@@ -105,10 +106,9 @@ export default function SettingsAuthInput() {
                     style={{
                         cursor: isLoading ? "wait" : "pointer"
                     }}
+                    title={"Checks if the current authentication key is valid"}
                 >
-                    <span
-                        className={"fa fa-user fa-solid fa-nopad me-1"}
-                    />
+                    <span className={`fa ${isLoading ? "fa-spinner fa-spin" : "fa-user"} fa-solid fa-nopad me-1`}/>
                     <span className={"hidden-xs padding-left-xs"}>
                         Check User Info
                     </span>

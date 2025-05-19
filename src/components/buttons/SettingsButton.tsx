@@ -16,7 +16,8 @@ export default function SettingsButton() {
                     transition: "all 0.2s",
                     transform: `rotate(${isHovered ? 15 : 0}deg) scale(${isHovered ? 1.3 : 1})`,
                     color: isHovered ? "rgb(84, 44, 194)" : "rgb(55, 29, 128)",
-                    border: "none"
+                    border: "none",
+                    boxShadow: isHovered ? "0 0 5px rgba(84, 44, 194, 0.5)" : "none",
                 }}
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}

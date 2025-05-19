@@ -42,13 +42,13 @@ export default function SurplusAssetButton() {
     return (
         <button
             type={"button"}
-            className={"btn btn-warning btn-sm"}
+            className={"btn btn-secondary btn-sm"}
             style={{margin: "0px 3px"}}
             title={"Surplus Asset"}
             onClick={onClick}
         >
             <span className={"fa fa-solid fa-recycle fa-nopad"}/>
-            {/*<span className={"hidden-xs padding-left-xs"}>Surplus Asset</span>*/}
+            <span className={"hidden-xs padding-left-xs"}>Surplus Asset</span>
         </button>
     )
 }

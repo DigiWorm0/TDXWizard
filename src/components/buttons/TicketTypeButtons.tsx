@@ -95,14 +95,15 @@ export default function TicketTypeButtons() {
     return (
         <div
             className={"btn-group"}
-            style={{margin: "0px 3px", gap: 0}}
+            style={{gap: 0}}
         >
             {types?.map(type => (
                 <button
                     key={type}
                     type={"button"}
-                    className={"btn btn-warning btn-sm"}
+                    className={"btn btn-secondary btn-sm"}
                     onClick={() => setType(type as TicketType)}
+                    style={{marginRight: 0}}
                 >
                     <span className={"fa fa-solid fa-nopad fa-tag"}/>
                     <span className={"hidden-xs padding-left-xs"}>
@@ -113,13 +114,16 @@ export default function TicketTypeButtons() {
             {types && (
                 <li className={"btn-group"} style={{gap: 0}}>
                     <button
-                        className={"btn btn-warning btn-sm dropdown-toggle"}
+                        className={"btn btn-secondary btn-sm dropdown-toggle"}
                         type={"button"}
                         data-toggle={"dropdown"}
                     >
                         <span className={"fa-solid fa-nopad fa-lg fa-caret-down"}/>
                     </button>
-                    <ul className={"dropdown-menu"}>
+                    <ul
+                        style={{cursor: "default"}}
+                        className={"dropdown-menu"}
+                    >
                         <li>
                             <a
                                 className={"dropdown-item"}
@@ -129,7 +133,14 @@ export default function TicketTypeButtons() {
                                 Spam
                             </a>
                         </li>
-                        <li className={"divider"}/>
+
+                        <hr
+                            style={{
+                                marginTop: 8,
+                                marginBottom: 8
+                            }}
+                            className="dropdown-divider"
+                        />
                         {Object.keys(TicketTypes)
                             .sort((a, b) => a.localeCompare(b))
                             .map(typeName => (

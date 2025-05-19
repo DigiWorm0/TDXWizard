@@ -1,6 +1,7 @@
 import PageScript from "./PageScript";
 import addComponentToDOM from "../utils/addComponentToDOM";
 import SettingsButton from "../components/buttons/SettingsButton";
+import DashboardButtons from "../components/buttons/DashboardButtons";
 
 const URL_PREFIX = "/TDWorkManagement"
 
@@ -12,6 +13,7 @@ export default class HomePage implements PageScript {
 
     run() {
         HomePage.addSettingsButton();
+        HomePage.addDashboardButtons();
     }
 
     static addSettingsButton() {
@@ -27,5 +29,18 @@ export default class HomePage implements PageScript {
 
         // Add Button
         addComponentToDOM(rightSide, <SettingsButton/>);
+    }
+
+    static addDashboardButtons() {
+        // Get Dashboard Nav
+        const dashboardNav = document.querySelector("#divDashboardHeader .tdx-action-menu");
+        if (!dashboardNav)
+            throw new Error("Dashboard Nav not found");
+
+        // Add Buttons
+        const dashboardButtons = addComponentToDOM(dashboardNav, <DashboardButtons/>);
+
+        // Make 1st child
+        dashboardNav.insertBefore(dashboardButtons, dashboardNav.firstChild);
     }
 }

@@ -21,7 +21,7 @@ const DefaultSettings: Settings = {
     showTicketPrintButton: true,
     hideTicketPrintViewButton: true,
 
-    useNewFeed: false,
+    useNewFeed: true,
     mergeAdjacentSystemMessages: true,
 
     useCustomProfileColor: false,
@@ -47,7 +47,12 @@ const DefaultSettings: Settings = {
 
     suggestFormTypes: true,
 
-    openLinksInNewWindow: true
+    openLinksInNewWindow: true,
+
+    denseStyle: true,
+    stripedTableRows: true,
+
+    dashboardAddTicketButton: true,
 };
 
 export default DefaultSettings;

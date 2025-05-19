@@ -9,10 +9,7 @@ export default function FormTypeButtons() {
         return null;
     return (
         <div
-            className={"btn-group"}
-            style={{
-                marginTop: 5,
-            }}
+            style={{margin: "5px 2px"}}
         >
             <FormTypeButton name={"Reimage"} typeID={1041} iconName={"hard-drive"}/>
             <FormTypeButton name={"Repair"} typeID={9281} iconName={"hammer"}/>

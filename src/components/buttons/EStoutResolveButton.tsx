@@ -68,7 +68,7 @@ export default function EStoutResolveButton() {
         return null;
     return (
         <button
-            className={"btn btn-warning btn-sm dropdown-toggle"}
+            className={"btn btn-secondary btn-sm dropdown-toggle"}
             style={{margin: "0px 3px"}}
             type={"button"}
             data-toggle={"dropdown"}

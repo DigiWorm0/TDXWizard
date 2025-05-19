@@ -73,7 +73,7 @@ export default function SurplusTicketButton() {
     return (
         <button
             type={"button"}
-            className={"btn btn-warning btn-sm"}
+            className={"btn btn-secondary btn-sm"}
             style={{margin: "0px 3px"}}
             title={"Create Surplus Ticket"}
             onClick={onClick}
