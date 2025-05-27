@@ -226,6 +226,7 @@ const typeToKeywordWeights: Record<keyof typeof TicketTypes, KeywordWeights> = {
         "inventory": 1,
         "reassign": 1,
         "location change": 1,
+        "owner": 1,
         "automated report delivery": 1.5
     },
     "Hardware": {
@@ -282,10 +283,11 @@ const typeToKeywordWeights: Record<keyof typeof TicketTypes, KeywordWeights> = {
         "webassign": 1,
         "kaltura": 1,
         "katura": 1,
+        "cultura": 1,
         "redshelf": 1,
         "red shelf": 1,
         "mymedia": 1,
-        "canvas": 0.5,
+        "canvas": 1,
         "blueprint course": 1
     },
     "Office": {
