@@ -34,7 +34,7 @@ export default class CommonPage implements PageScript {
         // Replace TDX's window.openWinReturn function with a custom one.
         // Explicitly calls `window.eval` to reference the global `window` object instead of the shadow DOM
         window.eval(`window.openWinReturn = (url, width=992, height=800, name='New Window') => {
-            window.open(url, name, 'width=' + width + ',height=' + height);
+            window.open(url, '_blank', 'width=' + width + ',height=' + height);
             return false;
         }`);
     }

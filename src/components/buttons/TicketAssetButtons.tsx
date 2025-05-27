@@ -93,9 +93,7 @@ export default function TicketAssetButtons() {
     return (
         <div
             className={"btn-group"}
-            style={{
-                gap: 0
-            }}
+            style={{gap: 0}}
         >
             {ticketAssetNames?.map(assetName => (
                 <button
