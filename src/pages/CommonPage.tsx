@@ -5,6 +5,7 @@ import PersonPanel from "../components/pages/PersonPanel";
 import SelectSelfButton from "../components/buttons/SelectSelfButton";
 import autoUpdateAuthKey from "../utils/autoUpdateAuthKey";
 import CustomStyles from "../components/style/CustomStyles";
+import BetterSearch from "../components/search/BetterSearch";
 
 export default class CommonPage implements PageScript {
 
@@ -19,6 +20,7 @@ export default class CommonPage implements PageScript {
         CommonPage.addUserLookup();
         CommonPage.addSelectSelfButton();
         CommonPage.runAutoUpdateAuthKey();
+        CommonPage.replaceSearchBar();
     }
 
     static addCustomStyles() {
@@ -60,6 +62,22 @@ export default class CommonPage implements PageScript {
      */
     static runAutoUpdateAuthKey() {
         autoUpdateAuthKey().catch(console.error);
+    }
+
+    static replaceSearchBar() {
+        // Find the old search bar
+        const searchBar = document.getElementById("globalSearchBar");
+        if (!searchBar || !searchBar.parentElement)
+            return;
+
+        // Hide the old search bar
+        // searchBar.style.display = "none";
+
+        // Add the new search bar
+        const newSearchBar = addComponentToDOM(searchBar.parentElement, <BetterSearch/>);
+
+        // Place before the old search bar
+        searchBar.parentElement.insertBefore(newSearchBar, searchBar);
     }
 
     /**

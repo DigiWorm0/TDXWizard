@@ -53,6 +53,11 @@ const DefaultSettings: Settings = {
     stripedTableRows: true,
 
     dashboardAddTicketButton: true,
+
+    useNewSearch: false,
+
+    useCustomColorPalette: false,
+    primaryColor: "#6B5CDC"
 };
 
 export default DefaultSettings;

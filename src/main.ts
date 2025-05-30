@@ -7,6 +7,7 @@ import InventoryPage from "./pages/InventoryPage";
 import LegacySearchPage from "./pages/LegacySearchPage";
 import TicketUpdatePage from "./pages/TicketUpdatePage";
 import TicketCreatePage from "./pages/TicketCreatePage";
+import TicketPage from "./pages/TicketPage";
 
 // All Pages
 const allPages: PageScript[] = [
@@ -17,7 +18,8 @@ const allPages: PageScript[] = [
     new InventoryPage(),
     new LegacySearchPage(),
     new TicketUpdatePage(),
-    new TicketCreatePage()
+    new TicketCreatePage(),
+    new TicketPage()
 ];
 
 // Ensures the script runs after the page has loaded

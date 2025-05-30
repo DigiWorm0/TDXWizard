@@ -7,6 +7,7 @@ import ConfigurationItem from "../types/ConfigurationItem";
 import TicketWorkflow from "../types/TicketWorkflow";
 import TicketFeedEntry from "../types/TicketFeedEntry";
 import TicketStatus from "../types/TicketStatus";
+import TicketSearch from "../types/TicketSearch";
 
 /**
  * A class for interacting with the TDX Tickets API
@@ -79,6 +80,10 @@ export default class TicketsEndpoint extends TDXEndpoint {
 
     getTicketStatuses(appID: number) {
         return this.client.jsonRequest<TicketStatus[]>(`${appID}/tickets/statuses`);
+    }
+
+    search(appID: number, query: TicketSearch) {
+        return this.client.jsonRequest<Ticket[]>(`${appID}/tickets/search`, query, "POST");
     }
 
     // getTicketAssets(appID: number, id: number) {

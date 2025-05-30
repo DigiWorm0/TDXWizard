@@ -129,6 +129,11 @@ export default function SettingsModal(props: SettingsModalProps) {
                                 setting={"confirmActions"}
                                 title={"Adds a confirmation dialog for destructive actions"}
                             />
+                            <SettingsSwitchInput
+                                label={"Better Search"}
+                                setting={"useNewSearch"}
+                                title={"Replaces the TDX search with a re-designed version"}
+                            />
 
                             <SettingsHeader title={"Tickets"}/>
 
@@ -297,6 +302,18 @@ export default function SettingsModal(props: SettingsModalProps) {
                                 setting={"stripedTableRows"}
                                 title={"Alternates the background color of table rows for better readability"}
                             />
+                            <SettingsSwitchInput
+                                label={"Custom Colors"}
+                                setting={"useCustomColorPalette"}
+                                title={"Recolors the TDX interface with a custom color palette"}
+                            />
+                            <div style={{marginLeft: 20}}>
+                                <SettingsColorPickerInput
+                                    label={"Primary Color"}
+                                    setting={"primaryColor"}
+                                    disabled={!settings.useCustomColorPalette}
+                                />
+                            </div>
 
                             <SettingsHeader title={"Authentication"}/>
                             <SettingsAuthInput/>

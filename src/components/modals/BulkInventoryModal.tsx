@@ -7,6 +7,7 @@ import BulkInventoryAssetRow from "./BulkInventoryAssetRow";
 import updateAssets from "../../utils/assets/updateAssets";
 import createTicketWithAssets from "../../utils/assets/createTicketWithAssets";
 import createAssetsCSV from "../../utils/assets/createAssetsCSV";
+import AppID from "../../types/AppID";
 
 export interface BulkInventoryModalProps {
     onClose: () => void;
@@ -231,7 +232,7 @@ export default function BulkInventoryModal(props: BulkInventoryModalProps) {
 
                 <div
                     className={"tdx-btn tdx-btn--secondary"}
-                    onClick={() => updateAssets(assets)}
+                    onClick={() => updateAssets(props.appID ?? AppID.Inventory, assets)}
                     style={{marginTop: 5, marginLeft: 0}}
                     // disabled={assets.length === 0}
                 >
@@ -240,7 +241,7 @@ export default function BulkInventoryModal(props: BulkInventoryModalProps) {
 
                 <div
                     className={"tdx-btn tdx-btn--secondary"}
-                    onClick={() => createTicketWithAssets(assets)}
+                    onClick={() => createTicketWithAssets(props.appID ?? AppID.Inventory, assets)}
                     style={{marginTop: 5, marginLeft: 5}}
                     // disabled={assets.length === 0}
                 >

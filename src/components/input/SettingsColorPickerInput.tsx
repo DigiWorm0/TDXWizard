@@ -17,11 +17,11 @@ export default function SettingsColorPickerInput(props: SettingsColorPickerInput
 
         const colorInput = document.createElement("input");
         colorInput.type = "color";
-        colorInput.value = settings.customProfileColor;
+        colorInput.value = (settings[props.setting] as string) || "#000000";
         colorInput.addEventListener("change", () => {
             setSettings({
                 ...settings,
-                customProfileColor: colorInput.value,
+                [props.setting]: colorInput.value,
             });
 
             colorInput.remove();
@@ -38,7 +38,7 @@ export default function SettingsColorPickerInput(props: SettingsColorPickerInput
         >
             <div
                 style={{
-                    backgroundColor: settings.customProfileColor,
+                    backgroundColor: settings[props.setting] as string,
                     borderRadius: 5,
                     minHeight: "100%",
                     width: 50,

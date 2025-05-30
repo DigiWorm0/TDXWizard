@@ -40,4 +40,8 @@ export default interface Settings {
     stripedTableRows: boolean;
 
     dashboardAddTicketButton: boolean;
+    useNewSearch: boolean;
+
+    useCustomColorPalette: boolean;
+    primaryColor: string;
 }
