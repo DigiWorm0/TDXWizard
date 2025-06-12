@@ -162,6 +162,12 @@ export default function SettingsModal(props: SettingsModalProps) {
                                     title={"Converts attachment text into clickable links"}
                                 />
                                 <SettingsSwitchInput
+                                    label={"Custom Profile Images"}
+                                    setting={"customProfileImages"}
+                                    disabled={!settings.useNewFeed}
+                                    title={"Shows/hides users' custom profile images in the feed"}
+                                />
+                                <SettingsSwitchInput
                                     label={"Custom Profile Color"}
                                     setting={"useCustomProfileColor"}
                                     disabled={!settings.useNewFeed}

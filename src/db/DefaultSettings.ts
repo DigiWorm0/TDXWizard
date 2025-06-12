@@ -57,7 +57,9 @@ const DefaultSettings: Settings = {
     useNewSearch: false,
 
     useCustomColorPalette: false,
-    primaryColor: "#6B5CDC"
+    primaryColor: "#6B5CDC",
+
+    customProfileImages: true,
 };
 
 export default DefaultSettings;
