@@ -39,6 +39,11 @@ export default class CommonPage implements PageScript {
             window.open(url, '_blank', 'width=' + width + ',height=' + height);
             return false;
         }`);
+
+        // window.eval(`window.top.WorkMgmt.MainContentManager.instance.openIFrameTab = (name, id, url, tabData = false) => {
+        //     window.open(url, '_blank', 'width=992px,height=800');
+        //     return false;
+        // }`);
     }
 
     /**

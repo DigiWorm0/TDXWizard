@@ -98,4 +98,15 @@
  */
 .wizard_window {
     background-color: white !important;
+    overflow: auto !important;
+    --fa-style-family: 'Font Awesome 6 Free Window';
+}
+
+@font-face {
+    font-family: 'Font Awesome 6 Free Window';
+    font-style: normal;
+    font-weight: 900;
+    font-display: block;
+    src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/webfonts/fa-solid-900.woff2") format("woff2"),
+    url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/webfonts/fa-solid-900.ttf") format("truetype");
 }

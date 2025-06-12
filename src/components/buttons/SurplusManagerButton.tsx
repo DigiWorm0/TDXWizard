@@ -1,12 +1,8 @@
 import React from "react";
-import BulkInventoryModal from "../modals/bulkInventory/BulkInventoryModal";
 import useSettings from "../../hooks/useSettings";
+import SurplusManagerModal from "../modals/surplus/SurplusManagerModal";
 
-export interface BulkInventoryButtonProps {
-    appID?: number;
-}
-
-export default function BulkInventoryButton(props: BulkInventoryButtonProps) {
+export default function SurplusManagerButton() {
     const [settings] = useSettings();
     const [isModalVisible, setIsModalVisible] = React.useState(false);
 
@@ -16,21 +12,20 @@ export default function BulkInventoryButton(props: BulkInventoryButtonProps) {
         <>
             <div
                 className={"tdx-btn tdx-btn--secondary me-1"}
-                title={"Tool for editing large amounts of assets at once"}
+                title={"Tool for managing surplus assets and processes"}
                 onClick={e => {
                     e.preventDefault();
                     setIsModalVisible(true);
                 }}
             >
-                <span className={"fa-solid fa-boxes me-1"}/>
+                <span className={"fa-solid fa-recycle me-1"}/>
                 <span className={"hidden-xs"}>
-                    Bulk Inventory
+                    Surplus Manager
                 </span>
             </div>
             {isModalVisible && (
-                <BulkInventoryModal
+                <SurplusManagerModal
                     onClose={() => setIsModalVisible(false)}
-                    appID={props.appID}
                 />
             )}
         </>

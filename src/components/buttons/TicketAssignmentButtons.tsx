@@ -8,6 +8,7 @@ import useUser from "../../hooks/useUser";
 import User from "../../tdx-api/types/User";
 import groupNames from "../../db/GroupNames";
 import confirmAction from "../../utils/confirmAction";
+import getAppIDFromURL from "../../utils/tdx/getAppIDFromURL";
 
 
 export default function TicketAssignmentButtons() {
@@ -86,8 +87,13 @@ export default function TicketAssignmentButtons() {
             if (!ticketID)
                 throw new Error("Ticket ID not found");
 
+            // Get App ID
+            const appID = getAppIDFromURL();
+            if (!appID)
+                throw new Error("App ID not found");
+
             // Update Ticket
-            await client.tickets.updateTicket(AppID.Tickets, ticketID, {ResponsibleUid: assignment.UID});
+            await client.tickets.updateTicket(appID, ticketID, {ResponsibleUid: assignment.UID});
 
             // Reload/Close the page
             if (settings.autoCloseTicketOnSave)

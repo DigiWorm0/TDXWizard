@@ -28,6 +28,6 @@ export default class TicketDetailsPage implements PageScript {
         const feedRow = document.querySelector("#divFeed .pull-right");
         if (!feedRow)
             throw new Error("Feed Row not found");
-        addComponentToDOM(feedRow, <ConvertFeedButton/>);
+        addComponentToDOM(feedRow, <ConvertFeedButton type={"ticket"}/>);
     }
 }

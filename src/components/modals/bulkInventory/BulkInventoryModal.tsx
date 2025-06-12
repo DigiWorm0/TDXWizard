@@ -1,13 +1,18 @@
 import NewWindow from "react-new-window";
 import React from "react";
-import Asset from "../../tdx-api/types/Asset";
-import UWStoutTDXClient from "../../utils/tdx/UWStoutTDXClient";
-import autoRetryHTTPRequest from "../../utils/autoRetryHTTPRequest";
+import Asset from "../../../tdx-api/types/Asset";
+import UWStoutTDXClient from "../../../utils/tdx/UWStoutTDXClient";
+import autoRetryHTTPRequest from "../../../utils/autoRetryHTTPRequest";
 import BulkInventoryAssetRow from "./BulkInventoryAssetRow";
-import updateAssets from "../../utils/assets/updateAssets";
-import createTicketWithAssets from "../../utils/assets/createTicketWithAssets";
-import createAssetsCSV from "../../utils/assets/createAssetsCSV";
-import AppID from "../../types/AppID";
+import updateAssets from "../../../utils/assets/updateAssets";
+import createTicketWithAssets from "../../../utils/assets/createTicketWithAssets";
+import createAssetsCSV from "../../../utils/assets/createAssetsCSV";
+import AppID from "../../../types/AppID";
+import useErrorHandling from "../../../hooks/useErrorHandling";
+import useRunPromise from "../../../hooks/useRunPromise";
+import BigWindowError from "../bigwindow/BigWindowError";
+import BigWindowInput from "../bigwindow/BigWindowInput";
+import BigWindowProgress from "../bigwindow/BigWindowProgress";
 
 export interface BulkInventoryModalProps {
     onClose: () => void;
@@ -15,62 +20,22 @@ export interface BulkInventoryModalProps {
 }
 
 export default function BulkInventoryModal(props: BulkInventoryModalProps) {
-    const [isLoading, setIsLoading] = React.useState(false);
     const [assets, setAssets] = React.useState<Asset[]>([]);
-    const [error, setError] = React.useState<string | null>(null);
+    const [errors, onError, clearErrors] = useErrorHandling();
+    const [runPromise, isLoading] = useRunPromise(onError);
 
-    const handleError = (err: Error) => {
-        console.error(err);
-        setError(existingErrors => {
-            if (!existingErrors)
-                return err.message;
-            return `${existingErrors}\n${err.message}`;
-        });
-    }
+    const onSearch = async (searchQueries: string[]) => {
 
-    const handleInput = async (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-        if (e.key !== "Enter")
-            return;
-        if (e.ctrlKey || e.shiftKey || e.altKey)
-            return;
-        if (isLoading)
-            return;
-        e.preventDefault();
-
-        // Update state
-        setIsLoading(true);
-
-        // Get the search query
-        const inputValue = e.currentTarget.value.trim();
-        let searchQueries = inputValue.split("\n");
-
-        // Remove Whitespace
-        searchQueries = searchQueries
-            .map(query => query.trim())
-            .filter(query => query.length > 0);
-
-        // Remove S prefix
+        // Remove S- prefix
         searchQueries = searchQueries.map(query => {
             if (query.startsWith("S"))
                 return query.slice(1);
             return query;
         });
 
-        // Clear Input
-        e.currentTarget.value = "";
-
-        // Iterate over each search query
-        for (const searchQuery of searchQueries) {
-
-            // Search for the asset
-            await searchAsset(searchQuery).catch((err) => {
-                err.message += ` (${searchQuery})`;
-                handleError(err);
-            });
-        }
-
-        // Update state
-        setIsLoading(false);
+        // Search each asset
+        for (const query of searchQueries)
+            await searchAsset(query);
     }
 
     const searchAsset = async (searchQuery: string) => {
@@ -78,16 +43,16 @@ export default function BulkInventoryModal(props: BulkInventoryModalProps) {
         // Send API request
         const client = new UWStoutTDXClient();
         const {appID} = props;
-        // const appID = getAppIDFromURL();
 
         if (!appID)
             throw new Error("App ID not found");
 
+        // Search for the asset
         const searchResults = await autoRetryHTTPRequest(
             () => client.assets.searchAssets(appID, {SerialLike: searchQuery, MaxResults: 1}),
             30000,
             3,
-            (retries) => handleError(new Error(`Rate limit exceeded. Retrying in 30s... (${retries}/3)`))
+            (retries) => onError(`Rate limit exceeded. Retrying in 30s... (${retries}/3)`)
         );
 
         // Check Results
@@ -99,7 +64,7 @@ export default function BulkInventoryModal(props: BulkInventoryModalProps) {
         setAssets(existingAssets => {
             // Check if the asset is already in the list
             if (existingAssets.find(a => a.ID === asset.ID)) {
-                handleError(new Error(`Duplicate asset already in list: ${asset.Tag} (${searchQuery})`));
+                onError(`Duplicate asset already in list: ${asset.Tag} (${searchQuery})`);
                 return existingAssets;
             }
 
@@ -118,8 +83,7 @@ export default function BulkInventoryModal(props: BulkInventoryModalProps) {
         if (isLoading)
             return;
 
-        // Update state
-        setIsLoading(true);
+        // Clear assets
         setAssets([]);
 
         // Send API request
@@ -139,7 +103,6 @@ export default function BulkInventoryModal(props: BulkInventoryModalProps) {
         }
 
         // Update state
-        setIsLoading(false);
         setAssets(newAssets);
     }
 
@@ -202,89 +165,59 @@ export default function BulkInventoryModal(props: BulkInventoryModalProps) {
                             </td>
                         </tr>
                     )}
-
-                    {isLoading && (
-                        <tr>
-                            <td colSpan={6} className={"text-center"}>
-                                <div className={"progress"} style={{marginBottom: 0}}>
-                                    <div
-                                        className={"progress-bar progress-bar-striped progress-bar-animated active w-100"}
-                                    />
-                                </div>
-                            </td>
-                        </tr>
-                    )}
                     </tbody>
                 </table>
 
-                <textarea
-                    autoFocus
-                    className={"form-control"}
-                    placeholder={"Scan/type an asset tag OR paste a column/list of asset tags"}
-                    onKeyDown={handleInput}
-                    style={{
-                        marginTop: 5,
-                        height: 50,
-                        minWidth: "100%",
-                        maxWidth: "100%",
-                    }}
+                {isLoading && <BigWindowProgress/>}
+
+                <BigWindowInput
+                    onSearch={(queries) => runPromise(onSearch(queries))}
                 />
 
-                <div
+                <button
                     className={"tdx-btn tdx-btn--secondary"}
                     onClick={() => updateAssets(props.appID ?? AppID.Inventory, assets)}
                     style={{marginTop: 5, marginLeft: 0}}
-                    // disabled={assets.length === 0}
+                    disabled={assets.length === 0 || isLoading}
                 >
-                    Update All Assets
-                </div>
+                    <i className={"fa fa-pen-to-square"}></i>
+                    <span className={"hidden-xs padding-left-xs"}>Update All Assets</span>
+                </button>
 
-                <div
+                <button
                     className={"tdx-btn tdx-btn--secondary"}
                     onClick={() => createTicketWithAssets(props.appID ?? AppID.Inventory, assets)}
                     style={{marginTop: 5, marginLeft: 5}}
-                    // disabled={assets.length === 0}
+                    disabled={assets.length === 0 || isLoading}
                 >
-                    Create Ticket
-                </div>
+                    <i className={"fa fa-ticket"}></i>
+                    <span className={"hidden-xs padding-left-xs"}>New Ticket</span>
+                </button>
 
-                <div
+                <button
                     className={"tdx-btn tdx-btn--secondary"}
                     onClick={() => createAssetsCSV(assets)}
                     style={{marginTop: 5, marginLeft: 5}}
-                    // disabled={assets.length === 0}
+                    disabled={assets.length === 0 || isLoading}
                 >
-                    Download CSV
-                </div>
+                    <i className={"fa fa-table"}></i>
+                    <span className={"hidden-xs padding-left-xs"}>Download CSV</span>
+                </button>
 
-                <div
+                <button
                     className={"tdx-btn tdx-btn--secondary"}
-                    onClick={() => refreshAssets()}
+                    onClick={() => runPromise(refreshAssets())}
                     style={{marginTop: 5, marginLeft: 5}}
-                    // disabled={assets.length === 0 || isLoading}
+                    disabled={assets.length === 0 || isLoading}
                 >
-                    Reload Assets
-                </div>
+                    <i className={"fa fa-arrows-rotate"}></i>
+                    <span className={"hidden-xs padding-left-xs"}>Reload Assets</span>
+                </button>
 
-                {error && (
-                    <div
-                        className={"alert alert-danger alert-dismissible fade show"}
-                        style={{marginTop: 5}}
-                    >
-
-                        {error.split("\n").map((line, i) => (
-                            <span key={i}>
-                                {line}<br/>
-                            </span>
-                        ))}
-
-                        <button
-                            type="button"
-                            className="btn-close"
-                            onClick={() => setError(null)}
-                        />
-                    </div>
-                )}
+                <BigWindowError
+                    error={errors}
+                    onClear={clearErrors}
+                />
             </div>
         </NewWindow>
     )
