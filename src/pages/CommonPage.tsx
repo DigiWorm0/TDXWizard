@@ -6,6 +6,7 @@ import SelectSelfButton from "../components/buttons/SelectSelfButton";
 import autoUpdateAuthKey from "../utils/autoUpdateAuthKey";
 import CustomStyles from "../components/style/CustomStyles";
 import BetterSearch from "../components/search/BetterSearch";
+import openWindow from "../utils/openWindow";
 
 export default class CommonPage implements PageScript {
 
@@ -35,33 +36,24 @@ export default class CommonPage implements PageScript {
 
         // Patch global window functions with custom implementations
         // Explicitly calls `window.eval` to reference the global `window` object instead of the shadow DOM
-        
+
+        if (window.top === null)
+            throw new Error("window.top is null, cannot replace window links");
+
         // Generic iFrame tab opening
-        window.eval(`window.top.WorkMgmt.MainContentManager.instance.openIFrameTab = (name, id, url, tabData = false) => {
-            const newWindow = window.open(url, '_blank', 'width=992px,height=800px');
-            newWindow.title = name;
-            return false;
-        }`);
+        window.top.WorkMgmt.MainContentManager.instance.openIFrameTab = (name: string, _id: string, url: string, _tabData = false) => openWindow(url, name);
+
+        // Child window opening
+        window.openWinReturn = (url: string, _width: number, _height: number, name: string) => openWindow(url, name);
 
         // Side Panel iFrame opening
-        window.eval(`window.top.WorkMgmt.MainContentManager.instance.loadSidePanelIFrame = (url, name, id, tabData = true, landmark = true) => {
-            const newWindow = window.open(url, '_blank', 'width=992px,height=800px');
-            newWindow.title = name;
-            return false;
-        }`);
+        window.top.WorkMgmt.MainContentManager.instance.loadSidePanelIFrame = (url: string, name: string, _id: string, _tabData = true, _landmark = true) => openWindow(url, name);
 
         // Child window side panel opening
-        window.eval(`window.openWorkMgmtSidePanel = (url) => {
-            window.open(url, '_blank', 'width=992px,height=800px');
-            return false;
-        }`);
+        window.openWorkMgmtSidePanel = (url: string) => openWindow(url);
 
         // Search function is on its own script
-        window.eval(`window.top.WorkMgmt.GlobalSearch.instance.search = (searchQuery) => {
-            const newWindow = window.open(\`/TDNext/Apps/Shared/Global/Search?searchText=\${encodeURIComponent(searchQuery)}\`, '_blank', 'width=992px,height=800px');
-            newWindow.title = title;
-            return false;
-        }`);
+        window.top.WorkMgmt.GlobalSearch.instance.search = (searchQuery: string) => openWindow(`/TDNext/Apps/Shared/Global/Search?searchText=${encodeURIComponent(searchQuery)}`, "Global Search");
     }
 
     /**

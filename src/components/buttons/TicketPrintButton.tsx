@@ -2,6 +2,7 @@ import getTicketIDFromURL from "../../utils/tdx/getTicketIDFromURL";
 import getAppIDFromURL from "../../utils/tdx/getAppIDFromURL";
 import React from "react";
 import useSettings from "../../hooks/useSettings";
+import openWindow from "../../utils/openWindow";
 
 export default function TicketPrintButton() {
     const [settings] = useSettings();
@@ -42,19 +43,6 @@ export default function TicketPrintButton() {
             iframe.contentWindow?.print();
     }
 
-    const onPrintView = () => {
-        const windowWidth = 800;
-        const windowHeight = 600;
-        const windowTop = window.screenY + (window.outerHeight - windowHeight) / 2;
-        const windowLeft = window.screenX + (window.outerWidth - windowWidth) / 2;
-
-        window.open(
-            printURL,
-            "_blank",
-            `width=${windowWidth},height=${windowHeight},top=${windowTop},left=${windowLeft}`
-        );
-    }
-
     if (!settings.showTicketPrintButton)
         return null;
     return (
@@ -89,7 +77,7 @@ export default function TicketPrintButton() {
                 <button
                     type={"button"}
                     className={"btn btn-secondary btn-sm"}
-                    onClick={() => onPrintView()}
+                    onClick={() => openWindow(printURL, "Print View")}
                     style={{paddingLeft: 10, paddingRight: 10}}
                 >
                     <span className={"fa fa-solid fa-nopad fa-up-right-from-square"}/>
