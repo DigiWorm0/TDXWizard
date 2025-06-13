@@ -1,4 +1,3 @@
-import NewWindow from "react-new-window";
 import React from "react";
 import Asset from "../../../tdx-api/types/Asset";
 import UWStoutTDXClient from "../../../utils/tdx/UWStoutTDXClient";
@@ -13,6 +12,7 @@ import useRunPromise from "../../../hooks/useRunPromise";
 import BigWindowError from "../bigwindow/BigWindowError";
 import BigWindowInput from "../bigwindow/BigWindowInput";
 import BigWindowProgress from "../bigwindow/BigWindowProgress";
+import BigInputWindow from "../BigInputWindow";
 
 export interface BulkInventoryModalProps {
     onClose: () => void;
@@ -107,118 +107,116 @@ export default function BulkInventoryModal(props: BulkInventoryModalProps) {
     }
 
     return (
-        <NewWindow
+        <BigInputWindow
             title={"Bulk Inventory"}
-            onUnload={props.onClose}
-            features={{width: 900, height: 600}}
-            onOpen={(e) => {
-                e.window.document.body.classList.add("wizard_window");
-            }}
+            onClose={props.onClose}
         >
-            <div style={{padding: 15}}>
-                <h1 style={{marginBottom: 5}}>
-                    Assets ({assets.length})
-                </h1>
-                <table
-                    className={"table table-striped table-bordered table-hover"}
-                    style={{marginBottom: 0}}
-                >
-                    <thead>
+            <h1
+                className={"mb-1 fw-bold"}
+            >
+                <span className={"fa fa-boxes me-3"}/>
+                Bulk Inventory
+            </h1>
+            <table
+                className={"table table-striped table-bordered table-hover"}
+                style={{marginBottom: 0}}
+            >
+                <thead>
+                <tr>
+                    <th>
+                        Asset Tag
+                    </th>
+                    <th>
+                        Serial #
+                    </th>
+                    <th>
+                        Model
+                    </th>
+                    <th>
+                        Owner
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                </tr>
+                </thead>
+
+                <tbody style={{borderTop: "none"}}>
+                
+                {assets.map(asset => (
+                    <BulkInventoryAssetRow
+                        key={asset.ID}
+                        asset={asset}
+                        removeAsset={removeAsset}
+                        appID={props.appID}
+                    />
+                ))}
+
+                {assets.length === 0 && !isLoading && (
                     <tr>
-                        <th>
-                            Asset Tag
-                        </th>
-                        <th>
-                            Serial #
-                        </th>
-                        <th>
-                            Model
-                        </th>
-                        <th>
-                            Owner
-                        </th>
-                        <th>
-                            Status
-                        </th>
-                    </tr>
-                    </thead>
-
-                    <tbody>
-                    {assets.map(asset => (
-                        <BulkInventoryAssetRow
-                            key={asset.ID}
-                            asset={asset}
-                            removeAsset={removeAsset}
-                            appID={props.appID}
-                        />
-                    ))}
-
-                    {assets.length === 0 && !isLoading && (
-                        <tr>
-                            <td colSpan={6} className={"text-center"}>
+                        <td colSpan={6} className={"text-center"}>
                                 <span
                                     className={"text-muted"}
                                     style={{fontStyle: "italic"}}
                                 >
                                     Scan an asset tag to add it to the list
                                 </span>
-                            </td>
-                        </tr>
-                    )}
-                    </tbody>
-                </table>
+                        </td>
+                    </tr>
+                )}
+                </tbody>
+            </table>
 
-                {isLoading && <BigWindowProgress/>}
+            {isLoading && <BigWindowProgress/>}
 
-                <BigWindowInput
-                    onSearch={(queries) => runPromise(onSearch(queries))}
-                />
+            <BigWindowInput
+                onSearch={(queries) => runPromise(onSearch(queries))}
+            />
 
-                <button
-                    className={"tdx-btn tdx-btn--secondary"}
-                    onClick={() => updateAssets(props.appID ?? AppID.Inventory, assets)}
-                    style={{marginTop: 5, marginLeft: 0}}
-                    disabled={assets.length === 0 || isLoading}
-                >
-                    <i className={"fa fa-pen-to-square"}></i>
-                    <span className={"hidden-xs padding-left-xs"}>Update All Assets</span>
-                </button>
+            <button
+                className={"tdx-btn tdx-btn--secondary"}
+                onClick={() => updateAssets(props.appID ?? AppID.Inventory, assets)}
+                style={{marginTop: 5, marginLeft: 0}}
+                disabled={assets.length === 0 || isLoading}
+            >
+                <i className={"fa fa-pen-to-square"}></i>
+                <span className={"hidden-xs padding-left-xs"}>Update All Assets</span>
+            </button>
 
-                <button
-                    className={"tdx-btn tdx-btn--secondary"}
-                    onClick={() => createTicketWithAssets(props.appID ?? AppID.Inventory, assets)}
-                    style={{marginTop: 5, marginLeft: 5}}
-                    disabled={assets.length === 0 || isLoading}
-                >
-                    <i className={"fa fa-ticket"}></i>
-                    <span className={"hidden-xs padding-left-xs"}>New Ticket</span>
-                </button>
+            <button
+                className={"tdx-btn tdx-btn--secondary"}
+                onClick={() => createTicketWithAssets(props.appID ?? AppID.Inventory, assets)}
+                style={{marginTop: 5, marginLeft: 5}}
+                disabled={assets.length === 0 || isLoading}
+            >
+                <i className={"fa fa-ticket"}></i>
+                <span className={"hidden-xs padding-left-xs"}>New Ticket</span>
+            </button>
 
-                <button
-                    className={"tdx-btn tdx-btn--secondary"}
-                    onClick={() => createAssetsCSV(assets)}
-                    style={{marginTop: 5, marginLeft: 5}}
-                    disabled={assets.length === 0 || isLoading}
-                >
-                    <i className={"fa fa-table"}></i>
-                    <span className={"hidden-xs padding-left-xs"}>Download CSV</span>
-                </button>
+            <button
+                className={"tdx-btn tdx-btn--secondary"}
+                onClick={() => createAssetsCSV(assets)}
+                style={{marginTop: 5, marginLeft: 5}}
+                disabled={assets.length === 0 || isLoading}
+            >
+                <i className={"fa fa-table"}></i>
+                <span className={"hidden-xs padding-left-xs"}>Download CSV</span>
+            </button>
 
-                <button
-                    className={"tdx-btn tdx-btn--secondary"}
-                    onClick={() => runPromise(refreshAssets())}
-                    style={{marginTop: 5, marginLeft: 5}}
-                    disabled={assets.length === 0 || isLoading}
-                >
-                    <i className={"fa fa-arrows-rotate"}></i>
-                    <span className={"hidden-xs padding-left-xs"}>Reload Assets</span>
-                </button>
+            <button
+                className={"tdx-btn tdx-btn--secondary"}
+                onClick={() => runPromise(refreshAssets())}
+                style={{marginTop: 5, marginLeft: 5}}
+                disabled={assets.length === 0 || isLoading}
+            >
+                <i className={"fa fa-arrows-rotate"}></i>
+                <span className={"hidden-xs padding-left-xs"}>Reload Assets</span>
+            </button>
 
-                <BigWindowError
-                    error={errors}
-                    onClear={clearErrors}
-                />
-            </div>
-        </NewWindow>
+            <BigWindowError
+                error={errors}
+                onClear={clearErrors}
+            />
+        </BigInputWindow>
     )
 }

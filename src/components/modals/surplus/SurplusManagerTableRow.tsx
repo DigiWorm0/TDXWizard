@@ -1,8 +1,7 @@
 import {SurplusAsset} from "./SurplusManagerModal";
 import AssetLink from "../../buttons/TDX/AssetLink";
 import AppID from "../../../types/AppID";
-import TicketLink from "../../buttons/TDX/TicketLink";
-import Ticket from "../../../tdx-api/types/Ticket";
+import SurplusTicketTag from "./SurplusTicketTag";
 
 export interface SurplusManagerTableRowProps {
     asset: SurplusAsset;
@@ -11,14 +10,6 @@ export interface SurplusManagerTableRowProps {
 }
 
 const SURPLUS_STATUS_ID = 27; // Surplus Status ID
-// const SURPLUS_DEPARTMENT_ID = 3484; // Surplus Department ID
-const PICKED_UP_ATTRIBUTE_ID = 14087;
-const PICKED_UP_YES_VALUE = "41587"; // Yes Value for Picked Up Attribute
-
-const getSurplusTicketPickedUp = (ticket: Ticket): boolean => {
-    const pickedUpAttribute = ticket.Attributes?.find(attr => attr.ID === PICKED_UP_ATTRIBUTE_ID);
-    return pickedUpAttribute?.Value === PICKED_UP_YES_VALUE;
-}
 
 export default function SurplusManagerTableRow(props: SurplusManagerTableRowProps) {
     const {asset} = props;
@@ -46,13 +37,18 @@ export default function SurplusManagerTableRow(props: SurplusManagerTableRowProp
             </td>
             <td>
                 {asset.surplusTickets.map((ticket) => (
-                    <TicketLink id={ticket.ID} appID={AppID.Tickets} key={ticket.ID}>
-                        {ticket.ID} - {getSurplusTicketPickedUp(ticket) ? "Picked Up" : "Pending"}
-                    </TicketLink>
+                    <SurplusTicketTag
+                        key={ticket.ID}
+                        ticket={ticket}
+                    />
                 ))}
 
                 {asset.surplusTickets.length === 0 && (
-                    <span className={"badge bg-secondary"}>
+                    <span
+                        title={"No associated surplus ticket"}
+                        className={"badge bg-secondary"}
+                    >
+                        <span className={"fa fa-ban me-1"}/>
                         No Ticket
                     </span>
                 )}
