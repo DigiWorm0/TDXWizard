@@ -1,12 +1,12 @@
 import useSettings from "../../hooks/useSettings";
 import AppID from "../../types/AppID";
+import openWindow from "../../utils/openWindow";
 
 export default function CreateTicketButton() {
     const [settings] = useSettings();
 
     const onClick = () => {
-        // Run the function in the global scope
-        window.eval(`window.openWinReturn("/TDNext/Apps/${AppID.Tickets}/Tickets/New");`);
+        openWindow(`/TDNext/Apps/${AppID.Tickets}/Tickets/New`, "New Service Request");
     }
 
     if (!settings.dashboardAddTicketButton)

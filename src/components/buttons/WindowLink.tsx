@@ -7,7 +7,7 @@ export interface WindowLinkProps extends React.AnchorHTMLAttributes<HTMLAnchorEl
 export default function WindowLink(props: WindowLinkProps) {
     const onClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
         e.preventDefault();
-        openWindow(props.href ?? "#");
+        openWindow(props.href ?? "#", props.title);
     }
 
     return (

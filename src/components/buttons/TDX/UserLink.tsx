@@ -11,6 +11,7 @@ export default function UserLink(props: AssetLinkProps) {
     return (
         <WindowLink
             href={`${window.location.origin}/TDNext/Apps/People/PersonDet.aspx?U=${props.id}`}
+            title={`View User ${props.id}`}
         >
             {props.children}
         </WindowLink>

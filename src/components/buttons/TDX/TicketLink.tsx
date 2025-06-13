@@ -13,6 +13,7 @@ export default function TicketLink(props: TicketLinkProps) {
         <WindowLink
             {...props.anchorProps}
             href={`${window.location.origin}/TDNext/Apps/${props.appID}/Tickets/TicketDet?TicketID=${props.id}`}
+            title={`View Ticket ${props.id}`}
         >
             {props.children}
         </WindowLink>

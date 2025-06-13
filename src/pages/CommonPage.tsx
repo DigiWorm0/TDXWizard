@@ -33,17 +33,35 @@ export default class CommonPage implements PageScript {
         if (!settings.openLinksInNewWindow)
             return;
 
-        // Replace TDX's window.openWinReturn function with a custom one.
+        // Patch global window functions with custom implementations
         // Explicitly calls `window.eval` to reference the global `window` object instead of the shadow DOM
-        window.eval(`window.openWinReturn = (url, width=992, height=800, name='New Window') => {
-            window.open(url, '_blank', 'width=' + width + ',height=' + height);
+        
+        // Generic iFrame tab opening
+        window.eval(`window.top.WorkMgmt.MainContentManager.instance.openIFrameTab = (name, id, url, tabData = false) => {
+            const newWindow = window.open(url, '_blank', 'width=992px,height=800px');
+            newWindow.title = name;
             return false;
         }`);
 
-        // window.eval(`window.top.WorkMgmt.MainContentManager.instance.openIFrameTab = (name, id, url, tabData = false) => {
-        //     window.open(url, '_blank', 'width=992px,height=800');
-        //     return false;
-        // }`);
+        // Side Panel iFrame opening
+        window.eval(`window.top.WorkMgmt.MainContentManager.instance.loadSidePanelIFrame = (url, name, id, tabData = true, landmark = true) => {
+            const newWindow = window.open(url, '_blank', 'width=992px,height=800px');
+            newWindow.title = name;
+            return false;
+        }`);
+
+        // Child window side panel opening
+        window.eval(`window.openWorkMgmtSidePanel = (url) => {
+            window.open(url, '_blank', 'width=992px,height=800px');
+            return false;
+        }`);
+
+        // Search function is on its own script
+        window.eval(`window.top.WorkMgmt.GlobalSearch.instance.search = (searchQuery) => {
+            const newWindow = window.open(\`/TDNext/Apps/Shared/Global/Search?searchText=\${encodeURIComponent(searchQuery)}\`, '_blank', 'width=992px,height=800px');
+            newWindow.title = title;
+            return false;
+        }`);
     }
 
     /**
