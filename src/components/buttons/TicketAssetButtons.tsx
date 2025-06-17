@@ -90,12 +90,17 @@ export default function TicketAssetButtons() {
         }
     }
 
+    if (!ticketAssetNames || ticketAssetNames.length === 0)
+        return null;
     return (
         <div
             className={"btn-group"}
-            style={{gap: 0}}
+            style={{
+                gap: 0,
+                margin: "0px 3px"
+            }}
         >
-            {ticketAssetNames?.map(assetName => (
+            {ticketAssetNames.map((assetName) => (
                 <button
                     key={assetName}
                     type={"button"}

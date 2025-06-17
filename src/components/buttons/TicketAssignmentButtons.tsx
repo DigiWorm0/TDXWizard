@@ -135,7 +135,10 @@ export default function TicketAssignmentButtons() {
     return (
         <div
             className={"btn-group"}
-            style={{gap: 0}}
+            style={{
+                gap: 0,
+                margin: "0px 3px"
+            }}
         >
             {assignments?.map(assignment => (
                 <button
@@ -158,6 +161,7 @@ export default function TicketAssignmentButtons() {
                     className={"btn btn-secondary btn-sm dropdown-toggle"}
                     type={"button"}
                     data-toggle={"dropdown"}
+                    style={{marginRight: 0}}
                 >
                     <span className={"fa-solid fa-nopad fa-lg fa-caret-down"}/>
                 </button>

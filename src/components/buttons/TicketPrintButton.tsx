@@ -49,7 +49,10 @@ export default function TicketPrintButton() {
         <>
             <div
                 className={"btn-group"}
-                style={{gap: 0}}
+                style={{
+                    gap: 0,
+                    margin: "0px 3px"
+                }}
             >
 
                 {/* Print Button */}
@@ -78,7 +81,7 @@ export default function TicketPrintButton() {
                     type={"button"}
                     className={"btn btn-secondary btn-sm"}
                     onClick={() => openWindow(printURL, "Print View")}
-                    style={{paddingLeft: 10, paddingRight: 10}}
+                    style={{marginRight: 0}}
                 >
                     <span className={"fa fa-solid fa-nopad fa-up-right-from-square"}/>
                 </button>

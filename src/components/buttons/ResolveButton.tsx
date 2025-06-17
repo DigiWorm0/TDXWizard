@@ -59,6 +59,7 @@ export default function ResolveButton() {
             data-toggle={"dropdown"}
             onClick={() => resolveTicket()}
             title={"Marks the ticket as resolved"}
+            style={{margin: "0px 3px"}}
         >
             <span className={"fa-solid fa-nopad fa-lg fa-check"}/>
             <span className={"hidden-xs padding-left-xs"}>

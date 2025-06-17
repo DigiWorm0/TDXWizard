@@ -1,28 +1,35 @@
+const LOGIN_URL = "/TDWebApi/api/auth/loginsso";
+
 export default async function getAuthKeyFromSSO() {
 
-    // Open the login popup
-    const loginPopup = window.open(
-        "/TDWebApi/api/auth/loginsso",
-        "Login",
-        "width=600,height=400"
-    );
-    if (!loginPopup)
-        throw new Error("Failed to open login popup");
+    // Add iframe to the body to allow the popup to redirect
+    const iframe = document.createElement("iframe");
+    iframe.style.display = "none"; // Hide the iframe
+    iframe.src = "/TDWebApi/api/auth/loginsso";
+    document.body.appendChild(iframe);
 
-    // Wait for the login popup to redirect to the auth key page
-    await new Promise(((resolve, reject) => {
-        setInterval(() => {
-            if (loginPopup.location.pathname === "/TDWebApi/api/auth/loginsso")
-                resolve("");
-            if (loginPopup.closed)
-                reject("Login popup closed");
-        }, 200);
-    }));
+    //Wait for the iframe to load
+    await new Promise((resolve) => {
+        iframe.onload = () => resolve("");
+    });
 
-    // Get the auth key from the login popup
-    const authKey = loginPopup.document.body.innerText;
+    // Check if the iframe redirected away from the login URL
+    if (iframe.contentWindow?.location.pathname !== LOGIN_URL) {
+        // If it did, remove the iframe and open a popup instead
+        document.body.removeChild(iframe);
 
-    // Close the login popup
-    loginPopup.close();
+        // TODO: Open a popup for SSO login
+        throw new Error("SSO login is not supported in this environment. Please log in manually.");
+    }
+
+    // Get the auth key from the iframe's content
+    const authKey = iframe.contentDocument?.body.innerText;
+    if (!authKey)
+        throw new Error("Failed to retrieve auth key from SSO.");
+
+    // Clean up the iframe
+    document.body.removeChild(iframe);
+
+    // Return the auth key
     return authKey;
 }

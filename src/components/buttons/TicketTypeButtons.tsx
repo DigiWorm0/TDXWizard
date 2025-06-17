@@ -92,10 +92,15 @@ export default function TicketTypeButtons() {
             window.location.reload();
     }
 
+    if (!types || types.length === 0)
+        return null;
     return (
         <div
             className={"btn-group"}
-            style={{gap: 0}}
+            style={{
+                gap: 0,
+                margin: "0px 3px"
+            }}
         >
             {types?.map(type => (
                 <button
@@ -111,52 +116,53 @@ export default function TicketTypeButtons() {
                     </span>
                 </button>
             ))}
-            {types && (
-                <li className={"btn-group"} style={{gap: 0}}>
-                    <button
-                        className={"btn btn-secondary btn-sm dropdown-toggle"}
-                        type={"button"}
-                        data-toggle={"dropdown"}
-                    >
-                        <span className={"fa-solid fa-nopad fa-lg fa-caret-down"}/>
-                    </button>
-                    <ul
-                        style={{cursor: "default"}}
-                        className={"dropdown-menu"}
-                    >
-                        <li>
-                            <a
-                                className={"dropdown-item"}
-                                href={"#"}
-                                onClick={setSpam}
-                            >
-                                Spam
-                            </a>
-                        </li>
+            <li
+                className={"btn-group"}
+                style={{gap: 0}}
+            >
+                <button
+                    className={"btn btn-secondary btn-sm dropdown-toggle"}
+                    type={"button"}
+                    data-toggle={"dropdown"}
+                >
+                    <span className={"fa-solid fa-nopad fa-lg fa-caret-down"}/>
+                </button>
+                <ul
+                    style={{cursor: "default"}}
+                    className={"dropdown-menu"}
+                >
+                    <li>
+                        <a
+                            className={"dropdown-item"}
+                            href={"#"}
+                            onClick={setSpam}
+                        >
+                            Spam
+                        </a>
+                    </li>
 
-                        <hr
-                            style={{
-                                marginTop: 8,
-                                marginBottom: 8
-                            }}
-                            className="dropdown-divider"
-                        />
-                        {Object.keys(TicketTypes)
-                            .sort((a, b) => a.localeCompare(b))
-                            .map(typeName => (
-                                <li key={typeName}>
-                                    <a
-                                        className={"dropdown-item"}
-                                        href={"#"}
-                                        onClick={() => setType(typeName as TicketType)}
-                                    >
-                                        {typeName}
-                                    </a>
-                                </li>
-                            ))}
-                    </ul>
-                </li>
-            )}
+                    <hr
+                        style={{
+                            marginTop: 8,
+                            marginBottom: 8
+                        }}
+                        className="dropdown-divider"
+                    />
+                    {Object.keys(TicketTypes)
+                        .sort((a, b) => a.localeCompare(b))
+                        .map(typeName => (
+                            <li key={typeName}>
+                                <a
+                                    className={"dropdown-item"}
+                                    href={"#"}
+                                    onClick={() => setType(typeName as TicketType)}
+                                >
+                                    {typeName}
+                                </a>
+                            </li>
+                        ))}
+                </ul>
+            </li>
         </div>
     )
 }
