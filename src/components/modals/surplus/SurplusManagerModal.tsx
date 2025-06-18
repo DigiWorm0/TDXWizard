@@ -4,7 +4,7 @@ import UWStoutTDXClient from "../../../utils/tdx/UWStoutTDXClient";
 import autoRetryHTTPRequest from "../../../utils/autoRetryHTTPRequest";
 import Ticket from "../../../tdx-api/types/Ticket";
 import AppID from "../../../types/AppID";
-import BigInputWindow from "../BigInputWindow";
+import BigInputWindow from "../bigwindow/BigInputWindow";
 import BigWindowInput from "../bigwindow/BigWindowInput";
 import BigWindowError from "../bigwindow/BigWindowError";
 import BigWindowProgress from "../bigwindow/BigWindowProgress";
@@ -13,6 +13,7 @@ import useErrorHandling from "../../../hooks/useErrorHandling";
 import useRunPromise from "../../../hooks/useRunPromise";
 import confirmAction from "../../../utils/confirmAction";
 import useTicketStatusID from "../../../hooks/useTicketStatusID";
+import TDXButton from "../../buttons/common/TDXButton";
 
 export interface SurplusAsset extends Asset {
     surplusTickets: Ticket[];
@@ -179,7 +180,7 @@ export default function SurplusManagerModal(props: BulkInventoryModalProps) {
                         Inventory
                     </th>
                     <th>
-                        Ticket
+                        Surplus Ticket
                     </th>
                     <th>
                     </th>
@@ -217,39 +218,35 @@ export default function SurplusManagerModal(props: BulkInventoryModalProps) {
                 disabled={isLoading}
             />
 
-            <button
-                type={"button"}
-                className={"tdx-btn tdx-btn--secondary"}
-                style={{marginTop: 5, marginLeft: 5}}
-                disabled={isLoading || assets.length === 0}
-                title={"Marks all assets as surplus inventory"}
-                onClick={() => runPromise(surplusAllAssets())}
-            >
-                <i className={"fa fa-archive"}></i>
-                <span className={"hidden-xs padding-left-xs"}>Set Surplus Inventory</span>
-            </button>
+            <div className={"mt-2"}>
+                <TDXButton
+                    type={"tdx"}
+                    disabled={isLoading || assets.length === 0}
+                    title={"Marks all assets as surplus inventory"}
+                    onClick={() => runPromise(surplusAllAssets())}
+                    icon={"fa fa-archive me-1"}
+                    text={"Set Surplus Inventory"}
+                />
 
-            <button
-                type={"button"}
-                className={"tdx-btn tdx-btn--secondary"}
-                style={{marginTop: 5, marginLeft: 5}}
-                disabled={isLoading || assets.length === 0}
-                title={"Mark all tickets as picked up"}
-                onClick={() => runPromise(pickupAllTickets())}
-            >
-                <i className={"fa fa-check"}></i>
-                <span className={"hidden-xs padding-left-xs"}>Set Picked Up</span>
-            </button>
 
-            <button
-                className={"tdx-btn tdx-btn--secondary"}
-                onClick={() => runPromise(refreshAllAssets())}
-                style={{marginTop: 5, marginLeft: 5}}
-                disabled={isLoading || assets.length === 0}
-            >
-                <span className={"fa fa-refresh me-1"}/>
-                Refresh
-            </button>
+                <TDXButton
+                    type={"tdx"}
+                    disabled={isLoading || assets.length === 0}
+                    title={"Mark all tickets as picked up"}
+                    onClick={() => runPromise(pickupAllTickets())}
+                    icon={"fa fa-check me-1"}
+                    text={"Set Picked Up"}
+                />
+
+                <TDXButton
+                    type={"tdx"}
+                    disabled={isLoading || assets.length === 0}
+                    title={"Refresh all assets"}
+                    onClick={() => runPromise(refreshAllAssets())}
+                    icon={"fa fa-refresh me-1"}
+                    text={"Refresh"}
+                />
+            </div>
 
             <BigWindowError
                 error={errors}

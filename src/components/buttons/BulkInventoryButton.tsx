@@ -1,6 +1,7 @@
 import React from "react";
 import BulkInventoryModal from "../modals/bulkInventory/BulkInventoryModal";
 import useSettings from "../../hooks/useSettings";
+import TDXButton from "./common/TDXButton";
 
 export interface BulkInventoryButtonProps {
     appID?: number;
@@ -14,19 +15,17 @@ export default function BulkInventoryButton(props: BulkInventoryButtonProps) {
         return null;
     return (
         <>
-            <div
-                className={"tdx-btn tdx-btn--secondary me-1"}
+            <TDXButton
+                type={"tdx"}
+                text={"Bulk Inventory"}
+                icon={"fa fa-solid fa-boxes"}
                 title={"Tool for editing large amounts of assets at once"}
                 onClick={e => {
                     e.preventDefault();
                     setIsModalVisible(true);
                 }}
-            >
-                <span className={"fa-solid fa-boxes me-1"}/>
-                <span className={"hidden-xs"}>
-                    Bulk Inventory
-                </span>
-            </div>
+            />
+
             {isModalVisible && (
                 <BulkInventoryModal
                     onClose={() => setIsModalVisible(false)}

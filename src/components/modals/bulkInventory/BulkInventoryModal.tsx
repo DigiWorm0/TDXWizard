@@ -12,7 +12,8 @@ import useRunPromise from "../../../hooks/useRunPromise";
 import BigWindowError from "../bigwindow/BigWindowError";
 import BigWindowInput from "../bigwindow/BigWindowInput";
 import BigWindowProgress from "../bigwindow/BigWindowProgress";
-import BigInputWindow from "../BigInputWindow";
+import BigInputWindow from "../bigwindow/BigInputWindow";
+import TDXButton from "../../buttons/common/TDXButton";
 
 export interface BulkInventoryModalProps {
     onClose: () => void;
@@ -142,7 +143,7 @@ export default function BulkInventoryModal(props: BulkInventoryModalProps) {
                 </thead>
 
                 <tbody style={{borderTop: "none"}}>
-                
+
                 {assets.map(asset => (
                     <BulkInventoryAssetRow
                         key={asset.ID}
@@ -173,45 +174,43 @@ export default function BulkInventoryModal(props: BulkInventoryModalProps) {
                 onSearch={(queries) => runPromise(onSearch(queries))}
             />
 
-            <button
-                className={"tdx-btn tdx-btn--secondary"}
-                onClick={() => updateAssets(props.appID ?? AppID.Inventory, assets)}
-                style={{marginTop: 5, marginLeft: 0}}
-                disabled={assets.length === 0 || isLoading}
-            >
-                <i className={"fa fa-pen-to-square"}></i>
-                <span className={"hidden-xs padding-left-xs"}>Update All Assets</span>
-            </button>
+            <div className={"mt-2"}>
+                <TDXButton
+                    type={"tdx"}
+                    onClick={() => updateAssets(props.appID ?? AppID.Inventory, assets)}
+                    disabled={assets.length === 0 || isLoading}
+                    title={"Update all selected assets"}
+                    icon={"fa fa-pen-to-square me-1"}
+                    text={"Update All Assets"}
+                />
 
-            <button
-                className={"tdx-btn tdx-btn--secondary"}
-                onClick={() => createTicketWithAssets(props.appID ?? AppID.Inventory, assets)}
-                style={{marginTop: 5, marginLeft: 5}}
-                disabled={assets.length === 0 || isLoading}
-            >
-                <i className={"fa fa-ticket"}></i>
-                <span className={"hidden-xs padding-left-xs"}>New Ticket</span>
-            </button>
+                <TDXButton
+                    type={"tdx"}
+                    onClick={() => createTicketWithAssets(props.appID ?? AppID.Inventory, assets)}
+                    disabled={assets.length === 0 || isLoading}
+                    title={"Create a ticket with the selected assets"}
+                    icon={"fa fa-ticket me-1"}
+                    text={"Create Ticket"}
+                />
 
-            <button
-                className={"tdx-btn tdx-btn--secondary"}
-                onClick={() => createAssetsCSV(assets)}
-                style={{marginTop: 5, marginLeft: 5}}
-                disabled={assets.length === 0 || isLoading}
-            >
-                <i className={"fa fa-table"}></i>
-                <span className={"hidden-xs padding-left-xs"}>Download CSV</span>
-            </button>
+                <TDXButton
+                    type={"tdx"}
+                    onClick={() => createAssetsCSV(assets)}
+                    disabled={assets.length === 0 || isLoading}
+                    title={"Download a CSV file of the assets"}
+                    icon={"fa fa-table me-1"}
+                    text={"Download CSV"}
+                />
 
-            <button
-                className={"tdx-btn tdx-btn--secondary"}
-                onClick={() => runPromise(refreshAssets())}
-                style={{marginTop: 5, marginLeft: 5}}
-                disabled={assets.length === 0 || isLoading}
-            >
-                <i className={"fa fa-arrows-rotate"}></i>
-                <span className={"hidden-xs padding-left-xs"}>Reload Assets</span>
-            </button>
+                <TDXButton
+                    type={"tdx"}
+                    onClick={() => runPromise(refreshAssets())}
+                    disabled={assets.length === 0 || isLoading}
+                    title={"Reload the assets from the server"}
+                    icon={"fa fa-refresh me-1"}
+                    text={"Reload Assets"}
+                />
+            </div>
 
             <BigWindowError
                 error={errors}

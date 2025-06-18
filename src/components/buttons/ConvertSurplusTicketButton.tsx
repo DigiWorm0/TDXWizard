@@ -4,6 +4,7 @@ import AppID from "../../types/AppID";
 import useSettings from "../../hooks/useSettings";
 import getTicketIDFromURL from "../../utils/tdx/getTicketIDFromURL";
 import useTicket from "../../hooks/useTicket";
+import TDXButton from "./common/TDXButton";
 
 export default function ConvertSurplusTicketButton() {
     const [settings] = useSettings();
@@ -50,15 +51,12 @@ export default function ConvertSurplusTicketButton() {
         return null;
 
     return (
-        <button
-            type={"button"}
-            className={"btn btn-secondary btn-sm"}
-            style={{margin: "0px 3px"}}
-            title={"Create Surplus Ticket"}
+        <TDXButton
+            intent={"secondary"}
             onClick={onClick}
-        >
-            <span className={"fa fa-solid fa-ticket fa-nopad"}/>
-            <span className={"hidden-xs padding-left-xs"}>Convert Surplus</span>
-        </button>
+            title={"Convert to Surplus Ticket"}
+            icon={"fa fa-solid fa-ticket"}
+            text={"Convert Surplus"}
+        />
     )
 }

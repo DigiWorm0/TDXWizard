@@ -6,6 +6,8 @@ import useTicket from "../../hooks/useTicket";
 import AppID from "../../types/AppID";
 import useTicketAssets from "../../hooks/useTicketAssets";
 import useTicketFeed from "../../hooks/useTicketFeed";
+import TDXButtonGroup from "./common/TDXButtonGroup";
+import TDXButton from "./common/TDXButton";
 
 const REGEX_LIST = [
     /\b[Cc]-?\d{4,5}\b/g, // C-Number
@@ -93,27 +95,18 @@ export default function TicketAssetButtons() {
     if (!ticketAssetNames || ticketAssetNames.length === 0)
         return null;
     return (
-        <div
-            className={"btn-group"}
-            style={{
-                gap: 0,
-                margin: "0px 3px"
-            }}
-        >
+        <TDXButtonGroup>
             {ticketAssetNames.map((assetName) => (
-                <button
+                <TDXButton
                     key={assetName}
-                    type={"button"}
-                    className={"btn btn-secondary btn-sm"}
+                    intent={"secondary"}
                     onClick={() => addAsset(assetName)}
-                    style={{marginRight: 0}}
-                >
-                    <span className={"fa fa-solid fa-nopad fa-laptop"}/>
-                    <span className={"hidden-xs padding-left-xs"}>
-                        {assetName}
-                    </span>
-                </button>
+                    title={`Add Asset: ${assetName}`}
+                    icon={"fa fa-solid fa-laptop"}
+                    text={assetName}
+                    noMargin
+                />
             ))}
-        </div>
+        </TDXButtonGroup>
     )
 }

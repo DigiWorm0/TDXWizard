@@ -7,6 +7,8 @@ import useSettings from "../../hooks/useSettings";
 import useTicket from "../../hooks/useTicket";
 import TicketTypes, {TicketType} from "../../db/TicketTypes";
 import getAppIDFromURL from "../../utils/tdx/getAppIDFromURL";
+import TDXButtonGroup from "./common/TDXButtonGroup";
+import TDXButton from "./common/TDXButton";
 
 export default function TicketTypeButtons() {
     const ticket = useTicket();
@@ -48,8 +50,7 @@ export default function TicketTypeButtons() {
             throw new Error("Ticket Type not found");
 
         // Update Ticket
-        const res = await client.tickets.updateTicket(appID, ticketID, {TypeID: ticketTypeID});
-        console.log(res);
+        await client.tickets.updateTicket(appID, ticketID, {TypeID: ticketTypeID});
 
         // Reload/Close the page
         if (settings.autoCloseTicketOnSave)
@@ -76,14 +77,12 @@ export default function TicketTypeButtons() {
 
         // Get Ticket Info
         const ticketInfo = await client.tickets.getTicket(appID, ticketID);
-        console.log(ticketInfo);
 
         // Edit Ticket
-        const res = await client.tickets.editTicket(43, ticketID, {
+        await client.tickets.editTicket(43, ticketID, {
             ...ticketInfo,
             StatusID: 198, // Cancelled
         });
-        console.log(res);
 
         // Reload/Close the page
         if (settings.autoCloseTicketOnSave)
@@ -92,29 +91,18 @@ export default function TicketTypeButtons() {
             window.location.reload();
     }
 
-    if (!types || types.length === 0)
+    if (!types)
         return null;
     return (
-        <div
-            className={"btn-group"}
-            style={{
-                gap: 0,
-                margin: "0px 3px"
-            }}
-        >
+        <TDXButtonGroup>
             {types?.map(type => (
-                <button
+                <TDXButton
                     key={type}
-                    type={"button"}
-                    className={"btn btn-secondary btn-sm"}
                     onClick={() => setType(type as TicketType)}
-                    style={{marginRight: 0}}
-                >
-                    <span className={"fa fa-solid fa-nopad fa-tag"}/>
-                    <span className={"hidden-xs padding-left-xs"}>
-                        {type}
-                    </span>
-                </button>
+                    noMargin
+                    icon={`fa fa-solid fa-nopad fa-tag`}
+                    text={type}
+                />
             ))}
             <li
                 className={"btn-group"}
@@ -163,6 +151,6 @@ export default function TicketTypeButtons() {
                         ))}
                 </ul>
             </li>
-        </div>
+        </TDXButtonGroup>
     )
 }

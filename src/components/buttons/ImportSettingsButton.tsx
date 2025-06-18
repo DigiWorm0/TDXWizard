@@ -1,4 +1,5 @@
 import useSettings from "../../hooks/useSettings";
+import TDXButton from "./common/TDXButton";
 
 export default function ImportSettingsButton() {
     const [, setSettings] = useSettings();
@@ -26,16 +27,12 @@ export default function ImportSettingsButton() {
     }
 
     return (
-        <button
-            className={"btn btn-secondary btn-sm"}
-            type={"button"}
+        <TDXButton
+            icon={"fa fa-solid fa-nopad fa-upload me-1"}
+            text={"Import"}
             onClick={importSettings}
             title={"Import all settings from a JSON file"}
-        >
-            <span className={"fa fa-solid fa-nopad fa-upload me-1"}/>
-            <span className={"hidden-xs padding-left-xs"}>
-                Import
-            </span>
-        </button>
+            noMargin
+        />
     )
 }

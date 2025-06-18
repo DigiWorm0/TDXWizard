@@ -9,6 +9,8 @@ import User from "../../tdx-api/types/User";
 import groupNames from "../../db/GroupNames";
 import confirmAction from "../../utils/confirmAction";
 import getAppIDFromURL from "../../utils/tdx/getAppIDFromURL";
+import TDXButton from "./common/TDXButton";
+import TDXButtonGroup from "./common/TDXButtonGroup";
 
 
 export default function TicketAssignmentButtons() {
@@ -133,27 +135,16 @@ export default function TicketAssignmentButtons() {
     if (shouldHide)
         return null;
     return (
-        <div
-            className={"btn-group"}
-            style={{
-                gap: 0,
-                margin: "0px 3px"
-            }}
-        >
+        <TDXButtonGroup>
             {assignments?.map(assignment => (
-                <button
+                <TDXButton
                     key={assignment.UID}
-                    type={"button"}
-                    className={"btn btn-secondary btn-sm"}
-                    title={`Assign to ${assignment.FullName}`}
+                    intent={"secondary"}
                     onClick={() => setAssignment(assignment)}
-                    style={{marginRight: 0}}
-                >
-                    <span className={"fa fa-solid fa-nopad fa-user"}/>
-                    <span className={"hidden-xs padding-left-xs"}>
-                        {assignment.FullName}
-                    </span>
-                </button>
+                    noMargin
+                    icon={"fa fa-solid fa-nopad fa-user"}
+                    text={assignment.FullName}
+                />
             ))}
 
             <li className={"btn-group"}>
@@ -183,6 +174,6 @@ export default function TicketAssignmentButtons() {
                     }
                 </ul>
             </li>
-        </div>
+        </TDXButtonGroup>
     )
 }

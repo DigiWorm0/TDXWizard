@@ -1,6 +1,7 @@
 import React from "react";
 import useSettings from "../../hooks/useSettings";
 import SurplusManagerModal from "../modals/surplus/SurplusManagerModal";
+import TDXButton from "./common/TDXButton";
 
 export default function SurplusManagerButton() {
     const [settings] = useSettings();
@@ -10,19 +11,17 @@ export default function SurplusManagerButton() {
         return null;
     return (
         <>
-            <div
-                className={"tdx-btn tdx-btn--secondary me-1"}
-                title={"Tool for managing surplus assets and processes"}
+            <TDXButton
+                type={"tdx"}
+                icon={"fa fa-solid fa-recycle"}
                 onClick={e => {
                     e.preventDefault();
                     setIsModalVisible(true);
                 }}
-            >
-                <span className={"fa-solid fa-recycle me-1"}/>
-                <span className={"hidden-xs"}>
-                    Surplus Manager
-                </span>
-            </div>
+                title={"Tool for managing surplus assets and processes"}
+                text={"Surplus Manager"}
+            />
+
             {isModalVisible && (
                 <SurplusManagerModal
                     onClose={() => setIsModalVisible(false)}

@@ -1,5 +1,5 @@
 import React from "react";
-import openWindow from "../../utils/openWindow";
+import openWindow from "../../../utils/openWindow";
 
 export interface WindowLinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
 }

@@ -1,5 +1,5 @@
 import React from "react";
-import WindowLink from "../WindowLink";
+import WindowLink from "../common/WindowLink";
 import Guid from "../../../tdx-api/types/Guid";
 
 export interface AssetLinkProps {

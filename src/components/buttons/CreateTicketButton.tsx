@@ -13,7 +13,7 @@ export default function CreateTicketButton() {
         return null;
     return (
         <div
-            className={"tdx-action-menu__item "}
+            className={"tdx-action-menu__item"}
             onClick={onClick}
         >
             <span className={"fa fa-solid fa-nopad fa-plus me-1"}/>

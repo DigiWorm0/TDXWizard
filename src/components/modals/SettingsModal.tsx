@@ -18,6 +18,7 @@ export interface SettingsModalProps {
 
 export default function SettingsModal(props: SettingsModalProps) {
     const [settings] = useSettings();
+
     return (
         <ModalBase isOpen={props.isOpen} onClose={props.onClose}>
             <div

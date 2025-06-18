@@ -1,3 +1,5 @@
+import TDXButton from "./common/TDXButton";
+
 export interface FormTypeButtonProps {
     name: string;
     iconName?: string;
@@ -14,18 +16,11 @@ export default function FormTypeButton(props: FormTypeButtonProps) {
     }
 
     return (
-        <button
-            className={"btn btn-secondary btn-sm"}
-            type={"button"}
+        <TDXButton
+            icon={props.iconName && `fa fa-solid fa-nopad fa-${props.iconName}`}
+            text={props.name}
             onClick={() => onClick()}
             title={`Change the form type to ${props.name}`}
-        >
-            {props.iconName && (
-                <span className={`fa fa-solid fa-nopad fa-${props.iconName}`}/>
-            )}
-            <span className={"hidden-xs padding-left-xs"}>
-                {props.name}
-            </span>
-        </button>
+        />
     )
 }

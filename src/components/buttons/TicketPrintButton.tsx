@@ -3,6 +3,8 @@ import getAppIDFromURL from "../../utils/tdx/getAppIDFromURL";
 import React from "react";
 import useSettings from "../../hooks/useSettings";
 import openWindow from "../../utils/openWindow";
+import TDXButtonGroup from "./common/TDXButtonGroup";
+import TDXButton from "./common/TDXButton";
 
 export default function TicketPrintButton() {
     const [settings] = useSettings();
@@ -47,45 +49,28 @@ export default function TicketPrintButton() {
         return null;
     return (
         <>
-            <div
-                className={"btn-group"}
-                style={{
-                    gap: 0,
-                    margin: "0px 3px"
-                }}
-            >
+            <TDXButtonGroup>
 
                 {/* Print Button */}
-                <button
-                    type={"button"}
-                    className={"btn btn-secondary btn-sm"}
+                <TDXButton
+                    intent={"secondary"}
                     onClick={() => onPrint()}
-                    style={{marginRight: 0}}
+                    noMargin
                     disabled={!isLoaded}
+                    icon={isLoaded ? "fa fa-solid fa-nopad fa-print" : "fa fa-solid fa-nopad fa-spinner fa-spin"}
+                    text={"Print"}
                 >
-                    {/* Print Button Icon */}
-                    {isLoaded ?
-                        <span className={"fa fa-solid fa-nopad fa-print"}/>
-                        :
-                        <span className={"fa fa-solid fa-nopad fa-spinner fa-spin"}/>
-                    }
-
-                    {/* Print Button Text */}
-                    <span className={"hidden-xs padding-left-xs"}>
-                        Print
-                    </span>
-                </button>
+                </TDXButton>
 
                 {/* Print View Button */}
-                <button
-                    type={"button"}
-                    className={"btn btn-secondary btn-sm"}
+                <TDXButton
+                    intent={"secondary"}
                     onClick={() => openWindow(printURL, "Print View")}
-                    style={{marginRight: 0}}
-                >
-                    <span className={"fa fa-solid fa-nopad fa-up-right-from-square"}/>
-                </button>
-            </div>
+                    noMargin
+                    icon={"fa fa-solid fa-nopad fa-up-right-from-square"}
+                    title={"Print View"}
+                />
+            </TDXButtonGroup>
 
             {/* Hidden Print View */}
             <iframe

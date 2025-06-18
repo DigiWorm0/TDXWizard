@@ -3,6 +3,7 @@ import useSettings from "../../hooks/useSettings";
 import React from "react";
 import TicketFeedContainer from "../pages/TicketFeedContainer";
 import AssetFeedContainer from "../pages/AssetFeedContainer";
+import TDXButton from "./common/TDXButton";
 
 export interface ConvertFeedButtonProps {
     type: "asset" | "ticket";
@@ -58,31 +59,14 @@ export default function ConvertFeedButton(props: ConvertFeedButtonProps) {
             convertToNewFeed();
     }, [settings.useNewFeed]);
 
-    if (isConverted) {
-        return (
-            <button
-                type={"button"}
-                className={"btn btn-primary btn-sm"}
-                onClick={revertToOldFeed}
-            >
-                <span className={"fa fa-solid fa-fw fa-backward"}/>
-                <span className={"hidden-xs"}>
-                   Old Feed
-                </span>
-            </button>
-        );
-    } else {
-        return (
-            <button
-                type={"button"}
-                className={"btn btn-primary btn-sm"}
-                onClick={convertToNewFeed}
-            >
-                <span className={"fa fa-solid fa-fw fa-magic"}/>
-                <span className={"hidden-xs"}>
-                    New Feed
-                </span>
-            </button>
-        );
-    }
+    return (
+        <TDXButton
+            intent={"primary"}
+            icon={isConverted ? "fa fa-solid fa-nopad fa-backward me-1" : "fa fa-solid fa-nopad fa-magic me-1"}
+            text={isConverted ? "Old Feed" : "New Feed"}
+            onClick={isConverted ? revertToOldFeed : convertToNewFeed}
+            title={isConverted ? "Revert to Old Feed" : "Convert to New Feed"}
+            noMargin
+        />
+    )
 }

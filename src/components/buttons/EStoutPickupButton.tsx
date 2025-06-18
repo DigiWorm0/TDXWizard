@@ -7,6 +7,7 @@ import confirmAction from "../../utils/confirmAction";
 import useTicket from "../../hooks/useTicket";
 import useTicketAssets from "../../hooks/useTicketAssets";
 import useTicketStatusID from "../../hooks/useTicketStatusID";
+import TDXButton from "./common/TDXButton";
 
 // Auto-Assign Workflow ID
 const RESPOND_WORKFLOW_ID = 1177755;
@@ -73,18 +74,11 @@ export default function EStoutPickupButton() {
     if (!settings.eStoutPickupButton)
         return null;
     return (
-        <button
-            className={"btn btn-secondary btn-sm dropdown-toggle"}
-            style={{margin: "0px 3px"}}
-            type={"button"}
-            data-toggle={"dropdown"}
+        <TDXButton
+            icon={"fa fa-solid fa-nopad fa-envelope me-1"}
+            text={"Ready for Pickup"}
             onClick={() => assignWorkflow()}
             title={"Notify Student that their eStout Device is Ready for Pickup"}
-        >
-            <span className={"fa-solid fa-nopad fa-lg fa-envelope"}/>
-            <span className={"hidden-xs padding-left-xs"}>
-                Ready for Pickup
-            </span>
-        </button>
+        />
     )
 }
