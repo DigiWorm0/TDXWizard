@@ -26,6 +26,8 @@ export interface TicketFeedProps {
     feed: FeedItemUpdate[] | null | undefined;
 }
 
+const MAX_TIME_OFFSET = 1000 * 60 * 60 * 24; // 24 hours
+
 export default function BetterFeed(props: TicketFeedProps) {
     const {feed} = props;
     const ticket = useTicket();
@@ -162,9 +164,17 @@ export default function BetterFeed(props: TicketFeedProps) {
                 !newItems[i + 1].IsCommunication &&
                 newItems[i].CreatedFullName === newItems[i + 1].CreatedFullName
             ) {
-                // Avoid merging if the times are offset
+                // Avoid merging if disabled in settings
                 const isSameTime = newItems[i].CreatedDate === newItems[i + 1].CreatedDate;
                 if (!settings.mergeAdjacentSystemMessages && !isSameTime)
+                    continue;
+
+                // Avoid merging if the times too far apart
+                const isSimilarTime = Math.abs(
+                    getEpochFromDate(newItems[i].CreatedDate) -
+                    getEpochFromDate(newItems[i + 1].CreatedDate)
+                ) < MAX_TIME_OFFSET; // 1 second
+                if (!isSimilarTime)
                     continue;
 
                 // Merge the two items (newer on top)

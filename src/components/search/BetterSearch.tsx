@@ -1,5 +1,4 @@
 import React from "react";
-import openWindow from "../../utils/openWindow";
 import useSettings from "../../hooks/useSettings";
 import BetterSearchAutocomplete from "./BetterSearchAutocomplete";
 import {Dropdown, FormControl} from "react-bootstrap";
@@ -10,33 +9,13 @@ export default function BetterSearch() {
     const [settings] = useSettings();
     const [isVisible, setVisible] = React.useState(false);
 
+    console.log(isVisible)
+
     const onSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+
+        // Update visibility
         setSearchQuery(e.target.value);
-        setVisible(e.target.value.length > 0);
-    }
-
-    const onSearch = () => {
-
-        // Check if the search query is a ticket ID
-        const ticketIDRegex = /^\d{6,8}$/g;
-        if (ticketIDRegex.test(searchQuery)) {
-            // Redirect to the ticket page
-            const ticketID = searchQuery.trim();
-            openWindow(`/TDNext/Apps/414/Tickets/TicketDet.aspx?TicketID=${ticketID}`);
-            return;
-        }
-
-        // Check if the search query is an asset tag
-        const assetTagRegex = /^\d{9}$/g;
-        if (assetTagRegex.test(searchQuery)) {
-            // Redirect to the asset page
-            const assetTag = searchQuery.trim();
-            openWindow(`/TDNext/Apps/414/Assets/AssetDet.aspx?AssetTag=${assetTag}`);
-            return;
-        }
-
-        // Open search window
-        openWindow(`/TDNext/Apps/Shared/Global/Search?searchText=${encodeURIComponent(searchQuery)}`);
+        setVisible(true);
     }
 
     React.useEffect(() => {
@@ -49,23 +28,57 @@ export default function BetterSearch() {
         searchBar.style.display = settings.useNewSearch ? "none" : "block";
     }, [settings]);
 
+    React.useEffect(() => {
+        // If the user clicks outside the dropdown, hide it
+        const handleClickOutside = (event: MouseEvent) => {
+            const target = event.target as HTMLElement;
+            if (!target.closest(".dropdown") && isVisible) {
+                setVisible(false);
+
+                console.log("HIDING");
+            }
+        };
+
+        document.addEventListener("click", handleClickOutside);
+
+        return () => document.removeEventListener("click", handleClickOutside);
+    }, [isVisible]);
+
     if (!settings.useNewSearch)
         return null;
     return (
-        <Dropdown>
+        <Dropdown
+            show={isVisible}
+            align={"end"}
+        >
             <FormControl
-                data-bs-toggle={"dropdown"}
                 type={"text"}
                 size={"sm"}
                 placeholder={"Search..."}
                 autoComplete={"off"}
                 onChange={onSearchChange}
+
                 onKeyDown={(e) => {
-                    if (e.key === "Enter") {
+                    // Prevent Tab
+                    if (e.key === "Tab") {
                         e.preventDefault();
-                        onSearch();
+                        e.stopPropagation();
                     }
+
+                    // Allow ESC
+                    if (e.key === "Escape")
+                        setVisible(false);
                 }}
+
+                style={{
+                    minWidth: 300,
+                }}
+
+                // Prevent bootstrap from closing the dropdown
+                onClick={(e) => e.stopPropagation()}
+
+                // Open/close the dropdown on focus/blur
+                onFocus={() => setVisible(true)}
             />
 
             <BetterSearchAutocomplete

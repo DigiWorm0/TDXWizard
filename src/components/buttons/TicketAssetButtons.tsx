@@ -23,7 +23,7 @@ export default function TicketAssetButtons() {
     const [settings] = useSettings();
 
     const ticketAssetNames = React.useMemo(() => {
-        if (!ticket)
+        if (!ticket || !ticketAssets)
             return null;
         if (!settings.showTicketAssetButtons)
             return null;
@@ -50,15 +50,14 @@ export default function TicketAssetButtons() {
         assetNames = [...new Set(assetNames)];
 
         // Remove existing assets
-        if (ticketAssets)
-            assetNames = assetNames.filter(asset => !ticketAssets.find(ticketAsset => ticketAsset.Name?.includes(asset)));
+        assetNames = assetNames.filter(asset => !ticketAssets.find(ticketAsset => ticketAsset.Name?.includes(asset)));
 
         // Max assets
         if (assetNames.length > MAX_ASSET_COUNT)
             assetNames = assetNames.slice(0, MAX_ASSET_COUNT);
 
         return assetNames;
-    }, [ticket, ticketAssets]);
+    }, [ticket, ticketAssets, feed, settings.showTicketAssetButtons]);
 
     const addAsset = async (assetName: string) => {
         try {

@@ -6,7 +6,6 @@ import SettingsAuthInput from "../input/SettingsAuthInput";
 import useSettings from "../../hooks/useSettings";
 import SettingsColorPickerInput from "../input/SettingsColorPickerInput";
 import SettingsHeader from "../style/SettingsHeader";
-import SettingsTextInput from "../input/SettingsTextInput";
 import ResetSettingsButton from "../buttons/ResetSettingsButton";
 import ExportSettingsButton from "../buttons/ExportSettingsButton";
 import ImportSettingsButton from "../buttons/ImportSettingsButton";
@@ -100,11 +99,6 @@ export default function SettingsModal(props: SettingsModalProps) {
 
                             <SettingsHeader title={"Common"}/>
 
-                            <SettingsTextInput
-                                label={"Technician Initials"}
-                                setting={"technicianInitials"}
-                                showLabel
-                            />
                             <SettingsSwitchInput
                                 label={"Remove Email Anchors/Links"}
                                 setting={"unlinkEmails"}

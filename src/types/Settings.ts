@@ -30,7 +30,6 @@ export default interface Settings {
     enableCustomTemplates: boolean;
     legacyLookupButton: boolean;
     bulkInventoryButton: boolean;
-    technicianInitials: string;
     resolveButton: boolean;
     removeCopyURLButton: boolean;
     linkifyAttachments: boolean;

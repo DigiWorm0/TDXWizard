@@ -36,7 +36,6 @@ const DefaultSettings: Settings = {
     legacyLookupButton: true,
     bulkInventoryButton: true,
     reverseFeedOrder: false,
-    technicianInitials: "ME",
 
     eStoutPickupButton: true,
     eStoutResolveButton: true,

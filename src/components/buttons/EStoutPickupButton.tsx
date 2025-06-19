@@ -8,6 +8,7 @@ import useTicket from "../../hooks/useTicket";
 import useTicketAssets from "../../hooks/useTicketAssets";
 import useTicketStatusID from "../../hooks/useTicketStatusID";
 import TDXButton from "./common/TDXButton";
+import AppID from "../../types/AppID";
 
 // Auto-Assign Workflow ID
 const RESPOND_WORKFLOW_ID = 1177755;
@@ -23,8 +24,6 @@ export default function EStoutPickupButton() {
     const assignWorkflow = async () => {
         if (!confirmAction("Are you sure you want to notify this student that their eStout device is ready for pickup?"))
             return;
-
-        console.log("Assigning Workflow");
 
         // API Client
         const client = new UWStoutTDXClient();
@@ -54,8 +53,10 @@ export default function EStoutPickupButton() {
             window.location.reload();
     }
 
-    // No Assets
-    const hasAssets = ticketAssets && ticketAssets.length > 0;
+    // Check if the ticket has eStout assets
+    const hasAssets = ticketAssets &&
+        ticketAssets.length > 0 &&
+        ticketAssets.some(asset => asset.AppID === AppID.EStoutInventory);
     if (!hasAssets)
         return null;
 
@@ -66,8 +67,7 @@ export default function EStoutPickupButton() {
 
     // Workflow/Status Already Set
     const isWorkflowAssigned = workflow?.WorkflowConfigurationID === RESPOND_WORKFLOW_ID;
-    const isWaitingForClient = ticket?.StatusID === waitingClientVendorID;
-    if (isWorkflowAssigned && isWaitingForClient)
+    if (isWorkflowAssigned)
         return null;
 
     // Disabled
