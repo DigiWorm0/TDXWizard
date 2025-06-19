@@ -20,6 +20,7 @@ export default interface Settings {
     showTicketPrintButton: boolean;
     hideTicketPrintViewButton: boolean;
     useNewFeed: boolean;
+    useNewFeedOnAssets: boolean;
     reverseFeedOrder: boolean;
     mergeAdjacentSystemMessages: boolean;
     useCustomProfileColor: boolean;

@@ -54,6 +54,10 @@ export default function ConvertFeedButton(props: ConvertFeedButtonProps) {
     }
 
     React.useEffect(() => {
+        // Abort if disabled on assets
+        if (!settings.useNewFeedOnAssets && props.type === "asset")
+            return;
+
         // Imagine being a pure function, couldn't be me
         if (settings.useNewFeed)
             convertToNewFeed();

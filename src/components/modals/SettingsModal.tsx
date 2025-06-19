@@ -145,6 +145,12 @@ export default function SettingsModal(props: SettingsModalProps) {
                             />
                             <div style={{marginLeft: 20}}>
                                 <SettingsSwitchInput
+                                    label={"Enable on Inventory Assets"}
+                                    setting={"useNewFeedOnAssets"}
+                                    disabled={!settings.useNewFeed}
+                                    title={"Enables Better Feed on the asset/inventory pages"}
+                                />
+                                <SettingsSwitchInput
                                     label={"Merge Adjacent System Messages"}
                                     setting={"mergeAdjacentSystemMessages"}
                                     disabled={!settings.useNewFeed}

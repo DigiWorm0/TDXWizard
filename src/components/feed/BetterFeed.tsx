@@ -100,9 +100,12 @@ export default function BetterFeed(props: TicketFeedProps) {
                 if (!item.IsCommunication)
                     continue;
 
+                // Remove LF from the field names
+                const content = item.Body.replace(/\n/g, " ");
+
                 // Check against the regex
                 regex.lastIndex = 0;
-                const matches = regex.exec(item.Body);
+                const matches = regex.exec(content);
                 if (!matches)
                     continue;
 
@@ -120,7 +123,7 @@ export default function BetterFeed(props: TicketFeedProps) {
                     });
                     newItems[i] = {
                         ...item,
-                        Body: item.Body.replace(m, ""),
+                        Body: content.replace(m, ""),
                     };
                 }
             }

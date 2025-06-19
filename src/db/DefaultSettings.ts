@@ -22,6 +22,7 @@ const DefaultSettings: Settings = {
     hideTicketPrintViewButton: true,
 
     useNewFeed: true,
+    useNewFeedOnAssets: true,
     mergeAdjacentSystemMessages: true,
 
     useCustomProfileColor: false,
