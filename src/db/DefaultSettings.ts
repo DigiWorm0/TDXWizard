@@ -56,6 +56,8 @@ const DefaultSettings: Settings = {
 
     useNewSearch: false,
     enableNewSearchAutocomplete: true,
+    enableNewSearchAutoDetectQuery: true,
+    enableNewSearchHistory: true,
 
     useCustomColorPalette: false,
     primaryColor: "#6B5CDC",

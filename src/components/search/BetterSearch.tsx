@@ -1,9 +1,10 @@
 import React from "react";
 import useSettings from "../../hooks/useSettings";
 import BetterSearchAutocomplete from "./BetterSearchAutocomplete";
-import {Dropdown, FormControl} from "react-bootstrap";
 import useBetterSearch from "../../hooks/useBetterSearch";
 import BetterSearchDefaultAction from "./BetterSearchDefaultAction";
+import openWindow from "../../utils/openWindow";
+import BetterSearchHistory from "./BetterSearchHistory";
 
 export default function BetterSearch() {
     const [searchQuery, setSearchQuery] = React.useState("");
@@ -49,17 +50,23 @@ export default function BetterSearch() {
         return () => document.removeEventListener("click", handleClickOutside);
     }, [isVisible]);
 
+    const forceSearch = () => {
+        if (!searchQuery)
+            return;
+
+        // Open the global search in a new window
+        openWindow(`/TDNext/Apps/Shared/Global/Search?searchText=${encodeURIComponent(searchQuery)}`, "Global Search");
+    }
+
     if (!settings.useNewSearch)
         return null;
     return (
-        <Dropdown
-            show={isVisible}
-            align={"end"}
-            className={"wizard_bettersearch"}
+        <div
+            className={`wizard_bettersearch dropdown ${isVisible ? "show" : ""}`}
         >
-            <FormControl
+            <input
+                className={"form-control form-control-sm"}
                 type={"text"}
-                size={"sm"}
                 placeholder={"Search..."}
                 autoComplete={"off"}
                 onChange={onSearchChange}
@@ -72,11 +79,11 @@ export default function BetterSearch() {
                     // Arrow keys/tab to navigate results
                     if (e.key === "ArrowDown" || e.key === "Tab") {
                         e.preventDefault();
-                        setResultsIndex((prevIndex) => Math.min(prevIndex + 1, results.length)); // Prevent going above the last index
+                        setResultsIndex((prevIndex) => (prevIndex + 1) % (results.length + 1)); // Wrap around to the first result
                     }
                     if (e.key === "ArrowUp") {
                         e.preventDefault();
-                        setResultsIndex((prevIndex) => Math.max(prevIndex - 1, 0)); // Prevent going below 0
+                        setResultsIndex((prevIndex) => (prevIndex + results.length) % (results.length + 1)); // Wrap around to the last result
                     }
 
                     // Handle Enter key to send onClick to the selected result
@@ -102,6 +109,7 @@ export default function BetterSearch() {
 
                 style={{
                     minWidth: 300,
+                    paddingLeft: 30
                 }}
 
                 // Prevent bootstrap from closing the dropdown
@@ -111,7 +119,29 @@ export default function BetterSearch() {
                 onFocus={() => setVisible(true)}
             />
 
-            <Dropdown.Menu
+            <span
+                className={`fa fa-search position-absolute top-50 start-0 translate-middle-y ms-2 ${isVisible ? "text-primary" : "text-muted"}`}
+                style={{
+                    cursor: "pointer",
+                    fontSize: 16,
+                }}
+                onClick={(e) => {
+                    // Stop the default action and propagation
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    // Focus
+                    const inputElement = document.querySelector(".wizard_bettersearch input");
+                    if (inputElement instanceof HTMLInputElement)
+                        inputElement.focus();
+
+                    // If content, open the global search in a new window
+                    forceSearch();
+                }}
+            />
+
+            <div
+                className={`dropdown-menu dropdown-menu-end ${isVisible ? "show" : ""}`}
                 style={{
                     maxHeight: 400,
                     overflowY: "auto",
@@ -123,12 +153,7 @@ export default function BetterSearch() {
                 }}
             >
                 {!searchQuery && (
-                    <span
-                        style={{fontSize: 14}}
-                        className={"text-muted fst-italic text-center w-100 d-block"}
-                    >
-                        Start typing to search...
-                    </span>
+                    <BetterSearchHistory/>
                 )}
 
                 {searchQuery && (
@@ -146,7 +171,7 @@ export default function BetterSearch() {
                         setResultsIndex={setResultsIndex}
                     />
                 )}
-            </Dropdown.Menu>
-        </Dropdown>
+            </div>
+        </div>
     )
 }

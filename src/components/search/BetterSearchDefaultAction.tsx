@@ -2,13 +2,16 @@ import React from "react";
 import AppID from "../../types/AppID";
 import UWStoutTDXClient from "../../utils/tdx/UWStoutTDXClient";
 import BetterSearchResult from "./BetterSearchResult";
+import useSettings from "../../hooks/useSettings";
+import BetterSearchDropdownItem from "./BetterSearchDropdownItem";
+import {SearchType} from "../../types/SearchType";
 
 export interface BetterSearchDefaultActionProps {
     searchQuery: string;
     active?: boolean;
 }
 
-const REGEX_LIST: Record<SearchType, RegExp[]> = {
+const REGEX_LIST: Partial<Record<SearchType, RegExp[]>> = {
     "Person": [
         /^0\d{6}$/, // Student ID (0 - 7 digits)
         /^[a-zA-Z]+\d{4}$/, // Username
@@ -26,41 +29,23 @@ const REGEX_LIST: Record<SearchType, RegExp[]> = {
     ],
     "Ticket": [
         /^\d{5,7}$/ // Ticket Number
-    ],
-
-    // Default case for any other search
-    "Default": []
-}
-
-enum SearchType {
-    Person = "Person",
-    EStout = "EStout",
-    Printer = "Printer",
-    Laptop = "Laptop",
-    Ticket = "Ticket",
-    Default = "Default"
-}
-
-const SEARCH_TYPE_ICONS: Record<SearchType, string> = {
-    Person: "fa-user",
-    EStout: "fa-laptop",
-    Printer: "fa-print",
-    Laptop: "fa-laptop",
-    Ticket: "fa-ticket",
-    Default: "fa-search"
-}
+    ]
+};
 
 export default function BetterSearchDefaultAction(props: BetterSearchDefaultActionProps) {
     const {searchQuery} = props;
+    const trimmedQuery = searchQuery.trim();
+    const [settings] = useSettings();
 
     const [text, setText] = React.useState("");
     const [isLoading, setIsLoading] = React.useState(false);
     const [searchURL, setSearchURL] = React.useState("");
-    const [searchType, setSearchType] = React.useState<SearchType>(SearchType.Default);
+    const [searchType, setSearchType] = React.useState<SearchType>(SearchType.Search);
 
     const targetSearchType = React.useMemo(() => {
         if (!searchQuery)
-            return SearchType.Default;
+            return SearchType.Search;
+
 
         // Loop through Search Types
         const searchTypes = Object.keys(REGEX_LIST) as SearchType[];
@@ -68,24 +53,43 @@ export default function BetterSearchDefaultAction(props: BetterSearchDefaultActi
 
             // Find matching regexes
             const regexes = REGEX_LIST[type];
-            if (regexes.some(regex => regex.test(searchQuery)))
+            if (regexes?.some(regex => regex.test(trimmedQuery)))
                 return type;
         }
 
         // If no match found, return Default
-        return SearchType.Default;
+        return SearchType.Search;
     }, [searchQuery]);
+
+    const trySearchTicket = async (appID: AppID, searchType: SearchType) => {
+        // API Client
+        const client = new UWStoutTDXClient();
+
+        // Search for the ticket
+        const ticketID = parseInt(trimmedQuery, 10);
+        if (isNaN(ticketID))
+            return;
+
+        const ticket = await client.tickets.getTicket(appID, ticketID);
+
+        // Apply to the search URL
+        if (ticket) {
+            setText(ticket.Title);
+            setSearchURL(`/TDNext/Apps/${appID}/Tickets/TicketDet.aspx?TicketID=${ticketID}`);
+            setSearchType(searchType);
+        }
+    }
 
     const trySearchAsset = async (appID: AppID, searchType: SearchType) => {
         // API Client
         const client = new UWStoutTDXClient();
 
         // Search for the asset
-        const assets = await client.assets.searchAssets(appID, {SerialLike: searchQuery, MaxResults: 1});
+        const assets = await client.assets.searchAssets(appID, {SerialLike: trimmedQuery, MaxResults: 1});
 
         // Apply to the search URL
         if (assets.length > 0) {
-            setText(assets[0].Tag ?? assets[0].Name ?? searchQuery);
+            setText(assets[0].Tag ?? assets[0].Name ?? trimmedQuery);
             setSearchURL(`/TDNext/Apps/${appID}/Assets/AssetDet?AssetID=${assets[0].ID}`);
             setSearchType(searchType);
         }
@@ -97,13 +101,13 @@ export default function BetterSearchDefaultAction(props: BetterSearchDefaultActi
 
         // Search for the user
         const users = await client.people.search({
-            SearchText: searchQuery,
+            SearchText: trimmedQuery,
             MaxResults: 1
         });
 
         // Apply to the search URL
         if (users.length > 0) {
-            setText(users[0].FullName ?? searchQuery);
+            setText(users[0].FullName ?? trimmedQuery);
             setSearchURL(`/TDNext/Apps/People/PersonDet?U=${users[0].UID}`);
             setSearchType(searchType);
         }
@@ -114,16 +118,15 @@ export default function BetterSearchDefaultAction(props: BetterSearchDefaultActi
         // Default
         setText(`Search "${searchQuery}"`);
         setSearchURL(`/TDNext/Apps/Shared/Global/Search?searchText=${encodeURIComponent(searchQuery)}`);
-        setSearchType(SearchType.Default);
+        setSearchType(SearchType.Search);
+
+        // Abort if disabled
+        if (!settings.enableNewSearchAutoDetectQuery)
+            return;
 
         // Ticket
-        if (targetSearchType === SearchType.Ticket) {
-            const ticketID = parseInt(searchQuery, 10);
-
-            setText(`Ticket "${ticketID}"`);
-            setSearchURL(`/TDNext/Apps/${AppID.Tickets}/Tickets/TicketDet.aspx?TicketID=${ticketID}`);
-            setSearchType(SearchType.Ticket);
-        }
+        if (targetSearchType === SearchType.Ticket)
+            await trySearchTicket(AppID.Tickets, SearchType.Ticket);
 
         // User
         if (targetSearchType === SearchType.Person)
@@ -145,31 +148,25 @@ export default function BetterSearchDefaultAction(props: BetterSearchDefaultActi
             .finally(() => setIsLoading(false));
     }, [searchQuery, targetSearchType]);
 
-    const color = React.useMemo(() => {
-        if (searchType === SearchType.EStout ||
-            searchType === SearchType.Laptop ||
-            searchType === SearchType.Printer)
-            return "#007bff"; // blue for Asset
-
-        if (searchType === SearchType.Ticket)
-            return "#fd7e14"; // orange for Ticket
-
-        if (searchType === SearchType.Person)
-            return "#28a745"; // green for Person
-
-        return "#6c757d"; // grey for Default
-    }, [searchType]);
+    if (isLoading)
+        return (
+            <BetterSearchDropdownItem
+                text={"Searching..."}
+                icon={`fa fa-spinner fa-spin`}
+                disabled
+            />
+        );
 
     return (
         <BetterSearchResult
             href={searchURL}
             disabled={!searchQuery || isLoading}
             selected={props.active}
-            icon={isLoading ?
-                `fa fa-spinner fa-spin` :
-                SEARCH_TYPE_ICONS[searchType]}
-            color={color}
+            type={searchType}
             text={text}
+
+            // Use searchQuery as history text for generic search
+            historyText={searchType === SearchType.Search ? searchQuery : undefined}
         />
     )
 }

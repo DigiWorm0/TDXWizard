@@ -10,7 +10,7 @@ export default function ResetSettingsButton() {
         e.preventDefault();
         e.stopPropagation();
 
-        if (!confirm("Are you sure you want to reset all settings?"))
+        if (!confirm("Are you sure you want to reset all settings? This will delete both settings and templates."))
             return;
 
         setSettings({

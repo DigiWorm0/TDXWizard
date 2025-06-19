@@ -7,6 +7,7 @@ import autoUpdateAuthKey from "../utils/autoUpdateAuthKey";
 import CustomStyles from "../components/style/CustomStyles";
 import BetterSearch from "../components/search/BetterSearch";
 import openWindow from "../utils/openWindow";
+import {unsafeWindow} from "$";
 
 export default class CommonPage implements PageScript {
 
@@ -37,23 +38,23 @@ export default class CommonPage implements PageScript {
         // Patch global window functions with custom implementations
         // Explicitly calls `window.eval` to reference the global `window` object instead of the shadow DOM
 
-        if (window.top === null)
+        if (unsafeWindow.top === null)
             throw new Error("window.top is null, cannot replace window links");
 
         // Generic iFrame tab opening
-        window.top.WorkMgmt.MainContentManager.instance.openIFrameTab = (name: string, _id: string, url: string, _tabData = false) => openWindow(url, name);
+        unsafeWindow.top.WorkMgmt.MainContentManager.instance.openIFrameTab = (name: string, _id: string, url: string, _tabData = false) => openWindow(url, name);
 
         // Child window opening
-        window.openWinReturn = (url: string, _width: number, _height: number, name: string) => openWindow(url, name);
+        unsafeWindow.openWinReturn = (url: string, _width: number, _height: number, name: string) => openWindow(url, name);
 
         // Side Panel iFrame opening
-        window.top.WorkMgmt.MainContentManager.instance.loadSidePanelIFrame = (url: string, name: string, _id: string, _tabData = true, _landmark = true) => openWindow(url, name);
+        unsafeWindow.top.WorkMgmt.MainContentManager.instance.loadSidePanelIFrame = (url: string, name: string, _id: string, _tabData = true, _landmark = true) => openWindow(url, name);
 
         // Child window side panel opening
-        window.openWorkMgmtSidePanel = (url: string) => openWindow(url);
+        unsafeWindow.openWorkMgmtSidePanel = (url: string) => openWindow(url);
 
         // Search function is on its own script
-        window.top.WorkMgmt.GlobalSearch.instance.search = (searchQuery: string) => openWindow(`/TDNext/Apps/Shared/Global/Search?searchText=${encodeURIComponent(searchQuery)}`, "Global Search");
+        unsafeWindow.top.WorkMgmt.GlobalSearch.instance.search = (searchQuery: string) => openWindow(`/TDNext/Apps/Shared/Global/Search?searchText=${encodeURIComponent(searchQuery)}`, "Global Search");
     }
 
     /**

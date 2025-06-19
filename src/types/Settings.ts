@@ -42,6 +42,8 @@ export default interface Settings {
     dashboardAddTicketButton: boolean;
     useNewSearch: boolean;
     enableNewSearchAutocomplete: boolean;
+    enableNewSearchAutoDetectQuery: boolean;
+    enableNewSearchHistory: boolean;
 
     useCustomColorPalette: boolean;
     primaryColor: string;

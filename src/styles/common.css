@@ -102,6 +102,19 @@
     color: #212529 !important;
 }
 
+.wizard_bettersearch .text-primary {
+    color: #6B5CDC !important;
+}
+
+.wizard_bettersearch .form-control:focus {
+    box-shadow: 0 0 0 .25rem rgba(107, 92, 220, 0.25) !important;
+    border-color: #6B5CDC !important;
+}
+
+.wizard_bettersearch .form-control-sm {
+    border-radius: 0.5rem !important;
+}
+
 /*
         BULK INVENTORY
  */

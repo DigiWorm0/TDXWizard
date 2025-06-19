@@ -18,6 +18,9 @@ export default function useBetterSearch(query: string) {
             !settings.enableNewSearchAutocomplete)
             return;
 
+        // Clear previous results
+        setResults([]);
+
         // Prevent empty searches
         if (query.trim() === "")
             return;

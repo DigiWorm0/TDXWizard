@@ -9,6 +9,7 @@ import SettingsHeader from "../style/SettingsHeader";
 import ResetSettingsButton from "../buttons/ResetSettingsButton";
 import ExportSettingsButton from "../buttons/ExportSettingsButton";
 import ImportSettingsButton from "../buttons/ImportSettingsButton";
+import ClearSearchHistoryButton from "../buttons/ClearSearchHistoryButton";
 
 export interface SettingsModalProps {
     isOpen: boolean;
@@ -131,10 +132,22 @@ export default function SettingsModal(props: SettingsModalProps) {
                             />
                             <div style={{marginLeft: 20}}>
                                 <SettingsSwitchInput
-                                    label={"Enable Auto Complete"}
+                                    label={"Autocomplete"}
                                     setting={"enableNewSearchAutocomplete"}
-                                    disabled={!settings.useNewFeed}
+                                    disabled={!settings.useNewSearch}
                                     title={"Enables auto-complete for the new search bar, suggesting results as you type. Can be disabled if it causes performance issues"}
+                                />
+                                <SettingsSwitchInput
+                                    label={"Auto-Detect Search Query"}
+                                    setting={"enableNewSearchAutoDetectQuery"}
+                                    disabled={!settings.useNewSearch}
+                                    title={"Auto-detects certain types of search queries such as ticket IDs, asset tags, and usernames"}
+                                />
+                                <SettingsSwitchInput
+                                    label={"Search History"}
+                                    setting={"enableNewSearchHistory"}
+                                    disabled={!settings.useNewSearch}
+                                    title={"Saves the last few search queries and allows you to quickly re-open them"}
                                 />
                             </div>
 
@@ -343,6 +356,9 @@ export default function SettingsModal(props: SettingsModalProps) {
                                 <ExportSettingsButton/>
                                 <ImportSettingsButton/>
                                 <ResetSettingsButton/>
+                            </div>
+                            <div className={"btn-group mt-1 w-100"}>
+                                <ClearSearchHistoryButton/>
                             </div>
 
                             {/* ---- END SETTINGS ---- */}

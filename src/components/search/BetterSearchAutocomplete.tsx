@@ -1,8 +1,9 @@
-import CustomAttributeComponent from "../../tdx-api/types/CustomAttributeComponent";
 import SearchResult from "../../types/SearchResult";
 import BetterSearchResult from "./BetterSearchResult";
-import {DropdownDivider} from "react-bootstrap";
 import useSettings from "../../hooks/useSettings";
+import BetterSearchDropdownItem from "./BetterSearchDropdownItem";
+import CustomAttributeComponent from "../../tdx-api/types/CustomAttributeComponent";
+import {SearchType} from "../../types/SearchType";
 
 export interface BetterSearchAutocompleteProps {
     results: SearchResult[];
@@ -11,72 +12,43 @@ export interface BetterSearchAutocompleteProps {
     setResultsIndex: (index: number) => void;
 }
 
-const TYPE_TO_ICON: Record<CustomAttributeComponent, string> = {
-    [CustomAttributeComponent.Project]: "fa-diagram-project", // Project
-    [CustomAttributeComponent.Issue]: "fa-bug", // Issue
-    [CustomAttributeComponent.FileCabinetFile]: "fa-file", // File
-    [CustomAttributeComponent.Ticket]: "fa-ticket", // Ticket
-    [CustomAttributeComponent.Account]: "fa-user", // Account
-    [CustomAttributeComponent.Task]: "fa-tasks", // Task
-    [CustomAttributeComponent.KnowledgeBaseArticle]: "fa-book", // Knowledge Base Article
-    [CustomAttributeComponent.Asset]: "fa-laptop", // Asset
-    [CustomAttributeComponent.Vendor]: "fa-building", // Vendor
-    [CustomAttributeComponent.Contract]: "fa-file-contract", // Contract
-    [CustomAttributeComponent.ProductModel]: "fa-box", // Product Model
-    [CustomAttributeComponent.Person]: "fa-user", // Person
-    [CustomAttributeComponent.Service]: "fa-cogs", // Service
-    [CustomAttributeComponent.Risk]: "fa-exclamation-triangle", // Risk
-    [CustomAttributeComponent.ConfigurationItem]: "fa-cog", // Configuration Item
-    [CustomAttributeComponent.Location]: "fa-map-marker-alt", // Location
-    [CustomAttributeComponent.LocationRoom]: "fa-door-open", // Location Room
-    [CustomAttributeComponent.ServiceOffering]: "fa-concierge-bell", // Service Offering
-};
+const COMPONENT_ID_TO_TYPE: Partial<Record<CustomAttributeComponent, SearchType>> = {
+    [CustomAttributeComponent.Person]: SearchType.Person,
+    [CustomAttributeComponent.Asset]: SearchType.Laptop,
+    [CustomAttributeComponent.Ticket]: SearchType.Ticket,
+}
 
 export default function BetterSearchAutocomplete(props: BetterSearchAutocompleteProps) {
     const [settings] = useSettings();
     const {results, isLoading} = props;
 
-    const searchTypeToColor = (type: CustomAttributeComponent) => {
-        if (type === CustomAttributeComponent.Asset)
-            return "#007bff"; // blue for Asset
-        if (type === CustomAttributeComponent.Ticket)
-            return "#fd7e14"; // orange for Ticket
-        if (type === CustomAttributeComponent.Person)
-            return "#28a745"; // green for Person
-
-        return "#6c757d"; // grey for other types
-    }
-
     if (!settings.enableNewSearchAutocomplete)
         return null;
     return (
         <>
-            <DropdownDivider/>
+            {/*<div className={"dropdown-divider"}/>*/}
 
             {results.map((result, index) => (
                 <BetterSearchResult
                     key={index}
                     href={result.DetailUrl}
                     selected={props.resultsIndex === index + 1}
-                    icon={TYPE_TO_ICON[result.ComponentID]}
-                    color={searchTypeToColor(result.ComponentID)}
+                    type={COMPONENT_ID_TO_TYPE[result.ComponentID] ?? SearchType.Other}
                     text={result.Title}
                 />
             ))}
 
-            {results.length === 0 && !isLoading && (
-                <BetterSearchResult
-                    disabled
-                    href={"#"}
-                    icon={"fa fa-exclamation-triangle"}
-                    text={"No results found"}
-                />
-            )}
+            {/*{results.length === 0 && !isLoading && (*/}
+            {/*    <BetterSearchDropdownItem*/}
+            {/*        disabled*/}
+            {/*        icon={"fa fa-exclamation-triangle"}*/}
+            {/*        text={"No results found"}*/}
+            {/*    />*/}
+            {/*)}*/}
 
             {isLoading && (
-                <BetterSearchResult
+                <BetterSearchDropdownItem
                     disabled
-                    href={"#"}
                     icon={"fa fa-spinner fa-spin"}
                     text={"Loading results..."}
                 />
