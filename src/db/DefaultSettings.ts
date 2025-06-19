@@ -55,6 +55,7 @@ const DefaultSettings: Settings = {
     dashboardAddTicketButton: true,
 
     useNewSearch: false,
+    enableNewSearchAutocomplete: true,
 
     useCustomColorPalette: false,
     primaryColor: "#6B5CDC",

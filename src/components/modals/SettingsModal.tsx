@@ -129,6 +129,14 @@ export default function SettingsModal(props: SettingsModalProps) {
                                 setting={"useNewSearch"}
                                 title={"Replaces the TDX search with a re-designed version"}
                             />
+                            <div style={{marginLeft: 20}}>
+                                <SettingsSwitchInput
+                                    label={"Enable Auto Complete"}
+                                    setting={"enableNewSearchAutocomplete"}
+                                    disabled={!settings.useNewFeed}
+                                    title={"Enables auto-complete for the new search bar, suggesting results as you type. Can be disabled if it causes performance issues"}
+                                />
+                            </div>
 
                             <SettingsHeader title={"Tickets"}/>
 
@@ -309,18 +317,18 @@ export default function SettingsModal(props: SettingsModalProps) {
                                 setting={"stripedTableRows"}
                                 title={"Alternates the background color of table rows for better readability"}
                             />
-                            <SettingsSwitchInput
-                                label={"Custom Colors"}
-                                setting={"useCustomColorPalette"}
-                                title={"Recolors the TDX interface with a custom color palette"}
-                            />
-                            <div style={{marginLeft: 20}}>
-                                <SettingsColorPickerInput
-                                    label={"Primary Color"}
-                                    setting={"primaryColor"}
-                                    disabled={!settings.useCustomColorPalette}
-                                />
-                            </div>
+                            {/*<SettingsSwitchInput*/}
+                            {/*    label={"Custom Colors"}*/}
+                            {/*    setting={"useCustomColorPalette"}*/}
+                            {/*    title={"Recolors the TDX interface with a custom color palette"}*/}
+                            {/*/>*/}
+                            {/*<div style={{marginLeft: 20}}>*/}
+                            {/*    <SettingsColorPickerInput*/}
+                            {/*        label={"Primary Color"}*/}
+                            {/*        setting={"primaryColor"}*/}
+                            {/*        disabled={!settings.useCustomColorPalette}*/}
+                            {/*    />*/}
+                            {/*</div>*/}
 
                             <SettingsHeader title={"Authentication"}/>
                             <SettingsAuthInput/>

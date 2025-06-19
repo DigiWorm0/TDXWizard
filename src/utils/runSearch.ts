@@ -3,7 +3,7 @@ import SearchResult from "../types/SearchResult";
 
 const queryURL = "/TDNext/Apps/Shared/Global/Search";
 
-export default async function runSearch(text: string): Promise<SearchResult[]> {
+export default async function runSearch(text: string, maxResults: number = 10): Promise<SearchResult[]> {
     // Not in the public API yet, so we manually post to the search endpoint
     const res = await fetch(queryURL, {
         method: "POST",
@@ -16,5 +16,5 @@ export default async function runSearch(text: string): Promise<SearchResult[]> {
     });
 
     const response = await res.json() as SearchResults;
-    return response.Results;
+    return response.Results.slice(0, maxResults);
 }

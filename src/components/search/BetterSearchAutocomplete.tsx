@@ -1,13 +1,14 @@
-import React from "react";
-import {Dropdown} from "react-bootstrap";
-import BetterSearchDefaultAction from "./BetterSearchDefaultAction";
-import useBetterSearch from "../../hooks/useBetterSearch";
 import CustomAttributeComponent from "../../tdx-api/types/CustomAttributeComponent";
+import SearchResult from "../../types/SearchResult";
+import BetterSearchResult from "./BetterSearchResult";
+import {DropdownDivider} from "react-bootstrap";
+import useSettings from "../../hooks/useSettings";
 
 export interface BetterSearchAutocompleteProps {
-    searchQuery: string;
-    isVisible: boolean;
-    onHide: () => void;
+    results: SearchResult[];
+    isLoading?: boolean;
+    resultsIndex: number;
+    setResultsIndex: (index: number) => void;
 }
 
 const TYPE_TO_ICON: Record<CustomAttributeComponent, string> = {
@@ -30,20 +31,10 @@ const TYPE_TO_ICON: Record<CustomAttributeComponent, string> = {
     [CustomAttributeComponent.LocationRoom]: "fa-door-open", // Location Room
     [CustomAttributeComponent.ServiceOffering]: "fa-concierge-bell", // Service Offering
 };
+
 export default function BetterSearchAutocomplete(props: BetterSearchAutocompleteProps) {
-    const [results, isLoading] = useBetterSearch(props.searchQuery);
-
-    const onSelect = (e: React.MouseEvent<HTMLAnchorElement>) => {
-        e.preventDefault();
-        e.stopPropagation();
-
-        // Open in new window
-        const href = e.currentTarget.getAttribute("href");
-        window.open(href ?? "", "_blank", "width=800,height=600");
-
-        // Close the dropdown
-        props.onHide();
-    }
+    const [settings] = useSettings();
+    const {results, isLoading} = props;
 
     const searchTypeToColor = (type: CustomAttributeComponent) => {
         if (type === CustomAttributeComponent.Asset)
@@ -56,80 +47,40 @@ export default function BetterSearchAutocomplete(props: BetterSearchAutocomplete
         return "#6c757d"; // grey for other types
     }
 
+    if (!settings.enableNewSearchAutocomplete)
+        return null;
     return (
-        <Dropdown.Menu
-            style={{
-                maxHeight: 400,
-                overflowY: "auto",
-                overflowX: "hidden",
-                minWidth: "100%",
-                maxWidth: "100%",
-            }}
-        >
+        <>
+            <DropdownDivider/>
 
-            {!props.searchQuery &&
-                <span
-                    style={{fontSize: 14}}
-                    className={"text-muted fst-italic text-center w-100 d-block"}
-                >
-                    Start typing to search...
-                </span>
-            }
-
-            {props.searchQuery && <BetterSearchDefaultAction searchQuery={props.searchQuery}/>}
-            {props.searchQuery && results.map((result, index) => (
-                <Dropdown.Item
+            {results.map((result, index) => (
+                <BetterSearchResult
                     key={index}
                     href={result.DetailUrl}
-                    onClick={onSelect}
-                    className={`dropdown-${result.ComponentID}`}
-                    style={{
-                        paddingTop: 0,
-                        paddingBottom: 0,
-                        fontSize: 14,
-                    }}
-                >
-                    <span
-                        className={`fa ${TYPE_TO_ICON[result.ComponentID] || "fa-question"} me-1`}
-                        style={{
-                            width: 20,
-                            textAlign: "center",
-                            color: searchTypeToColor(result.ComponentID),
-                        }}
-                    />
-                    {result.Title}
-                </Dropdown.Item>
+                    selected={props.resultsIndex === index + 1}
+                    icon={TYPE_TO_ICON[result.ComponentID]}
+                    color={searchTypeToColor(result.ComponentID)}
+                    text={result.Title}
+                />
             ))}
 
-            {props.searchQuery && results.length === 0 && !isLoading && (
-                <Dropdown.Item
-                    href="#"
+            {results.length === 0 && !isLoading && (
+                <BetterSearchResult
                     disabled
-                    style={{
-                        paddingTop: 0,
-                        paddingBottom: 0,
-                        fontSize: 14,
-                    }}
-                >
-                    <span className="fa fa-exclamation-triangle me-1"/>
-                    No results found
-                </Dropdown.Item>
+                    href={"#"}
+                    icon={"fa fa-exclamation-triangle"}
+                    text={"No results found"}
+                />
             )}
 
-            {props.searchQuery && isLoading && (
-                <Dropdown.Item
-                    href="#"
+            {isLoading && (
+                <BetterSearchResult
                     disabled
-                    style={{
-                        paddingTop: 0,
-                        paddingBottom: 0,
-                        fontSize: 14,
-                    }}
-                >
-                    <span className="fa fa-spinner fa-spin me-1"/>
-                    Loading...
-                </Dropdown.Item>
+                    href={"#"}
+                    icon={"fa fa-spinner fa-spin"}
+                    text={"Loading results..."}
+                />
             )}
-        </Dropdown.Menu>
+        </>
     )
 }

@@ -94,6 +94,15 @@
 }
 
 /*
+        BETTER SEARCH
+ */
+.wizard_bettersearch .dropdown-item.active:not(.disabled),
+.wizard_bettersearch .dropdown-item:active:not(.disabled) {
+    background-color: #e9ecef !important;
+    color: #212529 !important;
+}
+
+/*
         BULK INVENTORY
  */
 .wizard_window {

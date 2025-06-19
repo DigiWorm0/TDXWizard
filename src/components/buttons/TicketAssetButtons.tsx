@@ -71,7 +71,7 @@ export default function TicketAssetButtons() {
                 throw new Error("Ticket ID not found");
 
             // Find Asset ID
-            const appID = assetName.startsWith("C") ? AppID.Inventory : AppID.EStoutInventory;
+            const appID = assetName.toLowerCase().startsWith("c") ? AppID.Inventory : AppID.EStoutInventory;
             const assets = await client.assets.searchAssets(appID, {SerialLike: assetName, MaxResults: 1});
             if (assets.length === 0)
                 throw new Error("Asset not found");
