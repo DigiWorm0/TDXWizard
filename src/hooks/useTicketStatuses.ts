@@ -4,15 +4,14 @@ import TicketStatus from "../tdx-api/types/TicketStatus";
 import getAppIDFromURL from "../utils/tdx/getAppIDFromURL";
 import UWStoutTDXClient from "../utils/tdx/UWStoutTDXClient";
 import {unwrap} from "jotai/utils";
+import AppID from "../types/AppID";
 
 type TicketStatusCache = Record<number, TicketStatus[]>;
 
 export const ticketStatusesAtom = atom(
     async () => {
         // Get the app ID from the URL
-        const appID = getAppIDFromURL();
-        if (!appID)
-            return [];
+        const appID = getAppIDFromURL() ?? AppID.Tickets;
 
         // Pull the ticket status from the cache
         const cache = JSON.parse(GM_getValue("ticketStatusCache") ?? "{}") as TicketStatusCache;

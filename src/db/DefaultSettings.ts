@@ -11,6 +11,7 @@ const DefaultSettings: Settings = {
     showSurplusButtons: true,
 
     autoHideTicketTypes: true,
+    autoCompleteRecategorizationTask: true,
     autoCloseTicketOnSave: false,
     ticketTypeThreshold: 0.5,
 
@@ -22,7 +23,9 @@ const DefaultSettings: Settings = {
     hideTicketPrintViewButton: true,
 
     useNewFeed: true,
+    useNewFeedOnTickets: true,
     useNewFeedOnAssets: true,
+    useNewFeedOnTicketTasks: true,
     mergeAdjacentSystemMessages: true,
 
     useCustomProfileColor: false,
@@ -40,6 +43,7 @@ const DefaultSettings: Settings = {
     eStoutPickupButton: true,
     eStoutResolveButton: true,
     resolveButton: false,
+    updateButton: false,
 
     removeCopyURLButton: true,
 

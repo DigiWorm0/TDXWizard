@@ -10,6 +10,8 @@ import getAppIDFromURL from "../../utils/tdx/getAppIDFromURL";
 import TDXButtonGroup from "./common/TDXButtonGroup";
 import TDXButton from "./common/TDXButton";
 
+const TASK_NAME = "Recategorize Ticket";
+
 export default function TicketTypeButtons() {
     const ticket = useTicket();
     const [settings] = useSettings();
@@ -28,6 +30,32 @@ export default function TicketTypeButtons() {
         // Get the possible ticket types
         return findTicketTypes(ticket);
     }, [ticket, settings]);
+
+    const completeTask = async () => {
+
+        // API Client
+        const client = new UWStoutTDXClient();
+
+        // Get Ticket ID
+        const ticketID = getTicketIDFromURL();
+        if (!ticketID)
+            throw new Error("Ticket ID not found");
+
+        // Get App ID
+        const appID = getAppIDFromURL();
+        if (!appID)
+            throw new Error("App ID not found");
+
+        // Find the task
+        const task = ticket?.Tasks?.find(t => t.Title === TASK_NAME);
+        if (!task)
+            return;
+
+        // Mark the task as complete
+        await client.ticketTasks.updateTicketTaskFeed(appID, ticketID, task.ID, {
+            PercentComplete: 100
+        });
+    }
 
     const setType = async (type: TicketType) => {
 
@@ -52,6 +80,9 @@ export default function TicketTypeButtons() {
         // Update Ticket
         await client.tickets.updateTicket(appID, ticketID, {TypeID: ticketTypeID});
 
+        // Complete the task if it exists
+        await completeTask();
+
         // Reload/Close the page
         if (settings.autoCloseTicketOnSave)
             window.close();
@@ -60,7 +91,6 @@ export default function TicketTypeButtons() {
     }
 
     const setSpam = async () => {
-        console.log("Setting Spam");
 
         // API Client
         const client = new UWStoutTDXClient();
@@ -83,6 +113,9 @@ export default function TicketTypeButtons() {
             ...ticketInfo,
             StatusID: 198, // Cancelled
         });
+
+        // Complete the task if it exists
+        await completeTask();
 
         // Reload/Close the page
         if (settings.autoCloseTicketOnSave)

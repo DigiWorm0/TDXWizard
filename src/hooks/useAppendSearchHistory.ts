@@ -1,11 +1,11 @@
 import {atom, useSetAtom} from "jotai";
 import {searchHistoryAtom} from "./useSearchHistory";
 import {settingsAtom} from "./useSettings";
-import SearchHistoryItem from "../types/SearchHistoryItem";
+import SearchResult from "../types/SearchResult";
 
 const MAX_SEARCH_HISTORY = 8;
 
-export const appendSearchHistoryAtom = atom(null, (get, set, searchResult: SearchHistoryItem) => {
+export const appendSearchHistoryAtom = atom(null, (get, set, searchResult: SearchResult) => {
     // Don't save anything if search history is disabled
     const settings = get(settingsAtom);
     if (!settings.enableNewSearchHistory)

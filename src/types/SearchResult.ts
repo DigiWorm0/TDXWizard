@@ -1,10 +1,8 @@
-import CustomAttributeComponent from "../tdx-api/types/CustomAttributeComponent";
+import {SearchType} from "./SearchType";
 
-interface SearchResult {
-    AppId: number;
-    DetailUrl: string;
-    Title: string;
-    ComponentID: CustomAttributeComponent;
+export default interface SearchResult {
+    text: string;
+    historyText?: string;
+    href: string;
+    type?: SearchType;
 }
-
-export default SearchResult;

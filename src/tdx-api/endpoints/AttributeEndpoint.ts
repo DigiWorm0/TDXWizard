@@ -1,6 +1,7 @@
 import TDXEndpoint from "../TDXEndpoint";
 import Guid from "../types/Guid";
 import CustomAttributeChoice from "../types/CustomAttributeChoice";
+import CustomAttributeComponent from "../types/CustomAttributeComponent";
 
 /**
  * A class for interacting with the TDX Attribute API

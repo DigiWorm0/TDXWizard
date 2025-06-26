@@ -1,0 +1,40 @@
+import DateTime from "./DateTime";
+import Guid from "./Guid";
+
+export default interface TicketTask {
+    ID: number;
+    TicketID: number;
+    Title: string;
+    Description?: string;
+    IsActive: boolean;
+    NotifyResponsible: boolean;
+    StartDate?: DateTime;
+    EndDate?: DateTime;
+    CompleteWithinMinutes?: number;
+    EstimatedMinutes: number;
+    ActualMinutes: number;
+    PercentComplete: number;
+    CreatedDate: DateTime;
+    CreatedUid: Guid;
+    CreatedFullName: string;
+    CreatedEmail: string;
+    ModifiedDate: DateTime;
+    ModifiedUid: Guid;
+    ModifiedFullName: string;
+    CompletedDate: DateTime;
+    CompletedUid?: Guid;
+    CompletedFullName: string;
+    ResponsibleUid?: Guid;
+    ResponsibleFullName: string;
+    ResponsibleEmail: string;
+    ResponsibleGroupID: number;
+    ResponsibleGroupName: string;
+    PredecessorID: number;
+    PredecessorTitle: string;
+    Order: number;
+    //TypeID: TicketTaskType;
+    DetectedConflictCount: number;
+    //DetectedConflictTypes: ConflictType[];
+    LastConflictScanDateUtc: DateTime;
+    Uri: string;
+}

@@ -3,17 +3,14 @@ import openWindow from "../../utils/openWindow";
 import useAppendSearchHistory from "../../hooks/useAppendSearchHistory";
 import BetterSearchDropdownItem from "./BetterSearchDropdownItem";
 import {SearchType} from "../../types/SearchType";
+import SearchResult from "../../types/SearchResult";
 
 export interface BetterSearchResultProps {
-    text: string;
-    href: string;
-    type?: SearchType;
+    result: SearchResult;
 
+    onHide: () => void;
     disabled?: boolean;
     selected?: boolean;
-
-
-    historyText?: string; // Optional text for history, if different from display text
     disableHistory?: boolean; // Optional flag to disable history saving
 }
 
@@ -30,19 +27,20 @@ const SEARCH_TYPE_TO_ICON: Record<SearchType, string> = {
 
 export default function BetterSearchResult(props: BetterSearchResultProps) {
     const appendSearchHistory = useAppendSearchHistory();
+    const {result} = props;
 
     const color = React.useMemo(() => {
-        if (props.type === SearchType.Laptop ||
-            props.type === SearchType.Printer ||
-            props.type === SearchType.EStout)
+        if (result.type === SearchType.Laptop ||
+            result.type === SearchType.Printer ||
+            result.type === SearchType.EStout)
             return "#007bff"; // blue for Asset
-        if (props.type === SearchType.Ticket)
+        if (result.type === SearchType.Ticket)
             return "#fd7e14"; // orange for Ticket
-        if (props.type === SearchType.Person)
+        if (result.type === SearchType.Person)
             return "#28a745"; // green for Person
 
         return "#6c757d"; // grey for other types
-    }, [props.type]);
+    }, [result.type]);
 
     const onClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
 
@@ -55,21 +53,24 @@ export default function BetterSearchResult(props: BetterSearchResultProps) {
             return;
 
         // Open the link in a new window
-        openWindow(props.href, "Search Result");
+        openWindow(result.href, "Search Result");
+
+        // Hide the search dropdown
+        props.onHide();
 
         // Save to search history
         if (!props.disableHistory)
             appendSearchHistory({
-                ...props,
-                text: props.historyText ?? props.text, // Use historyText if provided, otherwise use text
+                ...result,
+                text: result.historyText ?? result.text, // Use historyText if provided, otherwise use text
             });
     }
 
     return (
         <BetterSearchDropdownItem
-            text={props.text}
-            href={props.href}
-            icon={`fa ${SEARCH_TYPE_TO_ICON[props.type ?? SearchType.Other]}`}
+            text={result.text}
+            href={result.href}
+            icon={`fa ${SEARCH_TYPE_TO_ICON[result.type ?? SearchType.Other]}`}
             color={color}
             disabled={props.disabled}
             selected={props.selected}

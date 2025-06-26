@@ -1,8 +1,7 @@
 import React from "react";
 import useSettings from "../../hooks/useSettings";
 import BetterSearchAutocomplete from "./BetterSearchAutocomplete";
-import useBetterSearch from "../../hooks/useBetterSearch";
-import BetterSearchDefaultAction from "./BetterSearchDefaultAction";
+import useBetterSearch from "../../hooks/search/useBetterSearch";
 import openWindow from "../../utils/openWindow";
 import BetterSearchHistory from "./BetterSearchHistory";
 
@@ -12,6 +11,7 @@ export default function BetterSearch() {
     const [isVisible, setVisible] = React.useState(false);
     const [resultsIndex, setResultsIndex] = React.useState(0);
     const [results, isLoading] = useBetterSearch(searchQuery);
+    const inputRef = React.useRef<HTMLInputElement>(null);
 
     const onSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 
@@ -58,6 +58,11 @@ export default function BetterSearch() {
         openWindow(`/TDNext/Apps/Shared/Global/Search?searchText=${encodeURIComponent(searchQuery)}`, "Global Search");
     }
 
+    const onHide = () => {
+        inputRef.current?.blur();
+        setVisible(false);
+    }
+
     if (!settings.useNewSearch)
         return null;
     return (
@@ -65,6 +70,7 @@ export default function BetterSearch() {
             className={`wizard_bettersearch dropdown ${isVisible ? "show" : ""}`}
         >
             <input
+                ref={inputRef}
                 className={"form-control form-control-sm"}
                 type={"text"}
                 placeholder={"Search..."}
@@ -153,13 +159,8 @@ export default function BetterSearch() {
                 }}
             >
                 {!searchQuery && (
-                    <BetterSearchHistory/>
-                )}
-
-                {searchQuery && (
-                    <BetterSearchDefaultAction
-                        searchQuery={searchQuery}
-                        active={resultsIndex === 0}
+                    <BetterSearchHistory
+                        onHide={onHide}
                     />
                 )}
 
@@ -169,6 +170,7 @@ export default function BetterSearch() {
                         isLoading={isLoading}
                         resultsIndex={resultsIndex}
                         setResultsIndex={setResultsIndex}
+                        onHide={onHide}
                     />
                 )}
             </div>

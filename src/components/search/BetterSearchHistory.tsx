@@ -2,7 +2,11 @@ import BetterSearchResult from "./BetterSearchResult";
 import useSettings from "../../hooks/useSettings";
 import useSearchHistory from "../../hooks/useSearchHistory";
 
-export default function BetterSearchHistory() {
+export interface BetterSearchHistoryProps {
+    onHide: () => void;
+}
+
+export default function BetterSearchHistory(props: BetterSearchHistoryProps) {
     const [searchHistory] = useSearchHistory();
     const [settings] = useSettings();
 
@@ -31,13 +35,12 @@ export default function BetterSearchHistory() {
             </h6>
             {searchHistory
                 .toReversed()
-                .map((item, index) => (
+                .map((result, index) => (
                     <BetterSearchResult
                         key={index}
-                        text={item.text}
-                        href={item.href}
-                        type={item.type}
+                        result={result}
                         disableHistory
+                        onHide={props.onHide}
                     />
                 ))}
         </>

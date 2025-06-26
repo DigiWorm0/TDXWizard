@@ -142,11 +142,15 @@ export default class CommonPage implements PageScript {
             "NewResponsibleId", // New Responsible
             "attribute514", // Asset Owner
             "NewOwnerUid", // New Asset Owner
+            "taluResponsible", // New Responsible (New)
         ];
         elementIDs.forEach(elementID => {
 
-            // Get the button group
-            const buttonGroup = document.querySelector(`#${elementID}_lookup`)?.parentElement;
+            // FInd the button group
+            const buttonGroup1 = document.querySelector(`#${elementID}_lookup`)?.parentElement;
+            const buttonGroup2 = document.querySelector(`#${elementID}_btnLookuptaluResponsible`)?.parentElement;
+
+            const buttonGroup = buttonGroup1 || buttonGroup2;
             if (!buttonGroup)
                 return;
 

@@ -11,9 +11,13 @@ import BigWindowProgress from "../bigwindow/BigWindowProgress";
 import SurplusManagerTableRow from "./SurplusManagerTableRow";
 import useErrorHandling from "../../../hooks/useErrorHandling";
 import useRunPromise from "../../../hooks/useRunPromise";
-import confirmAction from "../../../utils/confirmAction";
 import useTicketStatusID from "../../../hooks/useTicketStatusID";
 import TDXButton from "../../buttons/common/TDXButton";
+import createAssetsCSV from "../../../utils/assets/createAssetsCSV";
+import TicketTypes from "../../../db/TicketTypes";
+import StatusClass from "../../../tdx-api/types/StatusClass";
+import {GM_setClipboard} from "$";
+import useMyUser from "../../../hooks/useMyUser";
 
 export interface SurplusAsset extends Asset {
     surplusTickets: Ticket[];
@@ -33,7 +37,9 @@ export default function SurplusManagerModal(props: BulkInventoryModalProps) {
     const [assets, setAssets] = React.useState<SurplusAsset[]>([]);
     const [errors, onError, clearErrors] = useErrorHandling();
     const [runPromise, isLoading] = useRunPromise(onError);
+    const myUser = useMyUser();
     const inProgressID = useTicketStatusID("In Progress");
+    const resolvedID = useTicketStatusID("Resolved");
 
     const onSearch = async (searchQuery: string[]) => {
         // Search each asset
@@ -41,33 +47,35 @@ export default function SurplusManagerModal(props: BulkInventoryModalProps) {
             await searchAsset(query);
     }
 
-    const searchAsset = async (searchQuery: string) => {
+    const searchSurplusTickets = async (asset: Asset) => {
         const client = new UWStoutTDXClient();
 
-        // Search for the asset
-        const searchResults = await autoRetryHTTPRequest(
-            () => client.assets.searchAssets(AppID.Inventory, {SerialLike: searchQuery, MaxResults: 1}),
-            30000,
-            3,
-            (retries) => onError(`Rate limit exceeded. Retrying in 30s... (${retries}/3)`)
-        );
-
-        if (searchResults.length === 0)
-            throw new Error("Asset not found");
-        const asset = searchResults[0];
-
         // Search for the ticket
-        const ticketResults = await autoRetryHTTPRequest(
-            () => client.tickets.search(AppID.Tickets, {ConfigurationItemIDs: [asset.ConfigurationItemID]}),
-            30000,
-            3,
-            (retries) => onError(`Rate limit exceeded. Retrying in 30s... (${retries}/3)`)
-        );
+        const ticketResults = await runHTTPRequest(() => client.tickets.search(
+            AppID.Tickets,
+            {ConfigurationItemIDs: [asset.ConfigurationItemID]}
+        ));
         const surplusTickets = ticketResults.filter(ticket => ticket.FormID === SURPLUS_FORM_ID);
 
         for (let i = 0; i < surplusTickets.length; i++)
             surplusTickets[i] = await client.tickets.getTicket(AppID.Tickets, surplusTickets[i].ID);
 
+        return surplusTickets;
+    }
+
+    const searchAsset = async (searchQuery: string) => {
+        const client = new UWStoutTDXClient();
+
+        // Search for the asset
+        const searchResults = await runHTTPRequest(() => client.assets.searchAssets(
+            AppID.Inventory,
+            {SerialLike: searchQuery, MaxResults: 1}
+        ));
+
+        if (searchResults.length === 0)
+            throw new Error("Asset not found");
+        const asset = searchResults[0];
+        const surplusTickets = await searchSurplusTickets(asset);
 
         // Set the asset
         setAssets(existingAssets => {
@@ -98,56 +106,204 @@ export default function SurplusManagerModal(props: BulkInventoryModalProps) {
             await searchAsset(asset.SerialNumber ?? asset.ID.toString());
     }
 
+    const runHTTPRequest = <T, >(request: () => Promise<T>) => {
+        return autoRetryHTTPRequest(request, 30000, 3, (retries) => {
+            onError(`Rate limit exceeded. Retrying in 30s... (${retries}/3)`);
+        });
+    }
+
     const surplusAllAssets = async () => {
-        if (confirmAction("Mark these assets as surplus?")) {
-            const client = new UWStoutTDXClient();
+        const client = new UWStoutTDXClient();
 
-            // Update Each Asset
-            for (const asset of assets) {
-                await client.assets.editAsset(AppID.Inventory, asset.ID, {
-                    ...asset,
-                    StatusID: SURPLUS_STATUS_ID,
-                    OwningDepartmentID: SURPLUS_DEPARTMENT_ID,
-                    OwningCustomerID: ""
-                });
-            }
+        // Update Each Asset
+        for (const asset of assets) {
 
-            // Refresh the asset list
-            await refreshAllAssets();
+            // Fetch Asset
+            const assetData = await runHTTPRequest(() => client.assets.getAsset(AppID.Inventory, asset.ID));
+            if (!assetData)
+                continue;
+
+            await runHTTPRequest(() => client.assets.editAsset(AppID.Inventory, asset.ID, {
+                ...assetData,
+                StatusID: SURPLUS_STATUS_ID,
+                OwningDepartmentID: SURPLUS_DEPARTMENT_ID,
+                OwningCustomerID: ""
+            }));
         }
+
+        // Refresh the asset list
+        await refreshAllAssets();
     }
 
     const pickupAllTickets = async () => {
-        if (confirmAction("Mark all tickets as picked up?")) {
-            const client = new UWStoutTDXClient();
+        const client = new UWStoutTDXClient();
 
-            // Update Each Asset
-            for (const asset of assets) {
-                for (const ticket of asset.surplusTickets) {
+        // Update Each Asset
+        for (const asset of assets) {
+            for (const ticket of asset.surplusTickets) {
 
-                    // Mark ticket as picked up
-                    await client.tickets.updateTicket(AppID.Tickets, ticket.ID, {
-                        Attributes: ticket.Attributes?.map(attr => ({
-                            ...attr,
-                            Value: attr.ID === PICKED_UP_ATTRIBUTE_ID ? PICKED_UP_YES_VALUE : attr.Value
-                        }))
-                    });
+                // Check if the ticket is already picked up
+                const pickedUpAttribute = ticket.Attributes?.find(attr => attr.ID === PICKED_UP_ATTRIBUTE_ID);
+                const isPickedUp = pickedUpAttribute?.Value === PICKED_UP_YES_VALUE;
+                if (isPickedUp)
+                    continue;
 
-                    // Add a ticket feed comment
-                    await client.tickets.addTicketFeed(AppID.Tickets, ticket.ID, {
-                        NewStatusID: inProgressID ?? ticket.StatusID,
-                        IsCommunication: true,
-                        IsPrivate: true,
-                        IsRichHtml: false,
-                        Comments: "Device is in PC-Repair"
-                    });
 
-                }
+                // Mark ticket as picked up
+                await runHTTPRequest(() => client.tickets.updateTicket(AppID.Tickets, ticket.ID, {
+                    Attributes: ticket.Attributes?.map(attr => ({
+                        ...attr,
+                        Value: attr.ID === PICKED_UP_ATTRIBUTE_ID ? PICKED_UP_YES_VALUE : attr.Value
+                    }))
+                }));
+
+                // Add a ticket feed comment
+                await runHTTPRequest(() => client.tickets.addTicketFeed(AppID.Tickets, ticket.ID, {
+                    NewStatusID: inProgressID ?? ticket.StatusID,
+                    IsCommunication: true,
+                    IsPrivate: true,
+                    IsRichHtml: false,
+                    Comments: "Device is in PC-Repair"
+                }));
+            }
+        }
+
+        // Refresh the asset list
+        await refreshAllAssets();
+    }
+
+    const refreshAsset = async (asset: Asset) => {
+        const client = new UWStoutTDXClient();
+
+        // Fetch Asset + Surplus Tickets
+        const newAsset = await client.assets.getAsset(AppID.Inventory, asset.ID);
+        const surplusTickets = await searchSurplusTickets(newAsset);
+
+        // Update React State
+        setAssets(existingAssets =>
+            existingAssets.map(a => a.ID === asset.ID ?
+                {...newAsset, surplusTickets} : a
+            )
+        );
+    }
+
+    const makeSurplusTicket = async (asset: Asset) => {
+        const client = new UWStoutTDXClient();
+
+        // Make Ticket
+        const ticket = await client.tickets.createTicket(
+            AppID.Tickets,
+            {
+                FormID: SURPLUS_FORM_ID,
+                TypeID: TicketTypes["Surplus"],
+                Title: "Device Surplus Requested",
+                Description: `Surplussing ${asset.Tag} (In PC-Repair)`,
+                AccountID: 2474, // NONE
+                StatusID: 195, // In Process
+                PriorityID: 64, // Medium
+                RequestorUid: "59a770dc-058c-ed11-ac20-0050f2f4deeb", // Labs
+                ResponsibleGroupID: 320, // PC Repair
+                SourceID: 193, // Tech Created
+                Attributes: [
+                    // Picked Up
+                    {ID: PICKED_UP_ATTRIBUTE_ID, Value: PICKED_UP_YES_VALUE}
+                ]
+            }, {
+                EnableNotifyReviewer: false,
+                NotifyRequestor: false,
+                NotifyResponsible: false,
+                AllowRequestorCreation: false
+            }
+        );
+
+        // Add Asset to Ticket
+        await client.assets.addAssetToTicket(
+            AppID.Inventory,
+            asset.ID,
+            ticket.ID
+        );
+
+        // Refresh Asset
+        await refreshAsset(asset);
+    }
+
+    const copyExcelPickup = () => {
+        let clipboard = "";
+
+        // Iterate through each asset
+        for (const asset of assets) {
+
+            // Find open ticket
+            const ticket = asset.surplusTickets.find(t =>
+                t.StatusClass !== StatusClass.Cancelled &&
+                t.StatusClass !== StatusClass.Completed);
+            if (!ticket) {
+                onError(`No active surplus ticket for asset ${asset.Tag}`);
+                continue;
             }
 
-            // Refresh the asset list
-            await refreshAllAssets();
+            // Add excel row to clipboard
+            const surplusRow = `${asset.Tag}\tAK\t${ticket.ID}\tAK`;
+            clipboard += `${surplusRow}\n`;
         }
+
+        // Set Clipboard
+        GM_setClipboard(clipboard.trim(), "text");
+    }
+
+    const copyExcelCompleted = () => {
+        let clipboard = "";
+
+        const date = new Date().toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit"
+        });
+
+        // Iterate through each asset
+        for (const asset of assets) {
+
+            // Add excel row to clipboard
+            const surplusRow = `${asset.Tag}\tHP Z4 G4\tWindows 11\t${date}\tAK`;
+            clipboard += `${surplusRow}\n`;
+        }
+
+        // Set Clipboard
+        GM_setClipboard(clipboard.trim(), "text");
+    }
+
+    const resolveAllTickets = async () => {
+        const client = new UWStoutTDXClient();
+
+        // Update Each Asset
+        for (const asset of assets) {
+            for (const ticket of asset.surplusTickets) {
+
+                // Check if the ticket is already resolved
+                const isResolved = ticket.StatusClass === StatusClass.Cancelled ||
+                    ticket.StatusClass === StatusClass.Completed;
+                if (isResolved)
+                    continue;
+
+                // Add a ticket feed comment
+                await runHTTPRequest(() => client.tickets.addTicketFeed(AppID.Tickets, ticket.ID, {
+                    NewStatusID: ticket.StatusID,
+                    IsCommunication: true,
+                    IsPrivate: true,
+                    IsRichHtml: false,
+                    Comments: "Device has been secure-erased, BIOS password removed, inventory updated, and Windows 11 installed. Sending to surplus."
+                }));
+
+                // Resolve and assign to myself
+                await runHTTPRequest(() => client.tickets.updateTicket(AppID.Tickets, ticket.ID, {
+                    StatusID: resolvedID ?? ticket.StatusID,
+                    ResponsibleUid: myUser?.UID ?? ticket.ResponsibleUid
+                }));
+            }
+        }
+
+        // Refresh the asset list
+        await refreshAllAssets();
     }
 
     return (
@@ -194,6 +350,8 @@ export default function SurplusManagerModal(props: BulkInventoryModalProps) {
                         asset={asset}
 
                         onRemove={() => removeAsset(asset)}
+                        onRefresh={() => runPromise(refreshAsset(asset))}
+                        onMakeTicket={() => runPromise(makeSurplusTicket(asset))}
                         disabled={isLoading}
                     />
                 ))}
@@ -236,6 +394,42 @@ export default function SurplusManagerModal(props: BulkInventoryModalProps) {
                     onClick={() => runPromise(pickupAllTickets())}
                     icon={"fa fa-check me-1"}
                     text={"Set Picked Up"}
+                />
+
+                <TDXButton
+                    type={"tdx"}
+                    disabled={isLoading || assets.length === 0}
+                    title={"Mark all tickets as resolved"}
+                    onClick={() => runPromise(resolveAllTickets())}
+                    icon={"fa fa-flag-checkered me-1"}
+                    text={"Set Resolved"}
+                />
+
+                <TDXButton
+                    type={"tdx"}
+                    onClick={() => createAssetsCSV(assets)}
+                    disabled={assets.length === 0 || isLoading}
+                    title={"Download a CSV file of the assets"}
+                    icon={"fa fa-table me-1"}
+                    text={"Download CSV"}
+                />
+
+                <TDXButton
+                    type={"tdx"}
+                    onClick={() => copyExcelPickup()}
+                    disabled={assets.length === 0 || isLoading}
+                    title={"Copy Excel for Surplus Spreadsheet"}
+                    icon={"fa fa-clipboard me-1"}
+                    text={"Copy Surplus Excel Row(s)"}
+                />
+                
+                <TDXButton
+                    type={"tdx"}
+                    onClick={() => copyExcelCompleted()}
+                    disabled={assets.length === 0 || isLoading}
+                    title={"Copy Excel for Completed Surplus Spreadsheet"}
+                    icon={"fa fa-clipboard me-1"}
+                    text={"Copy Completed Surplus Excel Row(s)"}
                 />
 
                 <TDXButton

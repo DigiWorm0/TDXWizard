@@ -4,9 +4,22 @@ import React from "react";
 import TicketFeedContainer from "../pages/TicketFeedContainer";
 import AssetFeedContainer from "../pages/AssetFeedContainer";
 import TDXButton from "./common/TDXButton";
+import TicketTaskFeedContainer from "../pages/TicketTaskFeedContainer";
 
 export interface ConvertFeedButtonProps {
-    type: "asset" | "ticket";
+    type: "asset" | "ticket" | "ticketTask";
+}
+
+const TYPE_TO_ID = {
+    asset: "assetFeed",
+    ticket: "ticketFeed",
+    ticketTask: "ticketTaskFeed"
+}
+
+const TYPE_TO_COMPONENT = {
+    asset: AssetFeedContainer,
+    ticket: TicketFeedContainer,
+    ticketTask: TicketTaskFeedContainer
 }
 
 export default function ConvertFeedButton(props: ConvertFeedButtonProps) {
@@ -16,9 +29,7 @@ export default function ConvertFeedButton(props: ConvertFeedButtonProps) {
     const isConverted = newFeedComponent !== null;
 
     const getFeed = () => {
-        const ticketFeed = document.getElementById("ticketFeed");
-        const assetFeed = document.getElementById("assetFeed");
-        const feed = ticketFeed || assetFeed;
+        const feed = document.getElementById(TYPE_TO_ID[props.type]);
         if (!feed)
             throw new Error("Feed not found");
         return feed;
@@ -34,7 +45,10 @@ export default function ConvertFeedButton(props: ConvertFeedButtonProps) {
         // Add Ticket Feed
         const component = addComponentToDOM(
             ticketFeed.parentElement ?? ticketFeed,
-            props.type === "asset" ? <AssetFeedContainer/> : <TicketFeedContainer/>
+            React.createElement(TYPE_TO_COMPONENT[props.type], {
+                feedId: TYPE_TO_ID[props.type],
+                type: props.type
+            }),
         );
         component.style.width = "100%";
         setNewFeedComponent(component);
@@ -54,8 +68,12 @@ export default function ConvertFeedButton(props: ConvertFeedButtonProps) {
     }
 
     React.useEffect(() => {
-        // Abort if disabled on assets
+        // Abort if disabled on specific feed types
+        if (!settings.useNewFeedOnTickets && props.type === "ticket")
+            return;
         if (!settings.useNewFeedOnAssets && props.type === "asset")
+            return;
+        if (!settings.useNewFeedOnTicketTasks && props.type === "ticketTask")
             return;
 
         // Imagine being a pure function, couldn't be me

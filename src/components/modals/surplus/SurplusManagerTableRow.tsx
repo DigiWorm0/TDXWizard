@@ -2,10 +2,13 @@ import {SurplusAsset} from "./SurplusManagerModal";
 import AssetLink from "../../buttons/TDX/AssetLink";
 import AppID from "../../../types/AppID";
 import SurplusTicketTag from "./SurplusTicketTag";
+import useRunPromise from "../../../hooks/useRunPromise";
 
 export interface SurplusManagerTableRowProps {
     asset: SurplusAsset;
     onRemove: () => void;
+    onRefresh: () => Promise<unknown>;
+    onMakeTicket: () => void;
     disabled?: boolean;
 }
 
@@ -14,9 +17,22 @@ const SURPLUS_STATUS_ID = 27; // Surplus Status ID
 export default function SurplusManagerTableRow(props: SurplusManagerTableRowProps) {
     const {asset} = props;
     const isSurplusInventory = asset.StatusID === SURPLUS_STATUS_ID;
+    const [runPromise, isLoading] = useRunPromise();
+
+    if (isLoading)
+        return (
+            <tr>
+                <td
+                    colSpan={6}
+                    className={"text-center"}
+                >
+                    <span className={"fa fa-spinner fa-spin"}/> Loading...
+                </td>
+            </tr>
+        )
 
     return (
-        <tr key={asset.ID}>
+        <tr>
             <td>
                 <AssetLink id={asset.ID} appID={AppID.Inventory}>
                     {asset.Tag}
@@ -47,15 +63,38 @@ export default function SurplusManagerTableRow(props: SurplusManagerTableRowProp
                     <span
                         title={"No associated surplus ticket"}
                         className={"badge bg-secondary"}
+                        style={{margin: 2}}
                     >
                         <span className={"fa fa-ban me-1"}/>
                         No Ticket
                     </span>
                 )}
+
+                {/*<span*/}
+                {/*    className={"badge bg-danger"}*/}
+                {/*    title={"Create Surplus Ticket"}*/}
+                {/*    style={{*/}
+                {/*        cursor: props.disabled ? "not-allowed" : "pointer",*/}
+                {/*        margin: 2*/}
+                {/*    }}*/}
+                {/*    onClick={props.disabled ? undefined : props.onMakeTicket}*/}
+                {/*>*/}
+                {/*    <span className={"fa fa-plus"}/>*/}
+                {/*</span>*/}
             </td>
             <td>
                 <button
+                    className={"btn btn-secondary btn-sm"}
+                    style={{margin: 2}}
+                    onClick={() => runPromise(props.onRefresh())}
+                    title={"Refresh Asset"}
+                    disabled={props.disabled}
+                >
+                    <span className={"fa fa-sync fa-nopad"}/>
+                </button>
+                <button
                     className={"btn btn-danger btn-sm"}
+                    style={{margin: 2}}
                     onClick={props.onRemove}
                     title={"Remove Asset"}
                     disabled={props.disabled}

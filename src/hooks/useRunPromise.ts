@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function useRunPromise(onError: (err: string) => void) {
+export default function useRunPromise(onError?: (err: string) => void) {
     const [isLoading, setIsLoading] = React.useState(false);
 
     // Function to run a promise and handle its state
@@ -20,7 +20,8 @@ export default function useRunPromise(onError: (err: string) => void) {
         } catch (err: any) {
             // Handle the error by calling the onError callback
             const errorMessage = err.message || "An error occurred while processing the request.";
-            onError(errorMessage);
+            console.error("Error running promise:", errorMessage);
+            onError && onError(errorMessage);
             return null;
         } finally {
             // Reset the loading state

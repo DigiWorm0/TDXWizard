@@ -49,6 +49,18 @@ export default function SettingsModal(props: SettingsModalProps) {
                                     marginRight: 5,
                                 }}
                             />
+                            <span
+                                className={"fa fa-hat-wizard"}
+                                style={{
+                                    position: "absolute",
+                                    top: 115,
+                                    left: -25,
+                                    fontSize: 220,
+                                    transform: "rotate(-18deg)",
+                                    filter: "drop-shadow(0 0 10px rgba(0, 0, 0, 0.5))",
+                                    color: "#fff",
+                                }}
+                            />
                         </div>
                         <div
                             style={{
@@ -160,11 +172,24 @@ export default function SettingsModal(props: SettingsModalProps) {
                             />
                             <div style={{marginLeft: 20}}>
                                 <SettingsSwitchInput
+                                    label={"Enable on Tickets"}
+                                    setting={"useNewFeedOnTickets"}
+                                    disabled={!settings.useNewFeed}
+                                    title={"Enables Better Feed on the ticket pages"}
+                                />
+                                <SettingsSwitchInput
                                     label={"Enable on Inventory Assets"}
                                     setting={"useNewFeedOnAssets"}
                                     disabled={!settings.useNewFeed}
                                     title={"Enables Better Feed on the asset/inventory pages"}
                                 />
+                                <SettingsSwitchInput
+                                    label={"Enable on Ticket Tasks"}
+                                    setting={"useNewFeedOnTicketTasks"}
+                                    disabled={!settings.useNewFeed}
+                                    title={"Enables Better Feed on the ticket task pages"}
+                                />
+
                                 <SettingsSwitchInput
                                     label={"Merge Adjacent System Messages"}
                                     setting={"mergeAdjacentSystemMessages"}
@@ -255,6 +280,12 @@ export default function SettingsModal(props: SettingsModalProps) {
                             />
 
                             <SettingsSwitchInput
+                                label={"Show Update Button"}
+                                setting={"updateButton"}
+                                title={"Enables a quick 'Update' button on all ticket pages to add a new update without opening the extra drop-down"}
+                            />
+
+                            <SettingsSwitchInput
                                 label={"Suggest Ticket Assignments"}
                                 setting={"showTicketAssignButtons"}
                                 title={"Suggests assignments for tickets based on the feed"}
@@ -285,6 +316,12 @@ export default function SettingsModal(props: SettingsModalProps) {
                                     setting={"autoHideTicketTypes"}
                                     disabled={!settings.showTicketTypeButtons}
                                     title={"Hides the type suggestions if the ticket already has a type (not 'General')"}
+                                />
+                                <SettingsSwitchInput
+                                    label={"Complete Type Recategorization Task"}
+                                    setting={"autoCompleteRecategorizationTask"}
+                                    disabled={!settings.showTicketTypeButtons}
+                                    title={"Marks the ticket's recategorization task as complete when setting a type"}
                                 />
                             </div>
 
