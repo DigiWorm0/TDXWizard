@@ -4,9 +4,10 @@ import CommonPage from "./pages/CommonPage";
 import TicketDetailsPage from "./pages/TicketDetailsPage";
 import AssetDetailsPage from "./pages/AssetDetailsPage";
 import InventoryPage from "./pages/InventoryPage";
-import LegacySearchPage from "./pages/LegacySearchPage";
 import TicketUpdatePage from "./pages/TicketUpdatePage";
 import TicketCreatePage from "./pages/TicketCreatePage";
+import TicketPage from "./pages/TicketPage";
+import TicketTaskPage from "./pages/TicketTaskPage";
 
 // All Pages
 const allPages: PageScript[] = [
@@ -15,9 +16,10 @@ const allPages: PageScript[] = [
     new HomePage(),
     new CommonPage(),
     new InventoryPage(),
-    new LegacySearchPage(),
     new TicketUpdatePage(),
-    new TicketCreatePage()
+    new TicketCreatePage(),
+    new TicketPage(),
+    new TicketTaskPage()
 ];
 
 // Ensures the script runs after the page has loaded

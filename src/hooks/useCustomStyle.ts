@@ -1,4 +1,5 @@
 import "../styles/common.css"
+import "../styles/customPalette.css";
 import useSettings from "./useSettings";
 import React from "react";
 import Settings from "../types/Settings";

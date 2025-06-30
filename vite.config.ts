@@ -11,7 +11,7 @@ export default defineConfig({
         monkey({
             entry: 'src/main.ts',
             userscript: {
-                icon: 'https://www.google.com/s2/favicons?sz=64&domain=uwstout.edu',
+                icon: 'https://i.imgur.com/YqFAJaY.png',
                 namespace: 'digiworm0.github.io',
                 match: [
                     'https://uwstout.teamdynamix.com/*',

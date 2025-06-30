@@ -9,6 +9,8 @@ import TicketsTypesEndpoint from "./endpoints/TicketTypesEndpoint";
 import FeedEndpoint from "./endpoints/FeedEndpoint";
 import PeopleEndpoint from "./endpoints/PeopleEndpoint";
 import HTTPResponseError from "../utils/HTTPResponseError";
+import TicketTasksEndpoint from "./endpoints/TicketTasksEndpoint";
+import SearchEndpoint from "./endpoints/SearchEndpoint";
 
 export default class TDXClient {
     // The base URL of the TDX API
@@ -26,8 +28,10 @@ export default class TDXClient {
     tickets: TicketsEndpoint;
     assets: AssetEndpoint;
     ticketTypes: TicketsTypesEndpoint;
+    ticketTasks: TicketTasksEndpoint;
     feed: FeedEndpoint;
     people: PeopleEndpoint;
+    search: SearchEndpoint;
 
     /**
      * Creates a new TDX client
@@ -44,8 +48,10 @@ export default class TDXClient {
         this.tickets = new TicketsEndpoint(this);
         this.assets = new AssetEndpoint(this);
         this.ticketTypes = new TicketsTypesEndpoint(this);
+        this.ticketTasks = new TicketTasksEndpoint(this);
         this.feed = new FeedEndpoint(this);
         this.people = new PeopleEndpoint(this);
+        this.search = new SearchEndpoint(this);
     }
 
     /**

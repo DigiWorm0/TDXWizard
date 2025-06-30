@@ -1,8 +1,10 @@
+const SSO_PATH = "/TDWebApi/api/auth/loginsso";
+
 export default async function getAuthKeyFromSSO() {
 
     // Open the login popup
     const loginPopup = window.open(
-        "/TDWebApi/api/auth/loginsso",
+        SSO_PATH,
         "Login",
         "width=600,height=400"
     );
@@ -12,10 +14,14 @@ export default async function getAuthKeyFromSSO() {
     // Wait for the login popup to redirect to the auth key page
     await new Promise(((resolve, reject) => {
         setInterval(() => {
-            if (loginPopup.location.pathname === "/TDWebApi/api/auth/loginsso")
-                resolve("");
-            if (loginPopup.closed)
-                reject("Login popup closed");
+            try {
+                if (loginPopup.closed)
+                    reject("Login popup closed");
+                if (loginPopup.location.pathname === SSO_PATH)
+                    resolve("");
+            } catch (e) {
+                // Ignore cross-origin errors
+            }
         }, 200);
     }));
 

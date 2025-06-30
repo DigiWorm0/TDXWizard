@@ -1,5 +1,5 @@
 import React from "react";
-import WindowLink from "../WindowLink";
+import WindowLink from "../common/WindowLink";
 
 export interface AssetLinkProps {
     id: number;
@@ -10,6 +10,7 @@ export default function DepartmentLink(props: AssetLinkProps) {
     return (
         <WindowLink
             href={`${window.location.origin}/TDNext/Apps/Shared/AccountDetail.aspx?CACID=${props.id}`}
+            title={`View Department ${props.id}`}
         >
             {props.children}
         </WindowLink>

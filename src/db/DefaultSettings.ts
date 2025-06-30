@@ -11,6 +11,7 @@ const DefaultSettings: Settings = {
     showSurplusButtons: true,
 
     autoHideTicketTypes: true,
+    autoCompleteRecategorizationTask: true,
     autoCloseTicketOnSave: false,
     ticketTypeThreshold: 0.5,
 
@@ -22,6 +23,9 @@ const DefaultSettings: Settings = {
     hideTicketPrintViewButton: true,
 
     useNewFeed: true,
+    useNewFeedOnTickets: true,
+    useNewFeedOnAssets: true,
+    useNewFeedOnTicketTasks: true,
     mergeAdjacentSystemMessages: true,
 
     useCustomProfileColor: false,
@@ -35,11 +39,11 @@ const DefaultSettings: Settings = {
     legacyLookupButton: true,
     bulkInventoryButton: true,
     reverseFeedOrder: false,
-    technicianInitials: "ME",
 
     eStoutPickupButton: true,
     eStoutResolveButton: true,
     resolveButton: false,
+    updateButton: false,
 
     removeCopyURLButton: true,
 
@@ -53,6 +57,18 @@ const DefaultSettings: Settings = {
     stripedTableRows: true,
 
     dashboardAddTicketButton: true,
+
+    useNewSearch: true,
+    enableNewSearchAutocomplete: true,
+    enableNewSearchAutoDetectQuery: true,
+    enableNewSearchHistory: true,
+
+    useCustomColorPalette: false,
+    primaryColor: "#6B5CDC",
+
+    customProfileImages: true,
+
+    enableAnimations: true,
 };
 
 export default DefaultSettings;

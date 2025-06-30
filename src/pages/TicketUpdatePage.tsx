@@ -14,7 +14,6 @@ export default class TicketUpdatePage implements PageScript {
 
     run() {
         TicketUpdatePage.addCustomTemplateMenu();
-        TicketUpdatePage.removeCopyButton();
     }
 
     static addCustomTemplateMenu() {
@@ -40,17 +39,5 @@ export default class TicketUpdatePage implements PageScript {
             customMenu.className = "dropdown-submenu";
             customMenu.style.display = "";
         }
-    }
-
-    static removeCopyButton() {
-        // Check Settings
-        const {removeCopyURLButton} = getSettings();
-        if (!removeCopyURLButton)
-            return;
-
-        // Remove Copy Button
-        const copyButton = document.getElementById("btnCopyUrl");
-        if (copyButton)
-            copyButton.remove();
     }
 }

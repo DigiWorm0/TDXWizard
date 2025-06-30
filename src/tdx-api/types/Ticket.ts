@@ -4,6 +4,7 @@ import DateTime from "./DateTime";
 import Guid from "./Guid";
 import CustomAttribute from "./CustomAttribute";
 import Attachment from "./Attachment";
+import TicketTask from "./TicketTask";
 
 export default interface Ticket {
     ID: number;
@@ -117,7 +118,7 @@ export default interface Ticket {
     AppID: number;
     Attributes?: CustomAttribute[];
     Attachments?: Attachment[];
-    //Tasks?: TicketTask[];
+    Tasks?: TicketTask[];
     //Notify?: ResourceItem[];
     WorkflowID: number;
     WorkflowConfigurationID: number;

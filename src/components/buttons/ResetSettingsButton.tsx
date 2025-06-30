@@ -1,6 +1,7 @@
 import useSettings from "../../hooks/useSettings";
 import React from "react";
 import DefaultSettings from "../../db/DefaultSettings";
+import TDXButton from "./common/TDXButton";
 
 export default function ResetSettingsButton() {
     const [_, setSettings] = useSettings();
@@ -9,7 +10,7 @@ export default function ResetSettingsButton() {
         e.preventDefault();
         e.stopPropagation();
 
-        if (!confirm("Are you sure you want to reset all settings?"))
+        if (!confirm("Are you sure you want to reset all settings? This will delete both settings and templates."))
             return;
 
         setSettings({
@@ -18,16 +19,13 @@ export default function ResetSettingsButton() {
     }
 
     return (
-        <button
-            className={"btn btn-danger btn-sm"}
+        <TDXButton
+            intent={"danger"}
+            icon={"fa fa-solid fa-undo me-1"}
+            text={"Reset"}
             title={"Reset all settings to default"}
             onClick={onClick}
-            style={{marginRight: 0}}
-        >
-            <i className={"fa-solid fa-fw fa-nopad fa-undo me-1"}/>
-            <span>
-                Reset
-            </span>
-        </button>
+            noMargin
+        />
     )
 }

@@ -7,6 +7,10 @@ import useSettings from "../../hooks/useSettings";
 import useTicket from "../../hooks/useTicket";
 import TicketTypes, {TicketType} from "../../db/TicketTypes";
 import getAppIDFromURL from "../../utils/tdx/getAppIDFromURL";
+import TDXButtonGroup from "./common/TDXButtonGroup";
+import TDXButton from "./common/TDXButton";
+
+const TASK_NAME = "Recategorize Ticket";
 
 export default function TicketTypeButtons() {
     const ticket = useTicket();
@@ -26,6 +30,32 @@ export default function TicketTypeButtons() {
         // Get the possible ticket types
         return findTicketTypes(ticket);
     }, [ticket, settings]);
+
+    const completeTask = async () => {
+
+        // API Client
+        const client = new UWStoutTDXClient();
+
+        // Get Ticket ID
+        const ticketID = getTicketIDFromURL();
+        if (!ticketID)
+            throw new Error("Ticket ID not found");
+
+        // Get App ID
+        const appID = getAppIDFromURL();
+        if (!appID)
+            throw new Error("App ID not found");
+
+        // Find the task
+        const task = ticket?.Tasks?.find(t => t.Title === TASK_NAME);
+        if (!task)
+            return;
+
+        // Mark the task as complete
+        await client.ticketTasks.updateTicketTaskFeed(appID, ticketID, task.ID, {
+            PercentComplete: 100
+        });
+    }
 
     const setType = async (type: TicketType) => {
 
@@ -48,8 +78,10 @@ export default function TicketTypeButtons() {
             throw new Error("Ticket Type not found");
 
         // Update Ticket
-        const res = await client.tickets.updateTicket(appID, ticketID, {TypeID: ticketTypeID});
-        console.log(res);
+        await client.tickets.updateTicket(appID, ticketID, {TypeID: ticketTypeID});
+
+        // Complete the task if it exists
+        await completeTask();
 
         // Reload/Close the page
         if (settings.autoCloseTicketOnSave)
@@ -59,7 +91,6 @@ export default function TicketTypeButtons() {
     }
 
     const setSpam = async () => {
-        console.log("Setting Spam");
 
         // API Client
         const client = new UWStoutTDXClient();
@@ -76,14 +107,15 @@ export default function TicketTypeButtons() {
 
         // Get Ticket Info
         const ticketInfo = await client.tickets.getTicket(appID, ticketID);
-        console.log(ticketInfo);
 
         // Edit Ticket
-        const res = await client.tickets.editTicket(43, ticketID, {
+        await client.tickets.editTicket(43, ticketID, {
             ...ticketInfo,
             StatusID: 198, // Cancelled
         });
-        console.log(res);
+
+        // Complete the task if it exists
+        await completeTask();
 
         // Reload/Close the page
         if (settings.autoCloseTicketOnSave)
@@ -92,71 +124,62 @@ export default function TicketTypeButtons() {
             window.location.reload();
     }
 
+    if (!types)
+        return null;
     return (
-        <div
-            className={"btn-group"}
-            style={{gap: 0}}
-        >
+        <TDXButtonGroup>
             {types?.map(type => (
-                <button
+                <TDXButton
                     key={type}
-                    type={"button"}
-                    className={"btn btn-secondary btn-sm"}
                     onClick={() => setType(type as TicketType)}
-                    style={{marginRight: 0}}
-                >
-                    <span className={"fa fa-solid fa-nopad fa-tag"}/>
-                    <span className={"hidden-xs padding-left-xs"}>
-                        {type}
-                    </span>
-                </button>
+                    noMargin
+                    icon={`fa fa-solid fa-nopad fa-tag`}
+                    text={type}
+                />
             ))}
-            {types && (
-                <li className={"btn-group"} style={{gap: 0}}>
-                    <button
-                        className={"btn btn-secondary btn-sm dropdown-toggle"}
-                        type={"button"}
-                        data-toggle={"dropdown"}
-                    >
-                        <span className={"fa-solid fa-nopad fa-lg fa-caret-down"}/>
-                    </button>
-                    <ul
-                        style={{cursor: "default"}}
-                        className={"dropdown-menu"}
-                    >
-                        <li>
-                            <a
-                                className={"dropdown-item"}
-                                href={"#"}
-                                onClick={setSpam}
-                            >
-                                Spam
-                            </a>
-                        </li>
+            <TDXButtonGroup noMargin>
+                <TDXButton
+                    noMargin
+                    toggleDropdown
+                    icon={"fa fa-solid fa-nopad fa-lg fa-caret-down"}
+                />
 
-                        <hr
-                            style={{
-                                marginTop: 8,
-                                marginBottom: 8
-                            }}
-                            className="dropdown-divider"
-                        />
-                        {Object.keys(TicketTypes)
-                            .sort((a, b) => a.localeCompare(b))
-                            .map(typeName => (
-                                <li key={typeName}>
-                                    <a
-                                        className={"dropdown-item"}
-                                        href={"#"}
-                                        onClick={() => setType(typeName as TicketType)}
-                                    >
-                                        {typeName}
-                                    </a>
-                                </li>
-                            ))}
-                    </ul>
-                </li>
-            )}
-        </div>
+                <ul
+                    style={{cursor: "default"}}
+                    className={"dropdown-menu"}
+                >
+                    <li>
+                        <a
+                            className={"dropdown-item"}
+                            href={"#"}
+                            onClick={setSpam}
+                        >
+                            Spam
+                        </a>
+                    </li>
+
+                    <hr
+                        style={{
+                            marginTop: 8,
+                            marginBottom: 8
+                        }}
+                        className="dropdown-divider"
+                    />
+                    {Object.keys(TicketTypes)
+                        .sort((a, b) => a.localeCompare(b))
+                        .map(typeName => (
+                            <li key={typeName}>
+                                <a
+                                    className={"dropdown-item"}
+                                    href={"#"}
+                                    onClick={() => setType(typeName as TicketType)}
+                                >
+                                    {typeName}
+                                </a>
+                            </li>
+                        ))}
+                </ul>
+            </TDXButtonGroup>
+        </TDXButtonGroup>
     )
 }

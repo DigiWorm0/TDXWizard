@@ -1,4 +1,3 @@
-import useTicketFeed from "../../hooks/useTicketFeed";
 import React from "react";
 import DateTime from "../../tdx-api/types/DateTime";
 import getEpochFromDate from "../../utils/datetime/getEpochFromDate";
@@ -8,6 +7,7 @@ import useTicket from "../../hooks/useTicket";
 import {replaceHTMLEntities} from "../../utils/removeHTMLTags";
 import DefaultGUID from "../../types/DefaultGUID";
 import useSettings from "../../hooks/useSettings";
+import FeedItemUpdate from "../../tdx-api/types/FeedItemUpdate";
 
 interface TicketFeedItem {
     ID: number;
@@ -22,8 +22,14 @@ interface TicketFeedItem {
     NotifiedList: string;
 }
 
-export default function TicketFeed() {
-    const feed = useTicketFeed();
+export interface TicketFeedProps {
+    feed: FeedItemUpdate[] | null | undefined;
+}
+
+const MAX_TIME_OFFSET = 1000 * 60 * 60 * 24; // 24 hours
+
+export default function BetterFeed(props: TicketFeedProps) {
+    const {feed} = props;
     const ticket = useTicket();
     const [settings] = useSettings();
 
@@ -76,6 +82,7 @@ export default function TicketFeed() {
             new RegExp(/\[Merged from ticket \d+]<br ?\/?><br ?\/?>/g),
             new RegExp(/Added the ".*?" asset to this (?:incident|service request)\.<br ?\/?>/g),
             new RegExp(/Removed the ".*?" asset from this (?:incident|service request)\.<br ?\/?>/g),
+            new RegExp(/Added this asset to the ".*?" (?:incident|service request) \(ID: \d+\)\.<br ?\/?>/g),
             new RegExp(/Added .* as a contact for this (?:incident|service request)\.<br ?\/?>/g),
             new RegExp(/Automatically completed as a result of the (?:incident|service request) being closed.<br ?\/?>/g),
             new RegExp(/Assigned the ".*?" workflow to this (?:incident|service request)\.<br ?\/?>/g),
@@ -91,13 +98,16 @@ export default function TicketFeed() {
             for (let i = 0; i < newItems.length; i++) {
                 const item = newItems[i];
 
-                // Skip if it's already a communication
+                // Skip if it's already a non-communication
                 if (!item.IsCommunication)
                     continue;
 
+                // Remove LF from the field names
+                const content = item.Body.replace(/\n/g, " ");
+
                 // Check against the regex
                 regex.lastIndex = 0;
-                const matches = regex.exec(item.Body);
+                const matches = regex.exec(content);
                 if (!matches)
                     continue;
 
@@ -115,7 +125,7 @@ export default function TicketFeed() {
                     });
                     newItems[i] = {
                         ...item,
-                        Body: item.Body.replace(m, ""),
+                        Body: content.replace(m, ""),
                     };
                 }
             }
@@ -154,9 +164,17 @@ export default function TicketFeed() {
                 !newItems[i + 1].IsCommunication &&
                 newItems[i].CreatedFullName === newItems[i + 1].CreatedFullName
             ) {
-                // Avoid merging if the times are offset
+                // Avoid merging if disabled in settings
                 const isSameTime = newItems[i].CreatedDate === newItems[i + 1].CreatedDate;
                 if (!settings.mergeAdjacentSystemMessages && !isSameTime)
+                    continue;
+
+                // Avoid merging if the times too far apart
+                const isSimilarTime = Math.abs(
+                    getEpochFromDate(newItems[i].CreatedDate) -
+                    getEpochFromDate(newItems[i + 1].CreatedDate)
+                ) < MAX_TIME_OFFSET; // 1 second
+                if (!isSimilarTime)
                     continue;
 
                 // Merge the two items (newer on top)
@@ -222,6 +240,16 @@ export default function TicketFeed() {
             {sortedFeed?.length === 0 && (
                 <div className={"text-center"}>
                     <span className={"text-muted"}>No feed items to display</span>
+                </div>
+            )}
+
+            {!sortedFeed && (
+                <div className="progress">
+                    <div
+                        className={"progress progress-bar-striped progress-bar-animated"}
+                        role={"progressbar"}
+                        style={{width: "100%"}}
+                    />
                 </div>
             )}
         </div>

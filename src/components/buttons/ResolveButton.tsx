@@ -5,6 +5,7 @@ import getAppIDFromURL from "../../utils/tdx/getAppIDFromURL";
 import confirmAction from "../../utils/confirmAction";
 import useTicket from "../../hooks/useTicket";
 import useTicketStatusID from "../../hooks/useTicketStatusID";
+import TDXButton from "./common/TDXButton";
 
 export default function ResolveButton() {
     const [settings] = useSettings();
@@ -53,17 +54,12 @@ export default function ResolveButton() {
     if (!settings.resolveButton)
         return null;
     return (
-        <button
-            className={"btn btn-secondary btn-sm dropdown-toggle"}
-            type={"button"}
-            data-toggle={"dropdown"}
-            onClick={() => resolveTicket()}
+        <TDXButton
+            intent={"secondary"}
+            text={"Resolve"}
             title={"Marks the ticket as resolved"}
-        >
-            <span className={"fa-solid fa-nopad fa-lg fa-check"}/>
-            <span className={"hidden-xs padding-left-xs"}>
-                Resolve
-            </span>
-        </button>
+            icon={"fa fa-solid fa-nopad fa-check"}
+            onClick={() => resolveTicket()}
+        />
     )
 }

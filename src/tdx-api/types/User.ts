@@ -31,7 +31,7 @@ export default interface User {
     PrimaryClientPortalApplicationID?: number;
     GroupIDs?: number[];
     AlertEmail?: string;
-    ProgileImageFileName: string;
+    ProfileImageFileName: string;
     Company: string;
     Title?: string;
     HomePhone?: string;

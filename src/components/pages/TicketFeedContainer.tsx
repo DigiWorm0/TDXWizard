@@ -1,16 +1,10 @@
-import ErrorBoundary from "../utils/ErrorBoundary";
-import TicketFeed from "../feed/TicketFeed";
+import BetterFeed from "../feed/BetterFeed";
+import useTicketFeed from "../../hooks/useTicketFeed";
 
 export default function TicketFeedContainer() {
+    const ticketFeed = useTicketFeed();
+
     return (
-        <ErrorBoundary
-            fallback={(e) => (
-                <div className={"alert alert-danger"} style={{marginTop: 5}}>
-                    {e.toString()}
-                </div>
-            )}
-        >
-            <TicketFeed/>
-        </ErrorBoundary>
+        <BetterFeed feed={ticketFeed}/>
     )
 }

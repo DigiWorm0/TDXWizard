@@ -1,4 +1,5 @@
 import React from "react";
+import openWindow from "../../../utils/openWindow";
 
 export interface WindowLinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
 }
@@ -6,12 +7,7 @@ export interface WindowLinkProps extends React.AnchorHTMLAttributes<HTMLAnchorEl
 export default function WindowLink(props: WindowLinkProps) {
     const onClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
         e.preventDefault();
-
-        window.open(
-            props.href,
-            "_blank",
-            "width=800,height=600"
-        );
+        openWindow(props.href ?? "#", props.title);
     }
 
     return (

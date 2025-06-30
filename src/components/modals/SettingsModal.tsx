@@ -6,10 +6,10 @@ import SettingsAuthInput from "../input/SettingsAuthInput";
 import useSettings from "../../hooks/useSettings";
 import SettingsColorPickerInput from "../input/SettingsColorPickerInput";
 import SettingsHeader from "../style/SettingsHeader";
-import SettingsTextInput from "../input/SettingsTextInput";
 import ResetSettingsButton from "../buttons/ResetSettingsButton";
 import ExportSettingsButton from "../buttons/ExportSettingsButton";
 import ImportSettingsButton from "../buttons/ImportSettingsButton";
+import ClearSearchHistoryButton from "../buttons/ClearSearchHistoryButton";
 
 export interface SettingsModalProps {
     isOpen: boolean;
@@ -18,6 +18,7 @@ export interface SettingsModalProps {
 
 export default function SettingsModal(props: SettingsModalProps) {
     const [settings] = useSettings();
+
     return (
         <ModalBase isOpen={props.isOpen} onClose={props.onClose}>
             <div
@@ -46,6 +47,17 @@ export default function SettingsModal(props: SettingsModalProps) {
                                     height: "100%",
                                     objectFit: "cover",
                                     marginRight: 5,
+                                }}
+                            />
+                            <span
+                                className={"fa fa-hat-wizard wizard_float"}
+                                style={{
+                                    position: "absolute",
+                                    top: 115,
+                                    left: -25,
+                                    fontSize: 220,
+                                    filter: "drop-shadow(0 0 10px rgba(0, 0, 0, 0.5))",
+                                    color: "#fff",
                                 }}
                             />
                         </div>
@@ -99,11 +111,6 @@ export default function SettingsModal(props: SettingsModalProps) {
 
                             <SettingsHeader title={"Common"}/>
 
-                            <SettingsTextInput
-                                label={"Technician Initials"}
-                                setting={"technicianInitials"}
-                                showLabel
-                            />
                             <SettingsSwitchInput
                                 label={"Remove Email Anchors/Links"}
                                 setting={"unlinkEmails"}
@@ -129,6 +136,36 @@ export default function SettingsModal(props: SettingsModalProps) {
                                 setting={"confirmActions"}
                                 title={"Adds a confirmation dialog for destructive actions"}
                             />
+                            <SettingsSwitchInput
+                                label={"Animations"}
+                                setting={"enableAnimations"}
+                                title={"Animates various UI components such as buttons"}
+                            />
+                            <SettingsSwitchInput
+                                label={"Better Search"}
+                                setting={"useNewSearch"}
+                                title={"Replaces the TDX search with a re-designed version"}
+                            />
+                            <div style={{marginLeft: 20}}>
+                                <SettingsSwitchInput
+                                    label={"Autocomplete"}
+                                    setting={"enableNewSearchAutocomplete"}
+                                    disabled={!settings.useNewSearch}
+                                    title={"Enables auto-complete for the new search bar, suggesting results as you type. Can be disabled if it causes performance issues"}
+                                />
+                                <SettingsSwitchInput
+                                    label={"Auto-Detect Search Query"}
+                                    setting={"enableNewSearchAutoDetectQuery"}
+                                    disabled={!settings.useNewSearch}
+                                    title={"Auto-detects certain types of search queries such as ticket IDs, asset tags, and usernames"}
+                                />
+                                <SettingsSwitchInput
+                                    label={"Search History"}
+                                    setting={"enableNewSearchHistory"}
+                                    disabled={!settings.useNewSearch}
+                                    title={"Saves the last few search queries and allows you to quickly re-open them"}
+                                />
+                            </div>
 
                             <SettingsHeader title={"Tickets"}/>
 
@@ -138,6 +175,25 @@ export default function SettingsModal(props: SettingsModalProps) {
                                 title={"Replaces the TDX feed with a re-designed version (chronological order, minimize system messages, reply captions/links, etc)"}
                             />
                             <div style={{marginLeft: 20}}>
+                                <SettingsSwitchInput
+                                    label={"Enable on Tickets"}
+                                    setting={"useNewFeedOnTickets"}
+                                    disabled={!settings.useNewFeed}
+                                    title={"Enables Better Feed on the ticket pages"}
+                                />
+                                <SettingsSwitchInput
+                                    label={"Enable on Inventory Assets"}
+                                    setting={"useNewFeedOnAssets"}
+                                    disabled={!settings.useNewFeed}
+                                    title={"Enables Better Feed on the asset/inventory pages"}
+                                />
+                                <SettingsSwitchInput
+                                    label={"Enable on Ticket Tasks"}
+                                    setting={"useNewFeedOnTicketTasks"}
+                                    disabled={!settings.useNewFeed}
+                                    title={"Enables Better Feed on the ticket task pages"}
+                                />
+
                                 <SettingsSwitchInput
                                     label={"Merge Adjacent System Messages"}
                                     setting={"mergeAdjacentSystemMessages"}
@@ -157,14 +213,20 @@ export default function SettingsModal(props: SettingsModalProps) {
                                     title={"Converts attachment text into clickable links"}
                                 />
                                 <SettingsSwitchInput
-                                    label={"Custom Profile Color"}
+                                    label={"Custom Profile Images"}
+                                    setting={"customProfileImages"}
+                                    disabled={!settings.useNewFeed}
+                                    title={"Shows/hides users' custom profile images in the feed"}
+                                />
+                                <SettingsSwitchInput
+                                    label={"My Profile Color"}
                                     setting={"useCustomProfileColor"}
                                     disabled={!settings.useNewFeed}
                                     title={"Uses a custom color for your profile in the feed"}
                                 />
                                 <div style={{marginLeft: 20}}>
                                     <SettingsColorPickerInput
-                                        label={"Custom Profile Color"}
+                                        label={"My Profile Color"}
                                         setting={"customProfileColor"}
                                         disabled={!settings.useCustomProfileColor || !settings.useNewFeed}
                                     />
@@ -222,6 +284,12 @@ export default function SettingsModal(props: SettingsModalProps) {
                             />
 
                             <SettingsSwitchInput
+                                label={"Show Update Button"}
+                                setting={"updateButton"}
+                                title={"Enables a quick 'Update' button on all ticket pages to add a new update without opening the extra drop-down"}
+                            />
+
+                            <SettingsSwitchInput
                                 label={"Suggest Ticket Assignments"}
                                 setting={"showTicketAssignButtons"}
                                 title={"Suggests assignments for tickets based on the feed"}
@@ -252,6 +320,12 @@ export default function SettingsModal(props: SettingsModalProps) {
                                     setting={"autoHideTicketTypes"}
                                     disabled={!settings.showTicketTypeButtons}
                                     title={"Hides the type suggestions if the ticket already has a type (not 'General')"}
+                                />
+                                <SettingsSwitchInput
+                                    label={"Complete Type Recategorization Task"}
+                                    setting={"autoCompleteRecategorizationTask"}
+                                    disabled={!settings.showTicketTypeButtons}
+                                    title={"Marks the ticket's recategorization task as complete when setting a type"}
                                 />
                             </div>
 
@@ -297,6 +371,18 @@ export default function SettingsModal(props: SettingsModalProps) {
                                 setting={"stripedTableRows"}
                                 title={"Alternates the background color of table rows for better readability"}
                             />
+                            {/*<SettingsSwitchInput*/}
+                            {/*    label={"Custom Colors"}*/}
+                            {/*    setting={"useCustomColorPalette"}*/}
+                            {/*    title={"Recolors the TDX interface with a custom color palette"}*/}
+                            {/*/>*/}
+                            {/*<div style={{marginLeft: 20}}>*/}
+                            {/*    <SettingsColorPickerInput*/}
+                            {/*        label={"Primary Color"}*/}
+                            {/*        setting={"primaryColor"}*/}
+                            {/*        disabled={!settings.useCustomColorPalette}*/}
+                            {/*    />*/}
+                            {/*</div>*/}
 
                             <SettingsHeader title={"Authentication"}/>
                             <SettingsAuthInput/>
@@ -311,6 +397,9 @@ export default function SettingsModal(props: SettingsModalProps) {
                                 <ExportSettingsButton/>
                                 <ImportSettingsButton/>
                                 <ResetSettingsButton/>
+                            </div>
+                            <div className={"btn-group mt-1 w-100"}>
+                                <ClearSearchHistoryButton/>
                             </div>
 
                             {/* ---- END SETTINGS ---- */}

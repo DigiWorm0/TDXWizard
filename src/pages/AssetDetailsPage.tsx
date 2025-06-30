@@ -1,6 +1,7 @@
 import PageScript from "./PageScript";
 import addComponentToDOM from "../utils/addComponentToDOM";
 import AssetNavBar from "../components/pages/AssetNavBar";
+import ConvertFeedButton from "../components/buttons/ConvertFeedButton";
 
 const URL_PREFIX_REGEX = /\/TDNext\/Apps\/\d+\/Assets\/AssetDet/g;
 
@@ -10,6 +11,18 @@ export default class AssetDetailsPage implements PageScript {
     }
 
     run(): void {
+        AssetDetailsPage.addAssetNavBar();
+        AssetDetailsPage.addBetterFeed();
+    }
+
+    static addBetterFeed() {
+        const feedRow = document.querySelector("#divFeed .pull-right");
+        if (!feedRow)
+            throw new Error("Feed Row not found");
+        addComponentToDOM(feedRow, <ConvertFeedButton type={"asset"}/>);
+    }
+
+    static addAssetNavBar() {
         const assetNavBar = document.getElementById("divButtons");
         if (!assetNavBar)
             throw new Error("Nav Bar not found");

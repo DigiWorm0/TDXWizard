@@ -1,5 +1,7 @@
 import React from "react";
 import useUser from "../../hooks/useUser";
+import openWindow from "../../utils/openWindow";
+import useSettings from "../../hooks/useSettings";
 
 export interface TicketFeedProfileImageProps {
     name: string;
@@ -10,19 +12,13 @@ export interface TicketFeedProfileImageProps {
 }
 
 export default function FeedProfileImage(props: TicketFeedProfileImageProps) {
+    const [settings] = useSettings();
     const user = useUser(props.uid ?? "");
     const isUser = user?.SecurityRoleName === "Client";
 
     const openLink = (e: React.MouseEvent<HTMLAnchorElement>) => {
         e.preventDefault();
-        if (!props.href)
-            return;
-
-        window.open(
-            props.href,
-            "Profile",
-            "width=992,height=700"
-        );
+        openWindow(props.href ?? "#");
     }
 
     return (
@@ -46,9 +42,24 @@ export default function FeedProfileImage(props: TicketFeedProfileImageProps) {
                     fontSize: props.size / 2
                 }}
             >
-                <span>
-                    {props.name[0]}
-                </span>
+                {settings.customProfileImages && user?.ProfileImageFileName ? (
+                    <img
+                        src={`/TDPortal/Images/Profile?fileName=${user.ProfileImageFileName}`}
+                        alt={props.name}
+                        width={props.size}
+                        height={props.size}
+                        style={{
+                            minWidth: props.size,
+                            minHeight: props.size,
+                            borderRadius: props.size / 6,
+                            objectFit: "fill"
+                        }}
+                    />
+                ) : (
+                    <span>
+                        {props.name[0]}
+                    </span>
+                )}
             </div>
         </a>
     )

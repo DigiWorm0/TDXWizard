@@ -2,20 +2,15 @@ import getTicketIDFromURL from "../../utils/tdx/getTicketIDFromURL";
 import getAppIDFromURL from "../../utils/tdx/getAppIDFromURL";
 import React from "react";
 import useSettings from "../../hooks/useSettings";
+import openWindow from "../../utils/openWindow";
+import TDXButtonGroup from "./common/TDXButtonGroup";
+import TDXButton from "./common/TDXButton";
+import useRunPromise from "../../hooks/useRunPromise";
 
 export default function TicketPrintButton() {
     const [settings] = useSettings();
     const printArea = React.useRef<HTMLIFrameElement>(null);
-    const [isLoaded, setIsLoaded] = React.useState(false);
-
-    React.useEffect(() => {
-        const onLoad = () => setIsLoaded(true);
-
-        printArea.current?.addEventListener("load", onLoad);
-        return () => {
-            printArea.current?.removeEventListener("load", onLoad);
-        }
-    }, [printArea])
+    const [runPromise, isLoading] = useRunPromise();
 
     React.useEffect(() => {
         // Get the Print View Button
@@ -36,65 +31,53 @@ export default function TicketPrintButton() {
         return `${window.location.origin}/TDNext/Apps/${appID}/Tickets/TicketDetPrint?TicketID=${ticketID}`;
     }, []);
 
-    const onPrint = () => {
+    const onPrint = async () => {
+
+        // Get the print area iframe
         const iframe = printArea.current;
-        if (iframe)
-            iframe.contentWindow?.print();
-    }
+        if (!iframe)
+            throw new Error("Print area iframe not found");
 
-    const onPrintView = () => {
-        const windowWidth = 800;
-        const windowHeight = 600;
-        const windowTop = window.screenY + (window.outerHeight - windowHeight) / 2;
-        const windowLeft = window.screenX + (window.outerWidth - windowWidth) / 2;
+        // Check if the iframe is loaded
+        if (!isLoading && iframe.contentWindow?.document.readyState !== "complete") {
+            // Wait for the iframe to load
+            await new Promise<void>((resolve) => {
+                iframe.onload = () => resolve();
+            });
+        }
 
-        window.open(
-            printURL,
-            "_blank",
-            `width=${windowWidth},height=${windowHeight},top=${windowTop},left=${windowLeft}`
-        );
+        // Print the iframe content
+        iframe.contentWindow?.print();
     }
 
     if (!settings.showTicketPrintButton)
         return null;
     return (
         <>
-            <div
-                className={"btn-group"}
-                style={{gap: 0}}
-            >
+            <TDXButtonGroup>
 
                 {/* Print Button */}
-                <button
-                    type={"button"}
-                    className={"btn btn-secondary btn-sm"}
-                    onClick={() => onPrint()}
-                    style={{marginRight: 0}}
-                    disabled={!isLoaded}
+                <TDXButton
+                    intent={"secondary"}
+                    onClick={() => runPromise(onPrint())}
+                    noMargin
+                    disabled={isLoading}
+                    icon={isLoading ?
+                        "fa fa-solid fa-nopad fa-spinner fa-spin" :
+                        "fa fa-solid fa-nopad fa-print"}
+                    text={"Print"}
                 >
-                    {/* Print Button Icon */}
-                    {isLoaded ?
-                        <span className={"fa fa-solid fa-nopad fa-print"}/>
-                        :
-                        <span className={"fa fa-solid fa-nopad fa-spinner fa-spin"}/>
-                    }
-
-                    {/* Print Button Text */}
-                    <span className={"hidden-xs padding-left-xs"}>
-                        Print
-                    </span>
-                </button>
+                </TDXButton>
 
                 {/* Print View Button */}
-                <button
-                    type={"button"}
-                    className={"btn btn-secondary btn-sm"}
-                    onClick={() => onPrintView()}
-                    style={{paddingLeft: 10, paddingRight: 10}}
-                >
-                    <span className={"fa fa-solid fa-nopad fa-up-right-from-square"}/>
-                </button>
-            </div>
+                <TDXButton
+                    intent={"secondary"}
+                    onClick={() => openWindow(printURL, "Print View")}
+                    noMargin
+                    icon={"fa fa-solid fa-nopad fa-up-right-from-square"}
+                    title={"Print View"}
+                />
+            </TDXButtonGroup>
 
             {/* Hidden Print View */}
             <iframe

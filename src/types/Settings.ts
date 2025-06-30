@@ -10,6 +10,7 @@ export default interface Settings {
     hideAssignButtonsIfAssigned: boolean;
     showSurplusButtons: boolean;
     autoHideTicketTypes: boolean;
+    autoCompleteRecategorizationTask: boolean;
     autoCloseTicketOnSave: boolean;
     eStoutPickupButton: boolean;
     eStoutResolveButton: boolean;
@@ -20,6 +21,9 @@ export default interface Settings {
     showTicketPrintButton: boolean;
     hideTicketPrintViewButton: boolean;
     useNewFeed: boolean;
+    useNewFeedOnTickets: boolean;
+    useNewFeedOnAssets: boolean;
+    useNewFeedOnTicketTasks: boolean;
     reverseFeedOrder: boolean;
     mergeAdjacentSystemMessages: boolean;
     useCustomProfileColor: boolean;
@@ -29,8 +33,8 @@ export default interface Settings {
     enableCustomTemplates: boolean;
     legacyLookupButton: boolean;
     bulkInventoryButton: boolean;
-    technicianInitials: string;
     resolveButton: boolean;
+    updateButton: boolean;
     removeCopyURLButton: boolean;
     linkifyAttachments: boolean;
     suggestFormTypes: boolean;
@@ -40,4 +44,14 @@ export default interface Settings {
     stripedTableRows: boolean;
 
     dashboardAddTicketButton: boolean;
+    useNewSearch: boolean;
+    enableNewSearchAutocomplete: boolean;
+    enableNewSearchAutoDetectQuery: boolean;
+    enableNewSearchHistory: boolean;
+
+    useCustomColorPalette: boolean;
+    primaryColor: string;
+    customProfileImages: boolean;
+
+    enableAnimations: boolean;
 }

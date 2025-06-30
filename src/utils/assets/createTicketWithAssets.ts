@@ -1,8 +1,6 @@
 import Asset from "../../tdx-api/types/Asset";
-import getAppIDFromURL from "../tdx/getAppIDFromURL";
 
-export default function createTicketWithAssets(assets: Asset[]) {
-    const appID = getAppIDFromURL();
+export default function createTicketWithAssets(appID: number, assets: Asset[]) {
     const assetIDs = assets.map(asset => asset.ID).join(",");
     const url = `${window.location.origin}/TDNext/Apps/${appID}/Tickets/SelectAppClassification.aspx?AssetIDs=${assetIDs}`;
     window.open(

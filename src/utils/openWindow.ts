@@ -1,0 +1,47 @@
+import getSettings from "./getSettings";
+import sanitizeString from "./sanitizeString";
+
+const WINDOW_WIDTH = 992;
+const WINDOW_HEIGHT = 800;
+
+/**
+ * Opens a new window with the given href and title.
+ * Fallback to opening an iFrame tab if the settings dictate not to open in a new window.
+ * @param href - The URL to open in the new window.
+ * @param title - The title for the new window, optional.
+ */
+export default function openWindow(href: string, title?: string) {
+    // Sanitize the href and title to prevent XSS attacks
+    // Required since this uses window.eval
+    href = sanitizeString(href);
+    title = sanitizeString(title ?? "New Window");
+
+    // Check user settings for opening links in a new window
+    const {openLinksInNewWindow} = getSettings();
+    if (openLinksInNewWindow) {
+
+        // Based on https://stackoverflow.com/questions/4068373/center-a-popup-window-on-screen
+
+        // Get dual-screen offset
+        const dualScreenLeft = window.screenLeft !== undefined ? window.screenLeft : window.screenX;
+        const dualScreenTop = window.screenTop !== undefined ? window.screenTop : window.screenY;
+
+        // Get the current window dimensions
+        const screenWidth = window.innerWidth || document.documentElement.clientWidth || screen.width;
+        const screenHeight = window.innerHeight || document.documentElement.clientHeight || screen.height;
+
+        // Calculate center position for the new window (w/ dual-screen offset)
+        const windowLeft = (screenWidth - WINDOW_WIDTH) / 2 + dualScreenLeft;
+        const windowTop = (screenHeight - WINDOW_HEIGHT) / 2 + dualScreenTop;
+
+        // Open a new window with the specified URL and title
+        const newWindow = window.open(href, "_blank", `width=${WINDOW_WIDTH},height=${WINDOW_HEIGHT},left=${windowLeft},top=${windowTop}`);
+
+        // Rename the new window if it was successfully opened
+        if (newWindow && title)
+            newWindow.document.title = title;
+    } else {
+        // Fallback to new iFrame tab opening
+        window.eval(`window.top.WorkMgmt.MainContentManager.instance.openIFrameTab('${title ?? 'New Window'}', '${href}', '${href}', false);`);
+    }
+}

@@ -17,9 +17,13 @@ Designed and built around our own TeamDynamix instance. Modifications may be req
 
 ## Installation
 
-**Requirements:**
+1. Install a UserScript extension in your
+   browser ([TamperMonkey](https://www.tampermonkey.net/)/[ViolentMonkey](https://violentmonkey.github.io/))
+    1. If you use a chromium-based browser, make sure to enable developer mode in the extension settings
+2. Go
+   to [https://digiworm0.github.io/TDXWizard/tdx-wizard.user.js](https://digiworm0.github.io/TDXWizard/tdx-wizard.user.js)
+3. In the pop-up, click "Install"
+4. Open/Refresh your TeamDynamix page
 
-- UserScript extension ([TamperMonkey](https://www.tampermonkey.net/)/[ViolentMonkey](https://violentmonkey.github.io/))
-
-*TODO: Auto-build script with Github Actions (CI/CD)*
-
+If installed correctly, you should see a wizard icon in the top right corner next to your profile. You can click this
+icon to open the settings menu. Future updates are installed automatically.

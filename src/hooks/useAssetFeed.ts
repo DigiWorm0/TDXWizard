@@ -3,16 +3,19 @@ import {unwrap} from "jotai/utils";
 import UWStoutTDXClient from "../utils/tdx/UWStoutTDXClient";
 import getAssetIDFromURL from "../utils/tdx/getAssetIDFromURL";
 import getAppIDFromURL from "../utils/tdx/getAppIDFromURL";
+import AppID from "../types/AppID";
 
 export const assetFeedAtom = atom(async () => {
     // API Client
     const client = new UWStoutTDXClient();
 
-    // Get the IDs
-    const appID = getAppIDFromURL();
+    // Get the asset ID
     const assetID = getAssetIDFromURL();
-    if (!assetID || !appID)
+    if (!assetID)
         return null;
+
+    // Get the app ID
+    const appID = getAppIDFromURL() ?? AppID.Inventory;
 
     // Get the ticket feed
     const feed = await client.assets.getAssetFeed(appID, assetID);

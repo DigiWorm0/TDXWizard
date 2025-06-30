@@ -6,10 +6,12 @@ import ConvertSurplusTicketButton from "../buttons/ConvertSurplusTicketButton";
 import EStoutPickupButton from "../buttons/EStoutPickupButton";
 import ResolveButton from "../buttons/ResolveButton";
 import EStoutResolveButton from "../buttons/EStoutResolveButton";
+import UpdateTicketButton from "../buttons/UpdateTicketButton";
 
 export default function TicketNavBar() {
     return (
         <>
+            <UpdateTicketButton/>
             <TicketPrintButton/>
             <TicketTypeButtons/>
             <TicketAssetButtons/>

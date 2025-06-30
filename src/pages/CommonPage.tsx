@@ -5,6 +5,10 @@ import PersonPanel from "../components/pages/PersonPanel";
 import SelectSelfButton from "../components/buttons/SelectSelfButton";
 import autoUpdateAuthKey from "../utils/autoUpdateAuthKey";
 import CustomStyles from "../components/style/CustomStyles";
+import BetterSearch from "../components/search/BetterSearch";
+import openWindow from "../utils/openWindow";
+import {unsafeWindow} from "$";
+import {Toaster} from "react-hot-toast";
 
 export default class CommonPage implements PageScript {
 
@@ -14,15 +18,21 @@ export default class CommonPage implements PageScript {
 
     run() {
         CommonPage.addCustomStyles();
+        CommonPage.addToaster();
         CommonPage.replaceWindowLinks();
         CommonPage.replaceAllEmailLinks();
         CommonPage.addUserLookup();
         CommonPage.addSelectSelfButton();
         CommonPage.runAutoUpdateAuthKey();
+        CommonPage.replaceSearchBar();
     }
 
     static addCustomStyles() {
         addComponentToDOM(document.body, <CustomStyles/>);
+    }
+
+    static addToaster() {
+        addComponentToDOM(document.body, <Toaster position={"bottom-right"}/>);
     }
 
     static replaceWindowLinks() {
@@ -31,12 +41,26 @@ export default class CommonPage implements PageScript {
         if (!settings.openLinksInNewWindow)
             return;
 
-        // Replace TDX's window.openWinReturn function with a custom one.
+        // Patch global window functions with custom implementations
         // Explicitly calls `window.eval` to reference the global `window` object instead of the shadow DOM
-        window.eval(`window.openWinReturn = (url, width=992, height=800, name='New Window') => {
-            window.open(url, '_blank', 'width=' + width + ',height=' + height);
-            return false;
-        }`);
+
+        if (unsafeWindow.top === null)
+            throw new Error("window.top is null, cannot replace window links");
+
+        // Generic iFrame tab opening
+        unsafeWindow.top.WorkMgmt.MainContentManager.instance.openIFrameTab = (name: string, _id: string, url: string, _tabData = false) => openWindow(url, name);
+
+        // Child window opening
+        unsafeWindow.openWinReturn = (url: string, _width: number, _height: number, name: string) => openWindow(url, name);
+
+        // Side Panel iFrame opening
+        unsafeWindow.top.WorkMgmt.MainContentManager.instance.loadSidePanelIFrame = (url: string, name: string, _id: string, _tabData = true, _landmark = true) => openWindow(url, name);
+
+        // Child window side panel opening
+        unsafeWindow.openWorkMgmtSidePanel = (url: string) => openWindow(url);
+
+        // Search function is on its own script
+        unsafeWindow.top.WorkMgmt.GlobalSearch.instance.search = (searchQuery: string) => openWindow(`/TDNext/Apps/Shared/Global/Search?searchText=${encodeURIComponent(searchQuery)}`, "Global Search");
     }
 
     /**
@@ -60,6 +84,22 @@ export default class CommonPage implements PageScript {
      */
     static runAutoUpdateAuthKey() {
         autoUpdateAuthKey().catch(console.error);
+    }
+
+    static replaceSearchBar() {
+        // Find the old search bar
+        const searchBar = document.getElementById("globalSearchBar");
+        if (!searchBar || !searchBar.parentElement)
+            return;
+
+        // Hide the old search bar
+        // searchBar.style.display = "none";
+
+        // Add the new search bar
+        const newSearchBar = addComponentToDOM(searchBar.parentElement, <BetterSearch/>);
+
+        // Place before the old search bar
+        searchBar.parentElement.insertBefore(newSearchBar, searchBar);
     }
 
     /**
@@ -108,11 +148,15 @@ export default class CommonPage implements PageScript {
             "NewResponsibleId", // New Responsible
             "attribute514", // Asset Owner
             "NewOwnerUid", // New Asset Owner
+            "taluResponsible", // New Responsible (New)
         ];
         elementIDs.forEach(elementID => {
 
-            // Get the button group
-            const buttonGroup = document.querySelector(`#${elementID}_lookup`)?.parentElement;
+            // FInd the button group
+            const buttonGroup1 = document.querySelector(`#${elementID}_lookup`)?.parentElement;
+            const buttonGroup2 = document.querySelector(`#${elementID}_btnLookuptaluResponsible`)?.parentElement;
+
+            const buttonGroup = buttonGroup1 || buttonGroup2;
             if (!buttonGroup)
                 return;
 

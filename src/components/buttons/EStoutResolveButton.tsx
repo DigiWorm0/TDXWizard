@@ -6,6 +6,7 @@ import confirmAction from "../../utils/confirmAction";
 import useTicket from "../../hooks/useTicket";
 import useTicketWorkflow from "../../hooks/useTicketWorkflow";
 import useTicketStatusID from "../../hooks/useTicketStatusID";
+import TDXButton from "./common/TDXButton";
 
 // Workflow ID
 const RESPOND_WORKFLOW_ID = 1177755;
@@ -67,18 +68,11 @@ export default function EStoutResolveButton() {
     if (!settings.eStoutResolveButton)
         return null;
     return (
-        <button
-            className={"btn btn-secondary btn-sm dropdown-toggle"}
-            style={{margin: "0px 3px"}}
-            type={"button"}
-            data-toggle={"dropdown"}
+        <TDXButton
+            text={"Picked Up"}
+            icon={"fa fa-solid fa-nopad fa-lg fa-check"}
             onClick={() => resolveTicket()}
             title={"Marks the eStout laptop as picked up"}
-        >
-            <span className={"fa-solid fa-nopad fa-lg fa-check"}/>
-            <span className={"hidden-xs padding-left-xs"}>
-                Picked Up
-            </span>
-        </button>
+        />
     )
 }

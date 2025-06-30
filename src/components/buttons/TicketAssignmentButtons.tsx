@@ -3,11 +3,13 @@ import UWStoutTDXClient from "../../utils/tdx/UWStoutTDXClient";
 import getTicketIDFromURL from "../../utils/tdx/getTicketIDFromURL";
 import useSettings from "../../hooks/useSettings";
 import useTicket from "../../hooks/useTicket";
-import AppID from "../../types/AppID";
 import useUser from "../../hooks/useUser";
 import User from "../../tdx-api/types/User";
 import groupNames from "../../db/GroupNames";
 import confirmAction from "../../utils/confirmAction";
+import getAppIDFromURL from "../../utils/tdx/getAppIDFromURL";
+import TDXButton from "./common/TDXButton";
+import TDXButtonGroup from "./common/TDXButtonGroup";
 
 
 export default function TicketAssignmentButtons() {
@@ -86,8 +88,13 @@ export default function TicketAssignmentButtons() {
             if (!ticketID)
                 throw new Error("Ticket ID not found");
 
+            // Get App ID
+            const appID = getAppIDFromURL();
+            if (!appID)
+                throw new Error("App ID not found");
+
             // Update Ticket
-            await client.tickets.updateTicket(AppID.Tickets, ticketID, {ResponsibleUid: assignment.UID});
+            await client.tickets.updateTicket(appID, ticketID, {ResponsibleUid: assignment.UID});
 
             // Reload/Close the page
             if (settings.autoCloseTicketOnSave)
@@ -99,22 +106,19 @@ export default function TicketAssignmentButtons() {
 
     const setGroup = async (groupID: number) => {
         if (confirmAction(`Assign to ${groupNames[groupID]}?`)) {
-            console.log("Setting Group: " + groupID);
 
             // API Client
             const client = new UWStoutTDXClient();
 
-            // Get Ticket ID
-            const ticketID = getTicketIDFromURL();
-            if (!ticketID)
-                throw new Error("Ticket ID not found");
+            // Check if ticket is loaded
+            if (!ticket)
+                throw new Error("Ticket not loaded");
 
             // Update Ticket
-            const res = await client.tickets.updateTicket(AppID.Tickets, ticketID, {
+            await client.tickets.updateTicket(ticket.AppID, ticket.ID, {
                 ResponsibleGroupID: groupID,
                 ResponsibleUid: undefined
             });
-            console.log(res);
 
             // Reload/Close the page
             if (settings.autoCloseTicketOnSave)
@@ -127,34 +131,24 @@ export default function TicketAssignmentButtons() {
     if (shouldHide)
         return null;
     return (
-        <div
-            className={"btn-group"}
-            style={{gap: 0}}
-        >
+        <TDXButtonGroup>
             {assignments?.map(assignment => (
-                <button
+                <TDXButton
                     key={assignment.UID}
-                    type={"button"}
-                    className={"btn btn-secondary btn-sm"}
-                    title={`Assign to ${assignment.FullName}`}
+                    intent={"secondary"}
                     onClick={() => setAssignment(assignment)}
-                    style={{marginRight: 0}}
-                >
-                    <span className={"fa fa-solid fa-nopad fa-user"}/>
-                    <span className={"hidden-xs padding-left-xs"}>
-                        {assignment.FullName}
-                    </span>
-                </button>
+                    noMargin
+                    icon={"fa fa-solid fa-nopad fa-user"}
+                    text={assignment.FullName}
+                />
             ))}
 
-            <li className={"btn-group"}>
-                <button
-                    className={"btn btn-secondary btn-sm dropdown-toggle"}
-                    type={"button"}
-                    data-toggle={"dropdown"}
-                >
-                    <span className={"fa-solid fa-nopad fa-lg fa-caret-down"}/>
-                </button>
+            <TDXButtonGroup noMargin>
+                <TDXButton
+                    noMargin
+                    toggleDropdown
+                    icon={"fa fa-solid fa-nopad fa-lg fa-caret-down"}
+                />
                 <ul className={"dropdown-menu"}>
                     {Object.keys(groupNames)
                         .map(Number)
@@ -172,7 +166,7 @@ export default function TicketAssignmentButtons() {
                         ))
                     }
                 </ul>
-            </li>
-        </div>
+            </TDXButtonGroup>
+        </TDXButtonGroup>
     )
 }
