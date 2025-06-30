@@ -58,7 +58,7 @@ const DefaultSettings: Settings = {
 
     dashboardAddTicketButton: true,
 
-    useNewSearch: false,
+    useNewSearch: true,
     enableNewSearchAutocomplete: true,
     enableNewSearchAutoDetectQuery: true,
     enableNewSearchHistory: true,
