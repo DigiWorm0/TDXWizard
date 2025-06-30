@@ -132,3 +132,24 @@
     src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/webfonts/fa-solid-900.woff2") format("woff2"),
     url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/webfonts/fa-solid-900.ttf") format("truetype");
 }
+
+/*
+        FLOAT ANIMATION
+ */
+.wizard_float {
+    animation: wizard_float 4s ease-in-out infinite;
+}
+
+@keyframes wizard_float {
+    0% {
+        transform: translateY(0) rotate(-18deg);
+    }
+
+    50% {
+        transform: translateY(-10px) rotate(-17deg);
+    }
+
+    100% {
+        transform: translateY(0) rotate(-18deg);
+    }
+}

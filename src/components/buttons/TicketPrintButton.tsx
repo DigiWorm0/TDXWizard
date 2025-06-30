@@ -5,20 +5,12 @@ import useSettings from "../../hooks/useSettings";
 import openWindow from "../../utils/openWindow";
 import TDXButtonGroup from "./common/TDXButtonGroup";
 import TDXButton from "./common/TDXButton";
+import useRunPromise from "../../hooks/useRunPromise";
 
 export default function TicketPrintButton() {
     const [settings] = useSettings();
     const printArea = React.useRef<HTMLIFrameElement>(null);
-    const [isLoaded, setIsLoaded] = React.useState(false);
-
-    React.useEffect(() => {
-        const onLoad = () => setIsLoaded(true);
-
-        printArea.current?.addEventListener("load", onLoad);
-        return () => {
-            printArea.current?.removeEventListener("load", onLoad);
-        }
-    }, [printArea])
+    const [runPromise, isLoading] = useRunPromise();
 
     React.useEffect(() => {
         // Get the Print View Button
@@ -39,10 +31,23 @@ export default function TicketPrintButton() {
         return `${window.location.origin}/TDNext/Apps/${appID}/Tickets/TicketDetPrint?TicketID=${ticketID}`;
     }, []);
 
-    const onPrint = () => {
+    const onPrint = async () => {
+
+        // Get the print area iframe
         const iframe = printArea.current;
-        if (iframe)
-            iframe.contentWindow?.print();
+        if (!iframe)
+            throw new Error("Print area iframe not found");
+
+        // Check if the iframe is loaded
+        if (!isLoading && iframe.contentWindow?.document.readyState !== "complete") {
+            // Wait for the iframe to load
+            await new Promise<void>((resolve) => {
+                iframe.onload = () => resolve();
+            });
+        }
+
+        // Print the iframe content
+        iframe.contentWindow?.print();
     }
 
     if (!settings.showTicketPrintButton)
@@ -54,10 +59,12 @@ export default function TicketPrintButton() {
                 {/* Print Button */}
                 <TDXButton
                     intent={"secondary"}
-                    onClick={() => onPrint()}
+                    onClick={() => runPromise(onPrint())}
                     noMargin
-                    disabled={!isLoaded}
-                    icon={isLoaded ? "fa fa-solid fa-nopad fa-print" : "fa fa-solid fa-nopad fa-spinner fa-spin"}
+                    disabled={isLoading}
+                    icon={isLoading ?
+                        "fa fa-solid fa-nopad fa-spinner fa-spin" :
+                        "fa fa-solid fa-nopad fa-print"}
                     text={"Print"}
                 >
                 </TDXButton>

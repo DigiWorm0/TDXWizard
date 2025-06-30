@@ -85,11 +85,11 @@ export default function BetterSearch() {
                     // Arrow keys/tab to navigate results
                     if (e.key === "ArrowDown" || e.key === "Tab") {
                         e.preventDefault();
-                        setResultsIndex((prevIndex) => (prevIndex + 1) % (results.length + 1)); // Wrap around to the first result
+                        setResultsIndex((prevIndex) => (prevIndex + 1) % results.length); // Wrap around to the first result
                     }
                     if (e.key === "ArrowUp") {
                         e.preventDefault();
-                        setResultsIndex((prevIndex) => (prevIndex + results.length) % (results.length + 1)); // Wrap around to the last result
+                        setResultsIndex((prevIndex) => (prevIndex - 1 + results.length) % results.length); // Wrap around to the last result
                     }
 
                     // Handle Enter key to send onClick to the selected result

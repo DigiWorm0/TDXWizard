@@ -7,17 +7,15 @@ export default function SurplusManagerButton() {
     const [settings] = useSettings();
     const [isModalVisible, setIsModalVisible] = React.useState(false);
 
-    if (!settings.bulkInventoryButton)
+    if (!settings.showSurplusButtons)
         return null;
     return (
         <>
             <TDXButton
                 type={"tdx"}
                 icon={"fa fa-solid fa-recycle"}
-                onClick={e => {
-                    e.preventDefault();
-                    setIsModalVisible(true);
-                }}
+                onClick={() => setIsModalVisible(true)}
+                disabled={isModalVisible}
                 title={"Tool for managing surplus assets and processes"}
                 text={"Surplus Manager"}
             />

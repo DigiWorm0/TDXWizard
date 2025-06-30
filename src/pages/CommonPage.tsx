@@ -8,6 +8,7 @@ import CustomStyles from "../components/style/CustomStyles";
 import BetterSearch from "../components/search/BetterSearch";
 import openWindow from "../utils/openWindow";
 import {unsafeWindow} from "$";
+import {Toaster} from "react-hot-toast";
 
 export default class CommonPage implements PageScript {
 
@@ -17,6 +18,7 @@ export default class CommonPage implements PageScript {
 
     run() {
         CommonPage.addCustomStyles();
+        CommonPage.addToaster();
         CommonPage.replaceWindowLinks();
         CommonPage.replaceAllEmailLinks();
         CommonPage.addUserLookup();
@@ -27,6 +29,10 @@ export default class CommonPage implements PageScript {
 
     static addCustomStyles() {
         addComponentToDOM(document.body, <CustomStyles/>);
+    }
+
+    static addToaster() {
+        addComponentToDOM(document.body, <Toaster position={"bottom-right"}/>);
     }
 
     static replaceWindowLinks() {

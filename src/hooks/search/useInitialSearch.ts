@@ -1,15 +1,12 @@
 import React from "react";
-import useRunPromise from "../useRunPromise";
-import runInitialSearch from "../../utils/runInitialSearch";
 import SearchResult from "../../types/SearchResult";
-import useSettings from "../useSettings";
+import useRunInitialSearch from "./useRunInitialSearch";
+import toast from "react-hot-toast";
 
 export default function useInitialSearch(query: string) {
-    const [runPromise, isLoading] = useRunPromise();
+    const [isLoading, setIsLoading] = React.useState(false);
     const [results, setResults] = React.useState<SearchResult[]>([]);
-    const [settings] = useSettings();
-
-    const {enableNewSearchAutoDetectQuery} = settings;
+    const runInitialSearch = useRunInitialSearch();
 
     React.useEffect(() => {
         let isCanceled = false;
@@ -19,9 +16,10 @@ export default function useInitialSearch(query: string) {
 
         // Clear previous results
         setResults([]);
+        setIsLoading(true);
 
         // Run the initial search query
-        runPromise(runInitialSearch(query, enableNewSearchAutoDetectQuery))
+        runInitialSearch(query)
             .then((result) => {
                 if (isCanceled)
                     return;
@@ -30,12 +28,24 @@ export default function useInitialSearch(query: string) {
 
                 // Save the result
                 setResults([result]);
+            })
+            .catch((error) => {
+                if (isCanceled)
+                    return;
+
+                toast.error(`Error searching for "${query}": ${error.message}`);
+            })
+            .finally(() => {
+                if (isCanceled)
+                    return;
+
+                setIsLoading(false);
             });
 
         return () => {
             isCanceled = true;
         }
-    }, [query, runPromise]);
+    }, [query]);
 
     return [results, isLoading] as const;
 }

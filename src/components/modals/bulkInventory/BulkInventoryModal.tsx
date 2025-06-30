@@ -14,10 +14,11 @@ import BigWindowInput from "../bigwindow/BigWindowInput";
 import BigWindowProgress from "../bigwindow/BigWindowProgress";
 import BigInputWindow from "../bigwindow/BigInputWindow";
 import TDXButton from "../../buttons/common/TDXButton";
+import BigWindowInfo from "../bigwindow/BigWindowInfo";
 
 export interface BulkInventoryModalProps {
     onClose: () => void;
-    appID?: number;
+    appID: number;
 }
 
 export default function BulkInventoryModal(props: BulkInventoryModalProps) {
@@ -90,10 +91,6 @@ export default function BulkInventoryModal(props: BulkInventoryModalProps) {
         // Send API request
         const client = new UWStoutTDXClient();
         const {appID} = props;
-        // const appID = getAppIDFromURL();
-
-        if (!appID)
-            throw new Error("App ID not found");
 
         // Iterate over each asset
         const newAssets: Asset[] = [];
@@ -109,6 +106,7 @@ export default function BulkInventoryModal(props: BulkInventoryModalProps) {
 
     return (
         <BigInputWindow
+            id={"bulk-inventory"}
             title={"Bulk Inventory"}
             onClose={props.onClose}
         >
@@ -216,6 +214,12 @@ export default function BulkInventoryModal(props: BulkInventoryModalProps) {
                 error={errors}
                 onClear={clearErrors}
             />
+
+            <BigWindowInfo>
+                This is a tool to manage large amounts of inventory assets at once.
+                You can scan asset tags to add them to the list, and then update inventory,
+                create tickets, or download a CSV.
+            </BigWindowInfo>
         </BigInputWindow>
     )
 }

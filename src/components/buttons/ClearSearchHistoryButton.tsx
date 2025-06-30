@@ -1,6 +1,7 @@
 import TDXButton from "./common/TDXButton";
 import useSearchHistory from "../../hooks/useSearchHistory";
 import React from "react";
+import toast from "react-hot-toast";
 
 export default function ClearSearchHistoryButton() {
     const [_, setSearchHistory] = useSearchHistory();
@@ -13,6 +14,7 @@ export default function ClearSearchHistoryButton() {
             return;
 
         setSearchHistory([]);
+        toast.success("Search history cleared successfully!");
     }
 
     return (

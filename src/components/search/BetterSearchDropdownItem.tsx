@@ -4,6 +4,7 @@ export interface BetterSearchDropdownItemProps {
     text?: string;
     href?: string;
     icon?: string;
+    iconElement?: React.ReactNode;
     color?: string;
 
     disabled?: boolean;
@@ -36,6 +37,7 @@ export default function BetterSearchDropdownItem(props: BetterSearchDropdownItem
                 whiteSpace: "nowrap",
             }}
         >
+            {props.iconElement}
             <span
                 className={`${props.icon || "fa-question-mark"} me-1`}
                 style={{

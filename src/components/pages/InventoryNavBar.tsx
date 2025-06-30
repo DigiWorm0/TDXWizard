@@ -2,7 +2,7 @@ import BulkInventoryButton from "../buttons/BulkInventoryButton";
 import SurplusManagerButton from "../buttons/SurplusManagerButton";
 
 export interface InventoryNavBarProps {
-    appID?: number;
+    appID: number;
 }
 
 export default function InventoryNavBar(props: InventoryNavBarProps) {

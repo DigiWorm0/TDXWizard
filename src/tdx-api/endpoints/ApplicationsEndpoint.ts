@@ -6,6 +6,6 @@ import OrgApplication from "../types/OrgApplication";
  */
 export default class ApplicationsEndpoint extends TDXEndpoint {
     getApplications() {
-        return this.client.jsonRequest<OrgApplication>("applications");
+        return this.client.jsonRequest<OrgApplication[]>("applications");
     }
 }

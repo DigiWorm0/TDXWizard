@@ -3,7 +3,6 @@ import UWStoutTDXClient from "../../utils/tdx/UWStoutTDXClient";
 import getTicketIDFromURL from "../../utils/tdx/getTicketIDFromURL";
 import useSettings from "../../hooks/useSettings";
 import useTicket from "../../hooks/useTicket";
-import AppID from "../../types/AppID";
 import useUser from "../../hooks/useUser";
 import User from "../../tdx-api/types/User";
 import groupNames from "../../db/GroupNames";
@@ -107,22 +106,19 @@ export default function TicketAssignmentButtons() {
 
     const setGroup = async (groupID: number) => {
         if (confirmAction(`Assign to ${groupNames[groupID]}?`)) {
-            console.log("Setting Group: " + groupID);
 
             // API Client
             const client = new UWStoutTDXClient();
 
-            // Get Ticket ID
-            const ticketID = getTicketIDFromURL();
-            if (!ticketID)
-                throw new Error("Ticket ID not found");
+            // Check if ticket is loaded
+            if (!ticket)
+                throw new Error("Ticket not loaded");
 
             // Update Ticket
-            const res = await client.tickets.updateTicket(AppID.Tickets, ticketID, {
+            await client.tickets.updateTicket(ticket.AppID, ticket.ID, {
                 ResponsibleGroupID: groupID,
                 ResponsibleUid: undefined
             });
-            console.log(res);
 
             // Reload/Close the page
             if (settings.autoCloseTicketOnSave)

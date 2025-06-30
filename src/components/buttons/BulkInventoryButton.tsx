@@ -4,7 +4,7 @@ import useSettings from "../../hooks/useSettings";
 import TDXButton from "./common/TDXButton";
 
 export interface BulkInventoryButtonProps {
-    appID?: number;
+    appID: number;
 }
 
 export default function BulkInventoryButton(props: BulkInventoryButtonProps) {
@@ -20,10 +20,8 @@ export default function BulkInventoryButton(props: BulkInventoryButtonProps) {
                 text={"Bulk Inventory"}
                 icon={"fa fa-solid fa-boxes"}
                 title={"Tool for editing large amounts of assets at once"}
-                onClick={e => {
-                    e.preventDefault();
-                    setIsModalVisible(true);
-                }}
+                onClick={() => setIsModalVisible(true)}
+                disabled={isModalVisible}
             />
 
             {isModalVisible && (

@@ -20,13 +20,13 @@ export default function ConvertSurplusTicketButton() {
                 throw new Error("Ticket ID not found");
 
             // Get Ticket
-            const _ticket = await client.tickets.getTicket(AppID.Tickets, ticketID);
-            if (!_ticket)
+            const ticket = await client.tickets.getTicket(AppID.Tickets, ticketID);
+            if (!ticket)
                 throw new Error("Ticket not found");
 
             // Edit Ticket
             await client.tickets.editTicket(AppID.Tickets, ticketID, {
-                ..._ticket,
+                ...ticket,
                 FormID: 1061 // Surplus
             });
 

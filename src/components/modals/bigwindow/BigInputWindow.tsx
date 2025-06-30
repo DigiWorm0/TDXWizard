@@ -1,7 +1,9 @@
 import NewWindow from "react-new-window";
 import React from "react";
+import {Toaster} from "react-hot-toast";
 
 export interface BigInputWindowProps {
+    id?: string;
     onClose: () => void;
     title?: string;
     children?: React.ReactNode;
@@ -17,6 +19,7 @@ export default function BigInputWindow(props: BigInputWindowProps) {
                 e.window.document.body.classList.add("wizard_window");
             }}
         >
+            <Toaster toasterId={props.id}/>
             <div style={{padding: 15}}>
                 {props.children}
             </div>

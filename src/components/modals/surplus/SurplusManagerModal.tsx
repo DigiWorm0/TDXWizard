@@ -18,6 +18,8 @@ import TicketTypes from "../../../db/TicketTypes";
 import StatusClass from "../../../tdx-api/types/StatusClass";
 import {GM_setClipboard} from "$";
 import useMyUser from "../../../hooks/useMyUser";
+import BigWindowInfo from "../bigwindow/BigWindowInfo";
+import toast from "react-hot-toast";
 
 export interface SurplusAsset extends Asset {
     surplusTickets: Ticket[];
@@ -238,8 +240,8 @@ export default function SurplusManagerModal(props: BulkInventoryModalProps) {
                 t.StatusClass !== StatusClass.Cancelled &&
                 t.StatusClass !== StatusClass.Completed);
             if (!ticket) {
-                onError(`No active surplus ticket for asset ${asset.Tag}`);
-                continue;
+                toast.error(`No open surplus ticket found for asset ${asset.Tag}`, {toasterId: "surplus-manager"});
+                return;
             }
 
             // Add excel row to clipboard
@@ -249,6 +251,9 @@ export default function SurplusManagerModal(props: BulkInventoryModalProps) {
 
         // Set Clipboard
         GM_setClipboard(clipboard.trim(), "text");
+
+        // Toast
+        toast.success("Copied surplus pickup data to clipboard", {toasterId: "surplus-manager"});
     }
 
     const copyExcelCompleted = () => {
@@ -270,6 +275,9 @@ export default function SurplusManagerModal(props: BulkInventoryModalProps) {
 
         // Set Clipboard
         GM_setClipboard(clipboard.trim(), "text");
+
+        // Toast
+        toast.success("Copied surplus completed data to clipboard", {toasterId: "surplus-manager"});
     }
 
     const resolveAllTickets = async () => {
@@ -280,7 +288,8 @@ export default function SurplusManagerModal(props: BulkInventoryModalProps) {
             for (const ticket of asset.surplusTickets) {
 
                 // Check if the ticket is already resolved
-                const isResolved = ticket.StatusClass === StatusClass.Cancelled ||
+                const isResolved =
+                    ticket.StatusClass === StatusClass.Cancelled ||
                     ticket.StatusClass === StatusClass.Completed;
                 if (isResolved)
                     continue;
@@ -308,6 +317,7 @@ export default function SurplusManagerModal(props: BulkInventoryModalProps) {
 
     return (
         <BigInputWindow
+            id={"surplus-manager"}
             title={"Surplus Manager"}
             onClose={props.onClose}
         >
@@ -386,16 +396,25 @@ export default function SurplusManagerModal(props: BulkInventoryModalProps) {
                     text={"Set Surplus Inventory"}
                 />
 
-
                 <TDXButton
                     type={"tdx"}
                     disabled={isLoading || assets.length === 0}
                     title={"Mark all tickets as picked up"}
                     onClick={() => runPromise(pickupAllTickets())}
-                    icon={"fa fa-check me-1"}
-                    text={"Set Picked Up"}
+                    icon={"fa fa-ticket me-1"}
+                    text={"Pick Up Tickets"}
                 />
 
+                <TDXButton
+                    type={"tdx"}
+                    onClick={() => copyExcelPickup()}
+                    disabled={assets.length === 0 || isLoading}
+                    title={"Copy Excel for Surplus Spreadsheet"}
+                    icon={"fa fa-clipboard me-1"}
+                    text={"Copy Surplus Excel"}
+                />
+            </div>
+            <div className={"mt-2"}>
                 <TDXButton
                     type={"tdx"}
                     disabled={isLoading || assets.length === 0}
@@ -407,31 +426,14 @@ export default function SurplusManagerModal(props: BulkInventoryModalProps) {
 
                 <TDXButton
                     type={"tdx"}
-                    onClick={() => createAssetsCSV(assets)}
-                    disabled={assets.length === 0 || isLoading}
-                    title={"Download a CSV file of the assets"}
-                    icon={"fa fa-table me-1"}
-                    text={"Download CSV"}
-                />
-
-                <TDXButton
-                    type={"tdx"}
-                    onClick={() => copyExcelPickup()}
-                    disabled={assets.length === 0 || isLoading}
-                    title={"Copy Excel for Surplus Spreadsheet"}
-                    icon={"fa fa-clipboard me-1"}
-                    text={"Copy Surplus Excel Row(s)"}
-                />
-                
-                <TDXButton
-                    type={"tdx"}
                     onClick={() => copyExcelCompleted()}
                     disabled={assets.length === 0 || isLoading}
                     title={"Copy Excel for Completed Surplus Spreadsheet"}
                     icon={"fa fa-clipboard me-1"}
-                    text={"Copy Completed Surplus Excel Row(s)"}
+                    text={"Copy Completed Surplus Excel"}
                 />
-
+            </div>
+            <div className={"mt-2"}>
                 <TDXButton
                     type={"tdx"}
                     disabled={isLoading || assets.length === 0}
@@ -440,12 +442,27 @@ export default function SurplusManagerModal(props: BulkInventoryModalProps) {
                     icon={"fa fa-refresh me-1"}
                     text={"Refresh"}
                 />
+
+                <TDXButton
+                    type={"tdx"}
+                    onClick={() => createAssetsCSV(assets)}
+                    disabled={assets.length === 0 || isLoading}
+                    title={"Download a CSV file of the assets"}
+                    icon={"fa fa-table me-1"}
+                    text={"Download CSV"}
+                />
+
             </div>
 
             <BigWindowError
                 error={errors}
                 onClear={clearErrors}
             />
+
+            <BigWindowInfo>
+                This is a tool for PC-Repair to manage surplus inventory. It allows you to
+                manage and perform each step of the surplus process for a single device or in bulk.
+            </BigWindowInfo>
         </BigInputWindow>
     )
 }

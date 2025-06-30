@@ -11,7 +11,7 @@ export interface CachedStorageObject<T> {
     /**
      * The value of the atom
      */
-    value: T;
+    value: T | undefined | null;
 
     /**
      * The time the atom was last updated
@@ -87,6 +87,11 @@ export default function atomWithCache<T>(
         // Check if the value is expired
         const cacheTime = options?.cacheTime ?? 0;
         if (Date.now() - storageValue.lastUpdated > cacheTime)
+            return await updateCache();
+
+        // Check if the value is undefined
+        if (storageValue.value === undefined ||
+            storageValue.value === null)
             return await updateCache();
 
         // Return the value

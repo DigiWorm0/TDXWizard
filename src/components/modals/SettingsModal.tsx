@@ -50,13 +50,12 @@ export default function SettingsModal(props: SettingsModalProps) {
                                 }}
                             />
                             <span
-                                className={"fa fa-hat-wizard"}
+                                className={"fa fa-hat-wizard wizard_float"}
                                 style={{
                                     position: "absolute",
                                     top: 115,
                                     left: -25,
                                     fontSize: 220,
-                                    transform: "rotate(-18deg)",
                                     filter: "drop-shadow(0 0 10px rgba(0, 0, 0, 0.5))",
                                     color: "#fff",
                                 }}
