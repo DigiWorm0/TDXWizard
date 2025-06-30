@@ -77,6 +77,7 @@ export default function BetterFeed(props: TicketFeedProps) {
         const systemMessageRegex = [
             new RegExp(/Changed .* from <b>.*?<\/b> to <b>.*?<\/b>\.<br ?\/?>/g),
             new RegExp(/Changed .* from ".*?" to ".*?"\.<br ?\/?>/g),
+            new RegExp(/Selected ".*" for the ".*?" step in the ".*?" workflow\.<br ?\/?>/g),
             new RegExp(/Took primary responsibility for this (?:incident|service request) from .*?\.<br ?\/?>/g),
             new RegExp(/Reassigned this (?:incident|service request) from .*? to .*?\.<br ?\/?>/g),
             new RegExp(/\[Merged from ticket \d+]<br ?\/?><br ?\/?>/g),

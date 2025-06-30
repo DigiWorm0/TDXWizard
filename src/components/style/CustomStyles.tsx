@@ -71,6 +71,7 @@ export default function CustomStyles() {
     useCustomStyle("denseStyle", "wizard_dense");
     useCustomStyle("stripedTableRows", "wizard_striped-table-rows");
     useCustomStyle("useCustomColorPalette", "wizard_custom-palette");
+    useCustomStyle("hideTicketBannerMessage", "wizard_hide-ticket-banner-msg");
 
     React.useEffect(() => {
         if (!settings.useCustomColorPalette)

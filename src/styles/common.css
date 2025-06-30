@@ -87,6 +87,13 @@
 }
 
 /*
+        HIDE TICKET BANNER MESSAGE
+ */
+.wizard_hide-ticket-banner-msg #lblResults_lblResults-label {
+    display: none !important;
+}
+
+/*
         BETTER FEED
  */
 .wizard_betterfeed h5 {

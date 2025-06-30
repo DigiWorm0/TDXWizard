@@ -82,15 +82,12 @@ export default function BetterSearch() {
                     if (e.key === "Escape")
                         setVisible(false);
 
-                    const tabUp = e.key === "Tab" && e.shiftKey;
-                    const tabDown = e.key === "Tab" && !e.shiftKey;
-
                     // Arrow keys/tab to navigate results
-                    if (e.key === "ArrowDown" || tabDown) {
+                    if (e.key === "ArrowDown") {
                         e.preventDefault();
                         setResultsIndex((prevIndex) => (prevIndex + 1) % results.length); // Wrap around to the first result
                     }
-                    if (e.key === "ArrowUp" || tabUp) {
+                    if (e.key === "ArrowUp") {
                         e.preventDefault();
                         setResultsIndex((prevIndex) => (prevIndex - 1 + results.length) % results.length); // Wrap around to the last result
                     }
@@ -128,7 +125,6 @@ export default function BetterSearch() {
                         const clickEvent = new MouseEvent("click", {
                             bubbles: true,
                             cancelable: true,
-                            view: window,
                         });
 
                         // Dispatch the click event on the active element

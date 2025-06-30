@@ -240,24 +240,16 @@ export default function SettingsModal(props: SettingsModalProps) {
                             />
 
                             <SettingsSwitchInput
+                                label={"Hide Banner Messages"}
+                                setting={"hideTicketBannerMessage"}
+                                title={"Hides \"Step Updated\" pop-up messages when updating ticket workflows"}
+                            />
+
+                            <SettingsSwitchInput
                                 label={"Add Ticket Button to Dashboard"}
                                 setting={"dashboardAddTicketButton"}
                                 title={"Adds a \"Create Service Request\" button to the dashboard"}
                             />
-
-                            <SettingsSwitchInput
-                                label={"Show Print Button"}
-                                setting={"showTicketPrintButton"}
-                                title={"Replaces the 'Print View' with a normal 'Print' button"}
-                            />
-                            <div style={{marginLeft: 20}}>
-                                <SettingsSwitchInput
-                                    label={"Hide Print View Button"}
-                                    setting={"hideTicketPrintViewButton"}
-                                    disabled={!settings.showTicketPrintButton}
-                                    title={"Hides the default 'Print View' button on the ticket page"}
-                                />
-                            </div>
 
                             <SettingsSwitchInput
                                 label={"Hide Copy URL Button"}
@@ -346,6 +338,62 @@ export default function SettingsModal(props: SettingsModalProps) {
                                 setting={"enableCustomTemplates"}
                                 title={"Enables custom templates for ticket updates"}
                             />
+
+                            <SettingsHeader title={"Ticket Printing"}/>
+
+                            <SettingsSwitchInput
+                                label={"Show Print Button"}
+                                setting={"showTicketPrintButton"}
+                                title={"Replaces the 'Print View' with a normal 'Print' button"}
+                            />
+                            <SettingsSwitchInput
+                                label={"Hide Print View Button"}
+                                setting={"hideTicketPrintViewButton"}
+                                title={"Hides the default 'Print View' button on the ticket page"}
+                            />
+
+                            <SettingsSwitchInput
+                                label={"Apply Default Print Settings"}
+                                setting={"ticketPrintDefaults"}
+                                title={"Automatically applies the default print settings when printing a ticket"}
+                            />
+                            <div style={{marginLeft: 20}}>
+                                <SettingsSwitchInput
+                                    label={"Ticket Details"}
+                                    setting={"ticketPrintEnableDetails"}
+                                    disabled={!settings.ticketPrintDefaults}
+                                />
+                                <SettingsSwitchInput
+                                    label={"Ticket Description"}
+                                    setting={"ticketPrintEnableDescription"}
+                                    disabled={!settings.ticketPrintDefaults}
+                                />
+                                <SettingsSwitchInput
+                                    label={"Requestor Information"}
+                                    setting={"ticketPrintEnableRequestor"}
+                                    disabled={!settings.ticketPrintDefaults}
+                                />
+                                <SettingsSwitchInput
+                                    label={"Tasks"}
+                                    setting={"ticketPrintEnableTasks"}
+                                    disabled={!settings.ticketPrintDefaults}
+                                />
+                                <SettingsSwitchInput
+                                    label={"Assets"}
+                                    setting={"ticketPrintEnableAssets"}
+                                    disabled={!settings.ticketPrintDefaults}
+                                />
+                                <SettingsSwitchInput
+                                    label={"Configuration Items"}
+                                    setting={"ticketPrintEnableCIs"}
+                                    disabled={!settings.ticketPrintDefaults}
+                                />
+                                <SettingsSwitchInput
+                                    label={"Feed"}
+                                    setting={"ticketPrintEnableFeed"}
+                                    disabled={!settings.ticketPrintDefaults}
+                                />
+                            </div>
 
                             <SettingsHeader title={"Inventory"}/>
 
