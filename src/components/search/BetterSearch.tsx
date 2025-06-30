@@ -82,14 +82,37 @@ export default function BetterSearch() {
                     if (e.key === "Escape")
                         setVisible(false);
 
+                    const tabUp = e.key === "Tab" && e.shiftKey;
+                    const tabDown = e.key === "Tab" && !e.shiftKey;
+
                     // Arrow keys/tab to navigate results
-                    if (e.key === "ArrowDown" || e.key === "Tab") {
+                    if (e.key === "ArrowDown" || tabDown) {
                         e.preventDefault();
                         setResultsIndex((prevIndex) => (prevIndex + 1) % results.length); // Wrap around to the first result
                     }
-                    if (e.key === "ArrowUp") {
+                    if (e.key === "ArrowUp" || tabUp) {
                         e.preventDefault();
                         setResultsIndex((prevIndex) => (prevIndex - 1 + results.length) % results.length); // Wrap around to the last result
+                    }
+
+                    // Home/End keys to jump to the first/last result
+                    if (e.key === "Home") {
+                        e.preventDefault();
+                        setResultsIndex(0); // Jump to the first result
+                    }
+                    if (e.key === "End") {
+                        e.preventDefault();
+                        setResultsIndex(results.length - 1); // Jump to the last result
+                    }
+
+                    // Page Up/Page Down keys to navigate by 8 results
+                    if (e.key === "PageDown") {
+                        e.preventDefault();
+                        setResultsIndex((prevIndex) => Math.min(prevIndex + 8, results.length - 1)); // Jump down by 8 results
+                    }
+                    if (e.key === "PageUp") {
+                        e.preventDefault();
+                        setResultsIndex((prevIndex) => Math.max(prevIndex - 8, 0)); // Jump up by 8 results
                     }
 
                     // Handle Enter key to send onClick to the selected result

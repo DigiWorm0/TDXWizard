@@ -2,6 +2,7 @@ import React from "react";
 
 export interface ButtonGroupProps {
     children: React.ReactNode;
+    noMargin?: boolean;
 }
 
 export default function TDXButtonGroup(props: ButtonGroupProps) {
@@ -10,7 +11,7 @@ export default function TDXButtonGroup(props: ButtonGroupProps) {
             className={"btn-group"}
             style={{
                 gap: 0,
-                margin: "0px 3px"
+                margin: props.noMargin ? "0px" : "0px 3px"
             }}
         >
             {props.children}

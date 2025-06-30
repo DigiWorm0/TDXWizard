@@ -143,15 +143,12 @@ export default function TicketAssignmentButtons() {
                 />
             ))}
 
-            <li className={"btn-group"}>
-                <button
-                    className={"btn btn-secondary btn-sm dropdown-toggle"}
-                    type={"button"}
-                    data-toggle={"dropdown"}
-                    style={{marginRight: 0}}
-                >
-                    <span className={"fa-solid fa-nopad fa-lg fa-caret-down"}/>
-                </button>
+            <TDXButtonGroup noMargin>
+                <TDXButton
+                    noMargin
+                    toggleDropdown
+                    icon={"fa fa-solid fa-nopad fa-lg fa-caret-down"}
+                />
                 <ul className={"dropdown-menu"}>
                     {Object.keys(groupNames)
                         .map(Number)
@@ -169,7 +166,7 @@ export default function TicketAssignmentButtons() {
                         ))
                     }
                 </ul>
-            </li>
+            </TDXButtonGroup>
         </TDXButtonGroup>
     )
 }

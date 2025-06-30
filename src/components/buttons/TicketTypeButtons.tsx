@@ -137,17 +137,13 @@ export default function TicketTypeButtons() {
                     text={type}
                 />
             ))}
-            <li
-                className={"btn-group"}
-                style={{gap: 0}}
-            >
-                <button
-                    className={"btn btn-secondary btn-sm dropdown-toggle"}
-                    type={"button"}
-                    data-toggle={"dropdown"}
-                >
-                    <span className={"fa-solid fa-nopad fa-lg fa-caret-down"}/>
-                </button>
+            <TDXButtonGroup noMargin>
+                <TDXButton
+                    noMargin
+                    toggleDropdown
+                    icon={"fa fa-solid fa-nopad fa-lg fa-caret-down"}
+                />
+
                 <ul
                     style={{cursor: "default"}}
                     className={"dropdown-menu"}
@@ -183,7 +179,7 @@ export default function TicketTypeButtons() {
                             </li>
                         ))}
                 </ul>
-            </li>
+            </TDXButtonGroup>
         </TDXButtonGroup>
     )
 }

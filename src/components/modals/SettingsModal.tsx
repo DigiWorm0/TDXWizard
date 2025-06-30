@@ -137,6 +137,11 @@ export default function SettingsModal(props: SettingsModalProps) {
                                 title={"Adds a confirmation dialog for destructive actions"}
                             />
                             <SettingsSwitchInput
+                                label={"Animations"}
+                                setting={"enableAnimations"}
+                                title={"Animates various UI components such as buttons"}
+                            />
+                            <SettingsSwitchInput
                                 label={"Better Search"}
                                 setting={"useNewSearch"}
                                 title={"Replaces the TDX search with a re-designed version"}
@@ -214,14 +219,14 @@ export default function SettingsModal(props: SettingsModalProps) {
                                     title={"Shows/hides users' custom profile images in the feed"}
                                 />
                                 <SettingsSwitchInput
-                                    label={"Custom Profile Color"}
+                                    label={"My Profile Color"}
                                     setting={"useCustomProfileColor"}
                                     disabled={!settings.useNewFeed}
                                     title={"Uses a custom color for your profile in the feed"}
                                 />
                                 <div style={{marginLeft: 20}}>
                                     <SettingsColorPickerInput
-                                        label={"Custom Profile Color"}
+                                        label={"My Profile Color"}
                                         setting={"customProfileColor"}
                                         disabled={!settings.useCustomProfileColor || !settings.useNewFeed}
                                     />

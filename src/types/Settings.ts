@@ -52,4 +52,6 @@ export default interface Settings {
     useCustomColorPalette: boolean;
     primaryColor: string;
     customProfileImages: boolean;
+
+    enableAnimations: boolean;
 }

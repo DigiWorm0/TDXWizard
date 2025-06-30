@@ -67,6 +67,8 @@ const DefaultSettings: Settings = {
     primaryColor: "#6B5CDC",
 
     customProfileImages: true,
+
+    enableAnimations: true,
 };
 
 export default DefaultSettings;
