@@ -19,6 +19,17 @@ export default interface Settings {
     unlinkEmails: boolean;
     selectSelfButton: boolean;
     showTicketPrintButton: boolean;
+
+    ticketPrintDefaults: boolean;
+    ticketPrintEnableDetails: boolean;
+    ticketPrintEnableDescription: boolean;
+    ticketPrintEnableRequestor: boolean;
+    ticketPrintEnableTasks: boolean;
+    ticketPrintEnableAssets: boolean;
+    ticketPrintEnableCIs: boolean;
+    ticketPrintEnableFeed: boolean;
+
+
     hideTicketPrintViewButton: boolean;
     useNewFeed: boolean;
     useNewFeedOnTickets: boolean;
@@ -54,4 +65,5 @@ export default interface Settings {
     customProfileImages: boolean;
 
     enableAnimations: boolean;
+    hideTicketBannerMessage: boolean;
 }

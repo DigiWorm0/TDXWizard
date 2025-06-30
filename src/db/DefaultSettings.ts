@@ -22,6 +22,15 @@ const DefaultSettings: Settings = {
     showTicketPrintButton: true,
     hideTicketPrintViewButton: true,
 
+    ticketPrintDefaults: true,
+    ticketPrintEnableDetails: true,
+    ticketPrintEnableDescription: true,
+    ticketPrintEnableRequestor: false,
+    ticketPrintEnableTasks: false,
+    ticketPrintEnableAssets: true,
+    ticketPrintEnableCIs: true,
+    ticketPrintEnableFeed: false,
+
     useNewFeed: true,
     useNewFeedOnTickets: true,
     useNewFeedOnAssets: true,
@@ -69,6 +78,7 @@ const DefaultSettings: Settings = {
     customProfileImages: true,
 
     enableAnimations: true,
+    hideTicketBannerMessage: true,
 };
 
 export default DefaultSettings;
