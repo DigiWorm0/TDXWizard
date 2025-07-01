@@ -20,7 +20,10 @@ export default function SettingsModal(props: SettingsModalProps) {
     const [settings] = useSettings();
 
     return (
-        <ModalBase isOpen={props.isOpen} onClose={props.onClose}>
+        <ModalBase
+            isOpen={props.isOpen}
+            onClose={props.onClose}
+        >
             <div
                 className={"modal-dialog"}
                 role={"document"}
@@ -50,6 +53,7 @@ export default function SettingsModal(props: SettingsModalProps) {
                                 }}
                             />
                             <span
+                                aria-hidden={true}
                                 className={"fa fa-hat-wizard wizard_float"}
                                 style={{
                                     position: "absolute",
@@ -107,6 +111,25 @@ export default function SettingsModal(props: SettingsModalProps) {
                             </div>
                             <hr style={{marginTop: 6, marginBottom: 0}}/>
 
+                            <p
+                                style={{
+                                    fontSize: 12,
+                                    lineHeight: 1.5,
+                                    marginTop: 10,
+                                }}
+                            >
+                                Features with
+                                <span
+                                    aria-hidden={true}
+                                    className={"ms-1 me-1 fa fa-house"}
+                                    style={{color: "rgb(0, 88, 255)"}}
+                                />
+                                <span className={"visually-hidden"}>
+                                    Proprietary Icon
+                                </span>
+                                are proprietary to UW-Stout and won't work on other TDX instances.
+                            </p>
+
                             {/* ---- START SETTINGS ---- */}
 
                             <SettingsHeader title={"Common"}/>
@@ -125,11 +148,6 @@ export default function SettingsModal(props: SettingsModalProps) {
                                 label={"Add Self-Assignment Button"}
                                 setting={"selectSelfButton"}
                                 title={"Adds a button to all user form fields to select yourself"}
-                            />
-                            <SettingsSwitchInput
-                                label={"Add Legacy Lookup Button"}
-                                setting={"legacyLookupButton"}
-                                title={"Adds a button to each user card to lookup in the legacy system"}
                             />
                             <SettingsSwitchInput
                                 label={"Confirm Actions"}
@@ -167,7 +185,7 @@ export default function SettingsModal(props: SettingsModalProps) {
                                 />
                             </div>
 
-                            <SettingsHeader title={"Tickets"}/>
+                            <SettingsHeader title={"Feed"}/>
 
                             <SettingsSwitchInput
                                 label={"Better Feed"}
@@ -233,6 +251,8 @@ export default function SettingsModal(props: SettingsModalProps) {
                                 </div>
                             </div>
 
+                            <SettingsHeader title={"Tickets"}/>
+
                             <SettingsSwitchInput
                                 label={"Automatically Exit Tickets On Action"}
                                 setting={"autoCloseTicketOnSave"}
@@ -246,7 +266,7 @@ export default function SettingsModal(props: SettingsModalProps) {
                             />
 
                             <SettingsSwitchInput
-                                label={"Add Ticket Button to Dashboard"}
+                                label={"Add a Create Ticket Button to Dashboard"}
                                 setting={"dashboardAddTicketButton"}
                                 title={"Adds a \"Create Service Request\" button to the dashboard"}
                             />
@@ -255,18 +275,6 @@ export default function SettingsModal(props: SettingsModalProps) {
                                 label={"Hide Copy URL Button"}
                                 setting={"removeCopyURLButton"}
                                 title={"Hides the 'Copy URL' button adjacent to the ticket ID"}
-                            />
-
-                            <SettingsSwitchInput
-                                label={"Show eStout Ready for Pickup Button"}
-                                setting={"eStoutPickupButton"}
-                                title={"Enables the eStout 'Ready for Pickup' button on the ticket page"}
-                            />
-
-                            <SettingsSwitchInput
-                                label={"Show eStout Picked Up Button"}
-                                setting={"eStoutResolveButton"}
-                                title={"Enables the eStout 'Picked Up' button on the ticket page"}
                             />
 
                             <SettingsSwitchInput
@@ -305,6 +313,7 @@ export default function SettingsModal(props: SettingsModalProps) {
                                 label={"Suggest Ticket Types"}
                                 setting={"showTicketTypeButtons"}
                                 title={"Suggests ticket types based on keywords in the title & description"}
+                                proprietary
                             />
                             <div style={{marginLeft: 20}}>
                                 <SettingsSwitchInput
@@ -322,6 +331,7 @@ export default function SettingsModal(props: SettingsModalProps) {
                             </div>
 
                             <SettingsSwitchInput
+                                proprietary
                                 label={"Suggest Form Types"}
                                 setting={"suggestFormTypes"}
                                 title={"When creating a new ticket, suggests a form type based on common forms"}
@@ -339,15 +349,15 @@ export default function SettingsModal(props: SettingsModalProps) {
                                 title={"Enables custom templates for ticket updates"}
                             />
 
-                            <SettingsHeader title={"Ticket Printing"}/>
+                            <SettingsHeader title={"Printing"}/>
 
                             <SettingsSwitchInput
-                                label={"Show Print Button"}
+                                label={"Add Print Button to Tickets"}
                                 setting={"showTicketPrintButton"}
                                 title={"Replaces the 'Print View' with a normal 'Print' button"}
                             />
                             <SettingsSwitchInput
-                                label={"Hide Print View Button"}
+                                label={"Hide Print View Button on Tickets"}
                                 setting={"hideTicketPrintViewButton"}
                                 title={"Hides the default 'Print View' button on the ticket page"}
                             />
@@ -398,6 +408,7 @@ export default function SettingsModal(props: SettingsModalProps) {
                             <SettingsHeader title={"Inventory"}/>
 
                             <SettingsSwitchInput
+                                proprietary
                                 label={"Show Surplus Buttons"}
                                 setting={"showSurplusButtons"}
                                 title={"Adds buttons to the asset page to quickly mark as surplus or create surplus tickets"}

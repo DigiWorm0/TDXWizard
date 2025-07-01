@@ -43,7 +43,13 @@ export default function FeedEvent(props: TicketFeedEventProps) {
                 marginLeft: 50,
             }}
         >
-            <h5 style={{fontWeight: "bold", margin: "0px 5px", whiteSpace: "nowrap"}}>
+            <h5
+                style={{
+                    fontWeight: "bold",
+                    margin: "0px 5px",
+                    whiteSpace: "nowrap"
+                }}
+            >
                 <span
                     className={"fa fa-solid fa-nopad fa-wrench"}
                     style={{

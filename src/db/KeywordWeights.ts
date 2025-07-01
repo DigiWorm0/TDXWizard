@@ -1,5 +1,3 @@
-import TicketTypes from "./TicketTypes";
-
 interface KeywordWeights {
     [key: string]: number;
 }
@@ -12,8 +10,9 @@ interface KeywordWeights {
  * Special characters are removed from the title and description before matching.
  * Keywords must match the whole word.
  */
-const typeToKeywordWeights: Record<keyof typeof TicketTypes, KeywordWeights> = {
-    "Reimage": {
+const typeToKeywordWeights: Record<number, KeywordWeights> = {
+    // Reimage
+    3002: {
         "re image": 1,
         "reimage": 1,
         "reimaging": 1,
@@ -21,7 +20,7 @@ const typeToKeywordWeights: Record<keyof typeof TicketTypes, KeywordWeights> = {
         "reimaged": 1,
         "imaging": 1
     },
-    "Enterprise": {
+    996: {
         "image now": 1,
         "imagenow": 1,
         "imagnow": 1,
@@ -39,10 +38,10 @@ const typeToKeywordWeights: Record<keyof typeof TicketTypes, KeywordWeights> = {
         "oracle": 1,
         "form": 1
     },
-    "Fob Req": {
+    2959: {
         "fob": 1
     },
-    "MFA": {
+    557: {
         "authentication app": 1,
         "microsoft auth": 1,
         "authenticator": 2.5,
@@ -68,7 +67,7 @@ const typeToKeywordWeights: Record<keyof typeof TicketTypes, KeywordWeights> = {
         "more information required": 1,
         "phone": 0.5
     },
-    "Software": {
+    1009: {
         "headset": 1,
         "camera": 1,
         "display": 1,
@@ -131,7 +130,7 @@ const typeToKeywordWeights: Record<keyof typeof TicketTypes, KeywordWeights> = {
         "safari": 0.5,
         "browser": 0.5
     },
-    "VoIP": {
+    1004: {
         "voicemails": 1,
         "calling queue": 1,
         "call queue": 1,
@@ -142,7 +141,7 @@ const typeToKeywordWeights: Record<keyof typeof TicketTypes, KeywordWeights> = {
         "desk phone": 1,
         "extension": 1
     },
-    "Account Assistance": {
+    994: {
         "trying to log in": 1,
         "unable to sign in": 1,
         "unable to login": 1,
@@ -185,14 +184,15 @@ const typeToKeywordWeights: Record<keyof typeof TicketTypes, KeywordWeights> = {
 
         "aadsts": 2 // Azure AD STS Error Code Prefix
     },
-    "Classroom": {
+    // Classroom
+    1006: {
         "projector": 0.5,
         "projectors": 0.5,
         "projecter": 0.5,
         "projecters": 0.5,
     },
-    "Labs": {},
-    "eStout": {
+    // EStout
+    997: {
         "estout": 1,
         "exchange": 1,
 
@@ -212,7 +212,8 @@ const typeToKeywordWeights: Record<keyof typeof TicketTypes, KeywordWeights> = {
         "missing": 0.5,
         "hours": 0.5
     },
-    "CTS": {
+    // CTS
+    995: {
         "new device setup": 1,
         "employee separation notice": 2,
         "employee departure notice": 2,
@@ -222,21 +223,24 @@ const typeToKeywordWeights: Record<keyof typeof TicketTypes, KeywordWeights> = {
         "departure": 1,
         "consultant": 1
     },
-    "Inventory": {
+    // Inventory
+    3001: {
         "inventory": 1,
         "reassign": 1,
         "location change": 1,
         "owner": 1,
         "automated report delivery": 1.5
     },
-    "Hardware": {
+    // Hardware Repair
+    1000: {
         "coaxial cable": 1.5,
         "coax cable": 1.5,
         "blacking out": 1,
         "not charging": 1,
         "parts ordered crm": 1
     },
-    "Network": {
+    // Network
+    1002: {
         "ethernet": 1,
         "wifi": 0.5,
         "wi fi": 0.5,
@@ -244,7 +248,8 @@ const typeToKeywordWeights: Record<keyof typeof TicketTypes, KeywordWeights> = {
         "ip addr": 1,
         "port check": 1
     },
-    "Printers": {
+    // Printing
+    1007: {
         "mfd": 1,
         "print": 1,
         "printed": 1,
@@ -259,10 +264,12 @@ const typeToKeywordWeights: Record<keyof typeof TicketTypes, KeywordWeights> = {
         "copy machine": 1,
         "university of wisconsin purchase order": 5
     },
-    "Surplus": {
+    // Surplus
+    998: {
         "surplus": 1.5
     },
-    "Security": {
+    // Security
+    1008: {
         "high severity alert a potentially malicious url click was detected": 10,
         "microsoft 365 defender has merged the incidents detected in your environment": 10,
         "microsoft 365 defender has detected a security threat": 10,
@@ -275,11 +282,13 @@ const typeToKeywordWeights: Record<keyof typeof TicketTypes, KeywordWeights> = {
         "scam email": 1,
         "security": 1
     },
-    "Server": {
+    // Server
+    1003: {
         "server": 1,
         "bounced": 1
     },
-    "Canvas": {
+    // Canvas
+    1005: {
         "webassign": 1,
         "kaltura": 1,
         "katura": 1,
@@ -290,7 +299,8 @@ const typeToKeywordWeights: Record<keyof typeof TicketTypes, KeywordWeights> = {
         "canvas": 1,
         "blueprint course": 1
     },
-    "Office": {
+    // O365
+    1010: {
         "onedrive": 0.5,
         "email": 0.5,
         "emails": 0.5,
@@ -307,8 +317,8 @@ const typeToKeywordWeights: Record<keyof typeof TicketTypes, KeywordWeights> = {
         "outlook": 0.5,
         "get outlook for ios": -0.5, // Negative weight to reduce false positives
     },
-    "Deploy": {},
-    "Alumni Support": {
+    // Alumni
+    3415: {
         "alumni": 2,
         "deactivated": 1,
         "required security steps": 1,

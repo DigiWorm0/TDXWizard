@@ -5,18 +5,21 @@ import findTicketTypes from "../../utils/ticketType/findTicketTypes";
 import StatusClass from "../../tdx-api/types/StatusClass";
 import useSettings from "../../hooks/useSettings";
 import useTicket from "../../hooks/useTicket";
-import TicketTypes, {TicketType} from "../../db/TicketTypes";
 import getAppIDFromURL from "../../utils/tdx/getAppIDFromURL";
 import TDXButtonGroup from "./common/TDXButtonGroup";
 import TDXButton from "./common/TDXButton";
+import useTicketTypes from "../../hooks/useTicketTypes";
+import TicketType from "../../tdx-api/types/TicketType";
+import checkIsUWStout from "../../utils/checkIsUWStout";
 
 const TASK_NAME = "Recategorize Ticket";
 
 export default function TicketTypeButtons() {
     const ticket = useTicket();
     const [settings] = useSettings();
+    const allTicketTypes = useTicketTypes();
 
-    const types = React.useMemo(() => {
+    const suggestedTypeIDs = React.useMemo(() => {
         // Check if ticket is loaded
         if (!ticket)
             return null;
@@ -30,6 +33,15 @@ export default function TicketTypeButtons() {
         // Get the possible ticket types
         return findTicketTypes(ticket);
     }, [ticket, settings]);
+
+    const suggestedTypes = React.useMemo(() => {
+        // Check if suggested types are available
+        if (!suggestedTypeIDs)
+            return null;
+
+        // Get the ticket types from the IDs
+        return allTicketTypes?.filter(type => suggestedTypeIDs.includes(type.ID));
+    }, [suggestedTypeIDs, allTicketTypes]);
 
     const completeTask = async () => {
 
@@ -72,13 +84,8 @@ export default function TicketTypeButtons() {
         if (!appID)
             throw new Error("App ID not found");
 
-        // Get Type ID
-        const ticketTypeID = TicketTypes[type as TicketType];
-        if (!ticketTypeID)
-            throw new Error("Ticket Type not found");
-
         // Update Ticket
-        await client.tickets.updateTicket(appID, ticketID, {TypeID: ticketTypeID});
+        await client.tickets.updateTicket(appID, ticketID, {TypeID: type.ID});
 
         // Complete the task if it exists
         await completeTask();
@@ -124,17 +131,19 @@ export default function TicketTypeButtons() {
             window.location.reload();
     }
 
-    if (!types)
+    if (!checkIsUWStout())
+        return null;
+    if (!suggestedTypes)
         return null;
     return (
         <TDXButtonGroup>
-            {types?.map(type => (
+            {suggestedTypes.map(type => (
                 <TDXButton
-                    key={type}
-                    onClick={() => setType(type as TicketType)}
+                    key={type.ID}
+                    onClick={() => setType(type)}
                     noMargin
                     icon={`fa fa-solid fa-nopad fa-tag`}
-                    text={type}
+                    text={type.Name}
                 />
             ))}
             <TDXButtonGroup noMargin>
@@ -165,19 +174,17 @@ export default function TicketTypeButtons() {
                         }}
                         className="dropdown-divider"
                     />
-                    {Object.keys(TicketTypes)
-                        .sort((a, b) => a.localeCompare(b))
-                        .map(typeName => (
-                            <li key={typeName}>
-                                <a
-                                    className={"dropdown-item"}
-                                    href={"#"}
-                                    onClick={() => setType(typeName as TicketType)}
-                                >
-                                    {typeName}
-                                </a>
-                            </li>
-                        ))}
+                    {allTicketTypes?.map(ticketType => (
+                        <li key={ticketType.ID}>
+                            <a
+                                className={"dropdown-item"}
+                                href={"#"}
+                                onClick={() => setType(ticketType)}
+                            >
+                                {ticketType.Name}
+                            </a>
+                        </li>
+                    ))}
                 </ul>
             </TDXButtonGroup>
         </TDXButtonGroup>

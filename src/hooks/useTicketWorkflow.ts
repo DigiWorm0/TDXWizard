@@ -1,7 +1,6 @@
 import {atom, useAtomValue} from "jotai";
 import {unwrap} from "jotai/utils";
 import UWStoutTDXClient from "../utils/tdx/UWStoutTDXClient";
-import AppID from "../types/AppID";
 import getTicketIDFromURL from "../utils/tdx/getTicketIDFromURL";
 import getAppIDFromURL from "../utils/tdx/getAppIDFromURL";
 
@@ -14,7 +13,9 @@ export const ticketWorkflowAtom = atom(() => {
         return null;
 
     // Get the app ID
-    const appID = getAppIDFromURL() ?? AppID.Tickets;
+    const appID = getAppIDFromURL();
+    if (!appID)
+        return null;
 
     return client.tickets.getTicketWorkflow(appID, ticketID).catch(() => null);
 });

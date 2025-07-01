@@ -12,8 +12,6 @@ export default interface Settings {
     autoHideTicketTypes: boolean;
     autoCompleteRecategorizationTask: boolean;
     autoCloseTicketOnSave: boolean;
-    eStoutPickupButton: boolean;
-    eStoutResolveButton: boolean;
     ticketTypeThreshold: number;
     confirmActions: boolean;
     unlinkEmails: boolean;

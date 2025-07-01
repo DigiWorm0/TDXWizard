@@ -5,16 +5,18 @@ import useSettings from "../../hooks/useSettings";
 import useTicket from "../../hooks/useTicket";
 import useUser from "../../hooks/useUser";
 import User from "../../tdx-api/types/User";
-import groupNames from "../../db/GroupNames";
 import confirmAction from "../../utils/confirmAction";
 import getAppIDFromURL from "../../utils/tdx/getAppIDFromURL";
 import TDXButton from "./common/TDXButton";
 import TDXButtonGroup from "./common/TDXButtonGroup";
+import useGroups from "../../hooks/useGroups";
+import Group from "../../tdx-api/types/Group";
 
 
 export default function TicketAssignmentButtons() {
     const ticket = useTicket();
     const [settings] = useSettings();
+    const groups = useGroups();
 
     const requestor = useUser(ticket?.RequestorUid ?? "");
     const responder = useUser(ticket?.RespondedUid ?? "");
@@ -104,8 +106,8 @@ export default function TicketAssignmentButtons() {
         }
     }
 
-    const setGroup = async (groupID: number) => {
-        if (confirmAction(`Assign to ${groupNames[groupID]}?`)) {
+    const setGroup = async (group: Group) => {
+        if (confirmAction(`Assign to ${group.Name}?`)) {
 
             // API Client
             const client = new UWStoutTDXClient();
@@ -116,7 +118,7 @@ export default function TicketAssignmentButtons() {
 
             // Update Ticket
             await client.tickets.updateTicket(ticket.AppID, ticket.ID, {
-                ResponsibleGroupID: groupID,
+                ResponsibleGroupID: group.ID,
                 ResponsibleUid: undefined
             });
 
@@ -150,20 +152,17 @@ export default function TicketAssignmentButtons() {
                     icon={"fa fa-solid fa-nopad fa-lg fa-caret-down"}
                 />
                 <ul className={"dropdown-menu"}>
-                    {Object.keys(groupNames)
-                        .map(Number)
-                        .sort((a, b) => groupNames[a].localeCompare(groupNames[b]))
-                        .map(id => (
-                            <li key={id}>
-                                <a
-                                    className={"dropdown-item"}
-                                    href={"#"}
-                                    onClick={() => setGroup(id)}
-                                >
-                                    {groupNames[id]}
-                                </a>
-                            </li>
-                        ))
+                    {groups?.map(group => (
+                        <li key={group.ID}>
+                            <a
+                                className={"dropdown-item"}
+                                href={"#"}
+                                onClick={() => setGroup(group)}
+                            >
+                                {group.Name}
+                            </a>
+                        </li>
+                    ))
                     }
                 </ul>
             </TDXButtonGroup>

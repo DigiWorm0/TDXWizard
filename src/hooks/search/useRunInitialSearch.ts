@@ -11,6 +11,7 @@ type InitialSearchResultLoader = Promise<SearchResult | null>;
 export default function useRunInitialSearch() {
     const [settings] = useSettings();
     const ticketApps = useTicketAppIDs();
+    //const assetApps = useAssetAppIDs();
     const {enableNewSearchAutoDetectQuery} = settings;
 
     // Default search

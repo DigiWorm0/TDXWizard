@@ -49,8 +49,6 @@ const DefaultSettings: Settings = {
     bulkInventoryButton: true,
     reverseFeedOrder: false,
 
-    eStoutPickupButton: true,
-    eStoutResolveButton: true,
     resolveButton: false,
     updateButton: false,
 

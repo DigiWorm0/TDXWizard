@@ -2,7 +2,6 @@ import {atom, useAtomValue} from "jotai";
 import {unwrap} from "jotai/utils";
 import UWStoutTDXClient from "../utils/tdx/UWStoutTDXClient";
 import getAppIDFromURL from "../utils/tdx/getAppIDFromURL";
-import AppID from "../types/AppID";
 import getTicketIDFromURL from "../utils/tdx/getTicketIDFromURL";
 import getTaskIDFromURL from "../utils/tdx/getTaskIDFromURL";
 
@@ -21,7 +20,9 @@ export const ticketTaskFeedAtom = atom(async () => {
         return null;
 
     // Get the app ID
-    const appID = getAppIDFromURL() ?? AppID.Inventory;
+    const appID = getAppIDFromURL();
+    if (!appID)
+        return null;
 
     // Get the ticket feed
     const feed = await client.ticketTasks.getTicketTaskFeed(appID, ticketID, taskID);

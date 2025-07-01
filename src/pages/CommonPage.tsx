@@ -1,7 +1,6 @@
 import PageScript from "./PageScript";
 import getSettings from "../utils/getSettings";
 import addComponentToDOM from "../utils/addComponentToDOM";
-import PersonPanel from "../components/pages/PersonPanel";
 import SelectSelfButton from "../components/buttons/SelectSelfButton";
 import autoUpdateAuthKey from "../utils/autoUpdateAuthKey";
 import CustomStyles from "../components/style/CustomStyles";
@@ -21,7 +20,6 @@ export default class CommonPage implements PageScript {
         CommonPage.addToaster();
         CommonPage.replaceWindowLinks();
         CommonPage.replaceAllEmailLinks();
-        CommonPage.addUserLookup();
         CommonPage.addSelectSelfButton();
         CommonPage.runAutoUpdateAuthKey();
         CommonPage.replaceSearchBar();
@@ -61,22 +59,6 @@ export default class CommonPage implements PageScript {
 
         // Search function is on its own script
         unsafeWindow.top.WorkMgmt.GlobalSearch.instance.search = (searchQuery: string) => openWindow(`/TDNext/Apps/Shared/Global/Search?searchText=${encodeURIComponent(searchQuery)}`, "Global Search");
-    }
-
-    /**
-     * Adds a user lookup to the user panel
-     */
-    static addUserLookup() {
-        const userPanel = document.querySelector(".panel-person-card");
-        if (!userPanel)
-            return;
-
-        const userPanelBody = userPanel.querySelector(".media-body");
-        if (!userPanelBody)
-            return;
-
-        const userLinks = addComponentToDOM(userPanelBody, <PersonPanel/>);
-        userLinks.className = "gutter-top-xs ellipsis";
     }
 
     /**

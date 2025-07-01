@@ -11,6 +11,7 @@ import PeopleEndpoint from "./endpoints/PeopleEndpoint";
 import HTTPResponseError from "../utils/HTTPResponseError";
 import TicketTasksEndpoint from "./endpoints/TicketTasksEndpoint";
 import SearchEndpoint from "./endpoints/SearchEndpoint";
+import GroupsEndpoint from "./endpoints/GroupsEndpoint";
 
 export default class TDXClient {
     // The base URL of the TDX API
@@ -32,6 +33,7 @@ export default class TDXClient {
     feed: FeedEndpoint;
     people: PeopleEndpoint;
     search: SearchEndpoint;
+    groups: GroupsEndpoint;
 
     /**
      * Creates a new TDX client
@@ -52,6 +54,7 @@ export default class TDXClient {
         this.feed = new FeedEndpoint(this);
         this.people = new PeopleEndpoint(this);
         this.search = new SearchEndpoint(this);
+        this.groups = new GroupsEndpoint(this);
     }
 
     /**

@@ -14,8 +14,7 @@ export default defineConfig({
                 icon: 'https://i.imgur.com/YqFAJaY.png',
                 namespace: 'digiworm0.github.io',
                 match: [
-                    'https://uwstout.teamdynamix.com/*',
-                    'https://selfservicehd.uwstout.edu/helpdesk/*',
+                    'https://uwstout.teamdynamix.com/*'
                 ],
                 downloadURL: 'https://digiworm0.github.io/TDXWizard/tdx-wizard.user.js',
                 name: 'TDX Wizard',

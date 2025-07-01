@@ -14,7 +14,7 @@ const DefaultCustomTemplates: CustomTemplate[] = [
             By using [[RequestorFirstName]] (but use '{' instead of '['), I can insert the name of the ticket requestor.<br>
             <br>
             Thank you,<br>
-            UW-Stout Technology Helpdesk
+            Your Name
             </p>
             `
     }
