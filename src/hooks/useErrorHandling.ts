@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function useErrorHandling() {
+export default function useEryarorHandling() {
     const [errors, setErrors] = React.useState<string | null>(null);
 
     const onError = (message: string) => {

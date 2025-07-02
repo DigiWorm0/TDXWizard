@@ -4,7 +4,7 @@ import React from "react";
 import SearchResult from "../../types/SearchResult";
 import {SearchType} from "../../types/SearchType";
 import AppID from "../../types/AppID";
-import UWStoutTDXClient from "../../utils/tdx/UWStoutTDXClient";
+import LocalTDXClient from "../../tdx-api/LocalTDXClient";
 
 type InitialSearchResultLoader = Promise<SearchResult | null>;
 
@@ -14,7 +14,7 @@ export default function useRunInitialSearch() {
     //const assetApps = useAssetAppIDs();
     const {enableNewSearchAutoDetectQuery} = settings;
 
-    // Default search
+    // Default bettersearch
     return React.useCallback(async (searchQuery: string): Promise<SearchResult> => {
 
         // Default result to fallback to
@@ -30,7 +30,7 @@ export default function useRunInitialSearch() {
             return DEFAULT_RESULT;
 
         try {
-            // Get the target search type
+            // Get the target bettersearch type
             const targetSearchTypes = getTargetSearchTypes(searchQuery);
 
             // Ticket
@@ -60,7 +60,7 @@ export default function useRunInitialSearch() {
             }
         } catch (error) {
             // Log the error
-            console.error("Error during initial search:", error);
+            console.error("Error during initial bettersearch:", error);
         }
 
         // Default Search
@@ -110,15 +110,15 @@ function getTargetSearchTypes(searchQuery: string): SearchType[] {
             targetSearchTypes.push(type);
     }
 
-    // Return the target search types
+    // Return the target bettersearch types
     return targetSearchTypes;
 }
 
 async function trySearchTicket(appIDs: AppID[], type: SearchType, searchQuery: string): InitialSearchResultLoader {
     // API Client
-    const client = new UWStoutTDXClient();
+    const client = new LocalTDXClient();
 
-    // Get the ticket ID from the search query
+    // Get the ticket ID from the bettersearch query
     const ticketID = parseInt(searchQuery.trim(), 10);
     if (isNaN(ticketID))
         return null;
@@ -132,7 +132,7 @@ async function trySearchTicket(appIDs: AppID[], type: SearchType, searchQuery: s
             if (!ticket)
                 continue;
 
-            // Apply to the search URL
+            // Apply to the bettersearch URL
             return {
                 text: `${ticketID} - ${ticket.Title}`,
                 historyText: ticket.Title,
@@ -149,7 +149,7 @@ async function trySearchTicket(appIDs: AppID[], type: SearchType, searchQuery: s
 
 async function trySearchAsset(appID: AppID, type: SearchType, searchQuery: string): InitialSearchResultLoader {
     // API Client
-    const client = new UWStoutTDXClient();
+    const client = new LocalTDXClient();
 
     // Search for the asset
     const assets = await client.assets.searchAssets(appID, {
@@ -159,7 +159,7 @@ async function trySearchAsset(appID: AppID, type: SearchType, searchQuery: strin
     if (assets.length !== 1)
         return null;
 
-    // Apply to the search URL
+    // Apply to the bettersearch URL
     return {
         text: assets[0].Tag ?? assets[0].Name ?? searchQuery,
         type,
@@ -169,7 +169,7 @@ async function trySearchAsset(appID: AppID, type: SearchType, searchQuery: strin
 
 async function trySearchUser(type: SearchType, searchQuery: string): InitialSearchResultLoader {
     // API Client
-    const client = new UWStoutTDXClient();
+    const client = new LocalTDXClient();
 
     // Search for the user
     const users = await client.people.search({
@@ -179,7 +179,7 @@ async function trySearchUser(type: SearchType, searchQuery: string): InitialSear
     if (users.length === 0)
         return null;
 
-    // Apply to the search URL
+    // Apply to the bettersearch URL
     return {
         text: users[0].FullName ?? searchQuery,
         type,

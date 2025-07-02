@@ -1,10 +1,10 @@
 import PageScript from "./PageScript";
 import getSettings from "../utils/getSettings";
 import addComponentToDOM from "../utils/addComponentToDOM";
-import SelectSelfButton from "../components/buttons/SelectSelfButton";
+import SelectSelfButton from "../components/ticket/forms/SelectSelfButton";
 import autoUpdateAuthKey from "../utils/autoUpdateAuthKey";
-import CustomStyles from "../components/style/CustomStyles";
-import BetterSearch from "../components/search/BetterSearch";
+import CustomStyles from "../components/CustomStyles";
+import BetterSearch from "../components/bettersearch/BetterSearch";
 import openWindow from "../utils/openWindow";
 import {unsafeWindow} from "$";
 import {Toaster} from "react-hot-toast";
@@ -69,18 +69,18 @@ export default class CommonPage implements PageScript {
     }
 
     static replaceSearchBar() {
-        // Find the old search bar
+        // Find the old bettersearch bar
         const searchBar = document.getElementById("globalSearchBar");
         if (!searchBar || !searchBar.parentElement)
             return;
 
-        // Hide the old search bar
+        // Hide the old bettersearch bar
         // searchBar.style.display = "none";
 
-        // Add the new search bar
+        // Add the new bettersearch bar
         const newSearchBar = addComponentToDOM(searchBar.parentElement, <BetterSearch/>);
 
-        // Place before the old search bar
+        // Place before the old bettersearch bar
         searchBar.parentElement.insertBefore(newSearchBar, searchBar);
     }
 

@@ -1,12 +1,12 @@
-import UWStoutTDXClient from "../utils/tdx/UWStoutTDXClient";
+import LocalTDXClient from "../tdx-api/LocalTDXClient";
 import {unwrap} from "jotai/utils";
 import {atom, useAtomValue} from "jotai";
-import getAppIDFromURL from "../utils/tdx/getAppIDFromURL";
-import getAssetIDFromURL from "../utils/tdx/getAssetIDFromURL";
+import getAppIDFromURL from "../tdx-api/utils/getAppIDFromURL";
+import getAssetIDFromURL from "../tdx-api/utils/getAssetIDFromURL";
 
 export const assetAtom = atom(async () => {
     // API Client
-    const client = new UWStoutTDXClient();
+    const client = new LocalTDXClient();
 
 
     // Get the IDs

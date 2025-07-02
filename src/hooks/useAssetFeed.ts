@@ -1,12 +1,12 @@
 import {atom, useAtomValue} from "jotai";
 import {unwrap} from "jotai/utils";
-import UWStoutTDXClient from "../utils/tdx/UWStoutTDXClient";
-import getAssetIDFromURL from "../utils/tdx/getAssetIDFromURL";
-import getAppIDFromURL from "../utils/tdx/getAppIDFromURL";
+import LocalTDXClient from "../tdx-api/LocalTDXClient";
+import getAssetIDFromURL from "../tdx-api/utils/getAssetIDFromURL";
+import getAppIDFromURL from "../tdx-api/utils/getAppIDFromURL";
 
 export const assetFeedAtom = atom(async () => {
     // API Client
-    const client = new UWStoutTDXClient();
+    const client = new LocalTDXClient();
 
     // Get the asset ID
     const assetID = getAssetIDFromURL();
@@ -18,7 +18,7 @@ export const assetFeedAtom = atom(async () => {
     if (!appID)
         return null;
 
-    // Get the ticket feed
+    // Get the ticket betterfeed
     const feed = await client.assets.getAssetFeed(appID, assetID);
 
     // Grab the replies

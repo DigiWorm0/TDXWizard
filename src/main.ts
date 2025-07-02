@@ -6,7 +6,6 @@ import AssetDetailsPage from "./pages/AssetDetailsPage";
 import InventoryPage from "./pages/InventoryPage";
 import TicketUpdatePage from "./pages/TicketUpdatePage";
 import TicketCreatePage from "./pages/TicketCreatePage";
-import TicketPage from "./pages/TicketPage";
 import TicketTaskPage from "./pages/TicketTaskPage";
 import TicketPrintPage from "./pages/TicketPrintPage";
 
@@ -19,7 +18,6 @@ const allPages: PageScript[] = [
     new InventoryPage(),
     new TicketUpdatePage(),
     new TicketCreatePage(),
-    new TicketPage(),
     new TicketTaskPage(),
     new TicketPrintPage()
 ];

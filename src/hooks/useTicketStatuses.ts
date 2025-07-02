@@ -1,8 +1,8 @@
 import {useAtomValue} from "jotai";
 import {GM_getValue, GM_setValue} from "$";
 import TicketStatus from "../tdx-api/types/TicketStatus";
-import getAppIDFromURL from "../utils/tdx/getAppIDFromURL";
-import UWStoutTDXClient from "../utils/tdx/UWStoutTDXClient";
+import getAppIDFromURL from "../tdx-api/utils/getAppIDFromURL";
+import LocalTDXClient from "../tdx-api/LocalTDXClient";
 import {unwrap} from "jotai/utils";
 import atomWithCache from "../utils/atomWithCache";
 
@@ -21,7 +21,7 @@ export const ticketStatusesAtom = atomWithCache("ticketStatuses", async () => {
             return cache[appID];
 
         // Fetch the ticket status from the API
-        const client = new UWStoutTDXClient();
+        const client = new LocalTDXClient();
         const ticketStatuses = await client.tickets.getTicketStatuses(appID);
         if (!ticketStatuses)
             return [];

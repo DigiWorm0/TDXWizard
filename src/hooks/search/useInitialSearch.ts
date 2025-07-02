@@ -18,7 +18,7 @@ export default function useInitialSearch(query: string) {
         setResults([]);
         setIsLoading(true);
 
-        // Run the initial search query
+        // Run the initial bettersearch query
         runInitialSearch(query)
             .then((result) => {
                 if (isCanceled)

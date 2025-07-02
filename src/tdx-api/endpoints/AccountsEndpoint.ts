@@ -15,6 +15,6 @@ export default class AccountsEndpoint extends TDXEndpoint {
     }
 
     searchAccounts(searchQuery: AccountSearch) {
-        return this.client.jsonRequest<Account[]>("accounts/search", searchQuery);
+        return this.client.jsonRequest<Account[]>("accounts/bettersearch", searchQuery);
     }
 }

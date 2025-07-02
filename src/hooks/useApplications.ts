@@ -1,11 +1,11 @@
 import {useAtomValue} from "jotai";
 import {unwrap} from "jotai/utils";
-import UWStoutTDXClient from "../utils/tdx/UWStoutTDXClient";
+import LocalTDXClient from "../tdx-api/LocalTDXClient";
 import atomWithCache from "../utils/atomWithCache";
 
 export const applicationsAtom = atomWithCache("myApps", async () => {
     // API Client
-    const client = new UWStoutTDXClient();
+    const client = new LocalTDXClient();
 
     // Get all applications
     try {

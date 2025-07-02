@@ -1,7 +1,7 @@
 import PageScript from "./PageScript";
 import addComponentToDOM from "../utils/addComponentToDOM";
-import SettingsButton from "../components/buttons/SettingsButton";
-import DashboardButtons from "../components/buttons/DashboardButtons";
+import SettingsButton from "../components/settings/SettingsButton";
+import DashboardButtons from "../components/dashboard/DashboardButtons";
 
 const URL_PREFIX = "/TDWorkManagement"
 

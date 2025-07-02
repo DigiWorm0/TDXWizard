@@ -52,8 +52,6 @@ const DefaultSettings: Settings = {
     resolveButton: false,
     updateButton: false,
 
-    removeCopyURLButton: true,
-
     linkifyAttachments: true,
 
     suggestFormTypes: true,
@@ -77,6 +75,9 @@ const DefaultSettings: Settings = {
 
     enableAnimations: true,
     hideTicketBannerMessage: true,
+
+    defaultWindowWidth: 992,
+    defaultWindowHeight: 800,
 };
 
 export default DefaultSettings;

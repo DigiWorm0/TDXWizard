@@ -1,6 +1,6 @@
 import {atomFamily, unwrap} from "jotai/utils";
 import Guid from "../tdx-api/types/Guid";
-import UWStoutTDXClient from "../utils/tdx/UWStoutTDXClient";
+import LocalTDXClient from "../tdx-api/LocalTDXClient";
 import {useAtomValue} from "jotai";
 import DefaultGUID from "../types/DefaultGUID";
 import atomWithCache from "../utils/atomWithCache";
@@ -14,7 +14,7 @@ export const userAtomFamily = atomFamily((uid?: Guid) => {
 
         try {
             console.log(`Fetching user ${uid}`);
-            const client = new UWStoutTDXClient();
+            const client = new LocalTDXClient();
             return await client.people.getPerson(uid ?? "");
         } catch (e) {
             console.error(e);

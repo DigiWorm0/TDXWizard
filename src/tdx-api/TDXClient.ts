@@ -21,19 +21,19 @@ export default class TDXClient {
     private token: string | null = null;
 
     // Endpoints
-    accounts: AccountsEndpoint;
-    applications: ApplicationsEndpoint;
-    attachments: AttachmentsEndpoint;
-    attributes: AttributeEndpoint;
-    auth: AuthEndpoint;
-    tickets: TicketsEndpoint;
-    assets: AssetEndpoint;
-    ticketTypes: TicketsTypesEndpoint;
-    ticketTasks: TicketTasksEndpoint;
-    feed: FeedEndpoint;
-    people: PeopleEndpoint;
-    search: SearchEndpoint;
-    groups: GroupsEndpoint;
+    accounts = new AccountsEndpoint(this);
+    applications = new ApplicationsEndpoint(this);
+    attachments = new AttachmentsEndpoint(this);
+    attributes = new AttributeEndpoint(this);
+    auth = new AuthEndpoint(this);
+    tickets = new TicketsEndpoint(this);
+    assets = new AssetEndpoint(this);
+    ticketTypes = new TicketsTypesEndpoint(this);
+    ticketTasks = new TicketTasksEndpoint(this);
+    feed = new FeedEndpoint(this);
+    people = new PeopleEndpoint(this);
+    search = new SearchEndpoint(this);
+    groups = new GroupsEndpoint(this);
 
     /**
      * Creates a new TDX client
@@ -41,20 +41,6 @@ export default class TDXClient {
      */
     constructor(baseURL: string) {
         this.baseURL = baseURL;
-
-        this.accounts = new AccountsEndpoint(this);
-        this.applications = new ApplicationsEndpoint(this);
-        this.attachments = new AttachmentsEndpoint(this);
-        this.attributes = new AttributeEndpoint(this);
-        this.auth = new AuthEndpoint(this);
-        this.tickets = new TicketsEndpoint(this);
-        this.assets = new AssetEndpoint(this);
-        this.ticketTypes = new TicketsTypesEndpoint(this);
-        this.ticketTasks = new TicketTasksEndpoint(this);
-        this.feed = new FeedEndpoint(this);
-        this.people = new PeopleEndpoint(this);
-        this.search = new SearchEndpoint(this);
-        this.groups = new GroupsEndpoint(this);
     }
 
     /**

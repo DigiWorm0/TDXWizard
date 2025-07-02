@@ -1,5 +1,5 @@
 import React from "react";
-import UWStoutTDXClient from "../../utils/tdx/UWStoutTDXClient";
+import LocalTDXClient from "../../tdx-api/LocalTDXClient";
 import CustomAttributeComponent from "../../tdx-api/types/CustomAttributeComponent";
 import {SearchType} from "../../types/SearchType";
 import SearchResult from "../../types/SearchResult";
@@ -20,11 +20,11 @@ export default function useAutocompleteSearch(query: string) {
     React.useEffect(() => {
         let isCanceled = false;
 
-        // Don't search if the query is empty
+        // Don't bettersearch if the query is empty
         if (query.trim() === "")
             return;
 
-        // Wait for a delay before running the search to avoid too many requests
+        // Wait for a delay before running the bettersearch to avoid too many requests
         setTimeout(() => {
             if (isCanceled) return;
 
@@ -32,8 +32,8 @@ export default function useAutocompleteSearch(query: string) {
             setResults([]);
             setIsLoading(true);
 
-            // Run the search query
-            const client = new UWStoutTDXClient();
+            // Run the bettersearch query
+            const client = new LocalTDXClient();
             client.search.search(`"${query}"`)
                 .then((results) => {
                     if (isCanceled) return;

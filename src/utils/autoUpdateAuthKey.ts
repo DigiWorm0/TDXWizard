@@ -1,6 +1,6 @@
 import getSettings, {setSettings} from "./getSettings";
-import getAuthKeyFromSSO from "./tdx/getAuthKeyFromSSO";
-import UWStoutTDXClient from "./tdx/UWStoutTDXClient";
+import getAuthKeyFromSSO from "./getAuthKeyFromSSO";
+import LocalTDXClient from "../tdx-api/LocalTDXClient";
 import HTTPResponseError from "./HTTPResponseError";
 
 export default async function autoUpdateAuthKey() {
@@ -12,7 +12,7 @@ export default async function autoUpdateAuthKey() {
 
     // Check if the auth key is valid.
     try {
-        const client = new UWStoutTDXClient();
+        const client = new LocalTDXClient();
         await client.auth.getUser();
 
         // The auth key is up-to-date.

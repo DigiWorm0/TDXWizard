@@ -44,7 +44,6 @@ export default interface Settings {
     bulkInventoryButton: boolean;
     resolveButton: boolean;
     updateButton: boolean;
-    removeCopyURLButton: boolean;
     linkifyAttachments: boolean;
     suggestFormTypes: boolean;
     openLinksInNewWindow: boolean;
@@ -64,4 +63,7 @@ export default interface Settings {
 
     enableAnimations: boolean;
     hideTicketBannerMessage: boolean;
+
+    defaultWindowWidth: number;
+    defaultWindowHeight: number;
 }

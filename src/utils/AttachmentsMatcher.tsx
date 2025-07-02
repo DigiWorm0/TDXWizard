@@ -1,12 +1,16 @@
 import {ChildrenNode, Matcher, MatchResponse} from "interweave";
 import Attachment from "../tdx-api/types/Attachment";
 
-interface AttachmentMatch {
+export interface AttachmentMatch {
     attachment: Attachment;
 }
 
+// Require minimum attachment name length to avoid matching on very short names
 const MIN_ATTACHMENT_LENGTH = 5;
 
+/**
+ * Interweave matcher to inject links to attachments in the feed
+ */
 export default class AttachmentsMatcher extends Matcher<AttachmentMatch> {
     attachments: Attachment[];
 

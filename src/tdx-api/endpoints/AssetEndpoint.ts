@@ -32,6 +32,6 @@ export default class AssetEndpoint extends TDXEndpoint {
     }
 
     // getAssetFeed(appID: number, assetID: number) {
-    //     return this.client.jsonRequest<any>(`api/${appID}/assets/${assetID}/feed`);
+    //     return this.client.jsonRequest<any>(`api/${appID}/assets/${assetID}/betterfeed`);
     // }
 }

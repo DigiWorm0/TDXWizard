@@ -7,6 +7,6 @@ import Group from "../types/Group";
  */
 export default class GroupsEndpoint extends TDXEndpoint {
     search(query: GroupSearch) {
-        return this.client.jsonRequest<Group[]>('groups/search', query, "POST");
+        return this.client.jsonRequest<Group[]>('groups/bettersearch', query, "POST");
     }
 }
