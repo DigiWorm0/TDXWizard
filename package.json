@@ -1,6 +1,6 @@
 {
   "name": "tdx-wizard",
-  "description": "Automate common TDX functions",
+  "description": "UX/UI Extension for TeamDynamix",
   "author": "Digi",
   "private": true,
   "version": "0.4.1",

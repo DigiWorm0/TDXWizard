@@ -1,12 +1,12 @@
-# TDX Wizard 🪄
+![TDX Wizard](https://i.imgur.com/b3H1Sw2.png)
 
 This is a UserScript that enhances the TeamDynamix experience by adding user-friendly features and improvements.
-This extension's primary goal is to improve the user experience of IT technicians utilizing TeamDynamix for managing
-tickets and assets/CIs.
+This project's primary goal is to improve the user experience of IT technicians that use TeamDynamix to manage tickets
+and assets/CIs.
 
 *(This project is not affiliated with TeamDynamix)*
 
-![Settings Window](https://i.imgur.com/Ov6aEJM.png)
+![Example Ticket Feed](https://i.imgur.com/lZUAK8W.png)
 
 ## Features
 
@@ -65,7 +65,7 @@ This can be disabled by removing the `@updateURL` tag in the script's header.
 The following permissions are required for the script to function properly:
 
 - `GM_addStyle`: Adds custom CSS styles to the page
-- `GM_getValue`/`GM_setValue`: Store and retrieve user settings.
+- `GM_getValue`/`GM_setValue`: Store and retrieve user settings and cached values.
 - `unsafeWindow`: Patch TeamDynamix's tab/window management system to override default behavior
     - Primarily used for "Open Links in New Window" feature
 
@@ -78,7 +78,7 @@ This software is provided "as is", without warranty of any kind, express or impl
 
 The latest production build is available
 at [https://digiworm0.github.io/TDXWizard/tdx-wizard.user.js](https://digiworm0.github.io/TDXWizard/tdx-wizard.user.js)
-w/ nightly builds in the [GitHub Actions](https://github.com/DigiWorm0/TDXWizard/actions) tab.
+w/ each build in the [GitHub Actions](https://github.com/DigiWorm0/TDXWizard/actions) tab.
 If you'd like to build the script yourself, follow these steps:
 
 1. Install [Node.js](https://nodejs.org/en/download/)
