@@ -22,12 +22,12 @@ export default function BetterSearch() {
     }
 
     React.useEffect(() => {
-        // Find the old bettersearch bar
+        // Find the old search bar
         const searchBar = document.getElementById("globalSearchBar");
         if (!searchBar || !searchBar.parentElement)
             return;
 
-        // Hide the old bettersearch bar
+        // Hide the old search bar
         searchBar.style.display = settings.useNewSearch ? "none" : "block";
     }, [settings]);
 
@@ -54,7 +54,7 @@ export default function BetterSearch() {
         if (!searchQuery)
             return;
 
-        // Open the global bettersearch in a new window
+        // Open the global search in a new window
         openWindow(`/TDNext/Apps/Shared/Global/Search?searchText=${encodeURIComponent(searchQuery)}`, "Global Search");
     }
 
@@ -160,7 +160,7 @@ export default function BetterSearch() {
                     if (inputElement instanceof HTMLInputElement)
                         inputElement.focus();
 
-                    // If content, open the global bettersearch in a new window
+                    // If content, open the global search in a new window
                     forceSearch();
                 }}
             />

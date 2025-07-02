@@ -21,7 +21,7 @@ const SEARCH_TYPE_TO_ICON: Record<SearchType, string> = {
     Printer: "fa-print",
     Laptop: "fa-laptop",
     Ticket: "fa-ticket",
-    Search: "fa-bettersearch",
+    Search: "fa-search",
     Other: "fa-question"
 }
 
@@ -55,10 +55,10 @@ export default function BetterSearchResult(props: BetterSearchResultProps) {
         // Open the link in a new window
         openWindow(result.href, "Search Result");
 
-        // Hide the bettersearch dropdown
+        // Hide the search dropdown
         props.onHide();
 
-        // Save to bettersearch history
+        // Save to search history
         if (!props.disableHistory)
             appendSearchHistory({
                 ...result,

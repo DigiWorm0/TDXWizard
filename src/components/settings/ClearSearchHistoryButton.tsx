@@ -10,7 +10,7 @@ export default function ClearSearchHistoryButton() {
         e.preventDefault();
         e.stopPropagation();
 
-        if (!confirm("Are you sure you want to clear all bettersearch history?"))
+        if (!confirm("Are you sure you want to clear all search history?"))
             return;
 
         setSearchHistory([]);
@@ -22,7 +22,7 @@ export default function ClearSearchHistoryButton() {
             intent={"secondary"}
             icon={"fa fa-solid fa-undo me-1"}
             text={"Clear Search History"}
-            title={"Clears all bettersearch history"}
+            title={"Clears all search history"}
             onClick={onClick}
             noMargin
         />

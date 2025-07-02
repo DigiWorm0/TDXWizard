@@ -14,7 +14,7 @@ export interface TicketFeedEventProps {
     name: string,
     date: DateTime,
     body: string,
-    ticketAttachments?: Attachment[],
+    ticketAttachments?: Attachment[]
 }
 
 export default function FeedEvent(props: TicketFeedEventProps) {

@@ -68,7 +68,7 @@ export default function ConvertFeedButton(props: ConvertFeedButtonProps) {
     }
 
     React.useEffect(() => {
-        // Abort if disabled on specific betterfeed types
+        // Abort if disabled on specific feed types
         if (!settings.useNewFeedOnTickets && props.type === "ticket")
             return;
         if (!settings.useNewFeedOnAssets && props.type === "asset")

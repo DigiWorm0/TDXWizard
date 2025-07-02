@@ -5,18 +5,18 @@ export default interface TicketFeedEntry {
     // A field that can be passed into the update ticket API specifying whether it should cascade the status update. Defaults to false.
     CascadeStatus?: boolean;
 
-    // The comments of the betterfeed entry.
+    // The comments of the feed entry.
     Comments: string;
 
-    // The email addresses to notify associated with the betterfeed entry.
+    // The email addresses to notify associated with the feed entry.
     Notify?: string[];
 
-    // The private status of the betterfeed entry.
+    // The private status of the feed entry.
     IsPrivate: boolean,
 
-    // Indicates if the betterfeed entry is rich-text or plain-text.
+    // Indicates if the feed entry is rich-text or plain-text.
     IsRichHtml: boolean,
 
-    // Set the betterfeed entry as a communications record
+    // Set the feed entry as a communications record
     IsCommunication?: boolean,
 }

@@ -16,34 +16,38 @@ export default function SettingsDimensionsInput(props: SettingsDimensionsInputPr
     const setValue = (x: string, y: string) => {
         setSettings({
             ...settings,
-            [props.xSetting]: x,
-            [props.ySetting]: y,
+            [props.xSetting]: parseInt(x) || 0,
+            [props.ySetting]: parseInt(y) || 0,
         });
     }
 
     return (
         <div
-            className={"d-flex flex-row"}
+            className={`d-flex flex-row ${props.disabled ? "text-muted" : ""}`}
             title={props.title}
+            style={{fontSize: 14}}
         >
+            <label style={{marginBottom: 0, marginRight: 5, flexShrink: 0}}>
+                {props.label}
+            </label>
             <input
-                type="text"
-                placeholder={props.label}
+                type="number"
+                placeholder={"width"}
                 value={settings[props.xSetting] as string}
                 onChange={(e) => setValue(e.target.value, settings[props.ySetting] as string)}
-                style={{width: 100, height: 25, minHeight: 0, fontSize: 14}}
+                style={{width: 90, height: 25, minHeight: 0, fontSize: 14}}
                 disabled={props.disabled}
-                className={`${props.disabled ? "text-muted" : ""} form-control`}
+                className={"form-control"}
             />
             <span style={{margin: "0 5px"}}>x</span>
             <input
-                type="text"
-                placeholder={props.label}
+                type="number"
+                placeholder={"height"}
                 value={settings[props.ySetting] as string}
                 onChange={(e) => setValue(settings[props.xSetting] as string, e.target.value)}
-                style={{width: 100, height: 25, minHeight: 0, fontSize: 14}}
+                style={{width: 90, height: 25, minHeight: 0, fontSize: 14}}
                 disabled={props.disabled}
-                className={`${props.disabled ? "text-muted" : ""} form-control form-control-sm`}
+                className={"form-control"}
             />
         </div>
     );

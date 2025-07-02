@@ -18,7 +18,7 @@ export default function BigWindowInput(props: BigWindowInputProps) {
             return;
         e.preventDefault();
 
-        // Get the bettersearch query
+        // Get the search query
         const inputValue = e.currentTarget.value.trim();
         let searchQueries = inputValue.split("\n");
 

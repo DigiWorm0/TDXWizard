@@ -159,7 +159,7 @@ export default function SurplusManagerModal(props: BulkInventoryModalProps) {
                     }))
                 }));
 
-                // Add a ticket betterfeed comment
+                // Add a ticket feed comment
                 await runHTTPRequest(() => client.tickets.addTicketFeed(AppID.Tickets, ticket.ID, {
                     NewStatusID: inProgressID ?? ticket.StatusID,
                     IsCommunication: true,
@@ -294,7 +294,7 @@ export default function SurplusManagerModal(props: BulkInventoryModalProps) {
                 if (isResolved)
                     continue;
 
-                // Add a ticket betterfeed comment
+                // Add a ticket feed comment
                 await runHTTPRequest(() => client.tickets.addTicketFeed(AppID.Tickets, ticket.ID, {
                     NewStatusID: ticket.StatusID,
                     IsCommunication: true,

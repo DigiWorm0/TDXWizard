@@ -18,7 +18,7 @@ export const ticketFeedAtom = atom(async () => {
     if (!appID)
         return null;
 
-    // Get the ticket betterfeed
+    // Get the ticket feed
     const feed = await client.tickets.getTicketFeed(appID, ticketID);
 
     // Grab the replies

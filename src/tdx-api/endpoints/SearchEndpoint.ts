@@ -10,7 +10,7 @@ const SEARCH_QUERY_URL = "/TDNext/Apps/Shared/Global/Search";
 export default class SearchEndpoint extends TDXEndpoint {
     async search(searchQuery: string) {
 
-        // Not in the public API yet, so we manually post to the bettersearch endpoint
+        // Not in the public API yet, so we manually post to the search endpoint
         const res = await fetch(SEARCH_QUERY_URL, {
             method: "POST",
             body: JSON.stringify({

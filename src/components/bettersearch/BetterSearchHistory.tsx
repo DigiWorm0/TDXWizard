@@ -10,7 +10,7 @@ export default function BetterSearchHistory(props: BetterSearchHistoryProps) {
     const [searchHistory] = useSearchHistory();
     const [settings] = useSettings();
 
-    // Fallback if no bettersearch history is available
+    // Fallback if no search history is available
     if (!settings.enableNewSearchHistory || searchHistory.length === 0)
         return (
             <span

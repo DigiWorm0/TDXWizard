@@ -12,6 +12,6 @@ export default class PeopleEndpoint extends TDXEndpoint {
     }
 
     search(query: UserSearch) {
-        return this.client.jsonRequest<User[]>('people/bettersearch', query, "POST");
+        return this.client.jsonRequest<User[]>('people/search', query, "POST");
     }
 }

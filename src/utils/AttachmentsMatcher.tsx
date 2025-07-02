@@ -51,13 +51,13 @@ export default class AttachmentsMatcher extends Matcher<AttachmentMatch> {
     replaceWith(_: ChildrenNode, props: AttachmentMatch) {
         const {attachment} = props;
 
+        attachment.AttachmentType
         return (
             <a
-                href={`/TDNext/Apps/Shared/FileOpen?AttachmentID=${attachment.ID}&ItemID=${attachment.ItemID}&IsInline=0&ItemComponent=9`}
-                target={"_blank"}
-                rel={"noopener noreferrer"}
-                className={"attachment-link"}
                 key={attachment.ID}
+                href={`/TDNext/Apps/Shared/FileOpen?AttachmentID=${attachment.ID}&ItemID=${attachment.ItemID}&IsInline=0&ItemComponent=${attachment.AttachmentType}`}
+                download={attachment.Name}
+                className={"attachment-link"}
             >
                 {attachment.Name}
             </a>

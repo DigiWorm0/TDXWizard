@@ -32,7 +32,7 @@ export default class InventoryPage implements PageScript {
                 if (!newInventoryButton)
                     return;
 
-                // Move to before bettersearch
+                // Move to before search input
                 const search = navBar.querySelector(".tdx-action-menu-input");
                 if (!search)
                     return;

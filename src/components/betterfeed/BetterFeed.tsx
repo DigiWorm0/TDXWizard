@@ -8,6 +8,7 @@ import {replaceHTMLEntities} from "../../utils/removeHTMLTags";
 import DefaultGUID from "../../types/DefaultGUID";
 import useSettings from "../../hooks/useSettings";
 import FeedItemUpdate from "../../tdx-api/types/FeedItemUpdate";
+import FeedItemType from "../../tdx-api/types/FeedItemType";
 
 interface TicketFeedItem {
     ID: number;
@@ -20,6 +21,9 @@ interface TicketFeedItem {
     IsEmailMonitor?: boolean;
     ReplyToID?: number;
     NotifiedList: string;
+
+    ItemType?: FeedItemType;
+    ItemTitle?: string;
 }
 
 export interface TicketFeedProps {
@@ -27,6 +31,7 @@ export interface TicketFeedProps {
 }
 
 const MAX_TIME_OFFSET = 1000 * 60 * 60 * 24; // 24 hours
+const COMPLETED_REGEX = /Changed Percent Complete from "\d+ %" to "100 %"./g;
 
 export default function BetterFeed(props: TicketFeedProps) {
     const {feed} = props;
@@ -36,7 +41,7 @@ export default function BetterFeed(props: TicketFeedProps) {
     const sortedFeed = React.useMemo(() => {
         let newItems: TicketFeedItem[] = [];
 
-        // Convert the betterfeed to the correct format
+        // Convert the feed to the correct format
         feed?.forEach(item => {
 
             // Add the item to the new array
@@ -114,19 +119,31 @@ export default function BetterFeed(props: TicketFeedProps) {
 
                 // Replace each match with a new item
                 for (let o = 0; o < matches?.length; o++) {
-                    const m = matches[o];
-                    if (!m)
+                    const match = matches[o];
+                    if (!match)
                         continue;
 
+                    let newMessage = match;
+
+                    // Replace completed percentage with a checkmark
+                    COMPLETED_REGEX.lastIndex = 0;
+                    if (COMPLETED_REGEX.test(newMessage))
+                        newMessage = `${item.ItemTitle} <span class="fa fa-sm fa-check"></span><br>`;
+
+                    // Append Task Name if it's a Ticket Task
+                    else if (item.ItemType === FeedItemType.TicketTask)
+                        newMessage = `${item.ItemTitle} > ` + newMessage;
+
+                    // Add the new item
                     newItems.push({
                         ...item,
                         ID: Math.random(),
                         IsCommunication: false,
-                        Body: m
+                        Body: newMessage,
                     });
                     newItems[i] = {
                         ...item,
-                        Body: content.replace(m, ""),
+                        Body: content.replace(match, ""),
                     };
                 }
             }
@@ -152,7 +169,7 @@ export default function BetterFeed(props: TicketFeedProps) {
         // Remove Empty Messages
         newItems = newItems.filter(item => item.Body.trim() !== "");
 
-        // Sort the betterfeed by Date
+        // Sort the feed by Date
         newItems.sort((a, b) => getEpochFromDate(b.CreatedDate) - getEpochFromDate(a.CreatedDate));
         if (settings.reverseFeedOrder)
             newItems = newItems.reverse();

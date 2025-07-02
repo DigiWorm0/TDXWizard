@@ -66,4 +66,6 @@ export default interface Settings {
 
     defaultWindowWidth: number;
     defaultWindowHeight: number;
+
+    searchHistoryLimit: number;
 }

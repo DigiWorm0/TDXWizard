@@ -9,6 +9,7 @@ import UpdatedTimestamp from "../common/UpdatedTimestamp";
 import {Interweave} from "interweave";
 import AttachmentsMatcher from "../../utils/AttachmentsMatcher";
 import Attachment from "../../tdx-api/types/Attachment";
+import openWindow from "../../utils/openWindow";
 
 export interface TicketFeedCommunicationProps {
     id: number,
@@ -42,10 +43,10 @@ export default function FeedCommunication(props: TicketFeedCommunicationProps) {
         if (!containerRef.current)
             return;
 
-        // Scroll to the betterfeed
+        // Scroll to the feed
         containerRef.current.scrollIntoView({behavior: "smooth", block: "center"});
 
-        // Remove the target betterfeed ID after 2 seconds
+        // Remove the target feed ID after 2 seconds
         const timeout = setTimeout(() => {
             jumpToFeedID(undefined);
         }, 1500);
@@ -53,12 +54,8 @@ export default function FeedCommunication(props: TicketFeedCommunicationProps) {
     }, [isTargetFeed, props.id]);
 
     const openProfile = (e: React.MouseEvent<HTMLAnchorElement>) => {
-        window.open(
-            profileURL,
-            "Profile",
-            "width=992,height=700"
-        );
         e.preventDefault();
+        openWindow(profileURL);
     }
 
     return (

@@ -14,7 +14,7 @@ export default function useRunInitialSearch() {
     //const assetApps = useAssetAppIDs();
     const {enableNewSearchAutoDetectQuery} = settings;
 
-    // Default bettersearch
+    // Default search
     return React.useCallback(async (searchQuery: string): Promise<SearchResult> => {
 
         // Default result to fallback to
@@ -30,7 +30,7 @@ export default function useRunInitialSearch() {
             return DEFAULT_RESULT;
 
         try {
-            // Get the target bettersearch type
+            // Get the target search type
             const targetSearchTypes = getTargetSearchTypes(searchQuery);
 
             // Ticket
@@ -60,7 +60,7 @@ export default function useRunInitialSearch() {
             }
         } catch (error) {
             // Log the error
-            console.error("Error during initial bettersearch:", error);
+            console.error("Error during initial search:", error);
         }
 
         // Default Search
@@ -110,7 +110,7 @@ function getTargetSearchTypes(searchQuery: string): SearchType[] {
             targetSearchTypes.push(type);
     }
 
-    // Return the target bettersearch types
+    // Return the target search types
     return targetSearchTypes;
 }
 
@@ -118,7 +118,7 @@ async function trySearchTicket(appIDs: AppID[], type: SearchType, searchQuery: s
     // API Client
     const client = new LocalTDXClient();
 
-    // Get the ticket ID from the bettersearch query
+    // Get the ticket ID from the search query
     const ticketID = parseInt(searchQuery.trim(), 10);
     if (isNaN(ticketID))
         return null;
@@ -132,7 +132,7 @@ async function trySearchTicket(appIDs: AppID[], type: SearchType, searchQuery: s
             if (!ticket)
                 continue;
 
-            // Apply to the bettersearch URL
+            // Apply to the search URL
             return {
                 text: `${ticketID} - ${ticket.Title}`,
                 historyText: ticket.Title,
@@ -159,7 +159,7 @@ async function trySearchAsset(appID: AppID, type: SearchType, searchQuery: strin
     if (assets.length !== 1)
         return null;
 
-    // Apply to the bettersearch URL
+    // Apply to the search URL
     return {
         text: assets[0].Tag ?? assets[0].Name ?? searchQuery,
         type,
@@ -179,7 +179,7 @@ async function trySearchUser(type: SearchType, searchQuery: string): InitialSear
     if (users.length === 0)
         return null;
 
-    // Apply to the bettersearch URL
+    // Apply to the search URL
     return {
         text: users[0].FullName ?? searchQuery,
         type,

@@ -78,6 +78,8 @@ const DefaultSettings: Settings = {
 
     defaultWindowWidth: 992,
     defaultWindowHeight: 800,
+
+    searchHistoryLimit: 8,
 };
 
 export default DefaultSettings;

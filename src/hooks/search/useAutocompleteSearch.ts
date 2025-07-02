@@ -20,11 +20,11 @@ export default function useAutocompleteSearch(query: string) {
     React.useEffect(() => {
         let isCanceled = false;
 
-        // Don't bettersearch if the query is empty
+        // Don't search if the query is empty
         if (query.trim() === "")
             return;
 
-        // Wait for a delay before running the bettersearch to avoid too many requests
+        // Wait for a delay before running the search to avoid too many requests
         setTimeout(() => {
             if (isCanceled) return;
 
@@ -32,7 +32,7 @@ export default function useAutocompleteSearch(query: string) {
             setResults([]);
             setIsLoading(true);
 
-            // Run the bettersearch query
+            // Run the search query
             const client = new LocalTDXClient();
             client.search.search(`"${query}"`)
                 .then((results) => {

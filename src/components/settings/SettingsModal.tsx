@@ -12,6 +12,7 @@ import ImportSettingsButton from "./ImportSettingsButton";
 import ClearSearchHistoryButton from "./ClearSearchHistoryButton";
 import checkIsUWStout from "../../utils/checkIsUWStout";
 import SettingsDimensionsInput from "./input/SettingsDimensionsInput";
+import SettingsNumberInput from "./input/SettingsNumberInput";
 
 export interface SettingsModalProps {
     isOpen: boolean;
@@ -130,7 +131,7 @@ export default function SettingsModal(props: SettingsModalProps) {
 
                             <div style={{marginLeft: 20}}>
                                 <SettingsDimensionsInput
-                                    label={"Window Dimensions"}
+                                    label={"Popup Size"}
                                     title={"Sets the default size (in pixels) of new window popups"}
                                     xSetting={"defaultWindowWidth"}
                                     ySetting={"defaultWindowHeight"}
@@ -156,27 +157,36 @@ export default function SettingsModal(props: SettingsModalProps) {
                             <SettingsSwitchInput
                                 label={"Better Search"}
                                 setting={"useNewSearch"}
-                                title={"Replaces the TDX bettersearch with a re-designed version"}
+                                title={"Replaces the TDX search with a re-designed version"}
                             />
                             <div style={{marginLeft: 20}}>
                                 <SettingsSwitchInput
                                     label={"Autocomplete"}
                                     setting={"enableNewSearchAutocomplete"}
                                     disabled={!settings.useNewSearch}
-                                    title={"Enables auto-complete for the new bettersearch bar, suggesting results as you type. Can be disabled if it causes performance issues"}
+                                    title={"Enables auto-complete for the new search bar, suggesting results as you type. Can be disabled if it causes performance issues"}
                                 />
                                 <SettingsSwitchInput
                                     label={"Auto-Detect Search Query"}
                                     setting={"enableNewSearchAutoDetectQuery"}
                                     disabled={!settings.useNewSearch}
-                                    title={"Auto-detects certain types of bettersearch queries such as ticket IDs, asset tags, and usernames"}
+                                    title={"Auto-detects certain types of search queries such as ticket IDs, asset tags, and usernames"}
                                 />
                                 <SettingsSwitchInput
                                     label={"Search History"}
                                     setting={"enableNewSearchHistory"}
                                     disabled={!settings.useNewSearch}
-                                    title={"Saves the last few bettersearch queries and allows you to quickly re-open them"}
+                                    title={"Saves the last few search queries and allows you to quickly re-open them"}
                                 />
+
+                                <div style={{marginLeft: 20}}>
+                                    <SettingsNumberInput
+                                        label={"Search History Limit"}
+                                        setting={"searchHistoryLimit"}
+                                        disabled={!settings.enableNewSearchHistory || !settings.useNewSearch}
+                                        title={"Sets the maximum number of search history items to keep"}
+                                    />
+                                </div>
                             </div>
 
                             <SettingsHeader>Feed</SettingsHeader>
@@ -184,7 +194,7 @@ export default function SettingsModal(props: SettingsModalProps) {
                             <SettingsSwitchInput
                                 label={"Better Feed"}
                                 setting={"useNewFeed"}
-                                title={"Replaces the TDX betterfeed with a re-designed version (chronological order, minimize system messages, reply captions/links, etc)"}
+                                title={"Replaces the TDX feed with a re-designed version (chronological order, minimize system messages, reply captions/links, etc)"}
                             />
                             <div style={{marginLeft: 20}}>
                                 <SettingsSwitchInput
@@ -228,13 +238,13 @@ export default function SettingsModal(props: SettingsModalProps) {
                                     label={"Custom Profile Images"}
                                     setting={"customProfileImages"}
                                     disabled={!settings.useNewFeed}
-                                    title={"Shows/hides users' custom profile images in the betterfeed"}
+                                    title={"Shows/hides users' custom profile images in the feed"}
                                 />
                                 <SettingsSwitchInput
                                     label={"My Profile Color"}
                                     setting={"useCustomProfileColor"}
                                     disabled={!settings.useNewFeed}
-                                    title={"Uses a custom color for your profile in the betterfeed"}
+                                    title={"Uses a custom color for your profile in the feed"}
                                 />
                                 <div style={{marginLeft: 20}}>
                                     <SettingsColorPickerInput
@@ -274,7 +284,7 @@ export default function SettingsModal(props: SettingsModalProps) {
                             <SettingsSwitchInput
                                 label={"Suggest Ticket Assignments"}
                                 setting={"showTicketAssignButtons"}
-                                title={"Suggests assignments for ticket based on the betterfeed"}
+                                title={"Suggests assignments for ticket based on the feed"}
                             />
                             <div style={{marginLeft: 20}}>
                                 <SettingsSwitchInput

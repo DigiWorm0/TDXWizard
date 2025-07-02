@@ -53,7 +53,7 @@ icon to open the settings menu.
 > for improvements. You're always welcome to fork this project and add features curated to your own TeamDynamix
 > instance.
 
-### Privacy/Permissions
+### Privacy/Security
 
 This script does use your TDX instance's web API (TDWebAPI) to interact with TeamDynamix, but it does not collect or
 send any data to external servers.

@@ -40,7 +40,7 @@ export default class CommonPage implements PageScript {
             return;
 
         // Patch global window functions with custom implementations
-        // Explicitly calls `window.eval` to reference the global `window` object instead of the shadow DOM
+        // Explicitly calls `unsafeWindow` to reference the global `window` object instead of the shadow DOM
 
         if (unsafeWindow.top === null)
             throw new Error("window.top is null, cannot replace window links");
@@ -69,18 +69,18 @@ export default class CommonPage implements PageScript {
     }
 
     static replaceSearchBar() {
-        // Find the old bettersearch bar
+        // Find the old search bar
         const searchBar = document.getElementById("globalSearchBar");
         if (!searchBar || !searchBar.parentElement)
             return;
 
-        // Hide the old bettersearch bar
+        // Hide the old search bar
         // searchBar.style.display = "none";
 
-        // Add the new bettersearch bar
+        // Add the new search bar
         const newSearchBar = addComponentToDOM(searchBar.parentElement, <BetterSearch/>);
 
-        // Place before the old bettersearch bar
+        // Place before the old search bar
         searchBar.parentElement.insertBefore(newSearchBar, searchBar);
     }
 

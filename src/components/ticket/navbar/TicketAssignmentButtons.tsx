@@ -76,7 +76,7 @@ export default function TicketAssignmentButtons() {
         newAssignments = newAssignments.filter(assignment => assignment?.SecurityRoleName !== "Client");
 
         return newAssignments as User[];
-    }, [ticket, userList]);
+    }, [ticket, userList, shouldHide]);
 
     const setAssignment = async (assignment: User) => {
         if (confirmAction(`Assign to ${assignment.FullName}?`)) {
@@ -155,6 +155,7 @@ export default function TicketAssignmentButtons() {
                     {groups?.map(group => (
                         <li key={group.ID}>
                             <a
+                                title={`Assign this ticket to ${group.Name}`}
                                 className={"dropdown-item"}
                                 href={"#"}
                                 onClick={() => setGroup(group)}

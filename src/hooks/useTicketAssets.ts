@@ -18,7 +18,7 @@ export const ticketAssetsAtom = atom(async () => {
     if (!appID)
         return null;
 
-    // Get the ticket betterfeed
+    // Get the ticket feed
     return await client.tickets.getTicketAssets(appID, ticketID);
 });
 
