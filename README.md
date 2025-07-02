@@ -34,16 +34,13 @@ tickets and assets/CIs.
 
 ## Installation
 
-1. Install a UserScript extension in your
-   browser ([TamperMonkey](https://www.tampermonkey.net/)/[ViolentMonkey](https://violentmonkey.github.io/))
-    - If you're using a chromium-based browser (Chrome/Edge/Opera), you'll need to follow the extension's instructions
-      to enable "developer mode"
+1. Install a UserScript extension to your
+   browser
+    - [TamperMonkey](https://www.tampermonkey.net/) / [ViolentMonkey](https://violentmonkey.github.io/)
 2. Go
    to [https://digiworm0.github.io/TDXWizard/tdx-wizard.user.js](https://digiworm0.github.io/TDXWizard/tdx-wizard.user.js)
-3. Change `@match` in the script header to match your TeamDynamix subdomain (e.g.
-   `https://yourcompany.teamdynamix.com/*`)
-    - By default, this is set to UW-Stout's TeamDynamix URL
-5. Open/Refresh your TeamDynamix page
+3. Click the "Install" button
+4. Open/Refresh your TeamDynamix page
 
 If installed correctly, you should see a wizard icon in the top right corner next to your profile. You can click this
 icon to open the settings menu.

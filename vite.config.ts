@@ -14,7 +14,9 @@ export default defineConfig({
                 icon: 'https://i.imgur.com/YqFAJaY.png',
                 namespace: 'digiworm0.github.io',
                 match: [
-                    'https://uwstout.teamdynamix.com/*'
+                    // Matches all TDX instances (both our own and others)
+                    // Match all TDX endpoints (TDNext, TDWorkManagement, TDWebAPI, etc.)
+                    'https://*.teamdynamix.com/*'
                 ],
                 downloadURL: 'https://digiworm0.github.io/TDXWizard/tdx-wizard.user.js',
                 name: 'TDX Wizard',
