@@ -69,5 +69,9 @@ export default interface Settings {
     defaultWindowHeight: number;
 
     searchHistoryLimit: number;
+
+    // These settings have no UI, but can be edited by manually editing an exported settings.json file
     autoDetectSearchTypes: AutoDetectSearchType[];
+    ticketTypeAliases: Record<number, string>;
+    hideTicketTypes: number[];
 }

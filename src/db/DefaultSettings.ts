@@ -85,7 +85,9 @@ const DefaultSettings: Settings = {
     autoDetectSearchTypes: [
         {type: "Ticket" as SearchType, regexes: ["^\\d{5,8}$"]},
         {type: "Person" as SearchType, regexes: ["^.+@"]}
-    ]
+    ],
+    ticketTypeAliases: {},
+    hideTicketTypes: []
 };
 
 export default DefaultSettings;

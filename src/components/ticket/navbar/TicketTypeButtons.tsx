@@ -14,10 +14,42 @@ import checkIsUWStout from "../../../utils/checkIsUWStout";
 
 const TASK_NAME = "Recategorize Ticket";
 
+const UWSTOUT_HIDE_TICKET_TYPES = [
+    2274,   // Chargebacks
+    99,     // General/EmailService
+    663     // General/Portal
+];
+
+const UWSTOUT_TYPE_ALIASES = {
+    630: "Lab Rooms",
+    999: "Lab Hardware",
+    995: "CTS",
+    997: "eStout",
+    998: "Surplus"
+};
+
 export default function TicketTypeButtons() {
     const ticket = useTicket();
     const [settings] = useSettings();
     const allTicketTypes = useTicketTypes();
+
+    const visibleTicketTypes = React.useMemo(() => {
+
+        let hiddenTicketTypes = [...settings.hideTicketTypes];
+        let typeAliases = {...settings.ticketTypeAliases};
+
+        if (checkIsUWStout()) {
+            hiddenTicketTypes.push(...UWSTOUT_HIDE_TICKET_TYPES);
+            typeAliases = {...typeAliases, ...UWSTOUT_TYPE_ALIASES}
+        }
+
+        return allTicketTypes
+            // Hide hidden ticket types
+            ?.filter(type => !hiddenTicketTypes.includes(type.ID))
+
+            // Apply name aliases
+            .map(type => ({...type, Name: typeAliases[type.ID] || type.Name}))
+    }, [allTicketTypes]);
 
     const suggestedTypeIDs = React.useMemo(() => {
         // Check if ticket is loaded
@@ -40,8 +72,8 @@ export default function TicketTypeButtons() {
             return null;
 
         // Get the ticket types from the IDs
-        return allTicketTypes?.filter(type => suggestedTypeIDs.includes(type.ID));
-    }, [suggestedTypeIDs, allTicketTypes]);
+        return visibleTicketTypes?.filter(type => suggestedTypeIDs.includes(type.ID));
+    }, [suggestedTypeIDs, visibleTicketTypes]);
 
     const completeTask = async () => {
 
@@ -133,7 +165,7 @@ export default function TicketTypeButtons() {
 
     if (!checkIsUWStout())
         return null;
-    if (!suggestedTypes)
+    if (!suggestedTypes || !visibleTicketTypes)
         return null;
     return (
         <TDXButtonGroup>
@@ -174,17 +206,19 @@ export default function TicketTypeButtons() {
                         }}
                         className="dropdown-divider"
                     />
-                    {allTicketTypes?.map(ticketType => (
-                        <li key={ticketType.ID}>
-                            <a
-                                className={"dropdown-item"}
-                                href={"#"}
-                                onClick={() => setType(ticketType)}
-                            >
-                                {ticketType.Name}
-                            </a>
-                        </li>
-                    ))}
+                    {visibleTicketTypes
+                        .sort((a, b) => a.Name.localeCompare(b.Name))
+                        .map(ticketType => (
+                            <li key={ticketType.ID}>
+                                <a
+                                    className={"dropdown-item"}
+                                    href={"#"}
+                                    onClick={() => setType(ticketType)}
+                                >
+                                    {ticketType.Name}
+                                </a>
+                            </li>
+                        ))}
                 </ul>
             </TDXButtonGroup>
         </TDXButtonGroup>
