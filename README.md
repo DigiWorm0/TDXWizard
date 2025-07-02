@@ -1,4 +1,6 @@
-![TDX Wizard](https://i.imgur.com/b3H1Sw2.png)
+<p align="center">
+<img src="https://i.imgur.com/b3H1Sw2.png" alt="TDX Wizard" />
+</p>
 
 This is a UserScript that enhances the TeamDynamix experience by adding user-friendly features and improvements.
 This project's primary goal is to improve the user experience of IT technicians that use TeamDynamix to manage tickets
