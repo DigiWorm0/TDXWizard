@@ -6,7 +6,6 @@ import BulkInventoryAssetRow from "./BulkInventoryAssetRow";
 import updateAssets from "../../../utils/assets/updateAssets";
 import createTicketWithAssets from "../../../utils/assets/createTicketWithAssets";
 import createAssetsCSV from "../../../utils/assets/createAssetsCSV";
-import AppID from "../../../types/AppID";
 import useErrorHandling from "../../../hooks/useErrorHandling";
 import useRunPromise from "../../../hooks/useRunPromise";
 import BigWindowError from "../../common/bigwindow/BigWindowError";
@@ -175,7 +174,7 @@ export default function BulkInventoryModal(props: BulkInventoryModalProps) {
             <div className={"mt-2"}>
                 <TDXButton
                     type={"tdx"}
-                    onClick={() => updateAssets(props.appID ?? AppID.Inventory, assets)}
+                    onClick={() => updateAssets(props.appID, assets)}
                     disabled={assets.length === 0 || isLoading}
                     title={"Update all selected assets"}
                     icon={"fa fa-pen-to-square me-1"}
@@ -184,7 +183,7 @@ export default function BulkInventoryModal(props: BulkInventoryModalProps) {
 
                 <TDXButton
                     type={"tdx"}
-                    onClick={() => createTicketWithAssets(props.appID ?? AppID.Inventory, assets)}
+                    onClick={() => createTicketWithAssets(props.appID, assets)}
                     disabled={assets.length === 0 || isLoading}
                     title={"Create a ticket with the selected assets"}
                     icon={"fa fa-ticket me-1"}

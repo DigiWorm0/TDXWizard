@@ -1,4 +1,5 @@
 import CustomTemplate from "./CustomTemplate";
+import AutoDetectSearchType from "./SearchCategory";
 
 export default interface Settings {
     autoUpdateAuthKey: boolean;
@@ -68,4 +69,5 @@ export default interface Settings {
     defaultWindowHeight: number;
 
     searchHistoryLimit: number;
+    autoDetectSearchTypes: AutoDetectSearchType[];
 }

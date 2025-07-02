@@ -1,10 +1,8 @@
 export enum SearchType {
+    // General
     Person = "Person",
-    EStout = "EStout",
-    Printer = "Printer",
-    Laptop = "Laptop",
+    Asset = "Asset",
     Ticket = "Ticket",
-    
     Other = "Other",
     Search = "Search"
 }

@@ -3,11 +3,11 @@ import LocalTDXClient from "../../../tdx-api/LocalTDXClient";
 import getTicketIDFromURL from "../../../tdx-api/utils/getTicketIDFromURL";
 import useSettings from "../../../hooks/useSettings";
 import useTicket from "../../../hooks/useTicket";
-import AppID from "../../../types/AppID";
 import useTicketAssets from "../../../hooks/useTicketAssets";
 import useTicketFeed from "../../../hooks/useTicketFeed";
 import TDXButtonGroup from "../../common/TDXButtonGroup";
 import TDXButton from "../../common/TDXButton";
+import UWStoutAppID from "../../../types/UWStoutAppID";
 
 const REGEX_LIST = [
     /\b[Cc]-?\d{4,5}\b/g, // C-Number
@@ -71,7 +71,7 @@ export default function TicketAssetButtons() {
                 throw new Error("Ticket ID not found");
 
             // Find Asset ID
-            const appID = assetName.toLowerCase().startsWith("c") ? AppID.Inventory : AppID.EStoutInventory;
+            const appID = assetName.toLowerCase().startsWith("c") ? UWStoutAppID.Inventory : UWStoutAppID.EStoutInventory;
             const assets = await client.assets.searchAssets(appID, {SerialLike: assetName, MaxResults: 1});
             if (assets.length === 0)
                 throw new Error("Asset not found");

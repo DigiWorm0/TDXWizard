@@ -1,5 +1,6 @@
 import Settings from "../types/Settings";
 import DefaultCustomTemplates from "./DefaultCustomTemplates";
+import {SearchType} from "../types/SearchType";
 
 const DefaultSettings: Settings = {
     showStatsButton: true,
@@ -80,6 +81,11 @@ const DefaultSettings: Settings = {
     defaultWindowHeight: 800,
 
     searchHistoryLimit: 8,
+
+    autoDetectSearchTypes: [
+        {type: "Ticket" as SearchType, regexes: ["^\\d{5,8}$"]},
+        {type: "Person" as SearchType, regexes: ["^.+@"]}
+    ]
 };
 
 export default DefaultSettings;

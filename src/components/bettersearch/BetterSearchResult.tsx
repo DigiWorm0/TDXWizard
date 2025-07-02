@@ -17,22 +17,18 @@ export interface BetterSearchResultProps {
 
 const SEARCH_TYPE_TO_ICON: Record<SearchType, string> = {
     Person: "fa-user",
-    EStout: "fa-laptop",
-    Printer: "fa-print",
-    Laptop: "fa-laptop",
+    Asset: "fa-laptop",
     Ticket: "fa-ticket",
     Search: "fa-search",
     Other: "fa-question"
-}
+};
 
 export default function BetterSearchResult(props: BetterSearchResultProps) {
     const appendSearchHistory = useAppendSearchHistory();
     const {result} = props;
 
     const color = React.useMemo(() => {
-        if (result.type === SearchType.Laptop ||
-            result.type === SearchType.Printer ||
-            result.type === SearchType.EStout)
+        if (result.type === SearchType.Asset)
             return "#007bff"; // blue for Asset
         if (result.type === SearchType.Ticket)
             return "#fd7e14"; // orange for Ticket

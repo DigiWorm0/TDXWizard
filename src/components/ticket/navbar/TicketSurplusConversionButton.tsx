@@ -1,10 +1,10 @@
 import confirmAction from "../../../utils/confirmAction";
 import LocalTDXClient from "../../../tdx-api/LocalTDXClient";
-import AppID from "../../../types/AppID";
 import useSettings from "../../../hooks/useSettings";
 import getTicketIDFromURL from "../../../tdx-api/utils/getTicketIDFromURL";
 import useTicket from "../../../hooks/useTicket";
 import TDXButton from "../../common/TDXButton";
+import UWStoutAppID from "../../../types/UWStoutAppID";
 
 export default function TicketSurplusConversionButton() {
     const [settings] = useSettings();
@@ -20,12 +20,12 @@ export default function TicketSurplusConversionButton() {
                 throw new Error("Ticket ID not found");
 
             // Get Ticket
-            const ticket = await client.tickets.getTicket(AppID.Tickets, ticketID);
+            const ticket = await client.tickets.getTicket(UWStoutAppID.Tickets, ticketID);
             if (!ticket)
                 throw new Error("Ticket not found");
 
             // Edit Ticket
-            await client.tickets.editTicket(AppID.Tickets, ticketID, {
+            await client.tickets.editTicket(UWStoutAppID.Tickets, ticketID, {
                 ...ticket,
                 FormID: 1061 // Surplus
             });

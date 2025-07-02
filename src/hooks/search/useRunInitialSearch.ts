@@ -5,19 +5,24 @@ import SearchResult from "../../types/SearchResult";
 import {SearchType} from "../../types/SearchType";
 import AppID from "../../types/AppID";
 import LocalTDXClient from "../../tdx-api/LocalTDXClient";
+import getSettings from "../../utils/getSettings";
+import useAssetAppIDs from "../useAssetAppIDs";
+import AutoDetectSearchType from "../../types/SearchCategory";
+import UWStoutAppID from "../../types/UWStoutAppID";
+import checkIsUWStout from "../../utils/checkIsUWStout";
 
 type InitialSearchResultLoader = Promise<SearchResult | null>;
 
 export default function useRunInitialSearch() {
     const [settings] = useSettings();
     const ticketApps = useTicketAppIDs();
-    //const assetApps = useAssetAppIDs();
+    const assetApps = useAssetAppIDs();
     const {enableNewSearchAutoDetectQuery} = settings;
 
     // Default search
     return React.useCallback(async (searchQuery: string): Promise<SearchResult> => {
 
-        // Default result to fallback to
+        // Default result to fall back to
         const DEFAULT_RESULT: SearchResult = {
             text: `Search "${searchQuery}"`,
             historyText: searchQuery,
@@ -33,30 +38,35 @@ export default function useRunInitialSearch() {
             // Get the target search type
             const targetSearchTypes = getTargetSearchTypes(searchQuery);
 
-            // Ticket
-            if (targetSearchTypes.includes(SearchType.Ticket)) {
-                const res = await trySearchTicket(ticketApps, SearchType.Ticket, searchQuery);
-                if (res) return res;
-            }
+            // Iterate through the target search types
+            for (const type of targetSearchTypes) {
 
-            // User
-            if (targetSearchTypes.includes(SearchType.Person)) {
-                const res = await trySearchUser(SearchType.Person, searchQuery);
-                if (res) return res;
-            }
+                // If the type is not defined, skip it
+                if (!type || !type.type)
+                    continue;
 
-            // Asset
-            if (targetSearchTypes.includes(SearchType.Laptop)) {
-                const res = await trySearchAsset(AppID.Inventory, SearchType.Laptop, searchQuery);
-                if (res) return res;
-            }
-            if (targetSearchTypes.includes(SearchType.EStout)) {
-                const res = await trySearchAsset(AppID.EStoutInventory, SearchType.EStout, searchQuery);
-                if (res) return res;
-            }
-            if (targetSearchTypes.includes(SearchType.Printer)) {
-                const res = await trySearchAsset(AppID.PrinterInventory, SearchType.Printer, searchQuery);
-                if (res) return res;
+                // Search for Assets
+                if (type.type === SearchType.Asset) {
+                    const appIDs = type.appID ? [type.appID] : assetApps;
+                    const res = await trySearchAsset(appIDs, SearchType.Asset, searchQuery);
+                    if (res) return res;
+                }
+
+                // Search for Tickets
+                else if (type.type === SearchType.Ticket) {
+                    const appIDs = type.appID ? [type.appID] : ticketApps;
+                    const res = await trySearchTicket(appIDs, SearchType.Ticket, searchQuery);
+                    if (res) return res;
+                }
+
+                // Search for People
+                else if (type.type === SearchType.Person) {
+                    const res = await trySearchUser(SearchType.Person, searchQuery);
+                    if (res) return res;
+                }
+
+                // Unknown search type
+                console.warn(`Unknown search type: ${type.type}`);
             }
         } catch (error) {
             // Log the error
@@ -65,48 +75,54 @@ export default function useRunInitialSearch() {
 
         // Default Search
         return DEFAULT_RESULT;
-    }, [enableNewSearchAutoDetectQuery, ticketApps]);
+    }, [enableNewSearchAutoDetectQuery, ticketApps, assetApps]);
 }
 
-const REGEX_LIST: Partial<Record<SearchType, RegExp[]>> = {
-    "Person": [
-        /^0\d{6}$/, // Student ID (0 - 7 digits)
-        /^[a-zA-Z]+\d{4}$/, // Username
-        /^.+@/, // Email
-    ],
-    "Laptop": [
-        /^[Cc]-?\d{4,5}$/, // C-Number (Computer)
-        /^[A-Z0-9]{10,}$/, // Serial Number (10+ alphanumeric characters)
-    ],
-    "EStout": [
-        /^20\d{7}$/, // Asset Tag
-        /^[A-Z0-9]{10,}$/, // Serial Number (10+ alphanumeric characters)
-    ],
-    "Printer": [
-        /^[Ll][Pp]-?\d{4}$/, // LP-Number (Printer)
-        /^[A-Z0-9]{10,}$/, // Serial Number (10+ alphanumeric characters)
-    ],
-    "Ticket": [
-        /^\d{5,8}$/ // Ticket Number
-    ]
-};
+const UWSTOUT_TYPES: AutoDetectSearchType[] = [
+    {
+        type: SearchType.Person,
+        regexes: ["^0\\d{6}$", "^[a-zA-Z]+\\d{4}$"]
+    },
+    {
+        // Faculty/Staff Assets
+        type: SearchType.Asset,
+        appID: UWStoutAppID.Inventory,
+        regexes: ["^[Cc]-?\\d{4,5}$"]
+    },
+    {
+        // Student Assets
+        type: SearchType.Asset,
+        appID: UWStoutAppID.EStoutInventory,
+        regexes: ["^20\\d{7}$"]
+    },
+    {
+        // Printer Assets
+        type: SearchType.Asset,
+        appID: UWStoutAppID.PrinterInventory,
+        regexes: ["^[Ll][Pp]-?\\d{4}$"]
+    },
+];
 
-function getTargetSearchTypes(searchQuery: string): SearchType[] {
+function getTargetSearchTypes(searchQuery: string): AutoDetectSearchType[] {
     if (!searchQuery)
         return [];
+
+    // Get the search types from settings
+    const {autoDetectSearchTypes} = getSettings();
+    let allSearchTypes = autoDetectSearchTypes || [];
+    if (checkIsUWStout())
+        allSearchTypes = [...allSearchTypes, ...UWSTOUT_TYPES];
 
     // Trim the query
     const trimmedQuery = searchQuery.trim();
 
-
     // Loop through Search Types
-    const allSearchTypes = Object.keys(REGEX_LIST) as SearchType[];
-    const targetSearchTypes: SearchType[] = [];
+    const targetSearchTypes: AutoDetectSearchType[] = [];
     for (const type of allSearchTypes) {
 
         // Find matching regexes
-        const regexes = REGEX_LIST[type];
-        if (regexes?.some(regex => regex.test(trimmedQuery)))
+        const regexes = type.regexes?.map(regex => new RegExp(regex)) || [];
+        if (regexes.some(regex => regex.test(trimmedQuery)))
             targetSearchTypes.push(type);
     }
 
@@ -128,7 +144,7 @@ async function trySearchTicket(appIDs: AppID[], type: SearchType, searchQuery: s
 
         // Get the ticket
         try {
-            const ticket = await client.tickets.getTicket(appID, ticketID);
+            const ticket = await client.tickets.getTicket(appID, ticketID).catch(() => null);
             if (!ticket)
                 continue;
 
@@ -147,24 +163,33 @@ async function trySearchTicket(appIDs: AppID[], type: SearchType, searchQuery: s
     return null;
 }
 
-async function trySearchAsset(appID: AppID, type: SearchType, searchQuery: string): InitialSearchResultLoader {
+async function trySearchAsset(appIDs: AppID[], type: SearchType, searchQuery: string): InitialSearchResultLoader {
     // API Client
     const client = new LocalTDXClient();
 
-    // Search for the asset
-    const assets = await client.assets.searchAssets(appID, {
-        SerialLike: searchQuery.trim(),
-        MaxResults: 2
-    });
-    if (assets.length !== 1)
-        return null;
+    // Iterate through the app IDs
+    for (const appID of appIDs) {
 
-    // Apply to the search URL
-    return {
-        text: assets[0].Tag ?? assets[0].Name ?? searchQuery,
-        type,
-        href: `/TDNext/Apps/${appID}/Assets/AssetDet?AssetID=${assets[0].ID}`
+        // Search for the asset
+        const assets = await client.assets.searchAssets(appID, {
+            SerialLike: searchQuery.trim(),
+            MaxResults: 2
+        }).catch(() => []); // Ignore errors, return empty array
+
+        // Only allow if exactly one asset is found
+        if (assets.length !== 1)
+            continue;
+
+        // Apply to the search URL
+        return {
+            text: assets[0].Tag ?? assets[0].Name ?? searchQuery,
+            type,
+            href: `/TDNext/Apps/${appID}/Assets/AssetDet?AssetID=${assets[0].ID}`
+        }
     }
+
+    // No asset found
+    return null;
 }
 
 async function trySearchUser(type: SearchType, searchQuery: string): InitialSearchResultLoader {
@@ -175,7 +200,7 @@ async function trySearchUser(type: SearchType, searchQuery: string): InitialSear
     const users = await client.people.search({
         SearchText: searchQuery.trim(),
         MaxResults: 1
-    });
+    }).catch(() => []);
     if (users.length === 0)
         return null;
 

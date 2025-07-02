@@ -8,7 +8,7 @@ export const assetAppIDsAtom = atom((get) => {
         return [];
 
     return applications
-        .filter(app => app.Type === "Assets/CI")
+        .filter(app => app.Type === "Asset/CI")
         .map(app => app.AppID as AppID);
 });
 

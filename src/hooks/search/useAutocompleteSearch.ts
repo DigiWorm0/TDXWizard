@@ -9,7 +9,7 @@ const QUERY_DELAY = 500; // ms
 
 const COMPONENT_ID_TO_TYPE: Partial<Record<CustomAttributeComponent, SearchType>> = {
     [CustomAttributeComponent.Person]: SearchType.Person,
-    [CustomAttributeComponent.Asset]: SearchType.Laptop,
+    [CustomAttributeComponent.Asset]: SearchType.Asset,
     [CustomAttributeComponent.Ticket]: SearchType.Ticket,
 }
 
