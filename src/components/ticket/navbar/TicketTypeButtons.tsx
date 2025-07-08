@@ -34,10 +34,10 @@ export default function TicketTypeButtons() {
     const allTicketTypes = useTicketTypes();
 
     const visibleTicketTypes = React.useMemo(() => {
-
         let hiddenTicketTypes = [...settings.hideTicketTypes];
         let typeAliases = {...settings.ticketTypeAliases};
 
+        // Append UW-Stout specific hidden ticket types and aliases
         if (checkIsUWStout()) {
             hiddenTicketTypes.push(...UWSTOUT_HIDE_TICKET_TYPES);
             typeAliases = {...typeAliases, ...UWSTOUT_TYPE_ALIASES}

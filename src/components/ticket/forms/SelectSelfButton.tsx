@@ -20,24 +20,49 @@ export default function SelectSelfButton(props: SelectSelfButtonProps) {
         // Get the Kendo Combo Box
         const target = $(`#${props.formID}`);
         if (!target)
+            throw new Error("Target element not found");
+
+        // Kendo UI ComboBox
+        const kendoBox = target.data("kendoComboBox");
+        if (kendoBox) {
+
+            // Check if the user is already in the list
+            const hasUser = kendoBox?.dataSource.data().find((item: any) => item.value === user.UID);
+
+            // If not, add it
+            if (!hasUser)
+                kendoBox.dataSource.add({caption: user.FullName, value: user.UID});
+
+            // Select the user
+            kendoBox.select((item: any) => item.value === user.UID);
+
+            // Trigger the change event
+            kendoBox.trigger("change");
+
             return;
+        }
 
-        const comboBox = target.data("kendoComboBox");
-        if (!comboBox)
+        // TDX Internal
+        const tdxTextBox = document.getElementById(`${props.formID}_txttaluResponsible`);
+        if (tdxTextBox) {
+            if (!tdxTextBox.addItem)
+                throw new Error("tdxTextBox does not have addItem method");
+
+            // Add Item to the TDX TextBox
+            tdxTextBox.addItem(user.FullName, user.UID, {
+                __type: "TeamDynamix.Domain.Users.EligibleAssignmentDto",
+                displayName: user.FullName,
+                email: user.PrimaryEmail,
+                id: user.UID,
+                isUser: true,
+                name: user.FullName,
+                rate: 0
+            }, true);
+
             return;
+        }
 
-        // Check if the user is already in the list
-        const hasUser = comboBox?.dataSource.data().find((item: any) => item.value === user.UID);
-
-        // If not, add it
-        if (!hasUser)
-            comboBox.dataSource.add({caption: user.FullName, value: user.UID});
-
-        // Select the user
-        comboBox.select((item: any) => item.value === user.UID);
-
-        // Trigger the change event
-        comboBox.trigger("change");
+        throw new Error("No valid form found with the given ID: " + props.formID);
     }
 
     return (
@@ -53,7 +78,7 @@ export default function SelectSelfButton(props: SelectSelfButtonProps) {
                 height: "1.875rem"
             }}
         >
-            <i className={"fa-solid fa-fw fa-nopad fa-user"}/>
+            <i className={"fa fa-user"}/>
         </a>
     )
 }

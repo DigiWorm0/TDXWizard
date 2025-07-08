@@ -7,6 +7,9 @@ export default defineConfig({
         open: false,
         hmr: false
     },
+    build: {
+        minify: "terser"
+    },
     plugins: [
         monkey({
             entry: 'src/main.ts',
@@ -21,7 +24,7 @@ export default defineConfig({
                 downloadURL: 'https://digiworm0.github.io/TDXWizard/tdx-wizard.user.js',
                 name: 'TDX Wizard',
                 "run-at": "document-end"
-            },
+            }
         }),
     ],
 });

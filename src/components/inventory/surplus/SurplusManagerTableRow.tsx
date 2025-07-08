@@ -1,8 +1,8 @@
 import {SurplusAsset} from "./SurplusManagerModal";
 import AssetLink from "../../common/TDX/AssetLink";
-import AppID from "../../../types/AppID";
 import SurplusTicketTag from "./SurplusTicketTag";
 import useRunPromise from "../../../hooks/useRunPromise";
+import UWStoutAppID from "../../../types/UWStoutAppID";
 
 export interface SurplusManagerTableRowProps {
     asset: SurplusAsset;
@@ -34,12 +34,12 @@ export default function SurplusManagerTableRow(props: SurplusManagerTableRowProp
     return (
         <tr>
             <td>
-                <AssetLink id={asset.ID} appID={AppID.Inventory}>
+                <AssetLink id={asset.ID} appID={UWStoutAppID.Inventory}>
                     {asset.Tag}
                 </AssetLink>
             </td>
             <td>
-                <AssetLink id={asset.ID} appID={AppID.Inventory}>
+                <AssetLink id={asset.ID} appID={UWStoutAppID.Inventory}>
                     {asset.SerialNumber}
                 </AssetLink>
             </td>

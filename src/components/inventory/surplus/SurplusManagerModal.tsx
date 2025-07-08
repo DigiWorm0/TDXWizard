@@ -3,7 +3,6 @@ import Asset from "../../../tdx-api/types/Asset";
 import LocalTDXClient from "../../../tdx-api/LocalTDXClient";
 import autoRetryHTTPRequest from "../../../utils/autoRetryHTTPRequest";
 import Ticket from "../../../tdx-api/types/Ticket";
-import AppID from "../../../types/AppID";
 import BigInputWindow from "../../common/bigwindow/BigInputWindow";
 import BigWindowInput from "../../common/bigwindow/BigWindowInput";
 import BigWindowError from "../../common/bigwindow/BigWindowError";
@@ -19,6 +18,7 @@ import useMyUser from "../../../hooks/useMyUser";
 import BigWindowInfo from "../../common/bigwindow/BigWindowInfo";
 import toast from "react-hot-toast";
 import StatusClass from "../../../tdx-api/types/StatusClass";
+import UWStoutAppID from "../../../types/UWStoutAppID";
 
 export interface SurplusAsset extends Asset {
     surplusTickets: Ticket[];
@@ -54,13 +54,13 @@ export default function SurplusManagerModal(props: BulkInventoryModalProps) {
 
         // Search for the ticket
         const ticketResults = await runHTTPRequest(() => client.tickets.search(
-            AppID.Tickets,
+            UWStoutAppID.Tickets,
             {ConfigurationItemIDs: [asset.ConfigurationItemID]}
         ));
         const surplusTickets = ticketResults.filter(ticket => ticket.FormID === SURPLUS_FORM_ID);
 
         for (let i = 0; i < surplusTickets.length; i++)
-            surplusTickets[i] = await client.tickets.getTicket(AppID.Tickets, surplusTickets[i].ID);
+            surplusTickets[i] = await client.tickets.getTicket(UWStoutAppID.Tickets, surplusTickets[i].ID);
 
         return surplusTickets;
     }
@@ -70,7 +70,7 @@ export default function SurplusManagerModal(props: BulkInventoryModalProps) {
 
         // Search for the asset
         const searchResults = await runHTTPRequest(() => client.assets.searchAssets(
-            AppID.Inventory,
+            UWStoutAppID.Inventory,
             {SerialLike: searchQuery, MaxResults: 1}
         ));
 
@@ -121,11 +121,11 @@ export default function SurplusManagerModal(props: BulkInventoryModalProps) {
         for (const asset of assets) {
 
             // Fetch Asset
-            const assetData = await runHTTPRequest(() => client.assets.getAsset(AppID.Inventory, asset.ID));
+            const assetData = await runHTTPRequest(() => client.assets.getAsset(UWStoutAppID.Inventory, asset.ID));
             if (!assetData)
                 continue;
 
-            await runHTTPRequest(() => client.assets.editAsset(AppID.Inventory, asset.ID, {
+            await runHTTPRequest(() => client.assets.editAsset(UWStoutAppID.Inventory, asset.ID, {
                 ...assetData,
                 StatusID: SURPLUS_STATUS_ID,
                 OwningDepartmentID: SURPLUS_DEPARTMENT_ID,
@@ -152,7 +152,7 @@ export default function SurplusManagerModal(props: BulkInventoryModalProps) {
 
 
                 // Mark ticket as picked up
-                await runHTTPRequest(() => client.tickets.updateTicket(AppID.Tickets, ticket.ID, {
+                await runHTTPRequest(() => client.tickets.updateTicket(UWStoutAppID.Tickets, ticket.ID, {
                     Attributes: ticket.Attributes?.map(attr => ({
                         ...attr,
                         Value: attr.ID === PICKED_UP_ATTRIBUTE_ID ? PICKED_UP_YES_VALUE : attr.Value
@@ -160,7 +160,7 @@ export default function SurplusManagerModal(props: BulkInventoryModalProps) {
                 }));
 
                 // Add a ticket feed comment
-                await runHTTPRequest(() => client.tickets.addTicketFeed(AppID.Tickets, ticket.ID, {
+                await runHTTPRequest(() => client.tickets.addTicketFeed(UWStoutAppID.Tickets, ticket.ID, {
                     NewStatusID: inProgressID ?? ticket.StatusID,
                     IsCommunication: true,
                     IsPrivate: true,
@@ -178,7 +178,7 @@ export default function SurplusManagerModal(props: BulkInventoryModalProps) {
         const client = new LocalTDXClient();
 
         // Fetch Asset + Surplus Tickets
-        const newAsset = await client.assets.getAsset(AppID.Inventory, asset.ID);
+        const newAsset = await client.assets.getAsset(UWStoutAppID.Inventory, asset.ID);
         const surplusTickets = await searchSurplusTickets(newAsset);
 
         // Update React State
@@ -194,7 +194,7 @@ export default function SurplusManagerModal(props: BulkInventoryModalProps) {
 
         // Make Ticket
         const ticket = await client.tickets.createTicket(
-            AppID.Tickets,
+            UWStoutAppID.Tickets,
             {
                 FormID: SURPLUS_FORM_ID,
                 TypeID: SURPLUS_TICKET_TYPE_ID,
@@ -220,7 +220,7 @@ export default function SurplusManagerModal(props: BulkInventoryModalProps) {
 
         // Add Asset to Ticket
         await client.assets.addAssetToTicket(
-            AppID.Inventory,
+            UWStoutAppID.Inventory,
             asset.ID,
             ticket.ID
         );
@@ -295,7 +295,7 @@ export default function SurplusManagerModal(props: BulkInventoryModalProps) {
                     continue;
 
                 // Add a ticket feed comment
-                await runHTTPRequest(() => client.tickets.addTicketFeed(AppID.Tickets, ticket.ID, {
+                await runHTTPRequest(() => client.tickets.addTicketFeed(UWStoutAppID.Tickets, ticket.ID, {
                     NewStatusID: ticket.StatusID,
                     IsCommunication: true,
                     IsPrivate: true,
@@ -304,7 +304,7 @@ export default function SurplusManagerModal(props: BulkInventoryModalProps) {
                 }));
 
                 // Resolve and assign to myself
-                await runHTTPRequest(() => client.tickets.updateTicket(AppID.Tickets, ticket.ID, {
+                await runHTTPRequest(() => client.tickets.updateTicket(UWStoutAppID.Tickets, ticket.ID, {
                     StatusID: resolvedID ?? ticket.StatusID,
                     ResponsibleUid: myUser?.UID ?? ticket.ResponsibleUid
                 }));

@@ -1,6 +1,6 @@
 import SettingsSwitchInput from "./input/SettingsSwitchInput";
 import ModalBase from "../common/ModalBase";
-import SidebarImage from "../../content/SidebarBG.png";
+import SidebarImage from "../../content/SidebarBG_compressed.jpg";
 import {GM_info} from "$";
 import SettingsAuthInput from "./input/SettingsAuthInput";
 import useSettings from "../../hooks/useSettings";

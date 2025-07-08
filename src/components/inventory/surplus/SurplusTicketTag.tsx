@@ -1,7 +1,7 @@
 import TicketLink from "../../common/TDX/TicketLink";
-import AppID from "../../../types/AppID";
 import Ticket from "../../../tdx-api/types/Ticket";
 import StatusClass from "../../../tdx-api/types/StatusClass";
+import UWStoutAppID from "../../../types/UWStoutAppID";
 
 const PICKED_UP_ATTRIBUTE_ID = 14087;
 const PICKED_UP_YES_VALUE = "41587"; // Yes Value for Picked Up Attribute
@@ -58,7 +58,7 @@ export default function SurplusTicketTag(props: SurplusTicketTagProps) {
         >
                 <TicketLink
                     id={ticket.ID}
-                    appID={AppID.Tickets}
+                    appID={UWStoutAppID.Tickets}
                     anchorProps={{
                         style: {
                             color: "inherit",

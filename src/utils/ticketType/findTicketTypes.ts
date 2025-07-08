@@ -1,4 +1,4 @@
-import typeToKeywordWeights from "../../db/KeywordWeights";
+import {UWStoutTypeAssignments, UWStoutTypeKeywords} from "../../db/UWStoutTypeMatches";
 import getSettings from "../getSettings";
 import Ticket from "../../tdx-api/types/Ticket";
 
@@ -29,9 +29,9 @@ export default function findTicketTypes(ticketInfo: Ticket): number[] {
     }
 
     // Iterate Each Type
-    for (const _type in typeToKeywordWeights) {
+    for (const _type in UWStoutTypeKeywords) {
         const type = parseInt(_type);
-        const keywords = typeToKeywordWeights[type];
+        const keywords = UWStoutTypeKeywords[type];
 
         // Iterate Each Keyword
         for (const keyword in keywords) {
@@ -50,27 +50,20 @@ export default function findTicketTypes(ticketInfo: Ticket): number[] {
         }
     }
 
-    // Add types based on responsibility
-    if (ResponsibleGroupName.includes("Network"))
-        addWeightToType(1002, 2);
-    if (ResponsibleGroupName.includes("Website"))
-        addWeightToType(996, 2);
-    if (ResponsibleGroupName.includes("ImageNow"))
-        addWeightToType(996, 1);
-    if (ResponsibleGroupName.includes("PeopleSoft"))
-        addWeightToType(996, 2);
-    if (ResponsibleGroupName.includes("VoIP"))
-        addWeightToType(1004, 2);
-    if (ResponsibleGroupName.includes("Server"))
-        addWeightToType(1003, 2);
-    if (ResponsibleGroupName.includes("Lab and Software"))
-        addWeightToType(630, 1);
-    if (ResponsibleGroupName.includes("Classroom Technologies"))
-        addWeightToType(1006, 2);
-    if (ResponsibleGroupName.includes("Vanguard"))
-        addWeightToType(1000, 2);
-    if (ResponsibleGroupName.includes("QA"))
-        addWeightToType(1000, 2);
+    // Iterate each group
+    for (const _group in UWStoutTypeAssignments) {
+        const group = parseInt(_group);
+        const groupNames = UWStoutTypeAssignments[group];
+
+        // Iterate each group name
+        for (const groupName in groupNames) {
+            const weight = groupNames[groupName];
+
+            // Check if the group name is in the responsible group name
+            if (ResponsibleGroupName.toLowerCase().includes(groupName))
+                addWeightToType(group, weight);
+        }
+    }
 
     // Sort the types by weight
     let sortedTypes = Object.keys(typeWeights)
@@ -80,9 +73,13 @@ export default function findTicketTypes(ticketInfo: Ticket): number[] {
     // Get Threshold
     const {ticketTypeThreshold} = getSettings();
 
-    // Filter out types with low weights
+    // Get the top weighted type
     const topWeight = typeWeights[sortedTypes[0]];
+
+    // Remove types that have no weight
     sortedTypes = sortedTypes.filter(type => typeWeights[type] > 0);
+
+    // Remove types with a weight too much lower than the top type
     sortedTypes = sortedTypes.filter(type => typeWeights[type] >= topWeight - ticketTypeThreshold);
 
     return sortedTypes;
