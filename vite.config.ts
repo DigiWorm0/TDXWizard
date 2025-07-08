@@ -7,6 +7,9 @@ export default defineConfig({
         open: false,
         hmr: false
     },
+    build: {
+        minify: "terser"
+    },
     plugins: [
         monkey({
             entry: 'src/main.ts',
@@ -14,13 +17,14 @@ export default defineConfig({
                 icon: 'https://i.imgur.com/YqFAJaY.png',
                 namespace: 'digiworm0.github.io',
                 match: [
-                    'https://uwstout.teamdynamix.com/*',
-                    'https://selfservicehd.uwstout.edu/helpdesk/*',
+                    // Matches all TDX instances (both our own and others)
+                    // Match all TDX endpoints (TDNext, TDWorkManagement, TDWebAPI, etc.)
+                    'https://*.teamdynamix.com/*'
                 ],
                 downloadURL: 'https://digiworm0.github.io/TDXWizard/tdx-wizard.user.js',
                 name: 'TDX Wizard',
                 "run-at": "document-end"
-            },
+            }
         }),
     ],
 });

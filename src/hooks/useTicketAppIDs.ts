@@ -8,6 +8,7 @@ export const ticketAppIDsAtom = atom((get) => {
         return [];
 
     return applications
+        .filter(app => app.Active)
         .filter(app => app.Type === "Ticketing")
         .map(app => app.AppID as AppID);
 });

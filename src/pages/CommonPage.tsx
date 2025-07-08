@@ -1,14 +1,13 @@
 import PageScript from "./PageScript";
 import getSettings from "../utils/getSettings";
 import addComponentToDOM from "../utils/addComponentToDOM";
-import PersonPanel from "../components/pages/PersonPanel";
-import SelectSelfButton from "../components/buttons/SelectSelfButton";
-import autoUpdateAuthKey from "../utils/autoUpdateAuthKey";
-import CustomStyles from "../components/style/CustomStyles";
-import BetterSearch from "../components/search/BetterSearch";
+import SelectSelfButton from "../components/ticket/forms/SelectSelfButton";
+import CustomStyles from "../components/CustomStyles";
+import BetterSearch from "../components/bettersearch/BetterSearch";
 import openWindow from "../utils/openWindow";
 import {unsafeWindow} from "$";
 import {Toaster} from "react-hot-toast";
+import autoUpdateAuthKey from "../utils/autoUpdateAuthKey";
 
 export default class CommonPage implements PageScript {
 
@@ -21,7 +20,6 @@ export default class CommonPage implements PageScript {
         CommonPage.addToaster();
         CommonPage.replaceWindowLinks();
         CommonPage.replaceAllEmailLinks();
-        CommonPage.addUserLookup();
         CommonPage.addSelectSelfButton();
         CommonPage.runAutoUpdateAuthKey();
         CommonPage.replaceSearchBar();
@@ -42,7 +40,7 @@ export default class CommonPage implements PageScript {
             return;
 
         // Patch global window functions with custom implementations
-        // Explicitly calls `window.eval` to reference the global `window` object instead of the shadow DOM
+        // Explicitly calls `unsafeWindow` to reference the global `window` object instead of the shadow DOM
 
         if (unsafeWindow.top === null)
             throw new Error("window.top is null, cannot replace window links");
@@ -64,25 +62,17 @@ export default class CommonPage implements PageScript {
     }
 
     /**
-     * Adds a user lookup to the user panel
-     */
-    static addUserLookup() {
-        const userPanel = document.querySelector(".panel-person-card");
-        if (!userPanel)
-            return;
-
-        const userPanelBody = userPanel.querySelector(".media-body");
-        if (!userPanelBody)
-            return;
-
-        const userLinks = addComponentToDOM(userPanelBody, <PersonPanel/>);
-        userLinks.className = "gutter-top-xs ellipsis";
-    }
-
-    /**
-     * Automatically updates the auth key if it is invalid
+     * Automatically updates the auth key on page load if the setting is enabled.
      */
     static runAutoUpdateAuthKey() {
+        const settings = getSettings();
+        const {authKeyExpiration} = settings;
+
+        // Check if the auth key is expired
+        if (new Date(authKeyExpiration) > new Date())
+            return;
+
+        // If the auth key is expired, run the auto-update function
         autoUpdateAuthKey().catch(console.error);
     }
 

@@ -1,12 +1,29 @@
 import {ChildrenNode, Matcher, MatchResponse} from "interweave";
 import Attachment from "../tdx-api/types/Attachment";
 
-interface AttachmentMatch {
+export interface AttachmentMatch {
     attachment: Attachment;
 }
 
+// Require minimum attachment name length to avoid matching on very short names
 const MIN_ATTACHMENT_LENGTH = 5;
 
+/**
+ * Interweave matcher to inject links to attachments in the feed.
+ * Requires attachment names to be at least 5 characters long to avoid matching on
+ * single-characters or very short names.
+ *
+ * Example usage:
+ * ```jsx
+ * <Interweave
+ *      // ... other props
+ *      matchers={[
+ *          // ... other matchers
+ *          new AttachmentsMatcher([ ...attachments ])
+ *      ]}
+ * />
+ * ```
+ */
 export default class AttachmentsMatcher extends Matcher<AttachmentMatch> {
     attachments: Attachment[];
 
@@ -47,13 +64,13 @@ export default class AttachmentsMatcher extends Matcher<AttachmentMatch> {
     replaceWith(_: ChildrenNode, props: AttachmentMatch) {
         const {attachment} = props;
 
+        attachment.AttachmentType
         return (
             <a
-                href={`/TDNext/Apps/Shared/FileOpen?AttachmentID=${attachment.ID}&ItemID=${attachment.ItemID}&IsInline=0&ItemComponent=9`}
-                target={"_blank"}
-                rel={"noopener noreferrer"}
-                className={"attachment-link"}
                 key={attachment.ID}
+                href={`/TDNext/Apps/Shared/FileOpen?AttachmentID=${attachment.ID}&ItemID=${attachment.ItemID}&IsInline=0&ItemComponent=${attachment.AttachmentType}`}
+                download={attachment.Name}
+                className={"attachment-link"}
             >
                 {attachment.Name}
             </a>

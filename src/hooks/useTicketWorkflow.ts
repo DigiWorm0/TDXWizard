@@ -1,12 +1,12 @@
 import {atom, useAtomValue} from "jotai";
 import {unwrap} from "jotai/utils";
-import UWStoutTDXClient from "../utils/tdx/UWStoutTDXClient";
-import AppID from "../types/AppID";
-import getTicketIDFromURL from "../utils/tdx/getTicketIDFromURL";
-import getAppIDFromURL from "../utils/tdx/getAppIDFromURL";
+import LocalTDXClient from "../tdx-api/LocalTDXClient";
+import getTicketIDFromURL from "../tdx-api/utils/getTicketIDFromURL";
+import getAppIDFromURL from "../tdx-api/utils/getAppIDFromURL";
+import handleError from "../utils/handleError";
 
 export const ticketWorkflowAtom = atom(() => {
-    const client = new UWStoutTDXClient();
+    const client = new LocalTDXClient();
 
     // Get the ticket ID
     const ticketID = getTicketIDFromURL();
@@ -14,9 +14,12 @@ export const ticketWorkflowAtom = atom(() => {
         return null;
 
     // Get the app ID
-    const appID = getAppIDFromURL() ?? AppID.Tickets;
+    const appID = getAppIDFromURL();
+    if (!appID)
+        return null;
 
-    return client.tickets.getTicketWorkflow(appID, ticketID).catch(() => null);
+    return client.tickets.getTicketWorkflow(appID, ticketID)
+        .catch((e) => handleError("Error fetching ticket workflow", e));
 });
 
 export const syncTicketWorkflowAtom = unwrap(ticketWorkflowAtom, t => t);

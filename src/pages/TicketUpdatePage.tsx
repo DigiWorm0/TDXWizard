@@ -1,8 +1,8 @@
 import PageScript from "./PageScript";
 import addComponentToDOM from "../utils/addComponentToDOM";
-import CustomTemplateMenu from "../components/pages/CustomTemplateMenu";
+import CustomTemplateMenu from "../components/templates/CustomTemplateMenu";
 import getSettings from "../utils/getSettings";
-import ReplacementTemplatesButton from "../components/buttons/ReplacementTemplatesButton";
+import ReplacementTemplatesButton from "../components/templates/ReplacementTemplatesButton";
 
 const URL_PREFIX_REGEX = /\/TDNext\/Apps\/\d*\/Tickets\/Update/g;
 

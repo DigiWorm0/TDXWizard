@@ -87,7 +87,7 @@ export default class TicketsEndpoint extends TDXEndpoint {
     }
 
     // getTicketAssets(appID: number, id: number) {
-    //     return this.client.jsonRequest<ConfigurationItem>(`${appID}/tickets/${id}/assets`);
+    //     return this.client.jsonRequest<ConfigurationItem>(`${appID}/ticket/${id}/assets`);
     // }
 
 }

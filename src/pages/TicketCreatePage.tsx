@@ -1,6 +1,6 @@
 import PageScript from "./PageScript";
 import addComponentToDOM from "../utils/addComponentToDOM";
-import FormTypeButtons from "../components/buttons/FormTypeButtons";
+import FormTypeButtons from "../components/ticket/forms/FormTypeButtons";
 
 const URL_PREFIX_REGEX = /\/TDNext\/Apps\/\d*\/Tickets\/New/g;
 

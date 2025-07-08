@@ -1,13 +1,13 @@
-import UWStoutTDXClient from "../utils/tdx/UWStoutTDXClient";
+import LocalTDXClient from "../tdx-api/LocalTDXClient";
 import {unwrap} from "jotai/utils";
 import {atom, useAtomValue} from "jotai";
-import getAppIDFromURL from "../utils/tdx/getAppIDFromURL";
-import getAssetIDFromURL from "../utils/tdx/getAssetIDFromURL";
+import getAppIDFromURL from "../tdx-api/utils/getAppIDFromURL";
+import getAssetIDFromURL from "../tdx-api/utils/getAssetIDFromURL";
+import handleError from "../utils/handleError";
 
 export const assetAtom = atom(async () => {
     // API Client
-    const client = new UWStoutTDXClient();
-
+    const client = new LocalTDXClient();
 
     // Get the IDs
     const appID = getAppIDFromURL();
@@ -16,7 +16,8 @@ export const assetAtom = atom(async () => {
         return null;
 
     // Get the asset
-    return await client.assets.getAsset(appID, assetID);
+    return await client.assets.getAsset(appID, assetID)
+        .catch(e => handleError("Failed to fetch asset", e));
 });
 export const syncAssetAtom = unwrap(assetAtom, a => a);
 

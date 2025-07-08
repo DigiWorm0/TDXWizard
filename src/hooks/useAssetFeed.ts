@@ -1,32 +1,38 @@
 import {atom, useAtomValue} from "jotai";
 import {unwrap} from "jotai/utils";
-import UWStoutTDXClient from "../utils/tdx/UWStoutTDXClient";
-import getAssetIDFromURL from "../utils/tdx/getAssetIDFromURL";
-import getAppIDFromURL from "../utils/tdx/getAppIDFromURL";
-import AppID from "../types/AppID";
+import LocalTDXClient from "../tdx-api/LocalTDXClient";
+import getAssetIDFromURL from "../tdx-api/utils/getAssetIDFromURL";
+import getAppIDFromURL from "../tdx-api/utils/getAppIDFromURL";
+import handleError from "../utils/handleError";
 
 export const assetFeedAtom = atom(async () => {
-    // API Client
-    const client = new UWStoutTDXClient();
+    try {
+        // API Client
+        const client = new LocalTDXClient();
 
-    // Get the asset ID
-    const assetID = getAssetIDFromURL();
-    if (!assetID)
-        return null;
+        // Get the asset ID
+        const assetID = getAssetIDFromURL();
+        if (!assetID)
+            return null;
 
-    // Get the app ID
-    const appID = getAppIDFromURL() ?? AppID.Inventory;
+        // Get the app ID
+        const appID = getAppIDFromURL();
+        if (!appID)
+            return null;
 
-    // Get the ticket feed
-    const feed = await client.assets.getAssetFeed(appID, assetID);
+        // Get the ticket feed
+        const feed = await client.assets.getAssetFeed(appID, assetID);
 
-    // Grab the replies
-    for (let i = 0; i < feed.length; i++) {
-        if (feed[i].RepliesCount > 0)
-            feed[i] = await client.feed.getFeed(feed[i].ID);
+        // Grab the replies
+        for (let i = 0; i < feed.length; i++) {
+            if (feed[i].RepliesCount > 0)
+                feed[i] = await client.feed.getFeed(feed[i].ID);
+        }
+
+        return feed;
+    } catch (e) {
+        return handleError("Failed to fetch asset feed", e);
     }
-
-    return feed;
 });
 
 export const syncAssetFeedAtom = unwrap(assetFeedAtom, t => t);

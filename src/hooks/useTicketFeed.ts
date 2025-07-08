@@ -1,13 +1,12 @@
 import {atom, useAtomValue} from "jotai";
 import {unwrap} from "jotai/utils";
-import UWStoutTDXClient from "../utils/tdx/UWStoutTDXClient";
-import AppID from "../types/AppID";
-import getTicketIDFromURL from "../utils/tdx/getTicketIDFromURL";
-import getAppIDFromURL from "../utils/tdx/getAppIDFromURL";
+import LocalTDXClient from "../tdx-api/LocalTDXClient";
+import getTicketIDFromURL from "../tdx-api/utils/getTicketIDFromURL";
+import getAppIDFromURL from "../tdx-api/utils/getAppIDFromURL";
 
 export const ticketFeedAtom = atom(async () => {
     // API Client
-    const client = new UWStoutTDXClient();
+    const client = new LocalTDXClient();
 
     // Get the ticket ID
     const ticketID = getTicketIDFromURL();
@@ -15,7 +14,9 @@ export const ticketFeedAtom = atom(async () => {
         return null;
 
     // Get the app ID
-    const appID = getAppIDFromURL() ?? AppID.Tickets;
+    const appID = getAppIDFromURL();
+    if (!appID)
+        return null;
 
     // Get the ticket feed
     const feed = await client.tickets.getTicketFeed(appID, ticketID);

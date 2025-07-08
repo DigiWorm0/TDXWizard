@@ -1,17 +1,16 @@
 import atomWithCache from "../utils/atomWithCache";
-import UWStoutTDXClient from "../utils/tdx/UWStoutTDXClient";
+import LocalTDXClient from "../tdx-api/LocalTDXClient";
 import {unwrap} from "jotai/utils";
 import {useAtomValue} from "jotai";
 import {settingsAtom} from "./useSettings";
+import handleError from "../utils/handleError";
 
 export const myUserAtom = atomWithCache("myUser", async (get) => {
     const {authKey} = get(settingsAtom);
-    const client = new UWStoutTDXClient(authKey);
-    try {
-        return await client.auth.getUser();
-    } catch (e) {
-        return null;
-    }
+    const client = new LocalTDXClient(authKey);
+
+    return await client.auth.getUser()
+        .catch((e) => handleError("Error fetching your user", e));
 }, {
     cacheTime: 1000 * 60 * 5 // 5 minutes
 });

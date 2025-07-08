@@ -1,5 +1,5 @@
 import React from "react";
-import UWStoutTDXClient from "../../utils/tdx/UWStoutTDXClient";
+import LocalTDXClient from "../../tdx-api/LocalTDXClient";
 import CustomAttributeComponent from "../../tdx-api/types/CustomAttributeComponent";
 import {SearchType} from "../../types/SearchType";
 import SearchResult from "../../types/SearchResult";
@@ -9,7 +9,7 @@ const QUERY_DELAY = 500; // ms
 
 const COMPONENT_ID_TO_TYPE: Partial<Record<CustomAttributeComponent, SearchType>> = {
     [CustomAttributeComponent.Person]: SearchType.Person,
-    [CustomAttributeComponent.Asset]: SearchType.Laptop,
+    [CustomAttributeComponent.Asset]: SearchType.Asset,
     [CustomAttributeComponent.Ticket]: SearchType.Ticket,
 }
 
@@ -33,7 +33,7 @@ export default function useAutocompleteSearch(query: string) {
             setIsLoading(true);
 
             // Run the search query
-            const client = new UWStoutTDXClient();
+            const client = new LocalTDXClient();
             client.search.search(`"${query}"`)
                 .then((results) => {
                     if (isCanceled) return;

@@ -1,7 +1,7 @@
 import PageScript from "./PageScript";
 import addComponentToDOM from "../utils/addComponentToDOM";
-import TicketNavBar from "../components/pages/TicketNavBar";
-import ConvertFeedButton from "../components/buttons/ConvertFeedButton";
+import TicketNavBar from "../components/ticket/navbar/TicketNavBar";
+import ConvertFeedButton from "../components/betterfeed/ConvertFeedButton";
 
 const URL_PREFIX_REGEX = /\/TDNext\/Apps\/\d*\/Tickets\/TicketDet/g;
 

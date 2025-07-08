@@ -1,5 +1,9 @@
 import Asset from "../../tdx-api/types/Asset";
 
+/**
+ * Creates a CSV file from an array of Asset objects and triggers a download.
+ * @param assets - An array of Asset objects to be exported as CSV.
+ */
 export default function createAssetsCSV(assets: Asset[]) {
     if (assets.length === 0)
         throw new Error("No assets to export");

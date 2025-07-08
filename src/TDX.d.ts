@@ -7,4 +7,8 @@ declare global {
         WorkMgmt: any;
 
     }
+
+    interface HTMLElement {
+        addItem?: (title: string, id: string, jsonData: unknown, focusInput: boolean) => void;
+    }
 }

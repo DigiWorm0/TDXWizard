@@ -1,18 +1,16 @@
 import {useAtomValue} from "jotai";
 import {unwrap} from "jotai/utils";
-import UWStoutTDXClient from "../utils/tdx/UWStoutTDXClient";
+import LocalTDXClient from "../tdx-api/LocalTDXClient";
 import atomWithCache from "../utils/atomWithCache";
+import handleError from "../utils/handleError";
 
 export const applicationsAtom = atomWithCache("myApps", async () => {
     // API Client
-    const client = new UWStoutTDXClient();
+    const client = new LocalTDXClient();
 
     // Get all applications
-    try {
-        return await client.applications.getApplications();
-    } catch (e) {
-        return null;
-    }
+    return await client.applications.getApplications()
+        .catch(e => handleError("Failed to fetch TDX apps", e));
 }, {
     cacheTime: 1000 * 60 * 5 // 5 minutes
 });

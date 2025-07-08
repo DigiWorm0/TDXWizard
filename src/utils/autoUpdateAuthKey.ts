@@ -1,8 +1,15 @@
 import getSettings, {setSettings} from "./getSettings";
-import getAuthKeyFromSSO from "./tdx/getAuthKeyFromSSO";
-import UWStoutTDXClient from "./tdx/UWStoutTDXClient";
+import getAuthKeyFromSSO from "./getAuthKeyFromSSO";
+import LocalTDXClient from "../tdx-api/LocalTDXClient";
 import HTTPResponseError from "./HTTPResponseError";
+import dateToDateTime from "./datetime/dateToDateTime";
 
+const EXPIRATION_TIME = 1000 * 60 * 60 * 24; // 24 hours
+
+/**
+ * Checks if the auth key is valid and updates it if necessary.
+ * Ran automatically on page load if the setting is enabled.
+ */
 export default async function autoUpdateAuthKey() {
 
     // Check if we should auto-update the auth key.
@@ -12,7 +19,7 @@ export default async function autoUpdateAuthKey() {
 
     // Check if the auth key is valid.
     try {
-        const client = new UWStoutTDXClient();
+        const client = new LocalTDXClient();
         await client.auth.getUser();
 
         // The auth key is up-to-date.
@@ -29,10 +36,12 @@ export default async function autoUpdateAuthKey() {
 
     // Get the new auth key from SSO.
     const authKey = await getAuthKeyFromSSO();
+    const authKeyExpiration = dateToDateTime(new Date(Date.now() + EXPIRATION_TIME));
 
     // Update the auth key in the settings.
     setSettings({
         ...settings,
+        authKeyExpiration,
         authKey
     });
 

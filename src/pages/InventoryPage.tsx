@@ -1,5 +1,5 @@
 import PageScript from "./PageScript";
-import InventoryNavBar from "../components/pages/InventoryNavBar";
+import InventoryNavBar from "../components/inventory/InventoryNavBar";
 import addComponentToDOM from "../utils/addComponentToDOM";
 
 const appIDRegex = /menu_\d+_TDAssets/;
@@ -32,7 +32,7 @@ export default class InventoryPage implements PageScript {
                 if (!newInventoryButton)
                     return;
 
-                // Move to before search
+                // Move to before search input
                 const search = navBar.querySelector(".tdx-action-menu-input");
                 if (!search)
                     return;

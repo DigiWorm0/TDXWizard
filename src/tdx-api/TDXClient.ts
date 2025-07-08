@@ -11,6 +11,7 @@ import PeopleEndpoint from "./endpoints/PeopleEndpoint";
 import HTTPResponseError from "../utils/HTTPResponseError";
 import TicketTasksEndpoint from "./endpoints/TicketTasksEndpoint";
 import SearchEndpoint from "./endpoints/SearchEndpoint";
+import GroupsEndpoint from "./endpoints/GroupsEndpoint";
 
 export default class TDXClient {
     // The base URL of the TDX API
@@ -20,38 +21,30 @@ export default class TDXClient {
     private token: string | null = null;
 
     // Endpoints
-    accounts: AccountsEndpoint;
-    applications: ApplicationsEndpoint;
-    attachments: AttachmentsEndpoint;
-    attributes: AttributeEndpoint;
-    auth: AuthEndpoint;
-    tickets: TicketsEndpoint;
-    assets: AssetEndpoint;
-    ticketTypes: TicketsTypesEndpoint;
-    ticketTasks: TicketTasksEndpoint;
-    feed: FeedEndpoint;
-    people: PeopleEndpoint;
-    search: SearchEndpoint;
+    accounts = new AccountsEndpoint(this);
+    applications = new ApplicationsEndpoint(this);
+    attachments = new AttachmentsEndpoint(this);
+    attributes = new AttributeEndpoint(this);
+    auth = new AuthEndpoint(this);
+    tickets = new TicketsEndpoint(this);
+    assets = new AssetEndpoint(this);
+    ticketTypes = new TicketsTypesEndpoint(this);
+    ticketTasks = new TicketTasksEndpoint(this);
+    feed = new FeedEndpoint(this);
+    people = new PeopleEndpoint(this);
+    search = new SearchEndpoint(this);
+    groups = new GroupsEndpoint(this);
+
+    // TODO: Add missing endpoints
+    // Not all endpoints are implemented yet, currently endpoints and types are implemented on an as-needed basis.
 
     /**
-     * Creates a new TDX client
+     * Creates a new TDX client.
+     * You can use `LocalTDXClient` if you're currently at the URL of a TeamDynamix instance.
      * @param baseURL - The base URL of the TDX Web API. Example: "https://example.teamdynamix.com/TDWebApi/api/"
      */
     constructor(baseURL: string) {
         this.baseURL = baseURL;
-
-        this.accounts = new AccountsEndpoint(this);
-        this.applications = new ApplicationsEndpoint(this);
-        this.attachments = new AttachmentsEndpoint(this);
-        this.attributes = new AttributeEndpoint(this);
-        this.auth = new AuthEndpoint(this);
-        this.tickets = new TicketsEndpoint(this);
-        this.assets = new AssetEndpoint(this);
-        this.ticketTypes = new TicketsTypesEndpoint(this);
-        this.ticketTasks = new TicketTasksEndpoint(this);
-        this.feed = new FeedEndpoint(this);
-        this.people = new PeopleEndpoint(this);
-        this.search = new SearchEndpoint(this);
     }
 
     /**

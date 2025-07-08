@@ -1,5 +1,6 @@
 import Settings from "../types/Settings";
 import DefaultCustomTemplates from "./DefaultCustomTemplates";
+import {SearchType} from "../types/SearchType";
 
 const DefaultSettings: Settings = {
     showStatsButton: true,
@@ -41,6 +42,7 @@ const DefaultSettings: Settings = {
     customProfileColor: "#000000",
 
     authKey: "",
+    authKeyExpiration: "1970-01-01T00:00:00Z", // Default to epoch time
     autoUpdateAuthKey: true,
 
     customTemplates: DefaultCustomTemplates,
@@ -49,12 +51,8 @@ const DefaultSettings: Settings = {
     bulkInventoryButton: true,
     reverseFeedOrder: false,
 
-    eStoutPickupButton: true,
-    eStoutResolveButton: true,
     resolveButton: false,
     updateButton: false,
-
-    removeCopyURLButton: true,
 
     linkifyAttachments: true,
 
@@ -79,6 +77,18 @@ const DefaultSettings: Settings = {
 
     enableAnimations: true,
     hideTicketBannerMessage: true,
+
+    defaultWindowWidth: 992,
+    defaultWindowHeight: 800,
+
+    searchHistoryLimit: 8,
+
+    autoDetectSearchTypes: [
+        {type: "Ticket" as SearchType, regexes: ["^\\d{5,8}$"]},
+        {type: "Person" as SearchType, regexes: ["^.+@"]}
+    ],
+    ticketTypeAliases: {},
+    hideTicketTypes: []
 };
 
 export default DefaultSettings;

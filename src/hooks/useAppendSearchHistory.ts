@@ -3,8 +3,6 @@ import {searchHistoryAtom} from "./useSearchHistory";
 import {settingsAtom} from "./useSettings";
 import SearchResult from "../types/SearchResult";
 
-const MAX_SEARCH_HISTORY = 8;
-
 export const appendSearchHistoryAtom = atom(null, (get, set, searchResult: SearchResult) => {
     // Don't save anything if search history is disabled
     const settings = get(settingsAtom);
@@ -20,7 +18,8 @@ export const appendSearchHistoryAtom = atom(null, (get, set, searchResult: Searc
         searchHistory.splice(existingIndex, 1);
 
     // Add the search result to the end of history
-    const updatedHistory = [...searchHistory, searchResult].slice(-MAX_SEARCH_HISTORY); // Keep only the last 8 results
+    const {searchHistoryLimit} = get(settingsAtom);
+    const updatedHistory = [...searchHistory, searchResult].slice(-searchHistoryLimit); // Keep only the last 8 results
     set(searchHistoryAtom, updatedHistory);
 });
 
