@@ -35,8 +35,12 @@ export default class TDXClient {
     search = new SearchEndpoint(this);
     groups = new GroupsEndpoint(this);
 
+    // TODO: Add missing endpoints
+    // Not all endpoints are implemented yet, currently endpoints and types are implemented on an as-needed basis.
+
     /**
-     * Creates a new TDX client
+     * Creates a new TDX client.
+     * You can use `LocalTDXClient` if you're currently at the URL of a TeamDynamix instance.
      * @param baseURL - The base URL of the TDX Web API. Example: "https://example.teamdynamix.com/TDWebApi/api/"
      */
     constructor(baseURL: string) {

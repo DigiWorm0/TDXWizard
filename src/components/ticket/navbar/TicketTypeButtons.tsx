@@ -49,7 +49,7 @@ export default function TicketTypeButtons() {
 
             // Apply name aliases
             .map(type => ({...type, Name: typeAliases[type.ID] || type.Name}))
-    }, [allTicketTypes]);
+    }, [allTicketTypes, settings]);
 
     const suggestedTypeIDs = React.useMemo(() => {
         // Check if ticket is loaded

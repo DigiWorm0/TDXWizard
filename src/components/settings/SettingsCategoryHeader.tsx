@@ -4,7 +4,7 @@ export interface SettingsHeaderProps {
     children?: React.ReactNode;
 }
 
-export default function SettingsHeader(props: SettingsHeaderProps) {
+export default function SettingsCategoryHeader(props: SettingsHeaderProps) {
     return (
         <>
             <h5

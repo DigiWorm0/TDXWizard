@@ -42,7 +42,7 @@ const DefaultSettings: Settings = {
     customProfileColor: "#000000",
 
     authKey: "",
-    authKeyExpiration: new Date("1970-01-01T00:00:00Z"), // Default to epoch time
+    authKeyExpiration: "1970-01-01T00:00:00Z", // Default to epoch time
     autoUpdateAuthKey: true,
 
     customTemplates: DefaultCustomTemplates,

@@ -175,14 +175,14 @@ export default function FeedCommunication(props: TicketFeedCommunicationProps) {
                             />
                         </span>
                     </h5>
-                    <p style={{margin: "5px 0px"}}>
+                    <div style={{margin: "5px 0px"}}>
                         <Interweave
                             content={props.body}
                             matchers={[
                                 new AttachmentsMatcher(props.ticketAttachments ?? [])
                             ]}
                         />
-                    </p>
+                    </div>
                     {props.notifiedList && (
                         <p
                             style={{

@@ -69,7 +69,7 @@ export default function FeedEvent(props: TicketFeedEventProps) {
                     {props.name}:
                 </a>
             </h5>
-            <p
+            <div
                 style={{
                     margin: 0,
                     color: "#888",
@@ -83,7 +83,7 @@ export default function FeedEvent(props: TicketFeedEventProps) {
                     ]}
                 />
 
-            </p>
+            </div>
         </div>
     )
 }

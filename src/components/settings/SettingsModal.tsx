@@ -1,11 +1,9 @@
 import SettingsSwitchInput from "./input/SettingsSwitchInput";
 import ModalBase from "../common/ModalBase";
-import SidebarImage from "../../content/SidebarBG_compressed.jpg";
-import {GM_info} from "$";
 import SettingsAuthInput from "./input/SettingsAuthInput";
 import useSettings from "../../hooks/useSettings";
 import SettingsColorPickerInput from "./input/SettingsColorPickerInput";
-import SettingsHeader from "./SettingsHeader";
+import SettingsCategoryHeader from "./SettingsCategoryHeader";
 import ResetSettingsButton from "./ResetSettingsButton";
 import ExportSettingsButton from "./ExportSettingsButton";
 import ImportSettingsButton from "./ImportSettingsButton";
@@ -13,6 +11,8 @@ import ClearSearchHistoryButton from "./ClearSearchHistoryButton";
 import checkIsUWStout from "../../utils/checkIsUWStout";
 import SettingsDimensionsInput from "./input/SettingsDimensionsInput";
 import SettingsNumberInput from "./input/SettingsNumberInput";
+import SettingsTitle from "./SettingsTitle";
+import SettingsSidebarImage from "./SettingsSidebarImage";
 
 export interface SettingsModalProps {
     isOpen: boolean;
@@ -30,76 +30,16 @@ export default function SettingsModal(props: SettingsModalProps) {
             <div
                 className={"modal-dialog"}
                 role={"document"}
-                style={{
-                    maxWidth: 620
-                }}
+                style={{maxWidth: 620}}
             >
                 <div className={"modal-content"}>
-                    <div
-                        style={{
-                            display: "flex",
-                            flexDirection: "row",
-                            justifyContent: "flex-start",
-                        }}
-                    >
-                        <div>
-                            <img
-                                alt={"Sidebar"}
-                                src={SidebarImage}
-                                width={230}
-                                style={{
-                                    borderTopLeftRadius: "1.125rem",
-                                    borderBottomLeftRadius: "1.125rem",
-                                    height: "100%",
-                                    objectFit: "cover",
-                                    marginRight: 5,
-                                }}
-                            />
-                            <span
-                                aria-hidden={true}
-                                className={"fa fa-hat-wizard wizard_float"}
-                                style={{
-                                    position: "absolute",
-                                    top: 115,
-                                    left: -25,
-                                    fontSize: 220,
-                                    filter: "drop-shadow(0 0 10px rgba(0, 0, 0, 0.5))",
-                                    color: "#fff",
-                                }}
-                            />
-                        </div>
-                        <div
-                            style={{
-                                margin: 10,
-                                width: "100%",
-                            }}
-                        >
-                            <div
-                                style={{
-                                    display: "flex",
-                                    flexDirection: "row",
-                                    justifyContent: "space-between",
-                                }}
-                            >
-                                <span
-                                    style={{
-                                        fontFamily: "\"DM Sans\",sans-serif",
-                                        fontWeight: "bold",
-                                        fontSize: 30,
-                                        marginTop: 16
-                                    }}
-                                >
-                                    TDX Wizard
-                                    <span
-                                        style={{
-                                            fontWeight: "normal",
-                                            fontSize: 20,
-                                            marginLeft: 5,
-                                        }}
-                                    >
-                                    v{GM_info.script.version}
-                                </span>
-                                </span>
+                    <div className={"d-flex flex-row justify-content-start"}>
+                        <SettingsSidebarImage/>
+                        <div className={"m-2 w-100"}>
+
+                            {/* Header Bar */}
+                            <div className={"d-flex flex-row justify-content-between"}>
+                                <SettingsTitle/>
                                 <button
                                     type={"button"}
                                     className={"close tdx-close-x"}
@@ -116,7 +56,7 @@ export default function SettingsModal(props: SettingsModalProps) {
 
                             {/* ---- START SETTINGS ---- */}
 
-                            <SettingsHeader>Common</SettingsHeader>
+                            <SettingsCategoryHeader>Common</SettingsCategoryHeader>
 
                             <SettingsSwitchInput
                                 label={"Remove Email Anchors/Links"}
@@ -189,7 +129,7 @@ export default function SettingsModal(props: SettingsModalProps) {
                                 </div>
                             </div>
 
-                            <SettingsHeader>Feed</SettingsHeader>
+                            <SettingsCategoryHeader>Feed</SettingsCategoryHeader>
 
                             <SettingsSwitchInput
                                 label={"Better Feed"}
@@ -255,7 +195,7 @@ export default function SettingsModal(props: SettingsModalProps) {
                                 </div>
                             </div>
 
-                            <SettingsHeader>Tickets</SettingsHeader>
+                            <SettingsCategoryHeader>Tickets</SettingsCategoryHeader>
 
                             <SettingsSwitchInput
                                 label={"Automatically Exit Tickets On Action"}
@@ -313,7 +253,7 @@ export default function SettingsModal(props: SettingsModalProps) {
                                 title={"Enables custom templates for ticket updates"}
                             />
 
-                            <SettingsHeader>Printing</SettingsHeader>
+                            <SettingsCategoryHeader>Printing</SettingsCategoryHeader>
 
                             <SettingsSwitchInput
                                 label={"Add Print Button to Tickets"}
@@ -369,7 +309,7 @@ export default function SettingsModal(props: SettingsModalProps) {
                                 />
                             </div>
 
-                            <SettingsHeader>Inventory</SettingsHeader>
+                            <SettingsCategoryHeader>Inventory</SettingsCategoryHeader>
 
                             <SettingsSwitchInput
                                 label={"Add Bulk Inventory Button"}
@@ -377,7 +317,7 @@ export default function SettingsModal(props: SettingsModalProps) {
                                 title={"Adds a tool to the inventory desktop to update assets in bulk"}
                             />
 
-                            <SettingsHeader>Style</SettingsHeader>
+                            <SettingsCategoryHeader>Style</SettingsCategoryHeader>
                             <SettingsSwitchInput
                                 label={"Dense Layout"}
                                 setting={"denseStyle"}
@@ -391,7 +331,7 @@ export default function SettingsModal(props: SettingsModalProps) {
 
                             {checkIsUWStout() && (
                                 <div>
-                                    <SettingsHeader>UW-Stout</SettingsHeader>
+                                    <SettingsCategoryHeader>UW-Stout</SettingsCategoryHeader>
 
                                     <SettingsSwitchInput
                                         label={"Suggest Ticket Types"}
@@ -433,7 +373,7 @@ export default function SettingsModal(props: SettingsModalProps) {
                                 </div>
                             )}
 
-                            <SettingsHeader>Authentication</SettingsHeader>
+                            <SettingsCategoryHeader>Authentication</SettingsCategoryHeader>
                             <SettingsAuthInput/>
                             <SettingsSwitchInput
                                 label={"Auto Update Auth Key"}
@@ -441,7 +381,7 @@ export default function SettingsModal(props: SettingsModalProps) {
                                 title={"Refreshes the authentication key automatically when it expires"}
                             />
 
-                            <SettingsHeader>Danger Zone</SettingsHeader>
+                            <SettingsCategoryHeader>Danger Zone</SettingsCategoryHeader>
                             <div className={"btn-group mt-1 w-100"}>
                                 <ExportSettingsButton/>
                                 <ImportSettingsButton/>
