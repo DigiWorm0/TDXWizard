@@ -2,6 +2,12 @@ import {UWStoutTypeAssignments, UWStoutTypeKeywords} from "../../db/UWStoutTypeM
 import getSettings from "../getSettings";
 import Ticket from "../../tdx-api/types/Ticket";
 
+/**
+ * Suggests potential ticket types based on ticket title, description, and assignment.
+ * Uses a weighted keyword system to determine the most relevant types.
+ * @param ticketInfo - The ticket information object containing Title, Description, and ResponsibleGroupName.
+ * @return An array of suggested ticket type IDs, sorted by relevance.
+ */
 export default function findTicketTypes(ticketInfo: Ticket): number[] {
     let {Title, Description, ResponsibleGroupName} = ticketInfo;
 

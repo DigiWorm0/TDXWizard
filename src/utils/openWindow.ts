@@ -3,7 +3,7 @@ import {unsafeWindow} from "$";
 
 /**
  * Opens a new window with the given href and title.
- * Fallback to opening an iFrame tab if the settings dictate not to open in a new window.
+ * Falls back to opening an TDX tab if "open in new window" is disabled.
  * @param href - The URL to open in the new window.
  * @param title - The title for the new window, optional.
  */

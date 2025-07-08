@@ -1,7 +1,7 @@
 import DateTime from "../../tdx-api/types/DateTime";
 import React from "react";
-import dateToString from "../../utils/datetime/dateToString";
-import getDateAgo from "../../utils/datetime/getDateAgo";
+import dateTimeToString from "../../utils/datetime/dateTimeToString";
+import getDateTimeAgo from "../../utils/datetime/getDateTimeAgo";
 
 export interface UpdatedTimestampProps {
     date: DateTime;
@@ -11,7 +11,7 @@ export default function UpdatedTimestamp(props: UpdatedTimestampProps) {
     const [timestamp, setTimestamp] = React.useState("");
 
     React.useEffect(() => {
-        const updateTimestamp = () => setTimestamp(`${dateToString(props.date)} · ${getDateAgo(props.date)}`);
+        const updateTimestamp = () => setTimestamp(`${dateTimeToString(props.date)} · ${getDateTimeAgo(props.date)}`);
         updateTimestamp();
         const interval = setInterval(updateTimestamp, 1000);
         return () => clearInterval(interval);

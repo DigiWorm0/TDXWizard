@@ -2,12 +2,12 @@ import PageScript from "./PageScript";
 import getSettings from "../utils/getSettings";
 import addComponentToDOM from "../utils/addComponentToDOM";
 import SelectSelfButton from "../components/ticket/forms/SelectSelfButton";
-import autoUpdateAuthKey from "../utils/autoUpdateAuthKey";
 import CustomStyles from "../components/CustomStyles";
 import BetterSearch from "../components/bettersearch/BetterSearch";
 import openWindow from "../utils/openWindow";
 import {unsafeWindow} from "$";
 import {Toaster} from "react-hot-toast";
+import autoUpdateAuthKey from "../utils/autoUpdateAuthKey";
 
 export default class CommonPage implements PageScript {
 
@@ -62,9 +62,17 @@ export default class CommonPage implements PageScript {
     }
 
     /**
-     * Automatically updates the auth key if it is invalid
+     * Automatically updates the auth key on page load if the setting is enabled.
      */
     static runAutoUpdateAuthKey() {
+        const settings = getSettings();
+        const {authKeyExpiration} = settings;
+
+        // Check if the auth key is expired
+        if (new Date(authKeyExpiration) > new Date())
+            return;
+
+        // If the auth key is expired, run the auto-update function
         autoUpdateAuthKey().catch(console.error);
     }
 

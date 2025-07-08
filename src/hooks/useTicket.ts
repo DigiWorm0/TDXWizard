@@ -3,6 +3,7 @@ import {unwrap} from "jotai/utils";
 import LocalTDXClient from "../tdx-api/LocalTDXClient";
 import getTicketIDFromURL from "../tdx-api/utils/getTicketIDFromURL";
 import getAppIDFromURL from "../tdx-api/utils/getAppIDFromURL";
+import handleError from "../utils/handleError";
 
 export const ticketAtom = atom(() => {
     const client = new LocalTDXClient();
@@ -17,7 +18,8 @@ export const ticketAtom = atom(() => {
     if (!appID)
         return null;
 
-    return client.tickets.getTicket(appID, ticketID);
+    return client.tickets.getTicket(appID, ticketID)
+        .catch((e) => handleError("Error fetching ticket", e));
 });
 
 export const syncTicketAtom = unwrap(ticketAtom, t => t);

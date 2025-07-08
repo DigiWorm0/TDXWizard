@@ -6,6 +6,8 @@ import useTicket from "../../../hooks/useTicket";
 import TDXButton from "../../common/TDXButton";
 import UWStoutAppID from "../../../types/UWStoutAppID";
 
+const SURPLUS_FORM_ID = 1061; // Surplus Form ID
+
 export default function TicketSurplusConversionButton() {
     const [settings] = useSettings();
     const ticket = useTicket();
@@ -27,7 +29,7 @@ export default function TicketSurplusConversionButton() {
             // Edit Ticket
             await client.tickets.editTicket(UWStoutAppID.Tickets, ticketID, {
                 ...ticket,
-                FormID: 1061 // Surplus
+                FormID: SURPLUS_FORM_ID // Surplus
             });
 
             // Refresh/Close Page
@@ -39,7 +41,7 @@ export default function TicketSurplusConversionButton() {
     }
 
     // Surplus Form Already
-    if (ticket?.FormID === 1061)
+    if (ticket?.FormID === SURPLUS_FORM_ID)
         return null;
 
     // Not a Surplus Ticket

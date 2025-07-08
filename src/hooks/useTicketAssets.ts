@@ -3,6 +3,7 @@ import {unwrap} from "jotai/utils";
 import LocalTDXClient from "../tdx-api/LocalTDXClient";
 import getTicketIDFromURL from "../tdx-api/utils/getTicketIDFromURL";
 import getAppIDFromURL from "../tdx-api/utils/getAppIDFromURL";
+import handleError from "../utils/handleError";
 
 export const ticketAssetsAtom = atom(async () => {
     // API Client
@@ -19,7 +20,8 @@ export const ticketAssetsAtom = atom(async () => {
         return null;
 
     // Get the ticket feed
-    return await client.tickets.getTicketAssets(appID, ticketID);
+    return await client.tickets.getTicketAssets(appID, ticketID)
+        .catch((e) => handleError("Error fetching ticket assets", e));
 });
 
 export const syncTicketAssetsAtom = unwrap(ticketAssetsAtom, t => t);

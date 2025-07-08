@@ -1,6 +1,12 @@
 import DateTime from "../../tdx-api/types/DateTime";
 
-export default function getDateAgo(date: DateTime): string {
+/**
+ * Gets a human-readable string representing how long ago a date occurred.
+ * Assumes the date is in UTC and compares it to the local browser time.
+ * @param date - The date to compare against the current time.
+ * @return A string indicating how long ago the date was, such as "2 days ago" or "just now".
+ */
+export default function getDateTimeAgo(date: DateTime): string {
     const d = new Date(date);
     const now = new Date();
     const diff = now.getTime() - d.getTime();

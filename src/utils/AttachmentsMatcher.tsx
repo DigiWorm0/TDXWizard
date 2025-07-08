@@ -9,7 +9,20 @@ export interface AttachmentMatch {
 const MIN_ATTACHMENT_LENGTH = 5;
 
 /**
- * Interweave matcher to inject links to attachments in the feed
+ * Interweave matcher to inject links to attachments in the feed.
+ * Requires attachment names to be at least 5 characters long to avoid matching on
+ * single-characters or very short names.
+ *
+ * Example usage:
+ * ```jsx
+ * <Interweave
+ *      // ... other props
+ *      matchers={[
+ *          // ... other matchers
+ *          new AttachmentsMatcher([ ...attachments ])
+ *      ]}
+ * />
+ * ```
  */
 export default class AttachmentsMatcher extends Matcher<AttachmentMatch> {
     attachments: Attachment[];

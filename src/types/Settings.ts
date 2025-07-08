@@ -1,5 +1,6 @@
 import CustomTemplate from "./CustomTemplate";
 import AutoDetectSearchType from "./SearchCategory";
+import DateTime from "../tdx-api/types/DateTime";
 
 export default interface Settings {
     autoUpdateAuthKey: boolean;
@@ -39,6 +40,7 @@ export default interface Settings {
     useCustomProfileColor: boolean;
     customProfileColor: string;
     authKey: string;
+    authKeyExpiration: DateTime;
     customTemplates: CustomTemplate[];
     enableCustomTemplates: boolean;
     legacyLookupButton: boolean;

@@ -1,5 +1,5 @@
-import dateToString from "../../utils/datetime/dateToString";
-import getDateAgo from "../../utils/datetime/getDateAgo";
+import dateTimeToString from "../../utils/datetime/dateTimeToString";
+import getDateTimeAgo from "../../utils/datetime/getDateTimeAgo";
 import DateTime from "../../tdx-api/types/DateTime";
 import Guid from "../../tdx-api/types/Guid";
 import React from "react";
@@ -35,7 +35,7 @@ export default function FeedEvent(props: TicketFeedEventProps) {
 
     return (
         <div
-            title={dateToString(props.date) + " · " + getDateAgo(props.date)}
+            title={dateTimeToString(props.date) + " · " + getDateTimeAgo(props.date)}
             style={{
                 display: "flex",
                 flexDirection: "row",

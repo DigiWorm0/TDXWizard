@@ -1,3 +1,6 @@
+/**
+ * Custom error class for handling HTTP response errors.
+ */
 export default class HTTPResponseError extends Error {
     response: Response;
 

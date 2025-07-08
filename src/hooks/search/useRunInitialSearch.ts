@@ -10,8 +10,14 @@ import useAssetAppIDs from "../useAssetAppIDs";
 import AutoDetectSearchType from "../../types/SearchCategory";
 import UWStoutAppID from "../../types/UWStoutAppID";
 import checkIsUWStout from "../../utils/checkIsUWStout";
+import HTTPResponseError from "../../utils/HTTPResponseError";
 
 type InitialSearchResultLoader = Promise<SearchResult | null>;
+
+const IGNORED_RESPONSE_CODES = [
+    404,    // Not Found
+    403     // Forbidden (If the app ID is restricted)
+];
 
 export default function useRunInitialSearch() {
     const [settings] = useSettings();
@@ -20,61 +26,48 @@ export default function useRunInitialSearch() {
     const {enableNewSearchAutoDetectQuery} = settings;
 
     // Default search
-    return React.useCallback(async (searchQuery: string): Promise<SearchResult> => {
-
-        // Default result to fall back to
-        const DEFAULT_RESULT: SearchResult = {
-            text: `Search "${searchQuery}"`,
-            historyText: searchQuery,
-            type: SearchType.Search,
-            href: `/TDNext/Apps/Shared/Global/Search?searchText=${encodeURIComponent(searchQuery)}`
-        };
+    return React.useCallback(async (searchQuery: string, defaultResult: SearchResult): Promise<SearchResult> => {
 
         // Abort if auto-detect is disabled
         if (!enableNewSearchAutoDetectQuery)
-            return DEFAULT_RESULT;
+            return defaultResult;
 
-        try {
-            // Get the target search type
-            const targetSearchTypes = getTargetSearchTypes(searchQuery);
+        // Get the target search type
+        const targetSearchTypes = getTargetSearchTypes(searchQuery);
 
-            // Iterate through the target search types
-            for (const type of targetSearchTypes) {
+        // Iterate through the target search types
+        for (const type of targetSearchTypes) {
 
-                // If the type is not defined, skip it
-                if (!type || !type.type)
-                    continue;
+            // If the type is not defined, skip it
+            if (!type || !type.type)
+                continue;
 
-                // Search for Assets
-                if (type.type === SearchType.Asset) {
-                    const appIDs = type.appID ? [type.appID] : assetApps;
-                    const res = await trySearchAsset(appIDs, SearchType.Asset, searchQuery);
-                    if (res) return res;
-                }
-
-                // Search for Tickets
-                else if (type.type === SearchType.Ticket) {
-                    const appIDs = type.appID ? [type.appID] : ticketApps;
-                    const res = await trySearchTicket(appIDs, SearchType.Ticket, searchQuery);
-                    if (res) return res;
-                }
-
-                // Search for People
-                else if (type.type === SearchType.Person) {
-                    const res = await trySearchUser(SearchType.Person, searchQuery);
-                    if (res) return res;
-                }
-
-                // Unknown search type
-                console.warn(`Unknown search type: ${type.type}`);
+            // Search for Assets
+            if (type.type === SearchType.Asset) {
+                const appIDs = type.appID ? [type.appID] : assetApps;
+                const res = await trySearchAsset(appIDs, SearchType.Asset, searchQuery);
+                if (res) return res;
             }
-        } catch (error) {
-            // Log the error
-            console.error("Error during initial search:", error);
+
+            // Search for Tickets
+            else if (type.type === SearchType.Ticket) {
+                const appIDs = type.appID ? [type.appID] : ticketApps;
+                const res = await trySearchTicket(appIDs, SearchType.Ticket, searchQuery);
+                if (res) return res;
+            }
+
+            // Search for People
+            else if (type.type === SearchType.Person) {
+                const res = await trySearchUser(SearchType.Person, searchQuery);
+                if (res) return res;
+            }
+
+            // Unknown search type
+            console.warn(`Unknown search type: ${type.type}`);
         }
 
         // Default Search
-        return DEFAULT_RESULT;
+        return defaultResult;
     }, [enableNewSearchAutoDetectQuery, ticketApps, assetApps]);
 }
 
@@ -144,7 +137,7 @@ async function trySearchTicket(appIDs: AppID[], type: SearchType, searchQuery: s
 
         // Get the ticket
         try {
-            const ticket = await client.tickets.getTicket(appID, ticketID).catch(() => null);
+            const ticket = await client.tickets.getTicket(appID, ticketID);
             if (!ticket)
                 continue;
 
@@ -156,7 +149,14 @@ async function trySearchTicket(appIDs: AppID[], type: SearchType, searchQuery: s
                 href: `/TDNext/Apps/${ticket.AppID}/Tickets/TicketDet.aspx?TicketID=${ticketID}`
             };
         } catch (error) {
-            // If the ticket is not found, continue to the next app ID
+            if (error instanceof HTTPResponseError) {
+                // If the user is not found, return null
+                if (IGNORED_RESPONSE_CODES.includes(error.response.status))
+                    return null;
+            }
+
+            // Re-throw other errors
+            throw error;
         }
     }
 
@@ -170,21 +170,32 @@ async function trySearchAsset(appIDs: AppID[], type: SearchType, searchQuery: st
     // Iterate through the app IDs
     for (const appID of appIDs) {
 
-        // Search for the asset
-        const assets = await client.assets.searchAssets(appID, {
-            SerialLike: searchQuery.trim(),
-            MaxResults: 2
-        }).catch(() => []); // Ignore errors, return empty array
+        try {
+            // Search for the asset
+            const assets = await client.assets.searchAssets(appID, {
+                SerialLike: searchQuery.trim(),
+                MaxResults: 2
+            });
 
-        // Only allow if exactly one asset is found
-        if (assets.length !== 1)
-            continue;
+            // Only allow if exactly one asset is found
+            if (assets.length !== 1)
+                continue;
 
-        // Apply to the search URL
-        return {
-            text: assets[0].Tag ?? assets[0].Name ?? searchQuery,
-            type,
-            href: `/TDNext/Apps/${appID}/Assets/AssetDet?AssetID=${assets[0].ID}`
+            // Apply to the search URL
+            return {
+                text: assets[0].Tag ?? assets[0].Name ?? searchQuery,
+                type,
+                href: `/TDNext/Apps/${appID}/Assets/AssetDet?AssetID=${assets[0].ID}`
+            }
+        } catch (error) {
+            if (error instanceof HTTPResponseError) {
+                // If the user is not found, return null
+                if (IGNORED_RESPONSE_CODES.includes(error.response.status))
+                    return null;
+            }
+
+            // Re-throw other errors
+            throw error;
         }
     }
 
@@ -197,17 +208,28 @@ async function trySearchUser(type: SearchType, searchQuery: string): InitialSear
     const client = new LocalTDXClient();
 
     // Search for the user
-    const users = await client.people.search({
-        SearchText: searchQuery.trim(),
-        MaxResults: 1
-    }).catch(() => []);
-    if (users.length === 0)
-        return null;
+    try {
+        const users = await client.people.search({
+            SearchText: searchQuery.trim(),
+            MaxResults: 1
+        });
+        if (users.length === 0)
+            return null;
 
-    // Apply to the search URL
-    return {
-        text: users[0].FullName ?? searchQuery,
-        type,
-        href: `/TDNext/Apps/People/PersonDet?U=${users[0].UID}`
+        // Apply to the search URL
+        return {
+            text: users[0].FullName ?? searchQuery,
+            type,
+            href: `/TDNext/Apps/People/PersonDet?U=${users[0].UID}`
+        }
+    } catch (error) {
+        if (error instanceof HTTPResponseError) {
+            // If the user is not found, return null
+            if (IGNORED_RESPONSE_CODES.includes(error.response.status))
+                return null;
+        }
+
+        // Re-throw other errors
+        throw error;
     }
 }

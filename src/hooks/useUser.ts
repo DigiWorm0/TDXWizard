@@ -4,6 +4,7 @@ import LocalTDXClient from "../tdx-api/LocalTDXClient";
 import {useAtomValue} from "jotai";
 import DefaultGUID from "../types/DefaultGUID";
 import atomWithCache from "../utils/atomWithCache";
+import handleError from "../utils/handleError";
 
 export const userAtomFamily = atomFamily((uid?: Guid) => {
     const userAtom = atomWithCache(`user-${uid}`, async () => {
@@ -12,14 +13,10 @@ export const userAtomFamily = atomFamily((uid?: Guid) => {
         if (uid === DefaultGUID)
             return null;
 
-        try {
-            console.log(`Fetching user ${uid}`);
-            const client = new LocalTDXClient();
-            return await client.people.getPerson(uid ?? "");
-        } catch (e) {
-            console.error(e);
-            return null;
-        }
+        // API Client
+        const client = new LocalTDXClient();
+        return await client.people.getPerson(uid ?? "")
+            .catch(e => handleError("Error fetching user", e));
     }, {
         cacheTime: 1000 * 60 * 30 // 30 minutes
     });

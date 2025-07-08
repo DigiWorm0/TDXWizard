@@ -6,13 +6,12 @@ import confirmAction from "../../../utils/confirmAction";
 import useTicket from "../../../hooks/useTicket";
 import useTicketStatusID from "../../../hooks/useTicketStatusID";
 import TDXButton from "../../common/TDXButton";
+import StatusClass from "../../../tdx-api/types/StatusClass";
 
 export default function TicketResolveButton() {
     const [settings] = useSettings();
     const ticket = useTicket();
     const resolvedID = useTicketStatusID("Resolved");
-    const closedID = useTicketStatusID("Closed");
-    const cancelledID = useTicketStatusID("Cancelled");
 
     const resolveTicket = async () => {
         if (!confirmAction("Are you sure you want to resolve this ticket?"))
@@ -44,10 +43,10 @@ export default function TicketResolveButton() {
     }
 
     // Already Resolved
-    const isResolved = ticket?.StatusID === resolvedID;
-    const isClosed = ticket?.StatusID === closedID;
-    const isCancelled = ticket?.StatusID === cancelledID;
-    if (isResolved || isClosed || isCancelled)
+    const isClosed =
+        ticket?.StatusClass === StatusClass.Completed ||
+        ticket?.StatusClass === StatusClass.Cancelled;
+    if (isClosed)
         return null;
 
     // Disabled

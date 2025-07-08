@@ -1,5 +1,11 @@
 const SSO_PATH = "/TDWebApi/api/auth/loginsso";
 
+/**
+ * Opens a popup to log in via SSO and retrieves the auth key from the redirected page.
+ *
+ * This has to be a window popup instead of a hidden iframe to avoid cross-origin or
+ * x-frame issues with SSO sign-in pages such as Microsoft Entra ID.
+ */
 export default async function getAuthKeyFromSSO() {
 
     // Open the login popup

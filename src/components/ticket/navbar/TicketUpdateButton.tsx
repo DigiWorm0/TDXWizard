@@ -16,7 +16,6 @@ export default function TicketUpdateButton() {
         return null;
     return (
         <TDXButton
-            intent={"secondary"}
             text={"Update"}
             title={"Add a ticket update to the ticket betterfeed"}
             icon={"fa fa-solid fa-nopad fa-square-caret-up"}

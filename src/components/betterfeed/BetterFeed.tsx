@@ -1,6 +1,6 @@
 import React from "react";
 import DateTime from "../../tdx-api/types/DateTime";
-import getEpochFromDate from "../../utils/datetime/getEpochFromDate";
+import getEpochFromDateTime from "../../utils/datetime/getEpochFromDateTime";
 import FeedCommunication from "./FeedCommunication";
 import FeedEvent from "./FeedEvent";
 import useTicket from "../../hooks/useTicket";
@@ -98,6 +98,7 @@ export default function BetterFeed(props: TicketFeedProps) {
             new RegExp(/Restarted the ".*?" workflow for this (?:incident|service request)\.<br ?\/?>/g),
             new RegExp(/Took primary responsibility for this (?:incident|service request)\.<br ?\/?>/g),
             new RegExp(/Added the attachment .*?\.<br ?\/?>/g),
+            new RegExp(/Edited this (?:incident|service request)\.<br ?\/?>/g),
             // new RegExp(/Merged incident \d+ \(.*?\): /g),
         ];
         systemMessageRegex.forEach(regex => {
@@ -170,7 +171,7 @@ export default function BetterFeed(props: TicketFeedProps) {
         newItems = newItems.filter(item => item.Body.trim() !== "");
 
         // Sort the feed by Date
-        newItems.sort((a, b) => getEpochFromDate(b.CreatedDate) - getEpochFromDate(a.CreatedDate));
+        newItems.sort((a, b) => getEpochFromDateTime(b.CreatedDate) - getEpochFromDateTime(a.CreatedDate));
         if (settings.reverseFeedOrder)
             newItems = newItems.reverse();
 
@@ -189,8 +190,8 @@ export default function BetterFeed(props: TicketFeedProps) {
 
                 // Avoid merging if the times too far apart
                 const isSimilarTime = Math.abs(
-                    getEpochFromDate(newItems[i].CreatedDate) -
-                    getEpochFromDate(newItems[i + 1].CreatedDate)
+                    getEpochFromDateTime(newItems[i].CreatedDate) -
+                    getEpochFromDateTime(newItems[i + 1].CreatedDate)
                 ) < MAX_TIME_OFFSET; // 1 second
                 if (!isSimilarTime)
                     continue;
