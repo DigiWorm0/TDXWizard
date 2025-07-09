@@ -14,6 +14,7 @@ export const myUserAtom = atomWithCache("myUser", async (get) => {
 }, {
     cacheTime: 1000 * 60 * 5 // 5 minutes
 });
+
 export const myUserSyncAtom = unwrap(myUserAtom, p => p);
 
 export default function useMyUser() {

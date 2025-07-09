@@ -8,29 +8,28 @@ import DefaultGUID from "../../types/DefaultGUID";
 import {Interweave} from "interweave";
 import AttachmentsMatcher from "../../utils/AttachmentsMatcher";
 import Attachment from "../../tdx-api/types/Attachment";
+import openWindow from "../../utils/openWindow";
 
 export interface TicketFeedEventProps {
     uid: Guid,
     name: string,
     date: DateTime,
     body: string,
-    ticketAttachments?: Attachment[]
+    ticketAttachments?: Attachment[],
+    mergedTicketID?: string,
 }
 
 export default function FeedEvent(props: TicketFeedEventProps) {
     const userColor = useUserColor(props.uid);
-    const profileURL = `/TDNext/Apps/People/PersonDet.aspx?U=${props.uid}`;
+    const isSystem = props.uid === DefaultGUID;
+    const profileURL = isSystem ? "#" : `/TDNext/Apps/People/PersonDet.aspx?U=${props.uid}`;
 
     const openProfile = (e: React.MouseEvent<HTMLAnchorElement>) => {
         e.preventDefault();
-        if (props.uid === DefaultGUID)
+        if (isSystem)
             return;
 
-        window.open(
-            profileURL,
-            "Profile",
-            "width=992,height=700"
-        );
+        openWindow(profileURL, `Profile of ${props.name}`);
     }
 
     return (
@@ -51,7 +50,8 @@ export default function FeedEvent(props: TicketFeedEventProps) {
                 }}
             >
                 <span
-                    className={"fa fa-solid fa-nopad fa-wrench"}
+                    title={props.mergedTicketID ? `Merged from ticket ${props.mergedTicketID}` : undefined}
+                    className={`fa ${props.mergedTicketID ? "fa-code-merge" : "fa-wrench"}`}
                     style={{
                         marginRight: 7,
                         color: userColor
@@ -82,7 +82,6 @@ export default function FeedEvent(props: TicketFeedEventProps) {
                         new AttachmentsMatcher(props.ticketAttachments ?? [])
                     ]}
                 />
-
             </div>
         </div>
     )

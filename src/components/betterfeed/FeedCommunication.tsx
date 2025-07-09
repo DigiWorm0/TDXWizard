@@ -21,6 +21,7 @@ export interface TicketFeedCommunicationProps {
     label?: string,
     notifiedList: string,
     ticketAttachments?: Attachment[],
+    mergedTicketID?: string,
 
     replyToID?: number,
     replyToUID?: Guid,
@@ -121,6 +122,21 @@ export default function FeedCommunication(props: TicketFeedCommunicationProps) {
                     transition: "background-color 0.5s"
                 }}
             >
+                {props.mergedTicketID && (
+                    <div
+                        title={`Merged from ticket ${props.mergedTicketID}`}
+                        style={{
+                            height: 60,
+                            minWidth: 26,
+                            fontSize: 18,
+                            color: userColor,
+                            display: "flex",
+                            alignItems: "center"
+                        }}
+                    >
+                        <span className={"fa fa-code-merge"}></span>
+                    </div>
+                )}
                 <FeedProfileImage
                     size={60}
                     uid={props.uid}

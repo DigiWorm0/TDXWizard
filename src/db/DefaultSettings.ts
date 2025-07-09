@@ -36,6 +36,10 @@ const DefaultSettings: Settings = {
     useNewFeedOnTickets: true,
     useNewFeedOnAssets: true,
     useNewFeedOnTicketTasks: true,
+    checkForMergedTickets: true,
+    checkForTicketTasks: true,
+    checkForTicketTaskCompletions: true,
+    checkForUserOperations: true,
     mergeAdjacentSystemMessages: true,
 
     useCustomProfileColor: false,
@@ -84,8 +88,9 @@ const DefaultSettings: Settings = {
     searchHistoryLimit: 8,
 
     autoDetectSearchTypes: [
-        {type: "Ticket" as SearchType, regexes: ["^\\d{5,8}$"]},
-        {type: "Person" as SearchType, regexes: ["^.+@"]}
+        {type: "Ticket" as SearchType, regexes: ["^\\d{5,8}$"]},        // Ticket ID
+        {type: "Person" as SearchType, regexes: ["^.+@"]},              // Email address
+        {type: "Asset" as SearchType, regexes: ["^[A-Z0-9]{9,12}$"]}    // Serial Number
     ],
     ticketTypeAliases: {},
     hideTicketTypes: []

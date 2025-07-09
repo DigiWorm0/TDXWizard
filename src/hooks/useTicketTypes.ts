@@ -16,6 +16,8 @@ export const ticketTypesAtom = atomWithCache(`ticketTypes-${appID}`, async () =>
     const client = new LocalTDXClient();
     return await client.ticketTypes.getTicketTypes(appID)
         .catch(e => handleError("Error fetching ticket types", e));
+}, {
+    cacheTime: 1000 * 60 * 5 // 5 minutes
 });
 
 export const syncTicketTypesAtom = unwrap(ticketTypesAtom, t => t);

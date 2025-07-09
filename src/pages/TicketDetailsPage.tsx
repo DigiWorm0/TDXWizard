@@ -3,7 +3,7 @@ import addComponentToDOM from "../utils/addComponentToDOM";
 import TicketNavBar from "../components/ticket/navbar/TicketNavBar";
 import ConvertFeedButton from "../components/betterfeed/ConvertFeedButton";
 
-const URL_PREFIX_REGEX = /\/TDNext\/Apps\/\d*\/Tickets\/TicketDet/g;
+const URL_PREFIX_REGEX = /\/TDNext\/Apps\/\d*\/Tickets\/TicketDet(?!Print)/g;
 
 export default class TicketDetailsPage implements PageScript {
 
