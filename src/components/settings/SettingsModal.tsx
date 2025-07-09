@@ -175,6 +175,13 @@ export default function SettingsModal(props: SettingsModalProps) {
                                     disabled={!settings.useNewFeed}
                                     title={"Searches for text that indicate a task has been completed and replaces them with a checkmark icon in the feed"}
                                 />
+
+                                <SettingsSwitchInput
+                                    label={"Check for User Operations"}
+                                    setting={"checkForUserOperations"}
+                                    disabled={!settings.useNewFeed}
+                                    title={"Searches for text that indicate a user operation and converts them to a small, non-communication item in the feed"}
+                                />
                                 <SettingsSwitchInput
                                     label={"Merge Adjacent System Messages"}
                                     setting={"mergeAdjacentSystemMessages"}

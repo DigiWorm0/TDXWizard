@@ -39,6 +39,7 @@ const DefaultSettings: Settings = {
     checkForMergedTickets: true,
     checkForTicketTasks: true,
     checkForTicketTaskCompletions: true,
+    checkForUserOperations: true,
     mergeAdjacentSystemMessages: true,
 
     useCustomProfileColor: false,

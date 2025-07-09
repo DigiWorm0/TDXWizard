@@ -46,11 +46,10 @@ const USER_OPERATION_REGEXES = [
     new RegExp(/Assigned the ".*?" workflow to this (?:incident|service request)\.<br ?\/?>/g),
     new RegExp(/Removed the ".*?" workflow from this (?:incident|service request)\.<br ?\/?>/g),
     new RegExp(/Added the .*? template to this (?:incident|service request)\.<br ?\/?>/g),
-    new RegExp(/Edited this task\.<br ?\/?>/g),
     new RegExp(/Restarted the ".*?" workflow for this (?:incident|service request)\.<br ?\/?>/g),
     new RegExp(/Took primary responsibility for this (?:incident|service request)\.<br ?\/?>/g),
     new RegExp(/Added the attachment .*?\.<br ?\/?>/g),
-    new RegExp(/Edited this (?:incident|service request)\.<br ?\/?>/g),
+    new RegExp(/Edited this (?:incident|service request|task)\.<br ?\/?>/g),
 ];
 
 /**
@@ -110,7 +109,7 @@ export default function useFormattedFeed(feed: FeedItemUpdate[] | null | undefin
         }));
 
         // Check for Merged Tickets
-        if (settings.checkForMergedTickets) {
+        if (settings.checkForMergedTickets) {   // <-- (enabled by default)
             newItems = newItems.map(item => {
                 for (const regex of MERGED_REGEXES) {
                     // Reset the regex lastIndex
@@ -138,58 +137,60 @@ export default function useFormattedFeed(feed: FeedItemUpdate[] | null | undefin
         }
 
         // Replace specific user edits/operations with non-communication messages
-        USER_OPERATION_REGEXES.forEach(regex => {
-            for (let i = 0; i < newItems.length; i++) {
+        if (settings.checkForUserOperations) {  // <-- (enabled by default)
+            USER_OPERATION_REGEXES.forEach(regex => {
+                for (let i = 0; i < newItems.length; i++) {
 
-                // Array is mutated in place, so we need to fetch the item instead of using `forEach`
-                const item = newItems[i];
+                    // Array is mutated in place, so we need to fetch the item instead of using `forEach`
+                    const item = newItems[i];
 
-                // Skip if it's already a non-communication
-                if (!item.IsCommunication)
-                    continue;
-
-                // Remove LF from the field names
-                const content = item.Body.replace(/\n/g, " ");
-
-                // Reset the regex
-                regex.lastIndex = 0;
-
-                // Check if the body contains a system message
-                const matches = regex.exec(content);
-                if (!matches)
-                    continue;
-
-                // Replace each match with a new item
-                for (let o = 0; o < matches?.length; o++) {
-                    const match = matches[o];
-                    if (!match)
+                    // Skip if it's already a non-communication
+                    if (!item.IsCommunication)
                         continue;
 
-                    let newMessage = match;
+                    // Remove LF from the field names
+                    const content = item.Body.replace(/\n/g, " ");
 
-                    // Replace completed percentage with a checkmark
-                    COMPLETED_REGEX.lastIndex = 0;
-                    if (COMPLETED_REGEX.test(newMessage) && settings.checkForTicketTaskCompletions)
-                        newMessage = `${item.ItemTitle} <span class="fa fa-sm fa-check"></span><br>`;
+                    // Reset the regex
+                    regex.lastIndex = 0;
 
-                    // Append Task Name if it's a Ticket Task
-                    else if (item.ItemType === FeedItemType.TicketTask && settings.checkForTicketTasks)
-                        newMessage = `${item.ItemTitle} > ` + newMessage;
+                    // Check if the body contains a system message
+                    const matches = regex.exec(content);
+                    if (!matches)
+                        continue;
 
-                    // Add the new item
-                    newItems.push({
-                        ...item,
-                        ID: Math.random(),
-                        IsCommunication: false,
-                        Body: newMessage,
-                    });
-                    newItems[i] = {
-                        ...item,
-                        Body: content.replace(match, ""),
-                    };
+                    // Replace each match with a new item
+                    for (let o = 0; o < matches?.length; o++) {
+                        const match = matches[o];
+                        if (!match)
+                            continue;
+
+                        let newMessage = match;
+
+                        // Replace completed percentage with a checkmark
+                        COMPLETED_REGEX.lastIndex = 0;
+                        if (COMPLETED_REGEX.test(newMessage) && settings.checkForTicketTaskCompletions)
+                            newMessage = `${item.ItemTitle} <span class="fa fa-sm fa-check"></span><br>`;
+
+                        // Append Task Name if it's a Ticket Task
+                        else if (item.ItemType === FeedItemType.TicketTask && settings.checkForTicketTasks)
+                            newMessage = `${item.ItemTitle} > ` + newMessage;
+
+                        // Add the new item
+                        newItems.push({
+                            ...item,
+                            ID: Math.random(),
+                            IsCommunication: false,
+                            Body: newMessage,
+                        });
+                        newItems[i] = {
+                            ...item,
+                            Body: content.replace(match, ""),
+                        };
+                    }
                 }
-            }
-        });
+            });
+        }
 
         // Replace \n with <br>
         newItems = newItems.map(item => ({

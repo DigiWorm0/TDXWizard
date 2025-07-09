@@ -40,6 +40,7 @@ export default interface Settings {
     checkForMergedTickets: boolean;
     checkForTicketTasks: boolean;
     checkForTicketTaskCompletions: boolean;
+    checkForUserOperations: boolean;
     useCustomProfileColor: boolean;
     customProfileColor: string;
     authKey: string;
