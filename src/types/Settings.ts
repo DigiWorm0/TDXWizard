@@ -37,6 +37,9 @@ export default interface Settings {
     useNewFeedOnTicketTasks: boolean;
     reverseFeedOrder: boolean;
     mergeAdjacentSystemMessages: boolean;
+    checkForMergedTickets: boolean;
+    checkForTicketTasks: boolean;
+    checkForTicketTaskCompletions: boolean;
     useCustomProfileColor: boolean;
     customProfileColor: string;
     authKey: string;

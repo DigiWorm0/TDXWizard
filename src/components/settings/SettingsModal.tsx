@@ -157,6 +157,25 @@ export default function SettingsModal(props: SettingsModalProps) {
                                 />
 
                                 <SettingsSwitchInput
+                                    label={"Check for Tickets Merges"}
+                                    setting={"checkForMergedTickets"}
+                                    disabled={!settings.useNewFeed}
+                                    title={"Searches for text that indicate a ticket has been merged and replaces them with a merge icon in the feed"}
+                                />
+
+                                <SettingsSwitchInput
+                                    label={"Check for Ticket Tasks"}
+                                    setting={"checkForTicketTasks"}
+                                    disabled={!settings.useNewFeed}
+                                    title={"Checks if a feed item is a task and replaces the text to make it more intuitive"}
+                                />
+                                <SettingsSwitchInput
+                                    label={"Check for Ticket Task Completions"}
+                                    setting={"checkForTicketTaskCompletions"}
+                                    disabled={!settings.useNewFeed}
+                                    title={"Searches for text that indicate a task has been completed and replaces them with a checkmark icon in the feed"}
+                                />
+                                <SettingsSwitchInput
                                     label={"Merge Adjacent System Messages"}
                                     setting={"mergeAdjacentSystemMessages"}
                                     disabled={!settings.useNewFeed}

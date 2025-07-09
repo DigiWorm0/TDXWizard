@@ -14,7 +14,8 @@ export interface TicketFeedEventProps {
     name: string,
     date: DateTime,
     body: string,
-    ticketAttachments?: Attachment[]
+    ticketAttachments?: Attachment[],
+    mergedTicketID?: string,
 }
 
 export default function FeedEvent(props: TicketFeedEventProps) {
@@ -51,7 +52,8 @@ export default function FeedEvent(props: TicketFeedEventProps) {
                 }}
             >
                 <span
-                    className={"fa fa-solid fa-nopad fa-wrench"}
+                    title={props.mergedTicketID ? `Merged from ticket ${props.mergedTicketID}` : undefined}
+                    className={`fa ${props.mergedTicketID ? "fa-code-merge" : "fa-wrench"}`}
                     style={{
                         marginRight: 7,
                         color: userColor

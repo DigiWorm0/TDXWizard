@@ -74,7 +74,10 @@ export default function useRunInitialSearch() {
 const UWSTOUT_TYPES: AutoDetectSearchType[] = [
     {
         type: SearchType.Person,
-        regexes: ["^0\\d{6}$", "^[a-zA-Z]+\\d{4}$"]
+        regexes: [
+            "^0\\d{6}$",         // Student ID (e.g., 012345)
+            "^[a-zA-Z]+\\d{4}$"  // Student usernames format (e.g., jdoe1234)
+        ],
     },
     {
         // Faculty/Staff Assets
@@ -152,7 +155,7 @@ async function trySearchTicket(appIDs: AppID[], type: SearchType, searchQuery: s
             if (error instanceof HTTPResponseError) {
                 // If the user is not found, return null
                 if (IGNORED_RESPONSE_CODES.includes(error.response.status))
-                    return null;
+                    continue;
             }
 
             // Re-throw other errors
@@ -191,7 +194,7 @@ async function trySearchAsset(appIDs: AppID[], type: SearchType, searchQuery: st
             if (error instanceof HTTPResponseError) {
                 // If the user is not found, return null
                 if (IGNORED_RESPONSE_CODES.includes(error.response.status))
-                    return null;
+                    continue;
             }
 
             // Re-throw other errors
