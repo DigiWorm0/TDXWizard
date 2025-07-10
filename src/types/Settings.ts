@@ -20,6 +20,8 @@ export default interface Settings {
     selectSelfButton: boolean;
     showTicketPrintButton: boolean;
 
+    disableNotifyResponsibleByDefault: boolean;
+
     ticketPrintDefaults: boolean;
     ticketPrintEnableDetails: boolean;
     ticketPrintEnableDescription: boolean;

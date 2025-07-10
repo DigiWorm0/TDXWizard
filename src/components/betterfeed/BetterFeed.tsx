@@ -81,12 +81,12 @@ export default function BetterFeed(props: TicketFeedProps) {
 
             {/* Loading Animation */}
             {!formattedFeed && (
-                <div className="progress">
-                    <div
-                        className={"progress progress-bar-striped progress-bar-animated"}
-                        role={"progressbar"}
-                        style={{width: "100%"}}
+                <div className={"text-center"}>
+                    <span
+                        className={"fa fa-spinner fa-spin"}
+                        style={{marginRight: 5}}
                     />
+                    <span className={"text-muted"}>Loading feed...</span>
                 </div>
             )}
         </div>

@@ -16,6 +16,8 @@ const DefaultSettings: Settings = {
     autoCloseTicketOnSave: false,
     ticketTypeThreshold: 0.5,
 
+    disableNotifyResponsibleByDefault: true,
+
     confirmActions: true,
     unlinkEmails: true,
     selectSelfButton: true,

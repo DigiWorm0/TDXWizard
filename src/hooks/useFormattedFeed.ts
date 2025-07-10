@@ -69,7 +69,9 @@ export default function useFormattedFeed(feed: FeedItemUpdate[] | null | undefin
 
     return React.useMemo(() => {
         // Abort if no feed is provided
-        if (!feed || feed.length === 0)
+        if (!feed)
+            return null;
+        if (feed.length === 0)
             return [];
 
         // Create a new array of formatted feed items
