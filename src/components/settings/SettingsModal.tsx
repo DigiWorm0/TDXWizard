@@ -284,6 +284,12 @@ export default function SettingsModal(props: SettingsModalProps) {
                                 title={"Enables custom templates for ticket updates"}
                             />
 
+                            <SettingsSwitchInput
+                                label={"Enable Editable Ticket Title"}
+                                setting={"editableTicketTitle"}
+                                title={"Allows you to edit the ticket title directly from the ticket details page"}
+                            />
+
                             <SettingsCategoryHeader>Printing</SettingsCategoryHeader>
 
                             <SettingsSwitchInput

@@ -6,8 +6,8 @@ import CustomStyles from "../components/CustomStyles";
 import BetterSearch from "../components/bettersearch/BetterSearch";
 import openWindow from "../utils/openWindow";
 import {unsafeWindow} from "$";
-import {Toaster} from "react-hot-toast";
 import autoUpdateAuthKey from "../utils/autoUpdateAuthKey";
+import WizardToaster from "../components/common/WizardToaster";
 
 export default class CommonPage implements PageScript {
 
@@ -30,7 +30,7 @@ export default class CommonPage implements PageScript {
     }
 
     static addToaster() {
-        addComponentToDOM(document.body, <Toaster position={"bottom-right"}/>);
+        addComponentToDOM(document.body, <WizardToaster/>);
     }
 
     static replaceWindowLinks() {

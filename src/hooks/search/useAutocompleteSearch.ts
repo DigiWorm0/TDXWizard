@@ -3,7 +3,7 @@ import LocalTDXClient from "../../tdx-api/LocalTDXClient";
 import CustomAttributeComponent from "../../tdx-api/types/CustomAttributeComponent";
 import {SearchType} from "../../types/SearchType";
 import SearchResult from "../../types/SearchResult";
-import toast from "react-hot-toast";
+import handleError from "../../utils/handleError";
 
 const QUERY_DELAY = 500; // ms
 
@@ -53,7 +53,7 @@ export default function useAutocompleteSearch(query: string) {
                 .catch((error) => {
                     if (isCanceled) return;
 
-                    toast.error(`Error searching for "${query}": ${error.message}`);
+                    handleError(`Error searching for "${query}"`, error);
                 })
                 .finally(() => {
                     if (isCanceled) return;

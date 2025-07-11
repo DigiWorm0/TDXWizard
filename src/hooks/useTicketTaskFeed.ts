@@ -4,6 +4,7 @@ import LocalTDXClient from "../tdx-api/LocalTDXClient";
 import getAppIDFromURL from "../tdx-api/utils/getAppIDFromURL";
 import getTicketIDFromURL from "../tdx-api/utils/getTicketIDFromURL";
 import getTaskIDFromURL from "../tdx-api/utils/getTaskIDFromURL";
+import handleError from "../utils/handleError";
 
 export const ticketTaskFeedAtom = atom(async () => {
     // API Client
@@ -24,16 +25,20 @@ export const ticketTaskFeedAtom = atom(async () => {
     if (!appID)
         return null;
 
-    // Get the ticket feed
-    const feed = await client.ticketTasks.getTicketTaskFeed(appID, ticketID, taskID);
+    try {
+        // Get the ticket feed
+        const feed = await client.ticketTasks.getTicketTaskFeed(appID, ticketID, taskID);
 
-    // Grab the replies
-    for (let i = 0; i < feed.length; i++) {
-        if (feed[i].RepliesCount > 0)
-            feed[i] = await client.feed.getFeed(feed[i].ID);
+        // Grab the replies
+        for (let i = 0; i < feed.length; i++) {
+            if (feed[i].RepliesCount > 0)
+                feed[i] = await client.feed.getFeed(feed[i].ID);
+        }
+
+        return feed;
+    } catch (e) {
+        return handleError("Failed to fetch ticket task feed", e);
     }
-
-    return feed;
 });
 
 export const syncTicketTaskFeedAtom = unwrap(ticketTaskFeedAtom, t => t);

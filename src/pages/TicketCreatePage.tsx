@@ -3,7 +3,7 @@ import addComponentToDOM from "../utils/addComponentToDOM";
 import FormTypeButtons from "../components/ticket/forms/FormTypeButtons";
 import getSettings from "../utils/getSettings";
 
-const URL_PREFIX_REGEX = /\/TDNext\/Apps\/\d*\/Tickets\/(New|Update)/g;
+const URL_PREFIX_REGEX = /\/TDNext\/Apps\/\d*\/Tickets\/(New|Update|Edit)/g;
 
 export default class TicketCreatePage implements PageScript {
 

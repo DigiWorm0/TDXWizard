@@ -10,6 +10,7 @@ export interface TDXButtonProps {
     title?: string;
 
     onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+    style?: React.CSSProperties;
 
     noMargin?: boolean;
     disabled?: boolean;
@@ -44,7 +45,9 @@ export default function TDXButton(props: TDXButtonProps) {
                 opacity: isVisible ? 1 : 0,
 
                 // Default margin for all buttons
-                margin: props.noMargin ? "0px" : "0px 3px"
+                margin: props.noMargin ? "0px" : "0px 3px",
+
+                ...props.style
             }}
             title={props.title}
             disabled={props.disabled}

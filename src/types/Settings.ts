@@ -82,4 +82,6 @@ export default interface Settings {
     autoDetectSearchTypes: AutoDetectSearchType[];
     ticketTypeAliases: Record<number, string>;
     hideTicketTypes: number[];
+    
+    editableTicketTitle: boolean;
 }

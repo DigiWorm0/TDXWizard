@@ -3,6 +3,7 @@ import {unwrap} from "jotai/utils";
 import LocalTDXClient from "../tdx-api/LocalTDXClient";
 import getTicketIDFromURL from "../tdx-api/utils/getTicketIDFromURL";
 import getAppIDFromURL from "../tdx-api/utils/getAppIDFromURL";
+import handleError from "../utils/handleError";
 
 export const ticketFeedAtom = atom(async () => {
     // API Client
@@ -18,16 +19,20 @@ export const ticketFeedAtom = atom(async () => {
     if (!appID)
         return null;
 
-    // Get the ticket feed
-    const feed = await client.tickets.getTicketFeed(appID, ticketID);
+    try {
+        // Get the ticket feed
+        const feed = await client.tickets.getTicketFeed(appID, ticketID);
 
-    // Grab the replies
-    for (let i = 0; i < feed.length; i++) {
-        if (feed[i].RepliesCount > 0)
-            feed[i] = await client.feed.getFeed(feed[i].ID);
+        // Grab the replies
+        for (let i = 0; i < feed.length; i++) {
+            if (feed[i].RepliesCount > 0)
+                feed[i] = await client.feed.getFeed(feed[i].ID);
+        }
+
+        return feed;
+    } catch (e) {
+        return handleError("Failed to fetch ticket feed", e);
     }
-
-    return feed;
 });
 
 export const syncTicketFeedAtom = unwrap(ticketFeedAtom, t => t);

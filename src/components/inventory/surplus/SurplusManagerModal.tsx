@@ -5,10 +5,8 @@ import autoRetryHTTPRequest from "../../../utils/autoRetryHTTPRequest";
 import Ticket from "../../../tdx-api/types/Ticket";
 import BigInputWindow from "../../common/bigwindow/BigInputWindow";
 import BigWindowInput from "../../common/bigwindow/BigWindowInput";
-import BigWindowError from "../../common/bigwindow/BigWindowError";
 import BigWindowProgress from "../../common/bigwindow/BigWindowProgress";
 import SurplusManagerTableRow from "./SurplusManagerTableRow";
-import useErrorHandling from "../../../hooks/useErrorHandling";
 import useRunPromise from "../../../hooks/useRunPromise";
 import useTicketStatusID from "../../../hooks/useTicketStatusID";
 import TDXButton from "../../common/TDXButton";
@@ -19,6 +17,7 @@ import BigWindowInfo from "../../common/bigwindow/BigWindowInfo";
 import toast from "react-hot-toast";
 import StatusClass from "../../../tdx-api/types/StatusClass";
 import UWStoutAppID from "../../../types/UWStoutAppID";
+import handleError from "../../../utils/handleError";
 
 export interface SurplusAsset extends Asset {
     surplusTickets: Ticket[];
@@ -37,8 +36,7 @@ const PICKED_UP_YES_VALUE = "41587"; // Yes Value for Picked Up Attribute
 
 export default function SurplusManagerModal(props: BulkInventoryModalProps) {
     const [assets, setAssets] = React.useState<SurplusAsset[]>([]);
-    const [errors, onError, clearErrors] = useErrorHandling();
-    const [runPromise, isLoading] = useRunPromise(onError);
+    const [runPromise, isLoading] = useRunPromise();
     const myUser = useMyUser();
     const inProgressID = useTicketStatusID("In Progress");
     const resolvedID = useTicketStatusID("Resolved");
@@ -83,7 +81,10 @@ export default function SurplusManagerModal(props: BulkInventoryModalProps) {
         setAssets(existingAssets => {
             // Check if the asset is already in the list
             if (existingAssets.find(a => a.ID === asset.ID)) {
-                onError(`Duplicate asset already in list: ${asset.Tag} (${searchQuery})`);
+                handleError(
+                    "Can't add asset",
+                    new Error(`Duplicate asset already in list: ${asset.Tag} (${searchQuery})`)
+                );
                 return existingAssets;
             }
 
@@ -110,7 +111,10 @@ export default function SurplusManagerModal(props: BulkInventoryModalProps) {
 
     const runHTTPRequest = <T, >(request: () => Promise<T>) => {
         return autoRetryHTTPRequest(request, 30000, 3, (retries) => {
-            onError(`Rate limit exceeded. Retrying in 30s... (${retries}/3)`);
+            handleError(
+                "Error running HTTP request",
+                new Error(`Rate limit exceeded. Retrying in 30s... (${retries}/3)`)
+            );
         });
     }
 
@@ -240,7 +244,7 @@ export default function SurplusManagerModal(props: BulkInventoryModalProps) {
                 t.StatusClass !== StatusClass.Cancelled &&
                 t.StatusClass !== StatusClass.Completed);
             if (!ticket) {
-                toast.error(`No open surplus ticket found for asset ${asset.Tag}`, {toasterId: "surplus-manager"});
+                toast.error(`No open surplus ticket found for asset ${asset.Tag}`);
                 return;
             }
 
@@ -253,7 +257,7 @@ export default function SurplusManagerModal(props: BulkInventoryModalProps) {
         GM_setClipboard(clipboard.trim(), "text");
 
         // Toast
-        toast.success("Copied surplus pickup data to clipboard", {toasterId: "surplus-manager"});
+        toast.success("Copied surplus pickup data to clipboard");
     }
 
     const copyExcelCompleted = () => {
@@ -277,7 +281,7 @@ export default function SurplusManagerModal(props: BulkInventoryModalProps) {
         GM_setClipboard(clipboard.trim(), "text");
 
         // Toast
-        toast.success("Copied surplus completed data to clipboard", {toasterId: "surplus-manager"});
+        toast.success("Copied surplus completed data to clipboard");
     }
 
     const resolveAllTickets = async () => {
@@ -317,7 +321,6 @@ export default function SurplusManagerModal(props: BulkInventoryModalProps) {
 
     return (
         <BigInputWindow
-            id={"surplus-manager"}
             title={"Surplus Manager"}
             onClose={props.onClose}
         >
@@ -453,11 +456,6 @@ export default function SurplusManagerModal(props: BulkInventoryModalProps) {
                 />
 
             </div>
-
-            <BigWindowError
-                error={errors}
-                onClear={clearErrors}
-            />
 
             <BigWindowInfo>
                 This is a tool for PC-Repair to manage surplus inventory. It allows you to
