@@ -20,6 +20,8 @@ export default interface Settings {
     selectSelfButton: boolean;
     showTicketPrintButton: boolean;
 
+    disableNotifyResponsibleByDefault: boolean;
+
     ticketPrintDefaults: boolean;
     ticketPrintEnableDetails: boolean;
     ticketPrintEnableDescription: boolean;
@@ -80,4 +82,6 @@ export default interface Settings {
     autoDetectSearchTypes: AutoDetectSearchType[];
     ticketTypeAliases: Record<number, string>;
     hideTicketTypes: number[];
+    
+    editableTicketTitle: boolean;
 }

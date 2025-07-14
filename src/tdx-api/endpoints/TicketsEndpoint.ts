@@ -8,6 +8,7 @@ import TicketWorkflow from "../types/TicketWorkflow";
 import TicketFeedEntry from "../types/TicketFeedEntry";
 import TicketStatus from "../types/TicketStatus";
 import TicketSearch from "../types/TicketSearch";
+import EligibleAssignment from "../types/EligibleAssignment";
 
 /**
  * A class for interacting with the TDX Tickets API
@@ -80,6 +81,10 @@ export default class TicketsEndpoint extends TDXEndpoint {
 
     getTicketStatuses(appID: number) {
         return this.client.jsonRequest<TicketStatus[]>(`${appID}/tickets/statuses`);
+    }
+
+    getEligibleAssignments(appID: number, searchText?: string) {
+        return this.client.jsonRequest<EligibleAssignment[]>(`${appID}/tickets/resources?searchText=${encodeURIComponent(searchText ?? "")}`);
     }
 
     search(appID: number, query: TicketSearch) {

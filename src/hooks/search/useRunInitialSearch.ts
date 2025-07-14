@@ -11,6 +11,7 @@ import AutoDetectSearchType from "../../types/SearchCategory";
 import UWStoutAppID from "../../types/UWStoutAppID";
 import checkIsUWStout from "../../utils/checkIsUWStout";
 import HTTPResponseError from "../../utils/HTTPResponseError";
+import useMyUserHasApplication from "../useMyUserHasApplication";
 
 type InitialSearchResultLoader = Promise<SearchResult | null>;
 
@@ -23,6 +24,11 @@ export default function useRunInitialSearch() {
     const [settings] = useSettings();
     const ticketApps = useTicketAppIDs();
     const assetApps = useAssetAppIDs();
+
+    const hasTDPeople = useMyUserHasApplication("TDPeople");
+    const hasTDAssets = useMyUserHasApplication("TDAssets");
+    const hasTDTickets = useMyUserHasApplication("TDTickets");
+    
     const {enableNewSearchAutoDetectQuery} = settings;
 
     // Default search
@@ -43,21 +49,21 @@ export default function useRunInitialSearch() {
                 continue;
 
             // Search for Assets
-            if (type.type === SearchType.Asset) {
+            if (type.type === SearchType.Asset && hasTDAssets) {
                 const appIDs = type.appID ? [type.appID] : assetApps;
                 const res = await trySearchAsset(appIDs, SearchType.Asset, searchQuery);
                 if (res) return res;
             }
 
             // Search for Tickets
-            else if (type.type === SearchType.Ticket) {
+            else if (type.type === SearchType.Ticket && hasTDTickets) {
                 const appIDs = type.appID ? [type.appID] : ticketApps;
                 const res = await trySearchTicket(appIDs, SearchType.Ticket, searchQuery);
                 if (res) return res;
             }
 
             // Search for People
-            else if (type.type === SearchType.Person) {
+            else if (type.type === SearchType.Person && hasTDPeople) {
                 const res = await trySearchUser(SearchType.Person, searchQuery);
                 if (res) return res;
             }

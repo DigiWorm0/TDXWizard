@@ -16,6 +16,8 @@ const DefaultSettings: Settings = {
     autoCloseTicketOnSave: false,
     ticketTypeThreshold: 0.5,
 
+    disableNotifyResponsibleByDefault: true,
+
     confirmActions: true,
     unlinkEmails: true,
     selectSelfButton: true,
@@ -93,7 +95,9 @@ const DefaultSettings: Settings = {
         {type: "Asset" as SearchType, regexes: ["^[A-Z0-9]{9,12}$"]}    // Serial Number
     ],
     ticketTypeAliases: {},
-    hideTicketTypes: []
+    hideTicketTypes: [],
+
+    editableTicketTitle: false,
 };
 
 export default DefaultSettings;

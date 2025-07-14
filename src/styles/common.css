@@ -160,3 +160,35 @@
         transform: translateY(0) rotate(-18deg);
     }
 }
+
+/*
+        TOASTER ANIMATION
+ */
+@keyframes wizard_slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes wizard_slideOutRight {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+/*
+        FORM CONTROL
+ */
+.form-control.wizard_noPadding {
+    padding: 0 !important;
+}

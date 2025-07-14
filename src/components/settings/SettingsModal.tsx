@@ -246,6 +246,11 @@ export default function SettingsModal(props: SettingsModalProps) {
                                 setting={"updateButton"}
                                 title={"Enables a quick 'Update' button on all ticket pages to add a new update without opening the extra drop-down"}
                             />
+                            <SettingsSwitchInput
+                                label={"Disable Notify Responsible by Default"}
+                                setting={"disableNotifyResponsibleByDefault"}
+                                title={"Disabled notifying the responsible user by default when creating or updating a ticket"}
+                            />
 
                             <SettingsSwitchInput
                                 label={"Suggest Ticket Assignments"}
@@ -277,6 +282,12 @@ export default function SettingsModal(props: SettingsModalProps) {
                                 label={"Enable Custom Templates"}
                                 setting={"enableCustomTemplates"}
                                 title={"Enables custom templates for ticket updates"}
+                            />
+
+                            <SettingsSwitchInput
+                                label={"Enable Editable Ticket Title"}
+                                setting={"editableTicketTitle"}
+                                title={"Allows you to edit the ticket title directly from the ticket details page"}
                             />
 
                             <SettingsCategoryHeader>Printing</SettingsCategoryHeader>

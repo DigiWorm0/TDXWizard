@@ -8,7 +8,7 @@ export const ticketAppIDsAtom = atom((get) => {
         return [];
 
     return applications
-        // .filter(app => app.Active)
+        // .filter(app => app.Active) // <-- Not available to some users depending on their permissions
         .filter(app => app.Type === "Ticketing")
         .map(app => app.AppID as AppID);
 });

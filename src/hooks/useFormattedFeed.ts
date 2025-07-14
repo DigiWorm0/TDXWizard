@@ -28,28 +28,39 @@ interface FormattedFeedItem {
 const MAX_TIME_OFFSET = 1000 * 60 * 60 * 24; // 24 hours
 const COMPLETED_REGEX = /Changed Percent Complete from "\d+ %" to "100 %"./g;
 const MERGED_REGEXES = [
-    /\[Merged from ticket (\d+)]<br ?\/?><br ?\/?>/g,
+    /\[Merged from ticket (\d+)(?:, .+)?]<br ?\/?><br ?\/?>/g,
     /Merged (?:incident|service request) (\d+) /g
 ];
 
 const USER_OPERATION_REGEXES = [
     new RegExp(/Changed .* from <b>.*?<\/b> to <b>.*?<\/b>\.<br ?\/?>/g),
     new RegExp(/Changed .* from ".*?" to ".*?"\.<br ?\/?>/g),
-    new RegExp(/Selected ".*" for the ".*?" step in the ".*?" workflow\.<br ?\/?>/g),
+
+    // Responsibility
+    new RegExp(/Took primary responsibility for this (?:incident|service request)\.<br ?\/?>/g),
     new RegExp(/Took primary responsibility for this (?:incident|service request) from .*?\.<br ?\/?>/g),
     new RegExp(/Reassigned this (?:incident|service request) from .*? to .*?\.<br ?\/?>/g),
+
+    //Lists
+    new RegExp(/Added this (?:incident|service request) to ".*?" list\.<br ?\/?>/g),
+    new RegExp(/Removed this (?:incident|service request) from ".*?" list\.<br ?\/?>/g),
+
+    // Assets
     new RegExp(/Added the ".*?" asset to this (?:incident|service request)\.<br ?\/?>/g),
     new RegExp(/Removed the ".*?" asset from this (?:incident|service request)\.<br ?\/?>/g),
     new RegExp(/Added this asset to the ".*?" (?:incident|service request) \(ID: \d+\)\.<br ?\/?>/g),
     new RegExp(/Added .* as a contact for this (?:incident|service request)\.<br ?\/?>/g),
     new RegExp(/Automatically completed as a result of the (?:incident|service request) being closed.<br ?\/?>/g),
+    new RegExp(/Added the .*? template to this (?:incident|service request)\.<br ?\/?>/g),
+    new RegExp(/Edited this (?:incident|service request|task)\.<br ?\/?>/g),
+    new RegExp(/Added the attachment .*?\.<br ?\/?>/g),
+
+    // Workflows
+    new RegExp(/Selected ".*" for the ".*?" step in the ".*?" workflow\.<br ?\/?>/g),
+    new RegExp(/Re-sent notifications for the ".*?" step in the ".*?" workflow\.<br ?\/?>/g),
+    new RegExp(/Restarted the ".*?" workflow for this (?:incident|service request)\.<br ?\/?>/g),
     new RegExp(/Assigned the ".*?" workflow to this (?:incident|service request)\.<br ?\/?>/g),
     new RegExp(/Removed the ".*?" workflow from this (?:incident|service request)\.<br ?\/?>/g),
-    new RegExp(/Added the .*? template to this (?:incident|service request)\.<br ?\/?>/g),
-    new RegExp(/Restarted the ".*?" workflow for this (?:incident|service request)\.<br ?\/?>/g),
-    new RegExp(/Took primary responsibility for this (?:incident|service request)\.<br ?\/?>/g),
-    new RegExp(/Added the attachment .*?\.<br ?\/?>/g),
-    new RegExp(/Edited this (?:incident|service request|task)\.<br ?\/?>/g),
 ];
 
 /**
@@ -69,7 +80,9 @@ export default function useFormattedFeed(feed: FeedItemUpdate[] | null | undefin
 
     return React.useMemo(() => {
         // Abort if no feed is provided
-        if (!feed || feed.length === 0)
+        if (!feed)
+            return null;
+        if (feed.length === 0)
             return [];
 
         // Create a new array of formatted feed items
@@ -199,13 +212,20 @@ export default function useFormattedFeed(feed: FeedItemUpdate[] | null | undefin
         }));
 
         // Remove extra <br> tags
+        const DOUBLE_BR_REGEX = /<br ?\/?><br ?\/?>/g;
+        const STARTING_BR_REGEX = /^\s*?<br ?\/?>/g;
+        const ENDING_BR_REGEX = /<br ?\/?>\s*?$/g;
+        const HORIZONTAL_RULE_REGEX = /<hr ?\/?>/g;
+
         newItems.forEach(item => {
             if (!item.IsCommunication) {
-                item.Body = item.Body.replace(/<br ?\/?><br ?\/?>/g, "<br>");
+                // Reduce double <br> tags
+                item.Body = item.Body.replace(DOUBLE_BR_REGEX, "<br>");
             } else {
-                item.Body = item.Body.replace(/^\s*?<br ?\/?>/g, "");
-                item.Body = item.Body.replace(/<br ?\/?>\s*?$/g, "");
-                item.Body = item.Body.replace(/<hr ?\/?>/g, "");
+                // Remove starting/ending <br> tags and horizontal rules
+                item.Body = item.Body.replace(STARTING_BR_REGEX, "");
+                item.Body = item.Body.replace(ENDING_BR_REGEX, "");
+                item.Body = item.Body.replace(HORIZONTAL_RULE_REGEX, "");
             }
         });
 

@@ -6,14 +6,13 @@ import BulkInventoryAssetRow from "./BulkInventoryAssetRow";
 import updateAssets from "../../../utils/assets/updateAssets";
 import createTicketWithAssets from "../../../utils/assets/createTicketWithAssets";
 import createAssetsCSV from "../../../utils/assets/createAssetsCSV";
-import useErrorHandling from "../../../hooks/useErrorHandling";
 import useRunPromise from "../../../hooks/useRunPromise";
-import BigWindowError from "../../common/bigwindow/BigWindowError";
 import BigWindowInput from "../../common/bigwindow/BigWindowInput";
 import BigWindowProgress from "../../common/bigwindow/BigWindowProgress";
 import BigInputWindow from "../../common/bigwindow/BigInputWindow";
 import TDXButton from "../../common/TDXButton";
 import BigWindowInfo from "../../common/bigwindow/BigWindowInfo";
+import handleError from "../../../utils/handleError";
 
 export interface BulkInventoryModalProps {
     onClose: () => void;
@@ -22,8 +21,7 @@ export interface BulkInventoryModalProps {
 
 export default function BulkInventoryModal(props: BulkInventoryModalProps) {
     const [assets, setAssets] = React.useState<Asset[]>([]);
-    const [errors, onError, clearErrors] = useErrorHandling();
-    const [runPromise, isLoading] = useRunPromise(onError);
+    const [runPromise, isLoading] = useRunPromise();
 
     const onSearch = async (searchQueries: string[]) => {
 
@@ -53,7 +51,7 @@ export default function BulkInventoryModal(props: BulkInventoryModalProps) {
             () => client.assets.searchAssets(appID, {SerialLike: searchQuery, MaxResults: 1}),
             30000,
             3,
-            (retries) => onError(`Rate limit exceeded. Retrying in 30s... (${retries}/3)`)
+            (retries) => handleError("Error searching asset", new Error(`Rate limit exceeded. Retrying in 30s... (${retries}/3)`))
         );
 
         // Check Results
@@ -65,7 +63,7 @@ export default function BulkInventoryModal(props: BulkInventoryModalProps) {
         setAssets(existingAssets => {
             // Check if the asset is already in the list
             if (existingAssets.find(a => a.ID === asset.ID)) {
-                onError(`Duplicate asset already in list: ${asset.Tag} (${searchQuery})`);
+                handleError("Error adding asset", new Error(`Duplicate asset already in list: ${asset.Tag} (${searchQuery})`));
                 return existingAssets;
             }
 
@@ -105,7 +103,6 @@ export default function BulkInventoryModal(props: BulkInventoryModalProps) {
 
     return (
         <BigInputWindow
-            id={"bulk-inventory"}
             title={"Bulk Inventory"}
             onClose={props.onClose}
         >
@@ -208,11 +205,6 @@ export default function BulkInventoryModal(props: BulkInventoryModalProps) {
                     text={"Reload Assets"}
                 />
             </div>
-
-            <BigWindowError
-                error={errors}
-                onClear={clearErrors}
-            />
 
             <BigWindowInfo>
                 This is a tool to manage large amounts of inventory assets at once.

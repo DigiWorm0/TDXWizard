@@ -6,20 +6,20 @@ import getAppIDFromURL from "../tdx-api/utils/getAppIDFromURL";
 import handleError from "../utils/handleError";
 
 export const assetFeedAtom = atom(async () => {
+    // API Client
+    const client = new LocalTDXClient();
+
+    // Get the asset ID
+    const assetID = getAssetIDFromURL();
+    if (!assetID)
+        return null;
+
+    // Get the app ID
+    const appID = getAppIDFromURL();
+    if (!appID)
+        return null;
+
     try {
-        // API Client
-        const client = new LocalTDXClient();
-
-        // Get the asset ID
-        const assetID = getAssetIDFromURL();
-        if (!assetID)
-            return null;
-
-        // Get the app ID
-        const appID = getAppIDFromURL();
-        if (!appID)
-            return null;
-
         // Get the ticket feed
         const feed = await client.assets.getAssetFeed(appID, assetID);
 

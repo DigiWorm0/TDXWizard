@@ -12,7 +12,6 @@ import TDXButtonGroup from "../../common/TDXButtonGroup";
 import useGroups from "../../../hooks/useGroups";
 import Group from "../../../tdx-api/types/Group";
 
-
 export default function TicketAssignmentButtons() {
     const ticket = useTicket();
     const [settings] = useSettings();

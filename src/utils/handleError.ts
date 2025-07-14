@@ -8,11 +8,19 @@ import autoUpdateAuthKey from "./autoUpdateAuthKey";
  * @param message - The error message to display (Ex: "Error loading data").
  */
 export default function handleError(message: string, error: unknown) {
+
+    // Log the error to the console
     console.error(message, error);
-    const errorText = error instanceof Error ? error.message : String(error);
-    toast.error(`${message}: ${errorText}`, {
-        duration: 5000
-    });
+
+    // Convert the error to a string for display
+    let errorText = String(error);
+    if (error instanceof HTTPResponseError)
+        errorText = `HTTP ${error.response.status} (${error.response.statusText})`;
+    else if (error instanceof Error)
+        errorText = error.message;
+
+    // Toast the error message
+    toast.error(`${message}: ${errorText}`);
 
     // If this is an error 401, check if the user isn't logged in
     if (error instanceof HTTPResponseError && error.response.status === 401)

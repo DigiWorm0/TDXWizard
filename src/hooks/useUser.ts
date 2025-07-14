@@ -5,12 +5,17 @@ import {useAtomValue} from "jotai";
 import DefaultGUID from "../types/DefaultGUID";
 import atomWithCache from "../utils/atomWithCache";
 import handleError from "../utils/handleError";
+import {myUserHasApplication} from "./useMyUserHasApplication";
 
 export const userAtomFamily = atomFamily((uid?: Guid) => {
-    const userAtom = atomWithCache(`user-${uid}`, async () => {
+    const userAtom = atomWithCache(`user-${uid}`, async (get) => {
         if (!uid)
             return null;
         if (uid === DefaultGUID)
+            return null;
+
+        // Check if the user has access to TDPeople
+        if (!get(myUserHasApplication("TDPeople")))
             return null;
 
         // API Client
