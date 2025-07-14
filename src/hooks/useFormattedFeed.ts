@@ -212,13 +212,20 @@ export default function useFormattedFeed(feed: FeedItemUpdate[] | null | undefin
         }));
 
         // Remove extra <br> tags
+        const DOUBLE_BR_REGEX = /<br ?\/?><br ?\/?>/g;
+        const STARTING_BR_REGEX = /^\s*?<br ?\/?>/g;
+        const ENDING_BR_REGEX = /<br ?\/?>\s*?$/g;
+        const HORIZONTAL_RULE_REGEX = /<hr ?\/?>/g;
+
         newItems.forEach(item => {
             if (!item.IsCommunication) {
-                item.Body = item.Body.replace(/<br ?\/?><br ?\/?>/g, "<br>");
+                // Reduce double <br> tags
+                item.Body = item.Body.replace(DOUBLE_BR_REGEX, "<br>");
             } else {
-                item.Body = item.Body.replace(/^\s*?<br ?\/?>/g, "");
-                item.Body = item.Body.replace(/<br ?\/?>\s*?$/g, "");
-                item.Body = item.Body.replace(/<hr ?\/?>/g, "");
+                // Remove starting/ending <br> tags and horizontal rules
+                item.Body = item.Body.replace(STARTING_BR_REGEX, "");
+                item.Body = item.Body.replace(ENDING_BR_REGEX, "");
+                item.Body = item.Body.replace(HORIZONTAL_RULE_REGEX, "");
             }
         });
 
