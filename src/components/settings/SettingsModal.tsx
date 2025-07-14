@@ -273,12 +273,6 @@ export default function SettingsModal(props: SettingsModalProps) {
                             </div>
 
                             <SettingsSwitchInput
-                                label={"Suggest Ticket Assets"}
-                                setting={"showTicketAssetButtons"}
-                                title={"Suggests assets to link based on C-#s or tags found in the title & description"}
-                            />
-
-                            <SettingsSwitchInput
                                 label={"Enable Custom Templates"}
                                 setting={"enableCustomTemplates"}
                                 title={"Enables custom templates for ticket updates"}
@@ -370,6 +364,12 @@ export default function SettingsModal(props: SettingsModalProps) {
                                 <div>
                                     <SettingsCategoryHeader>UW-Stout</SettingsCategoryHeader>
 
+                                    <SettingsSwitchInput
+                                        label={"Suggest Ticket Assets"}
+                                        setting={"showTicketAssetButtons"}
+                                        title={"Suggests assets to link based on C-#s or tags found in the title & description"}
+                                    />
+                                    
                                     <SettingsSwitchInput
                                         label={"Suggest Ticket Types"}
                                         setting={"showTicketTypeButtons"}

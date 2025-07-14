@@ -8,6 +8,7 @@ import useTicketFeed from "../../../hooks/useTicketFeed";
 import TDXButtonGroup from "../../common/TDXButtonGroup";
 import TDXButton from "../../common/TDXButton";
 import UWStoutAppID from "../../../types/UWStoutAppID";
+import checkIsUWStout from "../../../utils/checkIsUWStout";
 
 const REGEX_LIST = [
     /\b[Cc]-?\d{4,5}\b/g, // C-Number
@@ -91,6 +92,8 @@ export default function TicketAssetButtons() {
         }
     }
 
+    if (!checkIsUWStout())
+        return null;
     if (!ticketAssetNames || ticketAssetNames.length === 0)
         return null;
     return (

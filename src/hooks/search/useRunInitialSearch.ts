@@ -28,7 +28,7 @@ export default function useRunInitialSearch() {
     const hasTDPeople = useMyUserHasApplication("TDPeople");
     const hasTDAssets = useMyUserHasApplication("TDAssets");
     const hasTDTickets = useMyUserHasApplication("TDTickets");
-    
+
     const {enableNewSearchAutoDetectQuery} = settings;
 
     // Default search
@@ -218,10 +218,7 @@ async function trySearchUser(type: SearchType, searchQuery: string): InitialSear
 
     // Search for the user
     try {
-        const users = await client.people.search({
-            SearchText: searchQuery.trim(),
-            MaxResults: 1
-        });
+        const users = await client.people.lookup(searchQuery.trim(), 1);
         if (users.length === 0)
             return null;
 

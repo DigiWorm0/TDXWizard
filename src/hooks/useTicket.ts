@@ -5,7 +5,7 @@ import getTicketIDFromURL from "../tdx-api/utils/getTicketIDFromURL";
 import getAppIDFromURL from "../tdx-api/utils/getAppIDFromURL";
 import handleError from "../utils/handleError";
 
-export const ticketAtom = atom(() => {
+export const ticketAtom = atom(async () => {
     const client = new LocalTDXClient();
 
     // Get the ticket ID
@@ -18,7 +18,7 @@ export const ticketAtom = atom(() => {
     if (!appID)
         return null;
 
-    return client.tickets.getTicket(appID, ticketID)
+    return await client.tickets.getTicket(appID, ticketID)
         .catch((e) => handleError("Error fetching ticket", e));
 });
 

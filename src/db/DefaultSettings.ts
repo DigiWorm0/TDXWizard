@@ -98,6 +98,8 @@ const DefaultSettings: Settings = {
     hideTicketTypes: [],
 
     editableTicketTitle: false,
+
+    developerMode: false,
 };
 
 export default DefaultSettings;
