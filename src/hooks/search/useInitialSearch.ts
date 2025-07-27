@@ -58,7 +58,7 @@ export default function useInitialSearch(query: string) {
         return () => {
             isCanceled = true;
         }
-    }, [query]);
+    }, [query, runInitialSearch]);
 
     return [results, isLoading] as const;
 }

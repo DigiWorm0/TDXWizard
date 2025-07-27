@@ -49,7 +49,7 @@ export default function BetterSearchResult(props: BetterSearchResultProps) {
             return;
 
         // Open the link in a new window
-        openWindow(result.href, "Search Result");
+        openWindow(result.href, result.text);
 
         // Hide the search dropdown
         props.onHide();

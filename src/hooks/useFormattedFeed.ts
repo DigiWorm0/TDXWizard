@@ -6,6 +6,7 @@ import FeedItemType from "../tdx-api/types/FeedItemType";
 import getEpochFromDateTime from "../utils/datetime/getEpochFromDateTime";
 import useSettings from "./useSettings";
 import DateTime from "../tdx-api/types/DateTime";
+import UserOperationMatches from "../db/UserOperationMatches";
 
 interface FormattedFeedItem {
     ID: number;
@@ -26,42 +27,14 @@ interface FormattedFeedItem {
 }
 
 const MAX_TIME_OFFSET = 1000 * 60 * 60 * 24; // 24 hours
-const COMPLETED_REGEX = /Changed Percent Complete from "\d+ %" to "100 %"./g;
+
+const TASK_COMPLETED_REGEX = /Changed Percent Complete from "\d+ %" to "100 %"./g;
+const WEB_SERVICE_COMPLETED_REGEX = /The web service call for the "(.*?)" step in the ".*?" workflow completed successfully\.<br ?\/?>/g;
 const MERGED_REGEXES = [
     /\[Merged from ticket (\d+)(?:, .+)?]<br ?\/?><br ?\/?>/g,
     /Merged (?:incident|service request) (\d+) /g
 ];
 
-const USER_OPERATION_REGEXES = [
-    new RegExp(/Changed .* from <b>.*?<\/b> to <b>.*?<\/b>\.<br ?\/?>/g),
-    new RegExp(/Changed .* from ".*?" to ".*?"\.<br ?\/?>/g),
-
-    // Responsibility
-    new RegExp(/Took primary responsibility for this (?:incident|service request)\.<br ?\/?>/g),
-    new RegExp(/Took primary responsibility for this (?:incident|service request) from .*?\.<br ?\/?>/g),
-    new RegExp(/Reassigned this (?:incident|service request) from .*? to .*?\.<br ?\/?>/g),
-
-    //Lists
-    new RegExp(/Added this (?:incident|service request) to ".*?" list\.<br ?\/?>/g),
-    new RegExp(/Removed this (?:incident|service request) from ".*?" list\.<br ?\/?>/g),
-
-    // Assets
-    new RegExp(/Added the ".*?" asset to this (?:incident|service request)\.<br ?\/?>/g),
-    new RegExp(/Removed the ".*?" asset from this (?:incident|service request)\.<br ?\/?>/g),
-    new RegExp(/Added this asset to the ".*?" (?:incident|service request) \(ID: \d+\)\.<br ?\/?>/g),
-    new RegExp(/Added .* as a contact for this (?:incident|service request)\.<br ?\/?>/g),
-    new RegExp(/Automatically completed as a result of the (?:incident|service request) being closed.<br ?\/?>/g),
-    new RegExp(/Added the .*? template to this (?:incident|service request)\.<br ?\/?>/g),
-    new RegExp(/Edited this (?:incident|service request|task)\.<br ?\/?>/g),
-    new RegExp(/Added the attachment .*?\.<br ?\/?>/g),
-
-    // Workflows
-    new RegExp(/Selected ".*" for the ".*?" step in the ".*?" workflow\.<br ?\/?>/g),
-    new RegExp(/Re-sent notifications for the ".*?" step in the ".*?" workflow\.<br ?\/?>/g),
-    new RegExp(/Restarted the ".*?" workflow for this (?:incident|service request)\.<br ?\/?>/g),
-    new RegExp(/Assigned the ".*?" workflow to this (?:incident|service request)\.<br ?\/?>/g),
-    new RegExp(/Removed the ".*?" workflow from this (?:incident|service request)\.<br ?\/?>/g),
-];
 
 /**
  * Takes a feed and formats it to be used in the BetterFeed component.
@@ -151,7 +124,7 @@ export default function useFormattedFeed(feed: FeedItemUpdate[] | null | undefin
 
         // Replace specific user edits/operations with non-communication messages
         if (settings.checkForUserOperations) {  // <-- (enabled by default)
-            USER_OPERATION_REGEXES.forEach(regex => {
+            UserOperationMatches.forEach(regex => {
                 for (let i = 0; i < newItems.length; i++) {
 
                     // Array is mutated in place, so we need to fetch the item instead of using `forEach`
@@ -178,23 +151,12 @@ export default function useFormattedFeed(feed: FeedItemUpdate[] | null | undefin
                         if (!match)
                             continue;
 
-                        let newMessage = match;
-
-                        // Replace completed percentage with a checkmark
-                        COMPLETED_REGEX.lastIndex = 0;
-                        if (COMPLETED_REGEX.test(newMessage) && settings.checkForTicketTaskCompletions)
-                            newMessage = `${item.ItemTitle} <span class="fa fa-sm fa-check"></span><br>`;
-
-                        // Append Task Name if it's a Ticket Task
-                        else if (item.ItemType === FeedItemType.TicketTask && settings.checkForTicketTasks)
-                            newMessage = `${item.ItemTitle} > ` + newMessage;
-
                         // Add the new item
                         newItems.push({
                             ...item,
                             ID: Math.random(),
                             IsCommunication: false,
-                            Body: newMessage,
+                            Body: match,
                         });
                         newItems[i] = {
                             ...item,
@@ -203,6 +165,42 @@ export default function useFormattedFeed(feed: FeedItemUpdate[] | null | undefin
                     }
                 }
             });
+        }
+
+        // Rewrite overly complex system messages
+        for (const item of newItems) {
+
+            // Skip if it's a communication
+            if (item.IsCommunication)
+                continue;
+
+            // Replace task completed percentage with a checkmark
+            TASK_COMPLETED_REGEX.lastIndex = 0;
+            const isTaskCompleted = TASK_COMPLETED_REGEX.test(item.Body);
+            const isTicketTask = item.ItemType === FeedItemType.TicketTask;
+
+            if (isTaskCompleted &&
+                isTicketTask &&
+                settings.checkForTicketTaskCompletions
+            ) {
+                item.Body = `${item.ItemTitle} <span class="fa fa-sm fa-check"></span><br>`;
+                continue;
+            }
+
+            // Replace web service completion messages with a checkmark
+            WEB_SERVICE_COMPLETED_REGEX.lastIndex = 0;
+            const webServiceMatch = WEB_SERVICE_COMPLETED_REGEX.exec(item.Body);
+
+            if (webServiceMatch &&
+                settings.checkForTicketTaskCompletions
+            ) {
+                item.Body = `${webServiceMatch[1]} <span class="fa fa-sm fa-check"></span><br>`;
+                continue;
+            }
+
+            // Append Task Name if it's a Ticket Task
+            if (isTicketTask && settings.checkForTicketTasks)
+                item.Body = `${item.ItemTitle} > ` + item.Body;
         }
 
         // Replace \n with <br>

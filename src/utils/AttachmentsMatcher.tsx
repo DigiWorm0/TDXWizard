@@ -1,5 +1,6 @@
 import {ChildrenNode, Matcher, MatchResponse} from "interweave";
 import Attachment from "../tdx-api/types/Attachment";
+import openWindow from "./openWindow";
 
 export interface AttachmentMatch {
     attachment: Attachment;
@@ -63,14 +64,20 @@ export default class AttachmentsMatcher extends Matcher<AttachmentMatch> {
 
     replaceWith(_: ChildrenNode, props: AttachmentMatch) {
         const {attachment} = props;
+        const href = `/TDNext/Apps/Shared/FileOpen?AttachmentID=${attachment.ID}&ItemID=${attachment.ItemID}&IsInline=-1&ItemComponent=${attachment.AttachmentType}`;
 
-        attachment.AttachmentType
+        const onClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+            e.preventDefault();
+            openWindow(href, attachment.Name, false);
+        }
+
         return (
             <a
                 key={attachment.ID}
-                href={`/TDNext/Apps/Shared/FileOpen?AttachmentID=${attachment.ID}&ItemID=${attachment.ItemID}&IsInline=0&ItemComponent=${attachment.AttachmentType}`}
-                download={attachment.Name}
+                href={href}
                 className={"attachment-link"}
+                onClick={onClick}
+                download={attachment.Name}
             >
                 {attachment.Name}
             </a>

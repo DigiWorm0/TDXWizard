@@ -6,8 +6,13 @@ import {unsafeWindow} from "$";
  * Falls back to opening an TDX tab if "open in new window" is disabled.
  * @param href - The URL to open in the new window.
  * @param title - The title for the new window, optional.
+ * @param fallbackToIFrame - If true, will open the URL in an TDX iFrame tab if the new window cannot be opened.
  */
-export default function openWindow(href: string, title?: string) {
+export default function openWindow(
+    href: string,
+    title?: string,
+    fallbackToIFrame: boolean = true
+) {
 
     // Check user settings for opening links in a new window
     const {
@@ -15,6 +20,7 @@ export default function openWindow(href: string, title?: string) {
         defaultWindowHeight,
         defaultWindowWidth
     } = getSettings();
+
     if (openLinksInNewWindow) {
 
         // Based on https://stackoverflow.com/questions/4068373/center-a-popup-window-on-screen
@@ -37,8 +43,11 @@ export default function openWindow(href: string, title?: string) {
         // Rename the new window if it was successfully opened
         if (newWindow && title)
             newWindow.document.title = title;
-    } else {
+    } else if (fallbackToIFrame) {
         // Fallback to new iFrame tab opening
         unsafeWindow.top?.WorkMgmt.MainContentManager.instance.openIFrameTab(title ?? 'New Window', href, href, false);
+    } else {
+        // Fallback to opening in the current window
+        window.location.href = href;
     }
 }

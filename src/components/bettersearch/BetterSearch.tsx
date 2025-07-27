@@ -50,6 +50,29 @@ export default function BetterSearch() {
         return () => document.removeEventListener("click", handleClickOutside);
     }, [isVisible]);
 
+    React.useEffect(() => {
+        // Check if settings allow search on Ctrl+Space
+        if (!settings.enableSearchOnShortcut)
+            return;
+
+        // If the user presses Ctrl+Space, focus the input
+        const onKeyDown = (e: KeyboardEvent) => {
+            if (e.ctrlKey && e.code === "Space") {
+                e.preventDefault();
+
+                // Focus the input element
+                const inputElement = inputRef.current;
+                if (inputElement) {
+                    inputElement.focus();
+                    inputElement.select();
+                }
+            }
+        }
+
+        document.addEventListener("keydown", onKeyDown);
+        return () => document.removeEventListener("keydown", onKeyDown);
+    }, [settings]);
+
     const forceSearch = () => {
         if (!searchQuery)
             return;

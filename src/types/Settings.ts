@@ -65,6 +65,7 @@ export default interface Settings {
     enableNewSearchAutocomplete: boolean;
     enableNewSearchAutoDetectQuery: boolean;
     enableNewSearchHistory: boolean;
+    enableSearchOnShortcut: boolean;
 
     useCustomColorPalette: boolean;
     primaryColor: string;

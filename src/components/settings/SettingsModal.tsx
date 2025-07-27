@@ -113,6 +113,12 @@ export default function SettingsModal(props: SettingsModalProps) {
                                     title={"Auto-detects certain types of search queries such as ticket IDs, asset tags, and usernames"}
                                 />
                                 <SettingsSwitchInput
+                                    label={"Ctrl+Space to Search"}
+                                    setting={"enableSearchOnShortcut"}
+                                    disabled={!settings.useNewSearch}
+                                    title={"Enables the ability to press Ctrl+Space to quickly focus the search input and start typing a query"}
+                                />
+                                <SettingsSwitchInput
                                     label={"Search History"}
                                     setting={"enableNewSearchHistory"}
                                     disabled={!settings.useNewSearch}
@@ -369,7 +375,7 @@ export default function SettingsModal(props: SettingsModalProps) {
                                         setting={"showTicketAssetButtons"}
                                         title={"Suggests assets to link based on C-#s or tags found in the title & description"}
                                     />
-                                    
+
                                     <SettingsSwitchInput
                                         label={"Suggest Ticket Types"}
                                         setting={"showTicketTypeButtons"}

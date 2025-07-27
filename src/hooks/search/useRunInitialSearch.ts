@@ -74,7 +74,7 @@ export default function useRunInitialSearch() {
 
         // Default Search
         return defaultResult;
-    }, [enableNewSearchAutoDetectQuery, ticketApps, assetApps]);
+    }, [enableNewSearchAutoDetectQuery, ticketApps, assetApps, hasTDPeople, hasTDAssets, hasTDTickets]);
 }
 
 const UWSTOUT_TYPES: AutoDetectSearchType[] = [

@@ -42,7 +42,11 @@ export default function TDXButton(props: TDXButtonProps) {
             style={{
                 // Animate in
                 transition: settings.enableAnimations ? "opacity 100ms ease-in-out" : "none",
-                opacity: isVisible ? 1 : 0,
+                opacity: (isVisible ? 1 : 0) *
+                    (props.disabled && type === "bootstrap" ? 0.5 : 1),
+
+                // Cursor
+                cursor: props.disabled ? "not-allowed" : "pointer",
 
                 // Default margin for all buttons
                 margin: props.noMargin ? "0px" : "0px 3px",
