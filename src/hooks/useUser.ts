@@ -23,7 +23,7 @@ export const userAtomFamily = atomFamily((uid?: Guid) => {
         return await client.people.getPerson(uid ?? "")
             .catch(e => handleError("Error fetching user", e));
     }, {
-        cacheTime: 1000 * 60 * 30 // 30 minutes
+        cacheTime: 1000 * 60 * 60 * 24 // 24 hours
     });
 
     // Unwrap the atom

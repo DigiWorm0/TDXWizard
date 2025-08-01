@@ -30,13 +30,14 @@ export default async function autoUpdateAuthKey() {
             throw e;
         if (e.response.status !== 401)
             throw e;
-
-        // The auth key is invalid, continue to update it.
     }
 
     // Get the new auth key from SSO.
     const authKey = await getAuthKeyFromSSO();
     const authKeyExpiration = dateToDateTime(new Date(Date.now() + EXPIRATION_TIME));
+
+    if (!authKey)
+        throw new Error("Failed to retrieve auth key from SSO");
 
     // Update the auth key in the settings.
     setSettings({

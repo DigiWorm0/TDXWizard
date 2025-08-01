@@ -272,5 +272,5 @@ export default function useFormattedFeed(feed: FeedItemUpdate[] | null | undefin
         }
 
         return newItems;
-    }, [feed]);
+    }, [feed, settings]);
 }

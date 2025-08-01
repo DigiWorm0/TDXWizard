@@ -13,6 +13,7 @@ import SettingsDimensionsInput from "./input/SettingsDimensionsInput";
 import SettingsNumberInput from "./input/SettingsNumberInput";
 import SettingsTitle from "./SettingsTitle";
 import SettingsSidebarImage from "./SettingsSidebarImage";
+import ClearCacheButton from "./ClearCacheButton";
 
 export interface SettingsModalProps {
     isOpen: boolean;
@@ -67,6 +68,7 @@ export default function SettingsModal(props: SettingsModalProps) {
                                 label={"Open Links in a New Window"}
                                 setting={"openLinksInNewWindow"}
                                 title={"Reverts the tab dashboard with new windows (requires a refresh)"}
+                                requiresRefresh
                             />
 
                             <div style={{marginLeft: 20}}>
@@ -431,6 +433,7 @@ export default function SettingsModal(props: SettingsModalProps) {
                                 <ResetSettingsButton/>
                             </div>
                             <div className={"btn-group mt-1 w-100"}>
+                                <ClearCacheButton/>
                                 <ClearSearchHistoryButton/>
                             </div>
 

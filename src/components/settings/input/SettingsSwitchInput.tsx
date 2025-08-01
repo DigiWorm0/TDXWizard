@@ -1,6 +1,7 @@
 import Settings from "../../../types/Settings";
 import useSettings from "../../../hooks/useSettings";
 import checkIsUWStout from "../../../utils/checkIsUWStout";
+import toast from "react-hot-toast";
 
 export interface SettingsSwitchInputProps {
     label: string;
@@ -10,6 +11,9 @@ export interface SettingsSwitchInputProps {
 
     // UW-Stout specific
     proprietary?: boolean;
+
+    // Requires refresh to take effect
+    requiresRefresh?: boolean;
 }
 
 export default function SettingsSwitchInput(props: SettingsSwitchInputProps) {
@@ -24,6 +28,13 @@ export default function SettingsSwitchInput(props: SettingsSwitchInputProps) {
             ...settings,
             [props.setting]: value
         });
+
+        const isChanged = settings[props.setting] !== value;
+        if (props.requiresRefresh && isChanged)
+            toast.loading("Please refresh the page to apply this change", {
+                duration: 5000,
+                icon: <i className={"fa fa-refresh"}></i>,
+            });
     }
 
     return (

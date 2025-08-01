@@ -12,7 +12,7 @@ export const applicationsAtom = atomWithCache("myApps", async () => {
     return await client.applications.getApplications()
         .catch(e => handleError("Failed to fetch TDX apps", e));
 }, {
-    cacheTime: 1000 * 60 * 5 // 5 minutes
+    cacheTime: 1000 * 60 * 60 * 24 // 24 hours
 });
 
 export const syncApplicationAtom = unwrap(applicationsAtom, t => t);

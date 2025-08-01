@@ -12,7 +12,7 @@ export const myUserAtom = atomWithCache("myUser", async (get) => {
     return await client.auth.getUser()
         .catch((e) => handleError("Error fetching your user", e));
 }, {
-    cacheTime: 1000 * 60 * 5 // 5 minutes
+    cacheTime: 1000 * 60 * 60 * 24 // 24 hours
 });
 
 export const myUserSyncAtom = unwrap(myUserAtom, p => p);

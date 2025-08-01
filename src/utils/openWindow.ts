@@ -1,5 +1,6 @@
 import getSettings from "./getSettings";
 import {unsafeWindow} from "$";
+import warnUserIfPopupsBlocked from "./warnUserIfPopupsBlocked";
 
 /**
  * Opens a new window with the given href and title.
@@ -38,7 +39,13 @@ export default function openWindow(
         const windowTop = (screenHeight - defaultWindowHeight) / 2 + dualScreenTop;
 
         // Open a new window with the specified URL and title
-        const newWindow = window.open(href, "_blank", `width=${defaultWindowWidth},height=${defaultWindowHeight},left=${windowLeft},top=${windowTop}`);
+        const newWindow = window.open(
+            href,
+            "_blank",
+            `width=${defaultWindowWidth},height=${defaultWindowHeight},left=${windowLeft},top=${windowTop}`);
+
+        // Check for popups being blocked
+        warnUserIfPopupsBlocked(newWindow);
 
         // Rename the new window if it was successfully opened
         if (newWindow && title)

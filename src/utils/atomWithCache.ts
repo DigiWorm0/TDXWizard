@@ -22,7 +22,7 @@ export interface CachedStorageObject<T> {
 /**
  * The maximum number of cache keys to store
  */
-const MAX_CACHE_KEYS = 100;
+const MAX_CACHE_KEYS = 256;
 
 /**
  * Creates an async Jotai Atom that caches its value into localStorage.
@@ -45,7 +45,7 @@ export default function atomWithCache<T>(
             const keys = localStorage.getItem("_cachekeys") ?? "[]";
             let keyList = JSON.parse(keys) as string[];
 
-            // Add the key to the front of the list
+            // Add the key to the front of the list if it doesn't exist
             keyList = keyList.filter(k => k !== key);
             keyList.unshift(key);
 
@@ -100,7 +100,7 @@ export default function atomWithCache<T>(
 }
 
 /**
- * Clears the entire localStorage cache
+ * Clears any cached values made by `atomWithCache`.
  */
 export function clearCache() {
 
