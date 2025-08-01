@@ -21,6 +21,10 @@ const UWSTOUT_HIDE_TICKET_TYPES = [
 ];
 
 const UWSTOUT_TYPE_ALIASES = {
+    1007: "Printing",
+    1009: "Software",
+    3415: "Alumni",
+    557: "MFA",
     630: "Lab Rooms",
     999: "Lab Hardware",
     995: "CTS",
@@ -98,7 +102,7 @@ export default function TicketTypeButtons() {
         // Mark the task as complete
         await client.ticketTasks.updateTicketTaskFeed(appID, ticketID, task.ID, {
             PercentComplete: 100
-        });
+        }).catch(console.warn);
     }
 
     const setType = async (type: TicketType) => {
@@ -172,6 +176,7 @@ export default function TicketTypeButtons() {
             {suggestedTypes.map(type => (
                 <TDXButton
                     key={type.ID}
+                    disabled={type.ID === ticket?.TypeID}
                     onClick={() => setType(type)}
                     noMargin
                     icon={`fa fa-solid fa-nopad fa-tag`}

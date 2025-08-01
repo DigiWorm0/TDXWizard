@@ -8,6 +8,8 @@ import TicketUpdatePage from "./pages/TicketUpdatePage";
 import TicketCreatePage from "./pages/TicketCreatePage";
 import TicketTaskPage from "./pages/TicketTaskPage";
 import TicketPrintPage from "./pages/TicketPrintPage";
+import PeoplePage from "./pages/PeoplePage";
+import AuthPage from "./pages/AuthPage";
 
 // All Pages
 const allPages: PageScript[] = [
@@ -19,7 +21,9 @@ const allPages: PageScript[] = [
     new TicketUpdatePage(),
     new TicketCreatePage(),
     new TicketTaskPage(),
-    new TicketPrintPage()
+    new TicketPrintPage(),
+    new PeoplePage(),
+    new AuthPage()
 ];
 
 // Ensures the script runs after the page has loaded

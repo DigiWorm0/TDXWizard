@@ -8,7 +8,7 @@ export default function TicketUpdateButton() {
     const ticket = useTicket();
 
     const updateTicket = () => {
-        openWindow(`/TDNext/Apps/${ticket?.AppID}/Tickets/Update?TicketID=${ticket?.ID}`);
+        openWindow(`/TDNext/Apps/${ticket?.AppID}/Tickets/Update?TicketID=${ticket?.ID}`, "Update Ticket", false);
     }
 
     // Disabled

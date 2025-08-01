@@ -11,6 +11,19 @@ import TDXButton from "../../common/TDXButton";
 import TDXButtonGroup from "../../common/TDXButtonGroup";
 import useGroups from "../../../hooks/useGroups";
 import Group from "../../../tdx-api/types/Group";
+import checkIsUWStout from "../../../utils/checkIsUWStout";
+
+const UWSTOUT_HIDE_GROUP_IDS = [
+    1336, // Inventory Test
+    987, // Surplus
+    3209, // Workflow Based Tickets
+];
+
+const UWSTOUT_GROUP_ALIASES = {
+    328: "Classroom Tech",
+    319: "CTS",
+    330: "Learning Tech"
+};
 
 export default function TicketAssignmentButtons() {
     const ticket = useTicket();
@@ -105,6 +118,20 @@ export default function TicketAssignmentButtons() {
         }
     }
 
+    const visibleGroups = React.useMemo(() => {
+        if (!groups)
+            return [];
+        if (!checkIsUWStout())
+            return groups;
+
+        return groups
+            .filter(group => !UWSTOUT_HIDE_GROUP_IDS.includes(group.ID))
+            .map(group => ({
+                ...group,
+                Name: UWSTOUT_GROUP_ALIASES[group.ID as keyof typeof UWSTOUT_GROUP_ALIASES] ?? group.Name
+            }));
+    }, [groups]);
+
     const setGroup = async (group: Group) => {
         if (confirmAction(`Assign to ${group.Name}?`)) {
 
@@ -151,7 +178,7 @@ export default function TicketAssignmentButtons() {
                     icon={"fa fa-solid fa-nopad fa-lg fa-caret-down"}
                 />
                 <ul className={"dropdown-menu"}>
-                    {groups?.map(group => (
+                    {visibleGroups.map(group => (
                         <li key={group.ID}>
                             <a
                                 title={`Assign this ticket to ${group.Name}`}
@@ -162,8 +189,7 @@ export default function TicketAssignmentButtons() {
                                 {group.Name}
                             </a>
                         </li>
-                    ))
-                    }
+                    ))}
                 </ul>
             </TDXButtonGroup>
         </TDXButtonGroup>

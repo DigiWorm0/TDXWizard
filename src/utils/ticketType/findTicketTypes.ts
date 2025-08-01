@@ -1,6 +1,9 @@
 import {UWStoutTypeAssignments, UWStoutTypeKeywords} from "../../db/UWStoutTypeMatches";
 import getSettings from "../getSettings";
 import Ticket from "../../tdx-api/types/Ticket";
+import sanitizeHTML from "../sanitizeHTML";
+
+const MAX_TICKET_TYPES = 3; // Maximum number of ticket types to suggest
 
 /**
  * Suggests potential ticket types based on ticket title, description, and assignment.
@@ -10,6 +13,10 @@ import Ticket from "../../tdx-api/types/Ticket";
  */
 export default function findTicketTypes(ticketInfo: Ticket): number[] {
     let {Title, Description, ResponsibleGroupName} = ticketInfo;
+
+    // Sanitize the Title and Description
+    Title = sanitizeHTML(Title);
+    Description = sanitizeHTML(Description);
 
     // Convert to lowercase
     Title = Title.toLowerCase();
@@ -53,6 +60,10 @@ export default function findTicketTypes(ticketInfo: Ticket): number[] {
                 addWeightToType(type, weight);
             if (DescriptionMatches)
                 addWeightToType(type, weight);
+
+            // Log
+            if (TitleMatches || DescriptionMatches)
+                console.log(type, `\"${keyword}\"`, weight);
         }
     }
 
@@ -87,6 +98,12 @@ export default function findTicketTypes(ticketInfo: Ticket): number[] {
 
     // Remove types with a weight too much lower than the top type
     sortedTypes = sortedTypes.filter(type => typeWeights[type] >= topWeight - ticketTypeThreshold);
+
+    // Remove types that are not in the top 3
+    if (sortedTypes.length > MAX_TICKET_TYPES)
+        sortedTypes = sortedTypes.slice(0, MAX_TICKET_TYPES);
+
+    console.log(sortedTypes, typeWeights);
 
     return sortedTypes;
 }

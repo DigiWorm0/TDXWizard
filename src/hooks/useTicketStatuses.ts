@@ -17,7 +17,7 @@ export const ticketStatusesAtom = atomWithCache(`ticketStatuses-${appID}`, async
     return await client.tickets.getTicketStatuses(appID)
         .catch(e => handleError("Error fetching ticket status info", e));
 }, {
-    cacheTime: 1000 * 60 * 5 // 5 minutes
+    cacheTime: 1000 * 60 * 60 * 24 // 24 hours
 });
 
 export const syncTicketStatusesAtom = unwrap(ticketStatusesAtom, t => t);

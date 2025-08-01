@@ -45,6 +45,7 @@ export default interface Settings {
     checkForUserOperations: boolean;
     useCustomProfileColor: boolean;
     customProfileColor: string;
+    ticketAssetsPanel: boolean;
     authKey: string;
     authKeyExpiration: DateTime;
     customTemplates: CustomTemplate[];
@@ -54,6 +55,7 @@ export default interface Settings {
     resolveButton: boolean;
     updateButton: boolean;
     linkifyAttachments: boolean;
+    linkifyAssets: boolean;
     suggestFormTypes: boolean;
     openLinksInNewWindow: boolean;
 
@@ -65,6 +67,7 @@ export default interface Settings {
     enableNewSearchAutocomplete: boolean;
     enableNewSearchAutoDetectQuery: boolean;
     enableNewSearchHistory: boolean;
+    enableSearchOnShortcut: boolean;
 
     useCustomColorPalette: boolean;
     primaryColor: string;
@@ -82,6 +85,8 @@ export default interface Settings {
     autoDetectSearchTypes: AutoDetectSearchType[];
     ticketTypeAliases: Record<number, string>;
     hideTicketTypes: number[];
-    
+
     editableTicketTitle: boolean;
+
+    developerMode: boolean;
 }

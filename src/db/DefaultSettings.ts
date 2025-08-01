@@ -47,6 +47,8 @@ const DefaultSettings: Settings = {
     useCustomProfileColor: false,
     customProfileColor: "#000000",
 
+    ticketAssetsPanel: true,
+
     authKey: "",
     authKeyExpiration: "1970-01-01T00:00:00Z", // Default to epoch time
     autoUpdateAuthKey: true,
@@ -61,6 +63,7 @@ const DefaultSettings: Settings = {
     updateButton: false,
 
     linkifyAttachments: true,
+    linkifyAssets: true,
 
     suggestFormTypes: true,
 
@@ -75,6 +78,7 @@ const DefaultSettings: Settings = {
     enableNewSearchAutocomplete: true,
     enableNewSearchAutoDetectQuery: true,
     enableNewSearchHistory: true,
+    enableSearchOnShortcut: true,
 
     useCustomColorPalette: false,
     primaryColor: "#6B5CDC",
@@ -98,6 +102,8 @@ const DefaultSettings: Settings = {
     hideTicketTypes: [],
 
     editableTicketTitle: false,
+
+    developerMode: false,
 };
 
 export default DefaultSettings;

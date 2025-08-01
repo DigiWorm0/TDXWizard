@@ -17,7 +17,7 @@ export const ticketTypesAtom = atomWithCache(`ticketTypes-${appID}`, async () =>
     return await client.ticketTypes.getTicketTypes(appID)
         .catch(e => handleError("Error fetching ticket types", e));
 }, {
-    cacheTime: 1000 * 60 * 5 // 5 minutes
+    cacheTime: 1000 * 60 * 60 * 24 // 24 hours
 });
 
 export const syncTicketTypesAtom = unwrap(ticketTypesAtom, t => t);

@@ -18,7 +18,7 @@ export const groupsAtom = atomWithCache("groups", async (get) => {
         .search({IsActive: true})
         .catch((e) => handleError("Error fetching TDX groups", e));
 }, {
-    cacheTime: 1000 * 60 * 5 // 5 minutes
+    cacheTime: 1000 * 60 * 60 * 24 // 24 hours
 });
 
 export const syncGroupsAtom = unwrap(groupsAtom, t => t);

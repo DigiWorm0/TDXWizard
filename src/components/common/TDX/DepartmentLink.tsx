@@ -9,7 +9,7 @@ export interface AssetLinkProps {
 export default function DepartmentLink(props: AssetLinkProps) {
     return (
         <WindowLink
-            href={`${window.location.origin}/TDNext/Apps/Shared/AccountDetail.aspx?CACID=${props.id}`}
+            href={`/TDNext/Apps/Shared/AccountDetail.aspx?CACID=${props.id}`}
             title={`View Department ${props.id}`}
         >
             {props.children}

@@ -20,7 +20,7 @@ export default function FeedProfileImage(props: TicketFeedProfileImageProps) {
     const openLink = (e: React.MouseEvent<HTMLAnchorElement>) => {
         e.preventDefault();
         if (props.href)
-            openWindow(props.href ?? "#");
+            openWindow(props.href ?? "#", `Profile of ${props.name}`, false);
     }
 
     return (

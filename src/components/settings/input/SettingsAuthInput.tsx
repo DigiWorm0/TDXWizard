@@ -4,6 +4,7 @@ import useSettings from "../../../hooks/useSettings";
 import LocalTDXClient from "../../../tdx-api/LocalTDXClient";
 import HTTPResponseError from "../../../utils/HTTPResponseError";
 import toast from "react-hot-toast";
+import handleError from "../../../utils/handleError";
 
 export default function SettingsAuthInput() {
     const [isHovered, setIsHovered] = React.useState(false);
@@ -36,9 +37,11 @@ export default function SettingsAuthInput() {
 
     const loginWithSSO = () => {
         getAuthKeyFromSSO().then((authKey) => {
+            if (!authKey)
+                throw new Error("Failed to retrieve auth key from SSO");
             setAuthKey(authKey);
             checkUserInfo(authKey);
-        }).catch(console.error);
+        }).catch((e) => handleError("Failed to login with SSO", e));
     }
 
     return (

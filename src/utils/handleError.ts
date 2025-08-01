@@ -2,6 +2,9 @@ import toast from "react-hot-toast";
 import HTTPResponseError from "./HTTPResponseError";
 import autoUpdateAuthKey from "./autoUpdateAuthKey";
 
+// Only allow one auto-update of the auth key per page load
+let didUpdateAuthKey = false;
+
 /**
  * Handles errors by logging them to the console and displaying a toast notification.
  * @param error - The error object or message to log.
@@ -23,8 +26,16 @@ export default function handleError(message: string, error: unknown) {
     toast.error(`${message}: ${errorText}`);
 
     // If this is an error 401, check if the user isn't logged in
-    if (error instanceof HTTPResponseError && error.response.status === 401)
+    if (error instanceof HTTPResponseError &&
+        error.response.status === 401 &&
+        !didUpdateAuthKey) {
+
+        // Automatically update the auth key if it is expired
         autoUpdateAuthKey().catch(console.error);
+
+        // Set the flag to prevent multiple updates
+        didUpdateAuthKey = true;
+    }
 
     return null;
 }

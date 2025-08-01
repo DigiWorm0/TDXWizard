@@ -20,7 +20,7 @@ export default function ClearSearchHistoryButton() {
     return (
         <TDXButton
             intent={"secondary"}
-            icon={"fa fa-solid fa-undo me-1"}
+            icon={"fa fa-magnifying-glass me-1"}
             text={"Clear Search History"}
             title={"Clears all search history"}
             onClick={onClick}

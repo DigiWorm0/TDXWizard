@@ -28,7 +28,7 @@ export default function TicketPrintButton() {
         const ticketID = getTicketIDFromURL();
         const appID = getAppIDFromURL();
 
-        return `${window.location.origin}/TDNext/Apps/${appID}/Tickets/TicketDetPrint?TicketID=${ticketID}`;
+        return `/TDNext/Apps/${appID}/Tickets/TicketDetPrint?TicketID=${ticketID}`;
     }, []);
 
     const onPrint = async () => {

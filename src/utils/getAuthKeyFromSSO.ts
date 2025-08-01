@@ -1,3 +1,5 @@
+import warnUserIfPopupsBlocked from "./warnUserIfPopupsBlocked";
+
 const SSO_PATH = "/TDWebApi/api/auth/loginsso";
 
 /**
@@ -14,16 +16,17 @@ export default async function getAuthKeyFromSSO() {
         "Login",
         "width=600,height=400"
     );
-    if (!loginPopup)
-        throw new Error("Failed to open login popup");
+
+    // Check if the popup was blocked
+    warnUserIfPopupsBlocked(loginPopup);
 
     // Wait for the login popup to redirect to the auth key page
     await new Promise(((resolve, reject) => {
         setInterval(() => {
             try {
-                if (loginPopup.closed)
+                if (loginPopup?.closed)
                     reject("Login popup closed");
-                if (loginPopup.location.pathname === SSO_PATH)
+                if (loginPopup?.location.pathname === SSO_PATH)
                     resolve("");
             } catch (e) {
                 // Ignore cross-origin errors
@@ -32,9 +35,9 @@ export default async function getAuthKeyFromSSO() {
     }));
 
     // Get the auth key from the login popup
-    const authKey = loginPopup.document.body.innerText;
+    const authKey = loginPopup?.document.body.innerText;
 
     // Close the login popup
-    loginPopup.close();
+    loginPopup?.close();
     return authKey;
 }

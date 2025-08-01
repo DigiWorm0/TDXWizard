@@ -5,17 +5,14 @@ import Guid from "../../tdx-api/types/Guid";
 import React from "react";
 import useUserColor from "../../hooks/useUserColor";
 import DefaultGUID from "../../types/DefaultGUID";
-import {Interweave} from "interweave";
-import AttachmentsMatcher from "../../utils/AttachmentsMatcher";
-import Attachment from "../../tdx-api/types/Attachment";
 import openWindow from "../../utils/openWindow";
+import FeedRenderer from "./FeedRenderer";
 
 export interface TicketFeedEventProps {
     uid: Guid,
     name: string,
     date: DateTime,
     body: string,
-    ticketAttachments?: Attachment[],
     mergedTicketID?: string,
 }
 
@@ -29,7 +26,7 @@ export default function FeedEvent(props: TicketFeedEventProps) {
         if (isSystem)
             return;
 
-        openWindow(profileURL, `Profile of ${props.name}`);
+        openWindow(profileURL, `Profile of ${props.name}`, false);
     }
 
     return (
@@ -76,12 +73,7 @@ export default function FeedEvent(props: TicketFeedEventProps) {
                     paddingTop: 2
                 }}
             >
-                <Interweave
-                    content={props.body}
-                    matchers={[
-                        new AttachmentsMatcher(props.ticketAttachments ?? [])
-                    ]}
-                />
+                <FeedRenderer body={props.body}/>
             </div>
         </div>
     )

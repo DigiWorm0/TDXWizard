@@ -11,6 +11,10 @@ export default class PeopleEndpoint extends TDXEndpoint {
         return this.client.jsonRequest<User>(`people/${uid}`);
     }
 
+    lookup(searchText: string, maxResults: number = 50) {
+        return this.client.jsonRequest<User[]>(`people/lookup?searchText=${encodeURIComponent(searchText)}&maxResults=${maxResults}`);
+    }
+
     search(query: UserSearch) {
         return this.client.jsonRequest<User[]>('people/search', query, "POST");
     }

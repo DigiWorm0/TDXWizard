@@ -13,6 +13,7 @@ import SettingsDimensionsInput from "./input/SettingsDimensionsInput";
 import SettingsNumberInput from "./input/SettingsNumberInput";
 import SettingsTitle from "./SettingsTitle";
 import SettingsSidebarImage from "./SettingsSidebarImage";
+import ClearCacheButton from "./ClearCacheButton";
 
 export interface SettingsModalProps {
     isOpen: boolean;
@@ -67,6 +68,7 @@ export default function SettingsModal(props: SettingsModalProps) {
                                 label={"Open Links in a New Window"}
                                 setting={"openLinksInNewWindow"}
                                 title={"Reverts the tab dashboard with new windows (requires a refresh)"}
+                                requiresRefresh
                             />
 
                             <div style={{marginLeft: 20}}>
@@ -111,6 +113,12 @@ export default function SettingsModal(props: SettingsModalProps) {
                                     setting={"enableNewSearchAutoDetectQuery"}
                                     disabled={!settings.useNewSearch}
                                     title={"Auto-detects certain types of search queries such as ticket IDs, asset tags, and usernames"}
+                                />
+                                <SettingsSwitchInput
+                                    label={"Ctrl+Space to Search"}
+                                    setting={"enableSearchOnShortcut"}
+                                    disabled={!settings.useNewSearch}
+                                    title={"Enables the ability to press Ctrl+Space to quickly focus the search input and start typing a query"}
                                 />
                                 <SettingsSwitchInput
                                     label={"Search History"}
@@ -201,6 +209,12 @@ export default function SettingsModal(props: SettingsModalProps) {
                                     title={"Converts attachment text into clickable links"}
                                 />
                                 <SettingsSwitchInput
+                                    label={"Linkify Assets"}
+                                    setting={"linkifyAssets"}
+                                    disabled={!settings.useNewFeed}
+                                    title={"Converts asset tags and serial numbers into clickable links. Only linkifys assets attached to the ticket"}
+                                />
+                                <SettingsSwitchInput
                                     label={"Custom Profile Images"}
                                     setting={"customProfileImages"}
                                     disabled={!settings.useNewFeed}
@@ -273,12 +287,6 @@ export default function SettingsModal(props: SettingsModalProps) {
                             </div>
 
                             <SettingsSwitchInput
-                                label={"Suggest Ticket Assets"}
-                                setting={"showTicketAssetButtons"}
-                                title={"Suggests assets to link based on C-#s or tags found in the title & description"}
-                            />
-
-                            <SettingsSwitchInput
                                 label={"Enable Custom Templates"}
                                 setting={"enableCustomTemplates"}
                                 title={"Enables custom templates for ticket updates"}
@@ -288,6 +296,11 @@ export default function SettingsModal(props: SettingsModalProps) {
                                 label={"Enable Editable Ticket Title"}
                                 setting={"editableTicketTitle"}
                                 title={"Allows you to edit the ticket title directly from the ticket details page"}
+                            />
+                            <SettingsSwitchInput
+                                label={"Enable Ticket Assets Panel"}
+                                setting={"ticketAssetsPanel"}
+                                title={"Displays a panel on the ticket details page with assets/CIs associated with the ticket"}
                             />
 
                             <SettingsCategoryHeader>Printing</SettingsCategoryHeader>
@@ -371,6 +384,12 @@ export default function SettingsModal(props: SettingsModalProps) {
                                     <SettingsCategoryHeader>UW-Stout</SettingsCategoryHeader>
 
                                     <SettingsSwitchInput
+                                        label={"Suggest Ticket Assets"}
+                                        setting={"showTicketAssetButtons"}
+                                        title={"Suggests assets to link based on C-#s or tags found in the title & description"}
+                                    />
+
+                                    <SettingsSwitchInput
                                         label={"Suggest Ticket Types"}
                                         setting={"showTicketTypeButtons"}
                                         title={"Suggests ticket types based on keywords in the title & description"}
@@ -425,6 +444,7 @@ export default function SettingsModal(props: SettingsModalProps) {
                                 <ResetSettingsButton/>
                             </div>
                             <div className={"btn-group mt-1 w-100"}>
+                                <ClearCacheButton/>
                                 <ClearSearchHistoryButton/>
                             </div>
 
