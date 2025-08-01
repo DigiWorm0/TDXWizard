@@ -36,7 +36,6 @@ export default function BetterFeed(props: TicketFeedProps) {
                                 date={item.CreatedDate}
                                 body={item.Body ?? ""}
                                 mergedTicketID={item.MergedTicketID}
-                                ticketAttachments={ticket?.Attachments}
                             />
                         )}
 
@@ -55,7 +54,6 @@ export default function BetterFeed(props: TicketFeedProps) {
                                 isRequester={item.CreatedUid === ticket?.RequestorUid}
                                 body={item.Body ?? ""}
                                 notifiedList={item.NotifiedList}
-                                ticketAttachments={ticket?.Attachments}
 
                                 mergedTicketID={item.MergedTicketID}
 

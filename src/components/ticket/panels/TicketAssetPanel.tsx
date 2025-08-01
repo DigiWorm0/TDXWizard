@@ -7,7 +7,6 @@ export default function TicketAssetPanel() {
     const [settings] = useSettings();
 
     const isTableVisible = assets && assets.length > 0;
-    console.log(assets);
 
     if (!settings.ticketAssetsPanel)
         return null;

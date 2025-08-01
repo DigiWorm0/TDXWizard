@@ -63,6 +63,7 @@ const DefaultSettings: Settings = {
     updateButton: false,
 
     linkifyAttachments: true,
+    linkifyAssets: true,
 
     suggestFormTypes: true,
 

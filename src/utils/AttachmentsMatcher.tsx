@@ -1,13 +1,10 @@
 import {ChildrenNode, Matcher, MatchResponse} from "interweave";
 import Attachment from "../tdx-api/types/Attachment";
 import openWindow from "./openWindow";
+import React from "react";
 
-export interface AttachmentMatch {
-    attachment: Attachment;
-}
-
-// Require minimum attachment name length to avoid matching on very short names
-const MIN_ATTACHMENT_LENGTH = 5;
+// Require minimum name length to avoid matching on very short names
+const MIN_NAME_LENGTH = 5;
 
 /**
  * Interweave matcher to inject links to attachments in the feed.
@@ -25,45 +22,42 @@ const MIN_ATTACHMENT_LENGTH = 5;
  * />
  * ```
  */
-export default class AttachmentsMatcher extends Matcher<AttachmentMatch> {
-    attachments: Attachment[];
+export default class AttachmentsMatcher extends Matcher {
+    attachment: Attachment;
 
-    constructor(attachments: Attachment[]) {
+    constructor(attachments: Attachment) {
         super("attachments");
-        this.attachments = attachments;
+        this.attachment = attachments;
     }
 
-    match(string: string): MatchResponse<AttachmentMatch> | null {
-        // Iterate through the attachments
-        for (const attachment of this.attachments) {
+    match(string: string): MatchResponse<{}> | null {
+        const attachment = this.attachment;
 
-            // Check if the attachment name is long enough
-            // Avoids potentially matching on short names like "a", "b", etc.
-            if (attachment.Name.length < MIN_ATTACHMENT_LENGTH)
-                continue;
+        // Check if the attachment name is long enough
+        // Avoids potentially matching on short names like "a", "b", etc.
+        if (attachment.Name.length < MIN_NAME_LENGTH)
+            return null;
 
-            // Search for the attachment name in the string
-            const index = string.indexOf(attachment.Name);
+        // Search for the attachment name in the string
+        const index = string.indexOf(attachment.Name);
 
-            if (index >= 0) {
+        if (index >= 0) {
 
-                // Return the attachment
-                return {
-                    index: index,
-                    length: attachment.Name.length,
-                    match: attachment.Name,
-                    valid: true,
-                    attachment
-                };
-            }
+            // Return the attachment
+            return {
+                index: index,
+                length: attachment.Name.length,
+                match: attachment.Name,
+                valid: true
+            };
         }
 
         // No matches, abort
         return null;
     }
 
-    replaceWith(_: ChildrenNode, props: AttachmentMatch) {
-        const {attachment} = props;
+    replaceWith(_: ChildrenNode) {
+        const attachment = this.attachment;
         const href = `/TDNext/Apps/Shared/FileOpen?AttachmentID=${attachment.ID}&ItemID=${attachment.ItemID}&IsInline=-1&ItemComponent=${attachment.AttachmentType}`;
 
         const onClick = (e: React.MouseEvent<HTMLAnchorElement>) => {

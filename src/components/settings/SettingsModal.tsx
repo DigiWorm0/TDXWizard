@@ -209,6 +209,12 @@ export default function SettingsModal(props: SettingsModalProps) {
                                     title={"Converts attachment text into clickable links"}
                                 />
                                 <SettingsSwitchInput
+                                    label={"Linkify Assets"}
+                                    setting={"linkifyAssets"}
+                                    disabled={!settings.useNewFeed}
+                                    title={"Converts asset tags and serial numbers into clickable links. Only linkifys assets attached to the ticket"}
+                                />
+                                <SettingsSwitchInput
                                     label={"Custom Profile Images"}
                                     setting={"customProfileImages"}
                                     disabled={!settings.useNewFeed}

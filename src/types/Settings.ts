@@ -55,6 +55,7 @@ export default interface Settings {
     resolveButton: boolean;
     updateButton: boolean;
     linkifyAttachments: boolean;
+    linkifyAssets: boolean;
     suggestFormTypes: boolean;
     openLinksInNewWindow: boolean;
 

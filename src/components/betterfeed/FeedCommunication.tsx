@@ -6,10 +6,8 @@ import removeHTMLTags, {replaceHTMLEntities} from "../../utils/removeHTMLTags";
 import useUserColor from "../../hooks/useUserColor";
 import useJumpToFeedID from "../../hooks/useJumpToFeed";
 import UpdatedTimestamp from "../common/UpdatedTimestamp";
-import {Interweave} from "interweave";
-import AttachmentsMatcher from "../../utils/AttachmentsMatcher";
-import Attachment from "../../tdx-api/types/Attachment";
 import openWindow from "../../utils/openWindow";
+import FeedRenderer from "./FeedRenderer";
 
 export interface TicketFeedCommunicationProps {
     id: number,
@@ -20,7 +18,7 @@ export interface TicketFeedCommunicationProps {
     body: string,
     label?: string,
     notifiedList: string,
-    ticketAttachments?: Attachment[],
+
     mergedTicketID?: string,
 
     replyToID?: number,
@@ -56,7 +54,7 @@ export default function FeedCommunication(props: TicketFeedCommunicationProps) {
 
     const openProfile = (e: React.MouseEvent<HTMLAnchorElement>) => {
         e.preventDefault();
-        openWindow(profileURL);
+        openWindow(profileURL, `Profile of ${props.name}`, false);
     }
 
     return (
@@ -192,12 +190,7 @@ export default function FeedCommunication(props: TicketFeedCommunicationProps) {
                         </span>
                     </h5>
                     <div style={{margin: "5px 0px"}}>
-                        <Interweave
-                            content={props.body}
-                            matchers={[
-                                new AttachmentsMatcher(props.ticketAttachments ?? [])
-                            ]}
-                        />
+                        <FeedRenderer body={props.body}/>
                     </div>
                     {props.notifiedList && (
                         <p
