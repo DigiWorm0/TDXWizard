@@ -47,6 +47,8 @@ const DefaultSettings: Settings = {
     useCustomProfileColor: false,
     customProfileColor: "#000000",
 
+    ticketAssetsPanel: true,
+
     authKey: "",
     authKeyExpiration: "1970-01-01T00:00:00Z", // Default to epoch time
     autoUpdateAuthKey: true,

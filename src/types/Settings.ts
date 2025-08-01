@@ -45,6 +45,7 @@ export default interface Settings {
     checkForUserOperations: boolean;
     useCustomProfileColor: boolean;
     customProfileColor: string;
+    ticketAssetsPanel: boolean;
     authKey: string;
     authKeyExpiration: DateTime;
     customTemplates: CustomTemplate[];

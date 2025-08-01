@@ -4,6 +4,7 @@ import TicketNavBar from "../components/ticket/navbar/TicketNavBar";
 import ConvertFeedButton from "../components/betterfeed/ConvertFeedButton";
 import EditableTicketTitle from "../components/ticket/EditableTicketTitle";
 import getSettings from "../utils/getSettings";
+import TicketPanels from "../components/ticket/panels/TicketPanels";
 
 const URL_PREFIX_REGEX = /\/TDNext\/Apps\/\d*\/Tickets\/TicketDet(?!Print)/g;
 
@@ -17,6 +18,7 @@ export default class TicketDetailsPage implements PageScript {
         TicketDetailsPage.addEditableTitle();
         TicketDetailsPage.addNavButtons();
         TicketDetailsPage.replaceFeed();
+        TicketDetailsPage.addSidePanel();
     }
 
     static addEditableTitle() {
@@ -53,5 +55,13 @@ export default class TicketDetailsPage implements PageScript {
         if (!feedRow)
             throw new Error("Feed Row not found");
         addComponentToDOM(feedRow, <ConvertFeedButton type={"ticket"}/>);
+    }
+
+    static addSidePanel() {
+        const sidePanel = document.getElementById("divAttachments")?.parentElement;
+        if (!sidePanel)
+            throw new Error("Side Panel not found");
+        const ticketPanel = addComponentToDOM(sidePanel, <TicketPanels/>);
+        ticketPanel.style.display = "block";
     }
 }

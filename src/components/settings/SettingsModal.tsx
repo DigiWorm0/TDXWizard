@@ -291,6 +291,11 @@ export default function SettingsModal(props: SettingsModalProps) {
                                 setting={"editableTicketTitle"}
                                 title={"Allows you to edit the ticket title directly from the ticket details page"}
                             />
+                            <SettingsSwitchInput
+                                label={"Enable Ticket Assets Panel"}
+                                setting={"ticketAssetsPanel"}
+                                title={"Displays a panel on the ticket details page with assets/CIs associated with the ticket"}
+                            />
 
                             <SettingsCategoryHeader>Printing</SettingsCategoryHeader>
 
