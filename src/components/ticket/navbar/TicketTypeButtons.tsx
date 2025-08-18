@@ -17,7 +17,15 @@ const TASK_NAME = "Recategorize Ticket";
 const UWSTOUT_HIDE_TICKET_TYPES = [
     2274,   // Chargebacks
     99,     // General/EmailService
-    663     // General/Portal
+    663,    // General/Portal
+
+    3808,   // SLS / Maintenance/Repair (Duplicate of Maintenance/Repair)
+    3806,   // SLS / Onboarding/Offboarding
+    3807,   // SLS / Software Requests
+
+    2959,   // Fobs
+    1007,   // Printing (Duplicate of Printers)
+    1001,   // Deploy
 ];
 
 const UWSTOUT_TYPE_ALIASES = {
@@ -29,7 +37,18 @@ const UWSTOUT_TYPE_ALIASES = {
     999: "Lab Hardware",
     995: "CTS",
     997: "eStout",
-    998: "Surplus"
+    998: "Surplus",
+    3808: "SLS",
+
+    1003: "Infrastructure",
+
+    3798: "Accessories",
+    3802: "Campus TVs",
+    3810: "ResHall Students",
+    3799: "Security Cams (Hardware)",
+    3795: "Security Cams (Software)",
+    3805: "Events"
+
 };
 
 export default function TicketTypeButtons() {
@@ -191,7 +210,12 @@ export default function TicketTypeButtons() {
                 />
 
                 <ul
-                    style={{cursor: "default"}}
+                    style={{
+                        cursor: "default",
+                        maxHeight: "60vh",
+                        height: "auto",
+                        overflowY: "auto",
+                    }}
                     className={"dropdown-menu"}
                 >
                     <li>

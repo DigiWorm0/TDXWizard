@@ -98,6 +98,7 @@ export const UWStoutTypeKeywords: Record<number, KeywordWeight> = {
         "oracle": 1,
 
         "workday": 1,
+        "work day": 0.5,
 
         "website": 0.5,
     },
@@ -178,14 +179,15 @@ export const UWStoutTypeKeywords: Record<number, KeywordWeight> = {
         "acad": 1,
         "software center": 1,
         "google": 1,
-        "foodpro": 1,
-        "food pro": 1,
         "myuw": 1,
         "my uw": 0.5,
         "my uw stout": -0.5, // Negative weight to reduce false positives
         "avd": 1, // Azure Virtual Desktop
         "virtual desktop": 1,
         "virtual machine": 1,
+        "trucredential": 1,
+        "mercury": 1,
+        "kxwelcome": 1,
 
         "driver": 1,
         "drivers": 1,
@@ -226,6 +228,15 @@ export const UWStoutTypeKeywords: Record<number, KeywordWeight> = {
 
         "phones": 0.5,
         "phone": 0.5,
+        "phone line": 1,
+        "phone system": 1,
+
+        "freepbx": 1,
+        "asterix": 1,
+
+        "spa8000": 1,
+        "spa112": 1,
+
         "desk phone": 1,
 
         "extension": 0.5
@@ -340,12 +351,9 @@ export const UWStoutTypeKeywords: Record<number, KeywordWeight> = {
         "repair": 1.5,
         "repaired": 1.5,
         "replaced": .5,
-        "coaxial cable": 1.5,
-        "coax cable": 1.5,
         "blacking out": 1,
         "not charging": 1,
         "parts ordered crm": 1,
-        "tv": 1,
     },
 
     // Network
@@ -365,7 +373,7 @@ export const UWStoutTypeKeywords: Record<number, KeywordWeight> = {
     },
 
     // Printing
-    1007: {
+    3800: {
         "mfd": 1,
         "print": 1,
         "printed": 1,
@@ -402,19 +410,14 @@ export const UWStoutTypeKeywords: Record<number, KeywordWeight> = {
         "spam": 1,
         "phishing": 1,
         "scam": 1,
-        "scam email": 1,
-        "security": 0.5,
-
-        "security cameras": 1.5,
-        "security camera": 1.5,
-        "camera": 0.5,
-        "elevator": 0.5,
+        "scam email": 1
     },
 
     // Server
     1003: {
         "server": 0.5,
-        "bounced": 1
+        "bounced": 1,
+        "keywatcher": 1,
     },
 
     // Canvas
@@ -479,5 +482,138 @@ export const UWStoutTypeKeywords: Record<number, KeywordWeight> = {
         "deactivated": 1.5,
         "deleted account": 1.5,
         "delete account": 1.5,
-    }
+    },
+
+    // Hardware / TV
+    3802: {
+        "tv": 1,
+        "coaxial cable": 1.5,
+        "coax cable": 1.5,
+    },
+
+    // Hardware / Signage
+    3801: {
+        "signage": 1.5,
+    },
+
+    // Hardware / Retail Devices
+    3797: {
+        "register": 1,
+        "point of sale": 2,
+        "pos": 2,
+    },
+
+    // Accessories
+    3798: {
+        "charger": 1,
+        "replacement": 0.5,
+    },
+
+    // SLS / ResHall Student Support
+    3810: {
+        "tv": 1,
+        "stoutnonsecure": 0.5,
+        "stout nonsecure": 0.5,
+
+        "north hall": 2,
+        "south hall": 2,
+        "wigen": 2,
+        "red cedar": 2,
+
+        "ckto": 2,
+        "curran": 2,
+        "kranzusch": 2,
+        "tustison": 2,
+        "oetting": 2,
+
+        "hkmc": 2,
+        "hansen": 1,
+        "keith": 1,
+        "milnes": 2,
+        "chinnock": 2,
+
+
+        "fh": 2,
+        "fleming": 2,
+        "hovlid": 2,
+
+        "afm": 2,
+        "antrim": 2,
+        "froggatt": 2,
+        "mccalmont": 2,
+
+        "jtc": 2,
+
+    },
+
+    // SLS / Mobile Credentials
+    3809: {
+        "mobile credential": 2,
+        "mobile credentials": 2,
+        "apple wallet": 1,
+        "google wallet": 1,
+        "samsung wallet": 1,
+        "eaccounts": 1,
+    },
+
+    // SLS / Maintenance/Repairs
+    3808: {},
+
+    // SLS / General Inquiries
+    3803: {},
+
+    // SLS / Software Requests
+    3807: {},
+
+    // SLS / Onboarding/Offboarding
+    3806: {},
+
+    // SLS / Events
+    3805: {
+        "cookout": 1,
+    },
+
+    // Hardware / Door Access Hardware
+    3796: {
+        "transact": 1,
+    },
+
+    // Software / Dining Software
+    3794: {
+        "foodpro": 2,
+        "food pro": 2,
+        "web menu": 0.5,
+    },
+
+    // Software / Cameras
+    3795: {
+        "security cameras": 1.5,
+        "security camera": 1.5,
+        "security cam": 1.5,
+        "security cams": 1.5,
+        "camera": 0.5,
+        "elevator": 1,
+        "elevators": 1,
+        "surveillance": 1,
+        "shoplifting": 1,
+
+        'bios': -1,
+        'loaner': -1,
+    },
+
+    // Hardware / Security Cameras
+    3799: {
+        "security cameras": 1.5,
+        "security camera": 1.5,
+        "security cam": 1.5,
+        "security cams": 1.5,
+        "camera": 0.5,
+        "elevator": 1,
+        "elevators": 1,
+        "surveillance": 1,
+        "shoplifting": 1,
+
+        'bios': -1,
+        'loaner': -1,
+    },
 };

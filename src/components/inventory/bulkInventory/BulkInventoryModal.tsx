@@ -34,7 +34,7 @@ export default function BulkInventoryModal(props: BulkInventoryModalProps) {
 
         // Search each asset
         for (const query of searchQueries)
-            await searchAsset(query);
+            await searchAsset(query).catch((e) => handleError("Error searching asset", e));
     }
 
     const searchAsset = async (searchQuery: string) => {

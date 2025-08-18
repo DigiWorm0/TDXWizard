@@ -3,6 +3,7 @@ import addComponentToDOM from "../utils/addComponentToDOM";
 import CustomTemplateMenu from "../components/templates/CustomTemplateMenu";
 import getSettings from "../utils/getSettings";
 import ReplacementTemplatesButton from "../components/templates/ReplacementTemplatesButton";
+import TemplateEditorModal from "../components/templates/modal/TemplateEditorModal";
 
 const URL_PREFIX_REGEX = /\/TDNext\/Apps\/\d*\/Tickets\/Update/g;
 
@@ -39,5 +40,8 @@ export default class TicketUpdatePage implements PageScript {
             customMenu.className = "dropdown-submenu";
             customMenu.style.display = "";
         }
+
+        // Editor Modal
+        addComponentToDOM(document.body, <TemplateEditorModal/>);
     }
 }

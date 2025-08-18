@@ -70,17 +70,17 @@ export default function SurplusManagerTableRow(props: SurplusManagerTableRowProp
                     </span>
                 )}
 
-                {/*<span*/}
-                {/*    className={"badge bg-danger"}*/}
-                {/*    title={"Create Surplus Ticket"}*/}
-                {/*    style={{*/}
-                {/*        cursor: props.disabled ? "not-allowed" : "pointer",*/}
-                {/*        margin: 2*/}
-                {/*    }}*/}
-                {/*    onClick={props.disabled ? undefined : props.onMakeTicket}*/}
-                {/*>*/}
-                {/*    <span className={"fa fa-plus"}/>*/}
-                {/*</span>*/}
+                <span
+                    className={"badge bg-danger"}
+                    title={"Create Surplus Ticket"}
+                    style={{
+                        cursor: props.disabled ? "not-allowed" : "pointer",
+                        margin: 2
+                    }}
+                    onClick={props.disabled ? undefined : props.onMakeTicket}
+                >
+                    <span className={"fa fa-plus"}/>
+                </span>
             </td>
             <td>
                 <button

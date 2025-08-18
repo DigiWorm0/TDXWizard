@@ -2,6 +2,7 @@ import React from "react";
 import useSettings from "../../hooks/useSettings";
 import CustomTemplateButton from "./CustomTemplateButton";
 import AddTemplateButton from "./AddTemplateButton";
+import EditTemplatesButton from "./EditTemplatesButton";
 
 export default function CustomTemplateMenu() {
     const [settings] = useSettings();
@@ -53,6 +54,7 @@ export default function CustomTemplateMenu() {
                     className="dropdown-divider"
                 />
                 <AddTemplateButton/>
+                <EditTemplatesButton/>
             </ul>
         </>
     )

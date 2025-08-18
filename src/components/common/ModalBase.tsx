@@ -31,7 +31,7 @@ export default function ModalBase(props: ModalBaseProps) {
                 className={`modal-backdrop fade ${props.isOpen ? "show" : ""}`}
                 style={{
                     pointerEvents: "none",
-                    opacity: props.isOpen ? 0.5 : 0,
+                    opacity: props.isOpen ? 0.5 : 0
                 }}
             />
 

@@ -23,6 +23,8 @@ const UserOperationMatches = [
 
     new RegExp(/Added \d+ assets\/CIs to this (?:incident|service request):.*$/g), // Entire feed entry
 
+    new RegExp(/Removed .*? from this asset\.<br ?\/?>/g),
+
     new RegExp(/Added .* as a contact for this (?:incident|service request)\.<br ?\/?>/g),
     new RegExp(/Automatically completed as a result of the (?:incident|service request) being closed.<br ?\/?>/g),
     new RegExp(/Added the .*? template to this (?:incident|service request)\.<br ?\/?>/g),

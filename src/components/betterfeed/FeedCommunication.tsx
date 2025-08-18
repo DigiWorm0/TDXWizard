@@ -14,7 +14,7 @@ export interface TicketFeedCommunicationProps {
     uid: Guid,
     name: string,
     date: DateTime,
-    isRequester: boolean,
+    isRequestor: boolean,
     body: string,
     label?: string,
     notifiedList: string,
@@ -167,9 +167,9 @@ export default function FeedCommunication(props: TicketFeedCommunicationProps) {
                         >
                             {props.name}
                         </a>
-                        {props.isRequester && (
+                        {props.isRequestor && (
                             <span
-                                title={"Requester"}
+                                title={"Requestor"}
                                 className={"fa fa-star"}
                                 style={{
                                     color: userColor,

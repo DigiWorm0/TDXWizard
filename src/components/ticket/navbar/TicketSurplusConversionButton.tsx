@@ -57,8 +57,8 @@ export default function TicketSurplusConversionButton() {
             intent={"secondary"}
             onClick={onClick}
             title={"Convert to Surplus Ticket"}
-            icon={"fa fa-solid fa-ticket"}
-            text={"Convert Surplus"}
+            icon={"fa fa-right-left"}
+            text={"Convert to Surplus"}
         />
     )
 }
