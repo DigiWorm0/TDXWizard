@@ -2,6 +2,7 @@ import React, {useImperativeHandle} from "react";
 
 export interface CKEditorRef {
     setContent: (content: string) => void;
+    editor: React.RefObject<CKEDITOR.editor | null>;
 }
 
 export interface CKEditorProps {
@@ -54,6 +55,7 @@ export default function CKEditor(props: CKEditorProps) {
         }
     }, []);
 
+
     React.useEffect(() => {
         const onChange = () => {
             props.onChange(editorRef.current?.getData() || "");
@@ -66,7 +68,8 @@ export default function CKEditor(props: CKEditorProps) {
     }, [props.onChange]);
 
     useImperativeHandle(props.ref, () => ({
-        setContent: (content: string) => editorRef.current?.setData(content)
+        setContent: (content: string) => editorRef.current?.setData(content),
+        editor: editorRef
     }), [editorRef]);
 
     return (

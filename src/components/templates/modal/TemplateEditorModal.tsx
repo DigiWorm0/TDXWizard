@@ -6,6 +6,7 @@ import useSelectedTemplateID from "../../../hooks/templates/useSelectedTemplateI
 import TemplateEditorPanel from "./TemplateEditorPanel";
 import CreateTemplateButton from "./CreateTemplateButton";
 import TDXButtonGroup from "../../common/TDXButtonGroup";
+import TemplateEditorHeader from "./TemplateEditorHeader";
 
 export default function TemplateEditorModal() {
     const [isOpen, setIsOpen] = useTemplateEditorOpen();
@@ -19,25 +20,20 @@ export default function TemplateEditorModal() {
             <div
                 className={"modal-dialog"}
                 role={"document"}
-                style={{minWidth: 1000}}
+                style={{minWidth: 900}}
             >
                 <div
                     className={"modal-content h-100"}
                     style={{minHeight: 600}}
                 >
                     <div className={"row"}>
+                        <div className={"col-sm-12"}>
+                            <TemplateEditorHeader onClose={() => setIsOpen(false)}/>
+                        </div>
+                    </div>
+
+                    <div className={"row"}>
                         <div className={"col-sm-4"}>
-                            <h3
-                                style={{
-                                    fontFamily: "\"DM Sans\",sans-serif",
-                                    fontWeight: "bold",
-                                    fontSize: 30,
-                                    marginTop: 10,
-                                    marginBottom: 18
-                                }}
-                            >
-                                My Templates
-                            </h3>
                             <TemplateEditorTree
                                 onSelectTemplate={setSelectedID}
                                 selectedTemplateID={selectedID}
@@ -46,7 +42,7 @@ export default function TemplateEditorModal() {
                                 <CreateTemplateButton/>
                             </TDXButtonGroup>
                         </div>
-                        <div className={"col-sm-8"}>
+                        <div className={"col-sm-8"} style={{paddingLeft: 0}}>
                             {selectedID === null && <NoTemplateSelectedOverlay/>}
                             {selectedID !== null && <TemplateEditorPanel/>}
                         </div>

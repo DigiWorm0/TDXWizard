@@ -51,7 +51,7 @@ export default function BetterFeed(props: TicketFeedProps) {
                                         item.IsEmailMonitor ? "(emailmonitor)" :
                                             ""
                                 }
-                                isRequester={item.CreatedUid === ticket?.RequestorUid}
+                                isRequestor={item.CreatedUid === ticket?.RequestorUid}
                                 body={item.Body ?? ""}
                                 notifiedList={item.NotifiedList}
 

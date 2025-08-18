@@ -15,7 +15,7 @@ export default function createAssetsCSV(assets: Asset[]) {
     // TODO: Drop keys that are not needed
 
     // Create Body
-    const body = assets.map(asset => keys.map(key => asset[key]).join(",")).join("\n");
+    const body = assets.map(asset => keys.map(key => String(asset[key]).replace(",", "")).join(",")).join("\n");
 
     // Create Blob
     const blob = new Blob([header + body], {type: "text/csv"});

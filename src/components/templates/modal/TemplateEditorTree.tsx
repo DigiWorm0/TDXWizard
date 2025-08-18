@@ -32,8 +32,9 @@ export default function TemplateEditorTree(props: TemplateEditorTreeProps) {
             }}
         >
             {settings.customTemplates.map((template) => (
-                <button
+                <a
                     key={template.id}
+                    href={"#"}
                     className={`list-group-item list-group-item-action ${selectedTemplateID === template.id ? "active" : ""}`}
                     onClick={(e) => {
                         e.preventDefault();
@@ -42,7 +43,7 @@ export default function TemplateEditorTree(props: TemplateEditorTreeProps) {
                     style={{color: "var(--visited-link-color)"}}
                 >
                     {template.name}
-                </button>
+                </a>
             ))}
         </ReactSortable>
     )

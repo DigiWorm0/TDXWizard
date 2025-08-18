@@ -7,6 +7,7 @@ export default function TemplateTextInput() {
     const editorRef = React.useRef<CKEditorRef>(null);
     const [selectedTemplateID] = useSelectedTemplateID();
     const [template, setTemplate] = useSelectedTemplate();
+    const shortcutStackRef = React.useRef<string[]>([]);
 
     const setTemplateContent = React.useCallback((content: string) => {
         if (!template)
@@ -15,8 +16,14 @@ export default function TemplateTextInput() {
     }, [template, setTemplate]);
 
     React.useEffect(() => {
+
+        // Set the editor content
         if (editorRef.current && template)
             editorRef.current.setContent(template.content);
+
+        // Reset the shortcut stack
+        shortcutStackRef.current = [];
+
     }, [selectedTemplateID]);
 
     if (!template)
