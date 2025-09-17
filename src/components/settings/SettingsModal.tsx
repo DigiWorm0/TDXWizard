@@ -82,6 +82,11 @@ export default function SettingsModal(props: SettingsModalProps) {
                             </div>
 
                             <SettingsSwitchInput
+                                label={"Always Show Refresh Button"}
+                                setting={"dashboardAddTicketButton"}
+                                title={"Typically, TDX will hide the refresh button on dashboards that auto-refresh. This disables that behaviour and always shows the refresh button."}
+                            />
+                            <SettingsSwitchInput
                                 label={"Add Self-Assignment Button"}
                                 setting={"selectSelfButton"}
                                 title={"Adds a button to all user form fields to select yourself"}

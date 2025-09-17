@@ -1,8 +1,9 @@
 import useSettings from "../../hooks/useSettings";
 import TDXButton from "../common/TDXButton";
+import toast from "react-hot-toast";
 
 export default function ImportSettingsButton() {
-    const [, setSettings] = useSettings();
+    const [settings, setSettings] = useSettings();
 
     const importSettings = () => {
         // Create Input
@@ -15,11 +16,17 @@ export default function ImportSettingsButton() {
 
             // Read File
             const file = input.files[0];
-            const settings = await file.text();
-            const parsedSettings = JSON.parse(settings);
+            const settingsText = await file.text();
+            const parsedSettings = JSON.parse(settingsText);
 
             // Update Settings
-            setSettings(parsedSettings);
+            setSettings({
+                ...parsedSettings,
+                authKey: settings.authKey || "", // <-- Preserve existing authKey
+            });
+
+            // Toast Success
+            toast.success("Settings imported successfully!");
         }
 
         // Click

@@ -174,31 +174,36 @@ export const UWStoutTypeKeywords: Record<number, KeywordWeight> = {
         "access stout": 0.5,
         "zoom": 1,
         "revit": 1,
-        "windows": 0.5,
         "webwork": 1,
         "acad": 1,
         "software center": 1,
         "google": 1,
         "myuw": 1,
         "my uw": 0.5,
-        "my uw stout": -0.5, // Negative weight to reduce false positives
-        "avd": 1, // Azure Virtual Desktop
+        "my uw stout": -0.5, // <-- Only worry about "My UW" and not "My UW Stout"
+        "avd": 1,
         "virtual desktop": 1,
         "virtual machine": 1,
         "trucredential": 1,
         "mercury": 1,
         "kxwelcome": 1,
 
+        "windows": 0.5,
+        "windows 11": 1,
+        "microsoft 11": 1,
+
         "driver": 1,
         "drivers": 1,
         "not booting": 1,
 
-        "bsod": 0.5, // Blue Screen of Death
+        "bsod": 0.5,
         "virus": 1,
         "malicious": 1,
 
         "admin": 0.5,
         "install": 1,
+        "install microsoft teams now": -1, // <-- Microsoft Teams message banner
+
         "recover": 0.5,
         "set up": 0.5,
         "setup": 0.5,
@@ -223,6 +228,7 @@ export const UWStoutTypeKeywords: Record<number, KeywordWeight> = {
         "calling queue": 1,
         "call queue": 1,
         "cq": 1,
+        "shared voicemail techdesk cq": -1,
 
         "block calls": 1,
 
@@ -230,6 +236,12 @@ export const UWStoutTypeKeywords: Record<number, KeywordWeight> = {
         "phone": 0.5,
         "phone line": 1,
         "phone system": 1,
+
+        "call": 0.5,
+        "calls": 0.5,
+
+        "ring": 0.5,
+        "ringing": 0.5,
 
         "freepbx": 1,
         "asterix": 1,
@@ -310,6 +322,7 @@ export const UWStoutTypeKeywords: Record<number, KeywordWeight> = {
         "laptop transfer": 1,
         "laptop ownership": 1,
         "laptop pickup": 1,
+        "laptop portal": 1,
         "laptop upgrade": 1,
         "computer return": 1,
         "after graduation": 1,
@@ -450,6 +463,8 @@ export const UWStoutTypeKeywords: Record<number, KeywordWeight> = {
 
         "team": 0.5,
         "teams": 0.5,
+        "install microsoft teams now": -0.5, // <-- Microsoft Teams message banner
+
         "excel": 0.5,
         "powerpoint": 0.5,
         "visio": 0.5,
@@ -458,9 +473,12 @@ export const UWStoutTypeKeywords: Record<number, KeywordWeight> = {
         "mailmerge": 1,
         "mail merge": 1,
         "email": 0.5,
+        "this email originated from outside the uw stout system": -0.5, // <-- External email banner
+
         "emails": 0.5,
         "outlook": 0.5,
-        "get outlook for ios": -0.5, // Negative weight to reduce false positives
+        "get outlook for ios": -0.5, // <-- Outlook for iOS message banner
+        "get outlook for android": -0.5, // <-- Outlook for Android message banner
     },
 
     // Alumni
@@ -489,6 +507,8 @@ export const UWStoutTypeKeywords: Record<number, KeywordWeight> = {
         "tv": 1,
         "coaxial cable": 1.5,
         "coax cable": 1.5,
+        "airmedia": 2.5,
+        "air media": 2.5,
     },
 
     // Hardware / Signage
@@ -507,6 +527,8 @@ export const UWStoutTypeKeywords: Record<number, KeywordWeight> = {
     3798: {
         "charger": 1,
         "replacement": 0.5,
+        "mouse": 1,
+        "keyboard": 1,
     },
 
     // SLS / ResHall Student Support
@@ -515,6 +537,16 @@ export const UWStoutTypeKeywords: Record<number, KeywordWeight> = {
         "stoutnonsecure": 0.5,
         "stout nonsecure": 0.5,
 
+        // Consoles
+        "console": 1,
+        "gaming": 0.5,
+        "xbox": 1.5,
+        "playstation": 1.5,
+        "ps4": 1.5,
+        "ps5": 1.5,
+        "nintendo switch": 1.5,
+
+        // RESIDENCE HALLS
         "north hall": 2,
         "south hall": 2,
         "wigen": 2,
@@ -532,7 +564,6 @@ export const UWStoutTypeKeywords: Record<number, KeywordWeight> = {
         "milnes": 2,
         "chinnock": 2,
 
-
         "fh": 2,
         "fleming": 2,
         "hovlid": 2,
@@ -544,6 +575,21 @@ export const UWStoutTypeKeywords: Record<number, KeywordWeight> = {
 
         "jtc": 2,
 
+        // NON-RESIDENCE HALLS
+        "bowman": -1,
+        "frykland": -1,
+
+        "voc rehab": -1,
+        "vocr": -1,
+
+        "jarvis": -1,
+        "jhsw": -1,
+        "jhtw": -1,
+
+        "applied arts": -1,
+        "appa": -1,
+
+        "msc": -1,
     },
 
     // SLS / Mobile Credentials
@@ -557,7 +603,9 @@ export const UWStoutTypeKeywords: Record<number, KeywordWeight> = {
     },
 
     // SLS / Maintenance/Repairs
-    3808: {},
+    3808: {
+        "laundry": 2,
+    },
 
     // SLS / General Inquiries
     3803: {},
@@ -571,6 +619,7 @@ export const UWStoutTypeKeywords: Record<number, KeywordWeight> = {
     // SLS / Events
     3805: {
         "cookout": 1,
+        "event": 1,
     },
 
     // Hardware / Door Access Hardware
@@ -615,5 +664,13 @@ export const UWStoutTypeKeywords: Record<number, KeywordWeight> = {
 
         'bios': -1,
         'loaner': -1,
+
+        "installation": 0.5,
+        "installing": 0.5,
+        "deploy": 0.5,
+        "deploying": 0.5,
+        "deployment": 0.5,
+        "deployments": 0.5,
+        "replace": 0.5,
     },
 };

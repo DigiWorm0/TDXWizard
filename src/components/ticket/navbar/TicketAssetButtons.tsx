@@ -9,6 +9,7 @@ import TDXButtonGroup from "../../common/TDXButtonGroup";
 import TDXButton from "../../common/TDXButton";
 import UWStoutAppID from "../../../types/UWStoutAppID";
 import checkIsUWStout from "../../../utils/checkIsUWStout";
+import sanitizeHTML from "../../../utils/sanitizeHTML";
 
 const REGEX_LIST = [
     /\b[Cc]-?\d{4,5}\b/g, // C-Number
@@ -41,8 +42,8 @@ export default function TicketAssetButtons() {
 
         // Search Each Field
         searchAssets(ticket.Title);
-        searchAssets(ticket.Description);
-        feed?.forEach(feedItem => searchAssets(feedItem.Body || ""));
+        searchAssets(sanitizeHTML(ticket.Description || ""));
+        feed?.forEach(feedItem => searchAssets(sanitizeHTML(feedItem.Body || "")));
 
         // Fix C- Prefix
         assetNames = assetNames.map(assetName => assetName.replace(/[Cc]-?/, "C-"));

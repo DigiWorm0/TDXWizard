@@ -72,6 +72,7 @@ export default function CustomStyles() {
     useCustomStyle("stripedTableRows", "wizard_striped-table-rows");
     useCustomStyle("useCustomColorPalette", "wizard_custom-palette");
     useCustomStyle("hideTicketBannerMessage", "wizard_hide-ticket-banner-msg");
+    useCustomStyle("dashboardRefreshButton", "wizard_always-visible-refresh-button");
 
     React.useEffect(() => {
         if (!settings.useCustomColorPalette)
