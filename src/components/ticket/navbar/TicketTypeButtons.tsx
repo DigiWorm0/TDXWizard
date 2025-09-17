@@ -19,7 +19,6 @@ const UWSTOUT_HIDE_TICKET_TYPES = [
     99,     // General/EmailService
     663,    // General/Portal
 
-    3808,   // SLS / Maintenance/Repair (Duplicate of Maintenance/Repair)
     3806,   // SLS / Onboarding/Offboarding
     3807,   // SLS / Software Requests
 
@@ -38,7 +37,9 @@ const UWSTOUT_TYPE_ALIASES = {
     995: "CTS",
     997: "eStout",
     998: "Surplus",
-    3808: "SLS",
+
+    1000: "Maintenance/Repair (Helpdesk)",
+    3808: "Maintenance/Repair (SLS)",
 
     1003: "Infrastructure",
 

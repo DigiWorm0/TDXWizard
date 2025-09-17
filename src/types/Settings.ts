@@ -63,6 +63,7 @@ export default interface Settings {
     stripedTableRows: boolean;
 
     dashboardAddTicketButton: boolean;
+    dashboardRefreshButton: boolean;
     useNewSearch: boolean;
     enableNewSearchAutocomplete: boolean;
     enableNewSearchAutoDetectQuery: boolean;

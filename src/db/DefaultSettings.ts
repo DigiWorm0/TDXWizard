@@ -73,6 +73,7 @@ const DefaultSettings: Settings = {
     stripedTableRows: true,
 
     dashboardAddTicketButton: true,
+    dashboardRefreshButton: true,
 
     useNewSearch: true,
     enableNewSearchAutocomplete: true,
@@ -101,7 +102,7 @@ const DefaultSettings: Settings = {
     ticketTypeAliases: {},
     hideTicketTypes: [],
 
-    editableTicketTitle: false,
+    editableTicketTitle: true,
 
     developerMode: false,
 };

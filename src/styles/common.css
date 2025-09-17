@@ -229,3 +229,10 @@
     border-bottom-right-radius: 1.125rem !important;
     border-bottom-left-radius: 1.125rem !important;
 }
+
+/*
+        DASHBOARD
+ */
+.wizard_always-visible-refresh-button .tdx-action-menu__item[onclick="WorkMgmt.DashboardHandler.instance.refreshDashboard();"] {
+    display: inline-flex !important;
+}

@@ -23,7 +23,7 @@ const UserOperationMatches = [
 
     new RegExp(/Added \d+ assets\/CIs to this (?:incident|service request):.*$/g), // Entire feed entry
 
-    new RegExp(/Removed .*? from this asset\.<br ?\/?>/g),
+    new RegExp(/Removed .*? from this (?:incident|service request|asset)\.<br ?\/?>/g),
 
     new RegExp(/Added .* as a contact for this (?:incident|service request)\.<br ?\/?>/g),
     new RegExp(/Automatically completed as a result of the (?:incident|service request) being closed.<br ?\/?>/g),
@@ -35,6 +35,7 @@ const UserOperationMatches = [
     new RegExp(/Deleted the ".*?" task from this (?:incident|service request)\.<br ?\/?>/g),
 
     // Workflows
+    new RegExp(/Approved this (?:incident|service request) in the ".*?" workflow\.<br ?\/?>/g),
     new RegExp(/Selected ".*" for the ".*?" step in the ".*?" workflow\.<br ?\/?>/g),
     new RegExp(/Re-sent notifications for the ".*?" step in the ".*?" workflow\.<br ?\/?>/g),
     new RegExp(/Restarted the ".*?" workflow for this (?:incident|service request)\.<br ?\/?>/g),
