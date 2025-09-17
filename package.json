@@ -3,7 +3,7 @@
   "description": "UX/UI Extension for TeamDynamix",
   "author": "Digi",
   "private": true,
-  "version": "0.4.5",
+  "version": "0.4.6",
   "type": "module",
   "scripts": {
     "dev": "vite",
