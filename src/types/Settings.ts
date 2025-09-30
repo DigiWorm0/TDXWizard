@@ -25,7 +25,7 @@ export default interface Settings {
     ticketPrintDefaults: boolean;
     ticketPrintEnableDetails: boolean;
     ticketPrintEnableDescription: boolean;
-    ticketPrintEnableRequestor: boolean;
+    ticketPrintEnableRequestorInfo: boolean;
     ticketPrintEnableTasks: boolean;
     ticketPrintEnableAssets: boolean;
     ticketPrintEnableCIs: boolean;
