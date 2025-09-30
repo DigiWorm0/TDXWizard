@@ -28,7 +28,7 @@ const DefaultSettings: Settings = {
     ticketPrintDefaults: true,
     ticketPrintEnableDetails: true,
     ticketPrintEnableDescription: true,
-    ticketPrintEnableRequestor: false,
+    ticketPrintEnableRequestorInfo: true,
     ticketPrintEnableTasks: false,
     ticketPrintEnableAssets: true,
     ticketPrintEnableCIs: true,

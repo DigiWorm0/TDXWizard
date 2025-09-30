@@ -36,7 +36,9 @@ const UserOperationMatches = [
 
     // Workflows
     new RegExp(/Approved this (?:incident|service request) in the ".*?" workflow\.<br ?\/?>/g),
+    new RegExp(/Approved the ".*" step in the ".*?" workflow\.<br ?\/?>/g),
     new RegExp(/Selected ".*" for the ".*?" step in the ".*?" workflow\.<br ?\/?>/g),
+    new RegExp(/Skipped the ".*?" step in the ".*?" workflow\.<br ?\/?>/g),
     new RegExp(/Re-sent notifications for the ".*?" step in the ".*?" workflow\.<br ?\/?>/g),
     new RegExp(/Restarted the ".*?" workflow for this (?:incident|service request)\.<br ?\/?>/g),
     new RegExp(/Assigned the ".*?" workflow to this (?:incident|service request)\.<br ?\/?>/g),

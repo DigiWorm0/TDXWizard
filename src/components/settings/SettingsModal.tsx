@@ -339,7 +339,7 @@ export default function SettingsModal(props: SettingsModalProps) {
                                 />
                                 <SettingsSwitchInput
                                     label={"Requestor Information"}
-                                    setting={"ticketPrintEnableRequestor"}
+                                    setting={"ticketPrintEnableRequestorInfo"}
                                     disabled={!settings.ticketPrintDefaults}
                                 />
                                 <SettingsSwitchInput

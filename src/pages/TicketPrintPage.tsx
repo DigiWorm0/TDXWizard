@@ -7,7 +7,7 @@ const URL_PREFIX_REGEX = /\/TDNext\/Apps\/\d*\/Tickets\/TicketDetPrint/g;
 const SETTING_TO_ID: Partial<Record<keyof Settings, string>> = {
     "ticketPrintEnableDetails": "chkPrintDetails",
     "ticketPrintEnableDescription": "chkPrintDescription",
-    "ticketPrintEnableRequestor": "chkPrintContact",
+    "ticketPrintEnableRequestorInfo": "chkPrintContact",
     "ticketPrintEnableTasks": "chkPrintTasks",
     "ticketPrintEnableAssets": "chkPrintAssets",
     "ticketPrintEnableCIs": "chkPrintOtherCIs",
