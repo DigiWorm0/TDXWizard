@@ -19,6 +19,8 @@ export interface BulkInventoryModalProps {
     appID: number;
 }
 
+const DEPT_NOTES_ATTRIBUTE_ID = 4462;
+
 export default function BulkInventoryModal(props: BulkInventoryModalProps) {
     const [assets, setAssets] = React.useState<Asset[]>([]);
     const [runPromise, isLoading] = useRunPromise();
@@ -101,6 +103,30 @@ export default function BulkInventoryModal(props: BulkInventoryModalProps) {
         setAssets(newAssets);
     }
 
+    const onUpdateDeptNotes = async () => {
+        const client = new LocalTDXClient();
+
+        // Prompt for department notes
+        const updateText = prompt("New Dept Notes:");
+        if (!updateText)
+            return;
+
+        // Iterate through tickets
+        for (const asset of assets) {
+            const attribute = asset.Attributes?.find(attr => attr.ID === DEPT_NOTES_ATTRIBUTE_ID);
+            if (!attribute)
+                continue;
+
+            // Update value
+            attribute.Value = updateText;
+
+            // Update asset
+            await client.assets.editAsset(props.appID, asset.ID, asset);
+        }
+
+        alert("Done.");
+    }
+
     return (
         <BigInputWindow
             title={"Bulk Inventory"}
@@ -169,6 +195,15 @@ export default function BulkInventoryModal(props: BulkInventoryModalProps) {
             />
 
             <div className={"mt-2"}>
+                <TDXButton
+                    type={"tdx"}
+                    onClick={() => runPromise(onUpdateDeptNotes())}
+                    disabled={assets.length === 0 || isLoading}
+                    title={"Update Department Notes for all selected assets"}
+                    icon={"fa fa-square-pen me-1"}
+                    text={"Update Dept Notes"}
+                />
+
                 <TDXButton
                     type={"tdx"}
                     onClick={() => updateAssets(props.appID, assets)}
