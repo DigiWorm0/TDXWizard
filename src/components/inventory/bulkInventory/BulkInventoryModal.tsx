@@ -113,7 +113,13 @@ export default function BulkInventoryModal(props: BulkInventoryModalProps) {
 
         // Iterate through tickets
         for (const asset of assets) {
-            const attribute = asset.Attributes?.find(attr => attr.ID === DEPT_NOTES_ATTRIBUTE_ID);
+            // Get full asset
+            const fullAsset = await client.assets.getAsset(props.appID, asset.ID);
+
+            // Find attribute
+            const attribute = fullAsset.Attributes?.find(attr => attr.ID === DEPT_NOTES_ATTRIBUTE_ID);
+            console.log(attribute, fullAsset);
+            
             if (!attribute)
                 continue;
 
@@ -121,7 +127,7 @@ export default function BulkInventoryModal(props: BulkInventoryModalProps) {
             attribute.Value = updateText;
 
             // Update asset
-            await client.assets.editAsset(props.appID, asset.ID, asset);
+            await client.assets.editAsset(props.appID, asset.ID, fullAsset);
         }
 
         alert("Done.");
