@@ -36,7 +36,7 @@ export default class CommonPage implements PageScript {
     static replaceWindowLinks() {
         // Check Settings
         const settings = getSettings();
-        if (!settings.openLinksInNewWindow)
+        if (!settings.enableOpenLinksIn)
             return;
 
         // Patch global window functions with custom implementations
@@ -46,7 +46,8 @@ export default class CommonPage implements PageScript {
             throw new Error("window.top is null, cannot replace window links");
 
         // Generic iFrame tab opening
-        unsafeWindow.top.WorkMgmt.MainContentManager.instance.openIFrameTab = (name: string, _id: string, url: string, _tabData = false) => openWindow(url, name);
+        if (settings.openLinksIn !== "newTDXTab")
+            unsafeWindow.top.WorkMgmt.MainContentManager.instance.openIFrameTab = (name: string, _id: string, url: string, _tabData = false) => openWindow(url, name);
 
         // Child window opening
         unsafeWindow.openWinReturn = (url: string, _width: number, _height: number, name: string) => openWindow(url, name);

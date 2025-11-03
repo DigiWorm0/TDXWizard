@@ -1,6 +1,7 @@
 import Settings from "../types/Settings";
 import {GM_getValue, GM_setValue} from "$";
 import DefaultSettings from "../db/DefaultSettings";
+import migrateDeprecatedSettings from "./migrateDeprecatedSettings";
 
 let _settingsCache: Settings | null = null;
 
@@ -14,10 +15,10 @@ export default function getSettings(): Settings {
         // Load settings from storage
         const localSettingsJSON: string = GM_getValue("settings") ?? "{}";
         const localSettings: Partial<Settings> = JSON.parse(localSettingsJSON);
-        _settingsCache = {
+        _settingsCache = migrateDeprecatedSettings({
             ...DefaultSettings,
             ...localSettings
-        };
+        });
     }
 
     return _settingsCache;

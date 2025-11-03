@@ -8,9 +8,9 @@ const UserOperationMatches = [
     new RegExp(/Added \d+ (?:incident|service request) to this major incident\.<br ?\/?>/g), // Entire feed entry
 
     // Responsibility
-    new RegExp(/Took primary responsibility for this (?:incident|service request)\.<br ?\/?>/g),
-    new RegExp(/Took primary responsibility for this (?:incident|service request) from .*?\.<br ?\/?>/g),
-    new RegExp(/Reassigned this (?:incident|service request) from .*? to .*?\.<br ?\/?>/g),
+    new RegExp(/Took primary responsibility for this (?:incident|service request|major incident)\.<br ?\/?>/g),
+    new RegExp(/Took primary responsibility for this (?:incident|service request|major incident) from .*?\.<br ?\/?>/g),
+    new RegExp(/Reassigned this (?:incident|service request|major incident) from .*? to .*?\.<br ?\/?>/g),
 
     // Lists
     new RegExp(/Added this (?:incident|service request) to ".*?" list\.<br ?\/?>/g),

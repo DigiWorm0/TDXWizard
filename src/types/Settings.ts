@@ -57,7 +57,12 @@ export default interface Settings {
     linkifyAttachments: boolean;
     linkifyAssets: boolean;
     suggestFormTypes: boolean;
-    openLinksInNewWindow: boolean;
+
+    enableOpenLinksIn: boolean;
+    openLinksIn: "newWindow" | "newTab" | "newTDXTab";
+
+    // @deprecated use `openLinksIn` instead
+    openLinksInNewWindow?: boolean;
 
     denseStyle: boolean;
     stripedTableRows: boolean;

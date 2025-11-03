@@ -67,7 +67,9 @@ const DefaultSettings: Settings = {
 
     suggestFormTypes: true,
 
-    openLinksInNewWindow: true,
+    enableOpenLinksIn: true,
+    openLinksIn: "newWindow",
+    openLinksInNewWindow: undefined,
 
     denseStyle: true,
     stripedTableRows: true,
