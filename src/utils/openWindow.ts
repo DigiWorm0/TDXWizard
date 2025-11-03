@@ -17,12 +17,18 @@ export default function openWindow(
 
     // Check user settings for opening links in a new window
     const {
-        openLinksInNewWindow,
+        enableOpenLinksIn,
+        openLinksIn,
         defaultWindowHeight,
         defaultWindowWidth
     } = getSettings();
 
-    if (openLinksInNewWindow) {
+    const openInNewWindow = enableOpenLinksIn && openLinksIn === "newWindow";
+    const openInNewTab = enableOpenLinksIn && openLinksIn === "newTab";
+    const openInNewTDXTab = enableOpenLinksIn && openLinksIn === "newTDXTab";
+
+
+    if (openInNewWindow) {
 
         // Based on https://stackoverflow.com/questions/4068373/center-a-popup-window-on-screen
 
@@ -50,7 +56,13 @@ export default function openWindow(
         // Rename the new window if it was successfully opened
         if (newWindow && title)
             newWindow.document.title = title;
-    } else if (fallbackToIFrame) {
+    } else if (openInNewTab) {
+        // Open in a new browser tab
+        const newTab = window.open(href, '_blank');
+
+        // Check for popups being blocked
+        warnUserIfPopupsBlocked(newTab);
+    } else if (fallbackToIFrame || openInNewTDXTab) {
         // Fallback to new iFrame tab opening
         unsafeWindow.top?.WorkMgmt.MainContentManager.instance.openIFrameTab(title ?? 'New Window', href, href, false);
     } else {

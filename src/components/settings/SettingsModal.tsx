@@ -14,6 +14,7 @@ import SettingsNumberInput from "./input/SettingsNumberInput";
 import SettingsTitle from "./SettingsTitle";
 import SettingsSidebarImage from "./SettingsSidebarImage";
 import ClearCacheButton from "./ClearCacheButton";
+import SettingsDropdownInput from "./input/SettingsDropdownInput";
 
 export interface SettingsModalProps {
     isOpen: boolean;
@@ -64,23 +65,6 @@ export default function SettingsModal(props: SettingsModalProps) {
                                 setting={"unlinkEmails"}
                                 title={"Removes all email links for easier username highlight/copy/paste"}
                             />
-                            <SettingsSwitchInput
-                                label={"Open Links in a New Window"}
-                                setting={"openLinksInNewWindow"}
-                                title={"Reverts the tab dashboard with new windows (requires a refresh)"}
-                                requiresRefresh
-                            />
-
-                            <div style={{marginLeft: 20}}>
-                                <SettingsDimensionsInput
-                                    label={"Popup Size"}
-                                    title={"Sets the default size (in pixels) of new window popups"}
-                                    xSetting={"defaultWindowWidth"}
-                                    ySetting={"defaultWindowHeight"}
-                                    disabled={!settings.openLinksInNewWindow}
-                                />
-                            </div>
-
                             <SettingsSwitchInput
                                 label={"Always Show Refresh Button"}
                                 setting={"dashboardAddTicketButton"}
@@ -140,6 +124,37 @@ export default function SettingsModal(props: SettingsModalProps) {
                                         title={"Sets the maximum number of search history items to keep"}
                                     />
                                 </div>
+                            </div>
+
+                            <div className={"d-flex flex-row align-items-center"} style={{marginBottom: 5}}>
+                                <SettingsSwitchInput
+                                    label={"Open Links In..."}
+                                    setting={"enableOpenLinksIn"}
+                                    title={"Replaces how links are opened by default."}
+                                    requiresRefresh
+                                />
+                                <SettingsDropdownInput
+                                    setting={"openLinksIn"}
+                                    options={[
+                                        {value: "newTab", label: "New Tab"},
+                                        {value: "newWindow", label: "Popup Window"},
+                                        {value: "newTDXTab", label: "TeamDynamix Tab"},
+                                    ]}
+                                    disabled={!settings.enableOpenLinksIn}
+                                    requiresRefresh
+                                />
+                            </div>
+
+                            <div style={{marginLeft: 20}}>
+                                {settings.openLinksIn === "newWindow" && (
+                                    <SettingsDimensionsInput
+                                        label={"Popup Size"}
+                                        title={"Sets the default size (in pixels) of new window popups"}
+                                        xSetting={"defaultWindowWidth"}
+                                        ySetting={"defaultWindowHeight"}
+                                        disabled={!settings.enableOpenLinksIn}
+                                    />
+                                )}
                             </div>
 
                             <SettingsCategoryHeader>Feed</SettingsCategoryHeader>
