@@ -107,6 +107,8 @@ const DefaultSettings: Settings = {
     editableTicketTitle: true,
 
     developerMode: false,
+
+    scrollFix: true,
 };
 
 export default DefaultSettings;

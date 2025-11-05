@@ -73,6 +73,7 @@ export default function CustomStyles() {
     useCustomStyle("useCustomColorPalette", "wizard_custom-palette");
     useCustomStyle("hideTicketBannerMessage", "wizard_hide-ticket-banner-msg");
     useCustomStyle("dashboardRefreshButton", "wizard_always-visible-refresh-button");
+    useCustomStyle("scrollFix", "wizard_scroll-fix", /TDWorkManagement/g);
 
     React.useEffect(() => {
         if (!settings.useCustomColorPalette)

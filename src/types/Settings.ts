@@ -95,4 +95,5 @@ export default interface Settings {
     editableTicketTitle: boolean;
 
     developerMode: boolean;
+    scrollFix: boolean;
 }

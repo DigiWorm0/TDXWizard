@@ -87,6 +87,13 @@
 }
 
 /*
+        SCROLL FIX
+ */
+.wizard_scroll-fix {
+    max-height: 100vh;
+}
+
+/*
         HIDE TICKET BANNER MESSAGE
  */
 .wizard_hide-ticket-banner-msg #lblResults_lblResults-label {
