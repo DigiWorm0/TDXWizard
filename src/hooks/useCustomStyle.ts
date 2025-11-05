@@ -5,10 +5,18 @@ import React from "react";
 import Settings from "../types/Settings";
 
 
-export default function useCustomStyle(settingType: keyof Settings, className: string) {
+export default function useCustomStyle(settingType: keyof Settings, className: string, url?: RegExp) {
     const [settings] = useSettings();
 
     React.useEffect(() => {
+
+        if (url) {
+            if (!url.test(window.location.href)) {
+                // Remove the class from the body when the setting is disabled
+                document.body.classList.remove(className);
+                return;
+            }
+        }
 
         // Add the class to the body when the setting is enabled
         if (settings[settingType])

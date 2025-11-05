@@ -86,6 +86,11 @@ export default function SettingsModal(props: SettingsModalProps) {
                                 title={"Animates various UI components such as buttons"}
                             />
                             <SettingsSwitchInput
+                                label={"Fix Scrolling Issues"}
+                                setting={"scrollFix"}
+                                title={"Fixes a bug in TeamDynamix where the body can scroll down about 50px and get stuck off-screen."}
+                            />
+                            <SettingsSwitchInput
                                 label={"Better Search"}
                                 setting={"useNewSearch"}
                                 title={"Replaces the TDX search with a re-designed version"}
