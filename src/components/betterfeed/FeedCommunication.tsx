@@ -17,7 +17,7 @@ export interface TicketFeedCommunicationProps {
     isRequestor: boolean,
     body: string,
     label?: string,
-    notifiedList: string,
+    notifiedList: string | null,
 
     mergedTicketID?: string,
 
