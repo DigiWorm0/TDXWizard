@@ -6,6 +6,7 @@ import TicketSurplusConversionButton from "./TicketSurplusConversionButton";
 import TicketResolveButton from "./TicketResolveButton";
 import TicketUpdateButton from "./TicketUpdateButton";
 import TicketDebugInfoButton from "./TicketDebugInfoButton";
+import TicketWorkflowButton from "./TicketWorkflowButton";
 
 export default function TicketNavBar() {
     return (
@@ -16,6 +17,7 @@ export default function TicketNavBar() {
             <TicketAssetButtons/>
             <TicketAssignmentButtons/>
             <TicketSurplusConversionButton/>
+            <TicketWorkflowButton/>
             <TicketResolveButton/>
             <TicketDebugInfoButton/>
         </>

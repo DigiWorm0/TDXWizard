@@ -435,6 +435,34 @@ export default function SettingsModal(props: SettingsModalProps) {
                                     </div>
 
                                     <SettingsSwitchInput
+                                        label={"Suggest Workflows"}
+                                        setting={"suggestWorkflows"}
+                                        title={"Suggests workflows to apply to a ticket based on ticket info"}
+                                    />
+
+                                    <div style={{marginLeft: 20}}>
+                                        <SettingsSwitchInput
+                                            label={"Automatically Change Ticket Status"}
+                                            setting={"changeTicketStatusOnWorkflowChange"}
+                                            disabled={!settings.suggestWorkflows}
+                                            title={"Updates the ticket status automatically when applying a suggested workflow"}
+                                        />
+                                        <SettingsSwitchInput
+                                            label={"Hide if No Communication Yet"}
+                                            setting={"hideSuggestedWorkflowIfNoCommunication"}
+                                            disabled={!settings.suggestWorkflows}
+                                            title={"Hides the workflow suggestion if there hasn't been any communication on the ticket yet"}
+                                        />
+                                        <SettingsSwitchInput
+                                            label={"Hide if Ticket Already Has Workflow"}
+                                            setting={"hideSuggestedWorkflowIfWorkflowExists"}
+                                            disabled={!settings.suggestWorkflows}
+                                            title={"Hides the workflow suggestion if the ticket already has a workflow applied"}
+                                        />
+                                    </div>
+
+
+                                    <SettingsSwitchInput
                                         label={"Suggest Form Types"}
                                         setting={"suggestFormTypes"}
                                         title={"When creating a new ticket, suggests a form type based on common forms"}
