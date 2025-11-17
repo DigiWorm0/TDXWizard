@@ -18,7 +18,7 @@ interface FormattedFeedItem {
     IsPrivate?: boolean;
     IsEmailMonitor?: boolean;
     ReplyToID?: number;
-    NotifiedList: string;
+    NotifiedList: string | null;
 
     ItemType?: FeedItemType;
     ItemTitle?: string;
