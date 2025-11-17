@@ -112,7 +112,7 @@ export default function TicketWorkflowButton() {
 
 
     // Hide If No Communication
-    const hasCommunication = ticketFeed?.some(feedItem => !feedItem.IsPrivate);
+    const hasCommunication = ticketFeed?.some(feedItem => !feedItem.IsPrivate && feedItem.NotifiedList !== null);
     if (!hasCommunication && settings.hideSuggestedWorkflowIfNoCommunication)
         return null;
 

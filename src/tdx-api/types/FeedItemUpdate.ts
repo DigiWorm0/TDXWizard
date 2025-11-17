@@ -25,7 +25,7 @@ export default interface FeedItemUpdate {
     Body?: string;
     IsRichHtml: boolean;
     UpdateType: FeedUpdateType;
-    NotifiedList: string;
+    NotifiedList: string | null;
     IsPrivate: boolean;
     IsParent: boolean;
     Replies?: FeedItemUpdateReply[];
