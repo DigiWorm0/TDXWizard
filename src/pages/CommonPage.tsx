@@ -52,8 +52,17 @@ export default class CommonPage implements PageScript {
         // Child window opening
         unsafeWindow.openWinReturn = (url: string, _width: number, _height: number, name: string) => openWindow(url, name);
 
+        // Child window opening (w/ button or link)
+        unsafeWindow.openWinHref = (event: MouseEvent, _width: number, _height: number, _name: string) => {
+            event.preventDefault();
+            const buttonElement = event.currentTarget as HTMLAnchorElement;
+            const buttonText = buttonElement.innerText || "New Window";
+            const buttonURL = buttonElement.href;
+            openWindow(buttonURL, buttonText);
+        }
+
         // Side Panel iFrame opening
-        unsafeWindow.top.WorkMgmt.MainContentManager.instance.loadSidePanelIFrame = (url: string, _anim: boolean, _id?: string, _d?: boolean, _e?: boolean) => openWindow(url, "Loading...");
+        unsafeWindow.top.WorkMgmt.MainContentManager.instance.loadSidePanelIFrame = (url: string, _anim: boolean, _id?: string, _d?: boolean, _e?: boolean) => openWindow(url);
 
         // Child window side panel opening
         unsafeWindow.openWorkMgmtSidePanel = (url: string) => openWindow(url);

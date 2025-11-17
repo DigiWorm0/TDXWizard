@@ -65,7 +65,7 @@ export default function openWindow(
     } else if (fallbackToIFrame || openInNewTDXTab) {
         // Fallback to new iFrame tab opening
         const randomID = `window_${Math.random().toString(36).substring(2, 10)}`;
-        unsafeWindow.top?.WorkMgmt.MainContentManager.instance.openIFrameTab(title ?? 'New Window', randomID, href, false);
+        unsafeWindow.top?.WorkMgmt.MainContentManager.instance.openIFrameTab(title ?? 'Loading...', randomID, href, false);
     } else {
         // Fallback to opening in the current window
         window.location.href = href;
