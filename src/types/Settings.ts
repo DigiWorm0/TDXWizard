@@ -53,10 +53,16 @@ export default interface Settings {
     legacyLookupButton: boolean;
     bulkInventoryButton: boolean;
     resolveButton: boolean;
+
     updateButton: boolean;
     linkifyAttachments: boolean;
     linkifyAssets: boolean;
     suggestFormTypes: boolean;
+
+    suggestWorkflows: boolean;
+    changeTicketStatusOnWorkflowChange: boolean;
+    hideSuggestedWorkflowIfNoCommunication: boolean;
+    hideSuggestedWorkflowIfWorkflowExists: boolean;
 
     enableOpenLinksIn: boolean;
     openLinksIn: "newWindow" | "newTab" | "newTDXTab";
@@ -86,6 +92,7 @@ export default interface Settings {
     defaultWindowHeight: number;
 
     searchHistoryLimit: number;
+
 
     // These settings have no UI, but can be edited by manually editing an exported settings.json file
     autoDetectSearchTypes: AutoDetectSearchType[];

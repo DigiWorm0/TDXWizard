@@ -34,6 +34,11 @@ const DefaultSettings: Settings = {
     ticketPrintEnableCIs: true,
     ticketPrintEnableFeed: false,
 
+    suggestWorkflows: true,
+    changeTicketStatusOnWorkflowChange: true,
+    hideSuggestedWorkflowIfNoCommunication: true,
+    hideSuggestedWorkflowIfWorkflowExists: false,
+
     useNewFeed: true,
     useNewFeedOnTickets: true,
     useNewFeedOnAssets: true,
