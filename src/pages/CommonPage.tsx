@@ -53,7 +53,7 @@ export default class CommonPage implements PageScript {
         unsafeWindow.openWinReturn = (url: string, _width: number, _height: number, name: string) => openWindow(url, name);
 
         // Side Panel iFrame opening
-        unsafeWindow.top.WorkMgmt.MainContentManager.instance.loadSidePanelIFrame = (url: string, name: string, _id: string, _tabData = true, _landmark = true) => openWindow(url, name);
+        unsafeWindow.top.WorkMgmt.MainContentManager.instance.loadSidePanelIFrame = (url: string, _anim: boolean, _id?: string, _d?: boolean, _e?: boolean) => openWindow(url, "Loading...");
 
         // Child window side panel opening
         unsafeWindow.openWorkMgmtSidePanel = (url: string) => openWindow(url);
