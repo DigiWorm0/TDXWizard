@@ -9,7 +9,7 @@ const REF_ID_COLORS = [
 const REF_ID_COLORS_DARK = [
     "#a1a1a1", // Gray
     "#bf3935", // Red
-    "#3cb63c", // Green
+    "#3aae3a", // Green
     "#9c7500", // Yellow
     "#48a2f4", // Blue
 ];
