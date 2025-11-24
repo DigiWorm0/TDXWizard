@@ -67,6 +67,7 @@ const DefaultSettings: Settings = {
     reverseFeedOrder: false,
 
     resolveButton: false,
+    closeAllTasksOnResolve: true,
     updateButton: false,
 
     linkifyAttachments: true,

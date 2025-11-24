@@ -55,6 +55,7 @@ export default interface Settings {
     legacyLookupButton: boolean;
     bulkInventoryButton: boolean;
     resolveButton: boolean;
+    closeAllTasksOnResolve: boolean;
 
     updateButton: boolean;
     linkifyAttachments: boolean;

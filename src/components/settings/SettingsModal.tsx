@@ -285,6 +285,14 @@ export default function SettingsModal(props: SettingsModalProps) {
                                 setting={"resolveButton"}
                                 title={"Enables a universal 'Resolve' button on all ticket pages"}
                             />
+                            <div style={{marginLeft: 20}}>
+                                <SettingsSwitchInput
+                                    label={"Close All Tasks on Resolve"}
+                                    setting={"closeAllTasksOnResolve"}
+                                    disabled={!settings.resolveButton}
+                                    title={"Automatically closes all open tasks when resolving a ticket"}
+                                />
+                            </div>
 
                             <SettingsSwitchInput
                                 label={"Show Update Button"}

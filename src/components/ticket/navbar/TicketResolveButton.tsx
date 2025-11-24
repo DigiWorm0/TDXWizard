@@ -13,6 +13,24 @@ export default function TicketResolveButton() {
     const ticket = useTicket();
     const resolvedID = useTicketStatusID("Resolved");
 
+    const closeAllTicketTasks = async (appID: number, ticketID: number) => {
+        // API Client
+        const client = new LocalTDXClient();
+
+        // Get Tasks
+        const tasks = await client.ticketTasks.getTicketTasks(appID, ticketID);
+
+        // Close each task
+        for (const task of tasks) {
+            if (task.PercentComplete === 100)
+                continue;
+
+            await client.ticketTasks.updateTicketTaskFeed(appID, ticketID, task.ID, {
+                PercentComplete: 100
+            }).catch(console.warn);
+        }
+    }
+
     const resolveTicket = async () => {
         if (!confirmAction("Are you sure you want to resolve this ticket?"))
             return;
@@ -34,6 +52,10 @@ export default function TicketResolveButton() {
         await client.tickets.updateTicket(appID, ticketID, {
             StatusID: resolvedID ?? 0,
         });
+
+        // Close Tasks
+        if (settings.closeAllTasksOnResolve)
+            await closeAllTicketTasks(appID, ticketID);
 
         // Reload/Close the page
         if (settings.autoCloseTicketOnSave)
