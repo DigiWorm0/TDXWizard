@@ -6,11 +6,13 @@ import openWindow from "../../../utils/openWindow";
 import TDXButtonGroup from "../../common/TDXButtonGroup";
 import TDXButton from "../../common/TDXButton";
 import useRunPromise from "../../../hooks/useRunPromise";
+import useDarkMode from "../../../hooks/useDarkMode";
 
 export default function TicketPrintButton() {
     const [settings] = useSettings();
     const printArea = React.useRef<HTMLIFrameElement>(null);
     const [runPromise, isLoading] = useRunPromise();
+    const isDarkMode = useDarkMode();
 
     React.useEffect(() => {
         // Get the Print View Button
@@ -44,6 +46,16 @@ export default function TicketPrintButton() {
             await new Promise<void>((resolve) => {
                 iframe.onload = () => resolve();
             });
+        }
+
+        // Fix dark mode image.
+        // This is needed to run ahead of time before loading print preview.
+        if (isDarkMode) {
+            const document = iframe.contentWindow?.document;
+            const qrElement = document?.getElementById("imgQRTDMobile") as HTMLImageElement | null;
+
+            if (qrElement)
+                qrElement.style.filter = "none";
         }
 
         // Print the iframe content

@@ -7,6 +7,7 @@ import useUserColor from "../../hooks/useUserColor";
 import DefaultGUID from "../../types/DefaultGUID";
 import openWindow from "../../utils/openWindow";
 import FeedRenderer from "./FeedRenderer";
+import useDarkMode from "../../hooks/useDarkMode";
 
 export interface TicketFeedEventProps {
     uid: Guid,
@@ -20,6 +21,7 @@ export default function FeedEvent(props: TicketFeedEventProps) {
     const userColor = useUserColor(props.uid);
     const isSystem = props.uid === DefaultGUID;
     const profileURL = isSystem ? "#" : `/TDNext/Apps/People/PersonDet.aspx?U=${props.uid}`;
+    const isDarkMode = useDarkMode();
 
     const openProfile = (e: React.MouseEvent<HTMLAnchorElement>) => {
         e.preventDefault();
@@ -69,7 +71,7 @@ export default function FeedEvent(props: TicketFeedEventProps) {
             <div
                 style={{
                     margin: 0,
-                    color: "#888",
+                    color: isDarkMode ? "#999" : "#888",
                     paddingTop: 2
                 }}
             >

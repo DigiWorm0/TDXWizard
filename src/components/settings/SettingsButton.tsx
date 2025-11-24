@@ -1,9 +1,11 @@
 import React from "react";
 import SettingsModal from "./SettingsModal";
+import useDarkMode from "../../hooks/useDarkMode";
 
 export default function SettingsButton() {
     const [isOpen, setIsOpen] = React.useState(false);
     const [isHovered, setIsHovered] = React.useState(false);
+    const isDarkMode = useDarkMode();
 
     return (
         <>
@@ -15,7 +17,9 @@ export default function SettingsButton() {
                 style={{
                     transition: "all 0.2s",
                     transform: `rotate(${isHovered ? 15 : 0}deg) scale(${isHovered ? 1.3 : 1})`,
-                    color: isHovered ? "rgb(84, 44, 194)" : "rgb(55, 29, 128)",
+                    color: isDarkMode ?
+                        (isHovered ? "rgb(255, 255, 255)" : "var(--primaryD3)") :
+                        (isHovered ? "rgb(84, 44, 194)" : "rgb(55, 29, 128)"),
                     border: "none",
                     boxShadow: isHovered ? "0 0 5px rgba(0, 0, 0, 0.5)" : "0 0 0px rgba(0, 0, 0, 0.5)",
                     zIndex: 1000,

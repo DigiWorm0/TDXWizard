@@ -8,6 +8,7 @@ import useJumpToFeedID from "../../hooks/useJumpToFeed";
 import UpdatedTimestamp from "../common/UpdatedTimestamp";
 import openWindow from "../../utils/openWindow";
 import FeedRenderer from "./FeedRenderer";
+import useDarkMode from "../../hooks/useDarkMode";
 
 export interface TicketFeedCommunicationProps {
     id: number,
@@ -33,6 +34,7 @@ export default function FeedCommunication(props: TicketFeedCommunicationProps) {
     const userColor = useUserColor(props.uid);
     const replyUserColor = useUserColor(props.replyToUID ?? "");
     const profileURL = `/TDNext/Apps/People/PersonDet.aspx?U=${props.uid}`;
+    const isDarkMode = useDarkMode();
 
     const isTargetFeed = targetFeedID === props.id;
 
@@ -115,7 +117,9 @@ export default function FeedCommunication(props: TicketFeedCommunicationProps) {
                     paddingLeft: 10,
                     paddingTop: 10,
                     paddingBottom: 5,
-                    backgroundColor: isTargetFeed ? "#fffcee" : "transparent",
+                    backgroundColor: isTargetFeed ?
+                        (isDarkMode ? "#2d2d1a" : "#fffcee") :
+                        "transparent",
                     borderRadius: 15,
                     transition: "background-color 0.5s"
                 }}

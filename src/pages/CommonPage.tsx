@@ -8,6 +8,7 @@ import openWindow from "../utils/openWindow";
 import {unsafeWindow} from "$";
 import autoUpdateAuthKey from "../utils/autoUpdateAuthKey";
 import WizardToaster from "../components/common/WizardToaster";
+import getDarkMode from "../utils/getDarkMode";
 
 export default class CommonPage implements PageScript {
 
@@ -26,6 +27,10 @@ export default class CommonPage implements PageScript {
     }
 
     static addCustomStyles() {
+        // Apply dark mode class immediately
+        if (getDarkMode())
+            document.body.classList.add("wizard_dark");
+
         addComponentToDOM(document.body, <CustomStyles/>);
     }
 

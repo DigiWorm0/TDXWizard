@@ -30,7 +30,7 @@ export default function SettingsModal(props: SettingsModalProps) {
             onClose={props.onClose}
         >
             <div
-                className={"modal-dialog"}
+                className={"wizard_settings modal-dialog"}
                 role={"document"}
                 style={{maxWidth: 620}}
             >
