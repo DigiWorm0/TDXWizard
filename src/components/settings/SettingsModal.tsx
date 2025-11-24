@@ -90,6 +90,12 @@ export default function SettingsModal(props: SettingsModalProps) {
                                 setting={"scrollFix"}
                                 title={"Fixes a bug in TeamDynamix where the body can scroll down about 50px and get stuck off-screen."}
                             />
+
+                            <SettingsSwitchInput
+                                label={"Don't Invert Images in Dark Mode"}
+                                setting={"darkModeDontInvertImages"}
+                                title={"Disables the color inversion of all images in dark mode...cause it looks weird"}
+                            />
                             <SettingsSwitchInput
                                 label={"Better Search"}
                                 setting={"useNewSearch"}

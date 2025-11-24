@@ -297,3 +297,11 @@
 .wizard_dark #imgQRTDMobile {
     filter: none !important;
 }
+
+/*
+        DARK MODE IMAGE INVERSION FIX
+ */
+
+.wizard_dark.wizard_darkmode-dont-invert-images img {
+    filter: none !important;
+}

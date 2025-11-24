@@ -22,6 +22,8 @@ export default interface Settings {
 
     disableNotifyResponsibleByDefault: boolean;
 
+    darkModeDontInvertImages: boolean;
+
     ticketPrintDefaults: boolean;
     ticketPrintEnableDetails: boolean;
     ticketPrintEnableDescription: boolean;

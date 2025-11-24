@@ -74,6 +74,7 @@ export default function CustomStyles() {
     useCustomStyle("hideTicketBannerMessage", "wizard_hide-ticket-banner-msg");
     useCustomStyle("dashboardRefreshButton", "wizard_always-visible-refresh-button");
     useCustomStyle("scrollFix", "wizard_scroll-fix", /TDWorkManagement/g);
+    useCustomStyle("darkModeDontInvertImages", "wizard_darkmode-dont-invert-images");
 
     React.useEffect(() => {
         if (!settings.useCustomColorPalette)
