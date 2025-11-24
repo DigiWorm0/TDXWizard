@@ -34,6 +34,7 @@ const UserOperationMatches = [
     // Tasks
     new RegExp(/Edited this (?:incident|service request|task|major incident)\.<br ?\/?>/g),
     new RegExp(/Deleted the ".*?" task from this (?:incident|service request)\.<br ?\/?>/g),
+    new RegExp(/Closed all remaining ticket tasks\.<br ?\/?>/g),
 
     // Workflows
     new RegExp(/(?:Approved|Rejected) this (?:incident|service request) in the ".*?" workflow\.<br ?\/?>/g),

@@ -78,13 +78,24 @@
     background-color: revert;
 }
 
-.wizard_striped-table-rows .tdworkmgmt.table-striped > tbody > tr:nth-of-type(odd) {
-    background-color: #f9f9f9;
+.wizard_dark.wizard_striped-table-rows .tdworkmgmt.table-striped > tbody > tr:nth-of-type(odd) {
+    background-color: #282828;
 }
 
-.wizard_striped-table-rows .tdworkmgmt.table-striped > tbody > tr:hover {
-    background-color: #f1f1f1;
+.wizard_dark.wizard_striped-table-rows .tdworkmgmt.table-striped > tbody > tr:hover {
+    background-color: #373737;
 }
+
+
+.wizard_dark.wizard_striped-table-rows .k-grid .k-table-tbody > .k-alt.k-table-row:not(.k-detail-row) {
+    background-color: #282828;
+
+}
+
+.wizard_dark.wizard_striped-table-rows .k-grid .k-table-tbody > .k-table-row:not(.k-detail-row):hover {
+    background-color: #373737;
+}
+
 
 /*
         SCROLL FIX
@@ -242,4 +253,65 @@
  */
 .wizard_always-visible-refresh-button .tdx-action-menu__item[onclick="WorkMgmt.DashboardHandler.instance.refreshDashboard();"] {
     display: inline-flex !important;
+}
+
+/*
+        DARK MODE FIXES
+ */
+
+.wizard_dark .wizard_settings .modal-content {
+    background-color: #2c2c2c !important;
+}
+
+.wizard_dark .wizard_settings img {
+    filter: none;
+}
+
+.wizard_dark .wizard_settings .form-control,
+.wizard_dark .wizard_bettersearch .form-control {
+    background-color: #2c2c2c !important;
+    border-color: #444 !important;
+    color: #f1f1f1 !important;
+}
+
+.wizard_dark .wizard_settings .dropdown-menu,
+.wizard_dark .wizard_bettersearch .dropdown-menu {
+    background-color: #2c2c2c !important;
+    border-color: #444 !important;
+    color: #f1f1f1 !important;
+}
+
+.wizard_dark .wizard_settings .dropdown-item,
+.wizard_dark .wizard_bettersearch .dropdown-item {
+    color: #f1f1f1 !important;
+}
+
+.wizard_dark .wizard_settings .dropdown-item:hover,
+.wizard_dark .wizard_bettersearch .dropdown-item:hover,
+.wizard_dark .wizard_settings .dropdown-item:focus,
+.wizard_dark .wizard_bettersearch .dropdown-item:focus {
+    background-color: #444 !important;
+    color: #f1f1f1 !important;
+}
+
+.wizard_dark .wizard_settings .dropdown-item.active,
+.wizard_dark .wizard_bettersearch .dropdown-item.active {
+    background-color: #6B5CDC !important;
+    color: #fff !important;
+}
+
+.wizard_dark #imgQRTDMobile {
+    filter: none !important;
+}
+
+.wizard_dark .text-muted {
+    color: #b5b5b5 !important;
+}
+
+/*
+        DARK MODE IMAGE INVERSION FIX
+ */
+
+.wizard_dark.wizard_darkmode-dont-invert-images img {
+    filter: none !important;
 }

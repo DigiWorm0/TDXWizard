@@ -16,6 +16,12 @@ export default class TicketTasksEndpoint extends TDXEndpoint {
         );
     }
 
+    getTicketTasks(appID: number, ticketID: number, isEligiblePredecessor: boolean | null = null) {
+        return this.client.jsonRequest<TicketTask[]>(
+            `${appID}/tickets/${ticketID}/tasks?isEligiblePredecessor=${isEligiblePredecessor}`
+        );
+    }
+
     editTicketTask(appID: number, ticketID: number, taskID: number, newTask: TicketTask) {
         return this.client.jsonRequest<TicketTask>(
             `${appID}/tickets/${ticketID}/tasks/${taskID}`,

@@ -30,7 +30,7 @@ export default function SettingsModal(props: SettingsModalProps) {
             onClose={props.onClose}
         >
             <div
-                className={"modal-dialog"}
+                className={"wizard_settings modal-dialog"}
                 role={"document"}
                 style={{maxWidth: 620}}
             >
@@ -89,6 +89,12 @@ export default function SettingsModal(props: SettingsModalProps) {
                                 label={"Fix Scrolling Issues"}
                                 setting={"scrollFix"}
                                 title={"Fixes a bug in TeamDynamix where the body can scroll down about 50px and get stuck off-screen."}
+                            />
+
+                            <SettingsSwitchInput
+                                label={"Don't Invert Images in Dark Mode"}
+                                setting={"darkModeDontInvertImages"}
+                                title={"Disables the color inversion of all images in dark mode...cause it looks weird"}
                             />
                             <SettingsSwitchInput
                                 label={"Better Search"}
@@ -279,6 +285,14 @@ export default function SettingsModal(props: SettingsModalProps) {
                                 setting={"resolveButton"}
                                 title={"Enables a universal 'Resolve' button on all ticket pages"}
                             />
+                            <div style={{marginLeft: 20}}>
+                                <SettingsSwitchInput
+                                    label={"Close All Tasks on Resolve"}
+                                    setting={"closeAllTasksOnResolve"}
+                                    disabled={!settings.resolveButton}
+                                    title={"Automatically closes all open tasks when resolving a ticket"}
+                                />
+                            </div>
 
                             <SettingsSwitchInput
                                 label={"Show Update Button"}

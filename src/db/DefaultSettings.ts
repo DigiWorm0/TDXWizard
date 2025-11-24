@@ -18,6 +18,8 @@ const DefaultSettings: Settings = {
 
     disableNotifyResponsibleByDefault: true,
 
+    darkModeDontInvertImages: true,
+
     confirmActions: true,
     unlinkEmails: true,
     selectSelfButton: true,
@@ -65,6 +67,7 @@ const DefaultSettings: Settings = {
     reverseFeedOrder: false,
 
     resolveButton: false,
+    closeAllTasksOnResolve: true,
     updateButton: false,
 
     linkifyAttachments: true,

@@ -1,6 +1,8 @@
 import toast, {ToastBar, Toaster} from "react-hot-toast";
+import useDarkMode from "../../hooks/useDarkMode";
 
 export default function WizardToaster() {
+    const isDarkMode = useDarkMode();
     return (
         <Toaster
             toastOptions={{duration: 4000}}
@@ -17,6 +19,8 @@ export default function WizardToaster() {
                         animation: t.visible ?
                             "wizard_slideInRight 0.3s ease-in-out forwards" :
                             "wizard_slideOutRight 0.3s ease-in-out forwards",
+                        backgroundColor: isDarkMode ? "#333" : "#fff",
+                        color: isDarkMode ? "#fff" : "#000"
                     }}
                 >
                     {({icon, message}) => (

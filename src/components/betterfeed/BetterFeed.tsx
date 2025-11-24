@@ -3,6 +3,7 @@ import FeedEvent from "./FeedEvent";
 import useTicket from "../../hooks/useTicket";
 import FeedItemUpdate from "../../tdx-api/types/FeedItemUpdate";
 import useFormattedFeed from "../../hooks/useFormattedFeed";
+import useDarkMode from "../../hooks/useDarkMode";
 
 export interface TicketFeedProps {
     feed: FeedItemUpdate[] | null | undefined;
@@ -11,6 +12,7 @@ export interface TicketFeedProps {
 export default function BetterFeed(props: TicketFeedProps) {
     const ticket = useTicket();
     const formattedFeed = useFormattedFeed(props.feed);
+    const isDarkMode = useDarkMode();
 
     return (
         <div
@@ -65,7 +67,10 @@ export default function BetterFeed(props: TicketFeedProps) {
                         )}
 
                         {/* Divider */}
-                        <hr style={{margin: 5, backgroundColor: "#eee"}}/>
+                        <hr style={{
+                            margin: 5,
+                            backgroundColor: isDarkMode ? "#444" : "#eee"
+                        }}/>
                     </div>
                 )
             })}

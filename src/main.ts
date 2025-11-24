@@ -11,6 +11,9 @@ import TicketPrintPage from "./pages/TicketPrintPage";
 import PeoplePage from "./pages/PeoplePage";
 import AuthPage from "./pages/AuthPage";
 
+import "./styles/common.css"
+import "./styles/customPalette.css";
+
 // All Pages
 const allPages: PageScript[] = [
     new TicketDetailsPage(),
